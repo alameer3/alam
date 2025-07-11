@@ -17,6 +17,9 @@ if (!process.env.DATABASE_URL) {
 let databaseUrl = process.env.DATABASE_URL;
 if (databaseUrl.startsWith("psql '") && databaseUrl.endsWith("'")) {
   databaseUrl = databaseUrl.slice(6, -1); // Remove "psql '" from start and "'" from end
+} else if (databaseUrl.startsWith("psql ")) {
+  // Handle case where it's just "psql " without quotes
+  databaseUrl = databaseUrl.slice(5);
 }
 
 console.log('Database URL configured successfully');

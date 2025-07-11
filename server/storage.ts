@@ -402,5 +402,14 @@ async function initializeStorage(): Promise<IStorage> {
   }
 }
 
-// For now, use in-memory storage - can be switched to database when ready
-export const storage = new TemporaryMemoryStorage();
+// Check database connectivity and fall back to memory storage if needed
+let storage: IStorage;
+try {
+  storage = new DatabaseStorage();
+  console.log("✓ Using PostgreSQL database storage");
+} catch (error) {
+  console.log("⚠ Database connection failed, using in-memory storage");
+  storage = new TemporaryMemoryStorage();
+}
+
+export { storage };
