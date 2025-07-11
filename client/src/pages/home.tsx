@@ -28,12 +28,12 @@ export default function Home() {
 
   // Get recent content for featured sections
   const { data: recentMovies } = useQuery({
-    queryKey: ["/api/content/movie", { page: 1, limit: 6 }],
+    queryKey: ["/api/content/movie"],
     staleTime: 2 * 60 * 1000, // 2 minutes
   });
 
   const { data: recentSeries } = useQuery({
-    queryKey: ["/api/content/series", { page: 1, limit: 6 }],
+    queryKey: ["/api/content/series"],
     staleTime: 2 * 60 * 1000, // 2 minutes
   });
 

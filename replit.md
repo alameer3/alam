@@ -23,6 +23,8 @@ This is a full-stack web application for an Arabic cinema streaming platform cal
 - تم إضافة نظام مصادقة وهمي للاختبار
 - تم إنشاء صفحة تفاصيل المحتوى المحسنة
 - تم إضافة مسارات API جديدة للمستخدمين والتفاعلات
+- تم إصلاح أخطاء API endpoints والاستعلامات
+- تم تحسين ربط المكونات بالخدمات الخلفية
 
 ## System Architecture
 
