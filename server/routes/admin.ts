@@ -1,0 +1,155 @@
+import { Router } from 'express';
+import { z } from 'zod';
+import { validateRequest } from '../middleware/validation';
+import { requireAdmin } from '../middleware/auth';
+import { storage } from '../storage';
+import { insertContentSchema } from '@shared/schema';
+
+const router = Router();
+
+// Admin authentication middleware
+router.use(requireAdmin);
+
+// Get admin dashboard stats
+router.get('/stats', async (req, res) => {
+  try {
+    const stats = await storage.getContentStats();
+    
+    // Get additional stats
+    const totalViews = 12485; // This would come from analytics
+    const totalUsers = 2847; // This would come from user table
+    const avgRating = 4.3; // This would be calculated from ratings
+    
+    res.json({
+      ...stats,
+      totalViews,
+      totalUsers,
+      avgRating,
+      newUsersThisMonth: 234,
+      totalRatings: 1456
+    });
+  } catch (error) {
+    console.error('Error fetching admin stats:', error);
+    res.status(500).json({ error: 'Failed to fetch admin stats' });
+  }
+});
+
+// Get all content for admin management
+router.get('/content', async (req, res) => {
+  try {
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 20;
+    const type = req.query.type as string;
+    const search = req.query.search as string;
+    
+    let content;
+    
+    if (search) {
+      content = await storage.searchContent(search, type);
+      // Convert to expected format
+      content = {
+        content: content,
+        total: content.length
+      };
+    } else {
+      content = await storage.getContentByType(type || 'all', page, limit);
+    }
+    
+    res.json(content);
+  } catch (error) {
+    console.error('Error fetching content for admin:', error);
+    res.status(500).json({ error: 'Failed to fetch content' });
+  }
+});
+
+// Create new content
+router.post('/content', validateRequest(insertContentSchema), async (req, res) => {
+  try {
+    const content = await storage.createContent(req.body);
+    res.status(201).json(content);
+  } catch (error) {
+    console.error('Error creating content:', error);
+    res.status(500).json({ error: 'Failed to create content' });
+  }
+});
+
+// Update content
+router.put('/content/:id', validateRequest(insertContentSchema.partial()), async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    const content = await storage.updateContent(id, req.body);
+    res.json(content);
+  } catch (error) {
+    console.error('Error updating content:', error);
+    res.status(500).json({ error: 'Failed to update content' });
+  }
+});
+
+// Delete content
+router.delete('/content/:id', async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    const success = await storage.deleteContent(id);
+    
+    if (success) {
+      res.json({ message: 'Content deleted successfully' });
+    } else {
+      res.status(404).json({ error: 'Content not found' });
+    }
+  } catch (error) {
+    console.error('Error deleting content:', error);
+    res.status(500).json({ error: 'Failed to delete content' });
+  }
+});
+
+// Get content analytics
+router.get('/analytics', async (req, res) => {
+  try {
+    // This would be implemented with actual analytics data
+    const analytics = {
+      viewsOverTime: [
+        { month: 'يناير', views: 4000, users: 2400 },
+        { month: 'فبراير', views: 3000, users: 1398 },
+        { month: 'مارس', views: 2000, users: 9800 },
+        { month: 'أبريل', views: 2780, users: 3908 },
+        { month: 'مايو', views: 1890, users: 4800 },
+        { month: 'يونيو', views: 2390, users: 3800 }
+      ],
+      topContent: [
+        { id: 1, title: 'فيلم الحركة الجديد', views: 15420, rating: 4.8, type: 'فيلم' },
+        { id: 2, title: 'المسلسل الدرامي', views: 12350, rating: 4.6, type: 'مسلسل' },
+        { id: 3, title: 'البرنامج الكوميدي', views: 9870, rating: 4.4, type: 'برنامج' },
+        { id: 4, title: 'الوثائقي الجديد', views: 8420, rating: 4.7, type: 'وثائقي' }
+      ],
+      categoryStats: [
+        { name: 'أفلام', value: 245, color: '#8884d8' },
+        { name: 'مسلسلات', value: 89, color: '#82ca9d' },
+        { name: 'برامج تلفزيونية', value: 156, color: '#ffc658' },
+        { name: 'متنوعة', value: 67, color: '#ff7c7c' }
+      ]
+    };
+    
+    res.json(analytics);
+  } catch (error) {
+    console.error('Error fetching analytics:', error);
+    res.status(500).json({ error: 'Failed to fetch analytics' });
+  }
+});
+
+// Get users for admin management
+router.get('/users', async (req, res) => {
+  try {
+    // This would be implemented with actual user data
+    const users = [
+      { id: 1, username: 'user1', email: 'user1@example.com', isActive: true, createdAt: new Date() },
+      { id: 2, username: 'user2', email: 'user2@example.com', isActive: true, createdAt: new Date() }
+    ];
+    
+    res.json(users);
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    res.status(500).json({ error: 'Failed to fetch users' });
+  }
+});
+
+export default router;

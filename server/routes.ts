@@ -3,6 +3,7 @@ import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { insertContentSchema, insertGenreSchema, insertCategorySchema, insertUserSchema, insertUserCommentSchema, insertUserReviewSchema, insertReviewLikeSchema, insertUserFavoriteSchema, insertUserWatchHistorySchema } from "@shared/schema";
 import { z } from "zod";
+import adminRoutes from "./routes/admin";
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Content routes
@@ -471,6 +472,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ error: "Failed to count view" });
     }
   });
+
+  // Admin routes
+  app.use("/api/admin", adminRoutes);
 
   // Admin routes
   app.get("/api/admin/stats", async (req, res) => {
