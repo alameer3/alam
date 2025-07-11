@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertContentSchema, insertGenreSchema, insertCategorySchema } from "@shared/schema";
+import { insertContentSchema, insertGenreSchema, insertCategorySchema, insertUserSchema, insertUserCommentSchema, insertUserFavoriteSchema, insertUserWatchHistorySchema } from "@shared/schema";
 import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -157,6 +157,178 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json(stats);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch stats" });
+    }
+  });
+
+  // User routes
+  app.post("/api/users", async (req, res) => {
+    try {
+      const validatedData = insertUserSchema.parse(req.body);
+      const user = await storage.createUser(validatedData);
+      res.status(201).json(user);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ error: error.errors });
+      } else {
+        res.status(500).json({ error: "Failed to create user" });
+      }
+    }
+  });
+
+  app.get("/api/users/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const user = await storage.getUser(id);
+      
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+
+      res.json(user);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch user" });
+    }
+  });
+
+  app.put("/api/users/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const validatedData = insertUserSchema.partial().parse(req.body);
+      const user = await storage.updateUser(id, validatedData);
+      res.json(user);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ error: error.errors });
+      } else {
+        res.status(500).json({ error: "Failed to update user" });
+      }
+    }
+  });
+
+  app.get("/api/users/:id/stats", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const stats = await storage.getUserStats(id);
+      res.json(stats);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch user stats" });
+    }
+  });
+
+  // User favorites routes
+  app.post("/api/users/:id/favorites", async (req, res) => {
+    try {
+      const userId = parseInt(req.params.id);
+      const { contentId } = req.body;
+      
+      await storage.addToFavorites(userId, contentId);
+      res.status(201).json({ message: "Added to favorites" });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to add to favorites" });
+    }
+  });
+
+  app.delete("/api/users/:id/favorites/:contentId", async (req, res) => {
+    try {
+      const userId = parseInt(req.params.id);
+      const contentId = parseInt(req.params.contentId);
+      
+      await storage.removeFromFavorites(userId, contentId);
+      res.json({ message: "Removed from favorites" });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to remove from favorites" });
+    }
+  });
+
+  app.get("/api/users/:id/favorites", async (req, res) => {
+    try {
+      const userId = parseInt(req.params.id);
+      const favorites = await storage.getUserFavorites(userId);
+      res.json({ content: favorites });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch favorites" });
+    }
+  });
+
+  // User watch history routes
+  app.post("/api/users/:id/watch-history", async (req, res) => {
+    try {
+      const userId = parseInt(req.params.id);
+      const { contentId, progressMinutes } = req.body;
+      
+      await storage.addToWatchHistory(userId, contentId, progressMinutes);
+      res.status(201).json({ message: "Added to watch history" });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to add to watch history" });
+    }
+  });
+
+  app.get("/api/users/:id/watch-history", async (req, res) => {
+    try {
+      const userId = parseInt(req.params.id);
+      const history = await storage.getUserWatchHistory(userId);
+      res.json({ content: history });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch watch history" });
+    }
+  });
+
+  // Comments routes
+  app.post("/api/content/:id/comments", async (req, res) => {
+    try {
+      const contentId = parseInt(req.params.id);
+      const commentData = {
+        ...req.body,
+        contentId
+      };
+      
+      const validatedData = insertUserCommentSchema.parse(commentData);
+      const comment = await storage.addComment(validatedData);
+      res.status(201).json(comment);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ error: error.errors });
+      } else {
+        res.status(500).json({ error: "Failed to add comment" });
+      }
+    }
+  });
+
+  app.get("/api/content/:id/comments", async (req, res) => {
+    try {
+      const contentId = parseInt(req.params.id);
+      const comments = await storage.getContentComments(contentId);
+      res.json(comments);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch comments" });
+    }
+  });
+
+  app.delete("/api/comments/:id", async (req, res) => {
+    try {
+      const commentId = parseInt(req.params.id);
+      const { userId } = req.body;
+      
+      const success = await storage.deleteComment(commentId, userId);
+      
+      if (success) {
+        res.json({ message: "Comment deleted" });
+      } else {
+        res.status(404).json({ error: "Comment not found or not authorized" });
+      }
+    } catch (error) {
+      res.status(500).json({ error: "Failed to delete comment" });
+    }
+  });
+
+  // View counting
+  app.post("/api/content/:id/view", async (req, res) => {
+    try {
+      const contentId = parseInt(req.params.id);
+      await storage.incrementViewCount(contentId);
+      res.json({ message: "View counted" });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to count view" });
     }
   });
 

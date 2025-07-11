@@ -15,6 +15,15 @@ This is a full-stack web application for an Arabic cinema streaming platform cal
 - نقل المشروع من Replit Agent إلى بيئة Replit ✓ مكتمل (11 يوليو 2025)
 - جميع الردود والتوثيق باللغة العربية ✓ مؤكد (11 يوليو 2025)
 
+## Recent Changes (11 يوليو 2025)
+- تم إضافة نظام المستخدمين الشامل مع قاعدة بيانات PostgreSQL
+- تم إنشاء مكونات واجهة المستخدم المحسنة: EnhancedContentCard، AdvancedVideoPlayer، CommentsSection
+- تم إضافة خطافات React للتفاعل مع المستخدمين: المفضلة، سجل المشاهدة، التعليقات
+- تم تحديث الصفحة الرئيسية لتشمل لوحة تحكم المستخدم
+- تم إضافة نظام مصادقة وهمي للاختبار
+- تم إنشاء صفحة تفاصيل المحتوى المحسنة
+- تم إضافة مسارات API جديدة للمستخدمين والتفاعلات
+
 ## System Architecture
 
 ### Frontend Architecture

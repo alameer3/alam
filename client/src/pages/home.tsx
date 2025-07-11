@@ -1,16 +1,41 @@
 import { useState } from "react";
-import { Film, Tv, Monitor, Music } from "lucide-react";
+import { Film, Tv, Monitor, Music, Heart, User, Star, TrendingUp } from "lucide-react";
 import { Link } from "wouter";
+import { useAuth } from "@/hooks/useAuth";
+import { useFavorites } from "@/hooks/useUserInteractions";
+import { useQuery } from "@tanstack/react-query";
 import Header from "@/components/layout/header";
 import Navigation from "@/components/layout/navigation";
 import Footer from "@/components/layout/footer";
 import ContentGrid from "@/components/content/content-grid";
-import VideoPlayer from "@/components/content/video-player";
+import EnhancedContentCard from "@/components/content/enhanced-content-card";
+import AdvancedVideoPlayer from "@/components/content/advanced-video-player";
+import FavoritesModal from "@/components/user/favorites-modal";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/layout/ui/card";
+import { Button } from "@/components/layout/ui/button";
+import { Badge } from "@/components/layout/ui/badge";
 import { CONTENT_TYPES } from "@/lib/constants";
 import { Content } from "@shared/schema";
 
 export default function Home() {
   const [selectedContent, setSelectedContent] = useState<Content | null>(null);
+  const { user } = useAuth();
+  const { data: favoritesData } = useFavorites(user?.id);
+  const { data: statsData } = useQuery({
+    queryKey: ["/api/stats"],
+    staleTime: 5 * 60 * 1000, // 5 minutes
+  });
+
+  // Get recent content for featured sections
+  const { data: recentMovies } = useQuery({
+    queryKey: ["/api/content/movie", { page: 1, limit: 6 }],
+    staleTime: 2 * 60 * 1000, // 2 minutes
+  });
+
+  const { data: recentSeries } = useQuery({
+    queryKey: ["/api/content/series", { page: 1, limit: 6 }],
+    staleTime: 2 * 60 * 1000, // 2 minutes
+  });
 
   const handleContentClick = (content: Content) => {
     setSelectedContent(content);
@@ -72,6 +97,100 @@ export default function Home() {
         </div>
       </section>
 
+      {/* User Dashboard (if logged in) */}
+      {user && (
+        <section className="container mx-auto px-4 py-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Welcome Card */}
+            <Card className="bg-gradient-to-r from-blue-600 to-purple-600 text-white">
+              <CardHeader className="pb-3">
+                <CardTitle className="flex items-center gap-2">
+                  <User className="h-5 w-5" />
+                  مرحباً، {user.firstName || user.username}
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <p className="text-blue-100 mb-3">
+                  {user.isAdmin ? "مدير المنصة" : "مستخدم مميز"}
+                </p>
+                <div className="flex gap-2">
+                  <FavoritesModal onContentSelect={handleContentClick}>
+                    <Button variant="outline" size="sm" className="text-white border-white hover:bg-white hover:text-blue-600">
+                      <Heart className="h-4 w-4 ml-1" />
+                      المفضلة ({favoritesData?.content?.length || 0})
+                    </Button>
+                  </FavoritesModal>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Platform Stats */}
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="flex items-center gap-2">
+                  <TrendingUp className="h-5 w-5" />
+                  إحصائيات المنصة
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="grid grid-cols-2 gap-4">
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-blue-600">{statsData?.movies || 0}</div>
+                    <div className="text-sm text-gray-600">أفلام</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-green-600">{statsData?.series || 0}</div>
+                    <div className="text-sm text-gray-600">مسلسلات</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-purple-600">{statsData?.tv || 0}</div>
+                    <div className="text-sm text-gray-600">تلفزيون</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-2xl font-bold text-orange-600">{statsData?.misc || 0}</div>
+                    <div className="text-sm text-gray-600">متنوع</div>
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+
+            {/* Quick Actions */}
+            <Card>
+              <CardHeader className="pb-3">
+                <CardTitle className="flex items-center gap-2">
+                  <Star className="h-5 w-5" />
+                  الإجراءات السريعة
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="space-y-3">
+                  <Link href="/movies" className="w-full">
+                    <Button variant="outline" className="w-full justify-start">
+                      <Film className="h-4 w-4 ml-2" />
+                      تصفح الأفلام
+                    </Button>
+                  </Link>
+                  <Link href="/series" className="w-full">
+                    <Button variant="outline" className="w-full justify-start">
+                      <Tv className="h-4 w-4 ml-2" />
+                      تصفح المسلسلات
+                    </Button>
+                  </Link>
+                  {user.isAdmin && (
+                    <Link href="/admin" className="w-full">
+                      <Button variant="outline" className="w-full justify-start">
+                        <User className="h-4 w-4 ml-2" />
+                        لوحة الإدارة
+                      </Button>
+                    </Link>
+                  )}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+        </section>
+      )}
+
       {/* Featured Movies */}
       <section className="section-bg">
         <div className="container mx-auto px-4">
@@ -122,11 +241,12 @@ export default function Home() {
 
       <Footer />
       
-      {/* Video Player Modal */}
+      {/* Enhanced Video Player Modal */}
       {selectedContent && (
-        <VideoPlayer
+        <AdvancedVideoPlayer
           content={selectedContent}
           onClose={() => setSelectedContent(null)}
+          autoPlay={true}
         />
       )}
     </div>

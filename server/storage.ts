@@ -1,7 +1,10 @@
 import { 
   users, content, genres, categories, contentGenres, contentCategories, userRatings,
+  userComments, userFavorites, userWatchHistory, contentViews,
   type User, type InsertUser, type Content, type InsertContent, 
-  type Genre, type InsertGenre, type Category, type InsertCategory
+  type Genre, type InsertGenre, type Category, type InsertCategory,
+  type UserComment, type InsertUserComment, type UserFavorite, type InsertUserFavorite,
+  type UserWatchHistory, type InsertUserWatchHistory, type ContentView, type InsertContentView
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and, ilike, sql } from "drizzle-orm";
@@ -10,7 +13,9 @@ export interface IStorage {
   // User operations
   getUser(id: number): Promise<User | undefined>;
   getUserByUsername(username: string): Promise<User | undefined>;
+  getUserByEmail(email: string): Promise<User | undefined>;
   createUser(user: InsertUser): Promise<User>;
+  updateUser(id: number, user: Partial<InsertUser>): Promise<User>;
   
   // Content operations
   getContent(id: number): Promise<Content | undefined>;
@@ -32,8 +37,22 @@ export interface IStorage {
   addContentGenre(contentId: number, genreId: number): Promise<void>;
   addContentCategory(contentId: number, categoryId: number): Promise<void>;
   
-  // Stats
+  // User interactions
+  addToFavorites(userId: number, contentId: number): Promise<void>;
+  removeFromFavorites(userId: number, contentId: number): Promise<void>;
+  getUserFavorites(userId: number): Promise<Content[]>;
+  addToWatchHistory(userId: number, contentId: number, progressMinutes?: number): Promise<void>;
+  getUserWatchHistory(userId: number): Promise<Content[]>;
+  
+  // Comments
+  addComment(comment: InsertUserComment): Promise<UserComment>;
+  getContentComments(contentId: number): Promise<UserComment[]>;
+  deleteComment(commentId: number, userId: number): Promise<boolean>;
+  
+  // Views and stats
+  incrementViewCount(contentId: number): Promise<void>;
   getContentStats(): Promise<{ movies: number, series: number, tv: number, misc: number }>;
+  getUserStats(userId: number): Promise<{ favorites: number, watchHistory: number, comments: number }>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -47,8 +66,22 @@ export class DatabaseStorage implements IStorage {
     return user || undefined;
   }
 
+  async getUserByEmail(email: string): Promise<User | undefined> {
+    const [user] = await db.select().from(users).where(eq(users.email, email));
+    return user || undefined;
+  }
+
   async createUser(insertUser: InsertUser): Promise<User> {
     const [user] = await db.insert(users).values(insertUser).returning();
+    return user;
+  }
+
+  async updateUser(id: number, updateUser: Partial<InsertUser>): Promise<User> {
+    const [user] = await db
+      .update(users)
+      .set({ ...updateUser, updatedAt: new Date() })
+      .where(eq(users.id, id))
+      .returning();
     return user;
   }
 
@@ -184,6 +217,111 @@ export class DatabaseStorage implements IStorage {
 
     return result;
   }
+
+  // User interaction methods
+  async addToFavorites(userId: number, contentId: number): Promise<void> {
+    await db.insert(userFavorites).values({ userId, contentId }).onConflictDoNothing();
+  }
+
+  async removeFromFavorites(userId: number, contentId: number): Promise<void> {
+    await db.delete(userFavorites).where(
+      and(eq(userFavorites.userId, userId), eq(userFavorites.contentId, contentId))
+    );
+  }
+
+  async getUserFavorites(userId: number): Promise<Content[]> {
+    const result = await db
+      .select({ content })
+      .from(userFavorites)
+      .innerJoin(content, eq(userFavorites.contentId, content.id))
+      .where(eq(userFavorites.userId, userId))
+      .orderBy(desc(userFavorites.createdAt));
+    
+    return result.map(r => r.content);
+  }
+
+  async addToWatchHistory(userId: number, contentId: number, progressMinutes: number = 0): Promise<void> {
+    await db.insert(userWatchHistory).values({ 
+      userId, 
+      contentId, 
+      progressMinutes 
+    }).onConflictDoUpdate({
+      target: [userWatchHistory.userId, userWatchHistory.contentId],
+      set: { 
+        progressMinutes,
+        watchedAt: new Date()
+      }
+    });
+  }
+
+  async getUserWatchHistory(userId: number): Promise<Content[]> {
+    const result = await db
+      .select({ content })
+      .from(userWatchHistory)
+      .innerJoin(content, eq(userWatchHistory.contentId, content.id))
+      .where(eq(userWatchHistory.userId, userId))
+      .orderBy(desc(userWatchHistory.watchedAt));
+    
+    return result.map(r => r.content);
+  }
+
+  // Comment methods
+  async addComment(comment: InsertUserComment): Promise<UserComment> {
+    const [newComment] = await db.insert(userComments).values(comment).returning();
+    return newComment;
+  }
+
+  async getContentComments(contentId: number): Promise<UserComment[]> {
+    return await db
+      .select()
+      .from(userComments)
+      .where(and(eq(userComments.contentId, contentId), eq(userComments.isActive, true)))
+      .orderBy(desc(userComments.createdAt));
+  }
+
+  async deleteComment(commentId: number, userId: number): Promise<boolean> {
+    const result = await db
+      .update(userComments)
+      .set({ isActive: false })
+      .where(and(eq(userComments.id, commentId), eq(userComments.userId, userId)))
+      .returning();
+    
+    return result.length > 0;
+  }
+
+  // Views and stats
+  async incrementViewCount(contentId: number): Promise<void> {
+    await db.insert(contentViews).values({ contentId, viewCount: 1 }).onConflictDoUpdate({
+      target: contentViews.contentId,
+      set: { 
+        viewCount: sql`${contentViews.viewCount} + 1`,
+        lastViewedAt: new Date()
+      }
+    });
+  }
+
+  async getUserStats(userId: number): Promise<{ favorites: number, watchHistory: number, comments: number }> {
+    const [favoritesCount] = await db
+      .select({ count: sql<number>`count(*)::int` })
+      .from(userFavorites)
+      .where(eq(userFavorites.userId, userId));
+
+    const [watchHistoryCount] = await db
+      .select({ count: sql<number>`count(*)::int` })
+      .from(userWatchHistory)
+      .where(eq(userWatchHistory.userId, userId));
+
+    const [commentsCount] = await db
+      .select({ count: sql<number>`count(*)::int` })
+      .from(userComments)
+      .where(and(eq(userComments.userId, userId), eq(userComments.isActive, true)));
+
+    return {
+      favorites: favoritesCount?.count || 0,
+      watchHistory: watchHistoryCount?.count || 0,
+      comments: commentsCount?.count || 0
+    };
+  }
 }
 
 // Create a temporary in-memory storage for migration purposes
@@ -283,7 +421,15 @@ class TemporaryMemoryStorage implements IStorage {
     return undefined;
   }
 
+  async getUserByEmail(email: string): Promise<User | undefined> {
+    return undefined;
+  }
+
   async createUser(user: InsertUser): Promise<User> {
+    throw new Error("Not implemented in temporary storage");
+  }
+
+  async updateUser(id: number, user: Partial<InsertUser>): Promise<User> {
     throw new Error("Not implemented in temporary storage");
   }
 
@@ -385,6 +531,47 @@ class TemporaryMemoryStorage implements IStorage {
       else if (c.type === 'misc') stats.misc++;
     });
     return stats;
+  }
+
+  // User interaction methods - not implemented for temporary storage
+  async addToFavorites(userId: number, contentId: number): Promise<void> {
+    // Not implemented in temporary storage
+  }
+
+  async removeFromFavorites(userId: number, contentId: number): Promise<void> {
+    // Not implemented in temporary storage
+  }
+
+  async getUserFavorites(userId: number): Promise<Content[]> {
+    return [];
+  }
+
+  async addToWatchHistory(userId: number, contentId: number, progressMinutes?: number): Promise<void> {
+    // Not implemented in temporary storage
+  }
+
+  async getUserWatchHistory(userId: number): Promise<Content[]> {
+    return [];
+  }
+
+  async addComment(comment: InsertUserComment): Promise<UserComment> {
+    throw new Error("Not implemented in temporary storage");
+  }
+
+  async getContentComments(contentId: number): Promise<UserComment[]> {
+    return [];
+  }
+
+  async deleteComment(commentId: number, userId: number): Promise<boolean> {
+    return false;
+  }
+
+  async incrementViewCount(contentId: number): Promise<void> {
+    // Not implemented in temporary storage
+  }
+
+  async getUserStats(userId: number): Promise<{ favorites: number, watchHistory: number, comments: number }> {
+    return { favorites: 0, watchHistory: 0, comments: 0 };
   }
 }
 

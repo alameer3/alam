@@ -1,113 +1,215 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/layout/ui/dialog";
+import { useAuth } from "@/hooks/useAuth";
+import { useFavorites } from "@/hooks/useUserInteractions";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/layout/ui/dialog";
 import { Button } from "@/components/layout/ui/button";
-import { Heart, X } from "lucide-react";
+import { Badge } from "@/components/layout/ui/badge";
+import { ScrollArea } from "@/components/layout/ui/scroll-area";
+import { Heart, X, Play, Clock, Star } from "lucide-react";
 import { Content } from "@shared/schema";
-import ContentCard from "@/components/content/content-card";
+import { cn } from "@/lib/utils";
 
 interface FavoritesModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onContentClick: (content: Content) => void;
+  onContentSelect?: (content: Content) => void;
+  children?: React.ReactNode;
 }
 
-export default function FavoritesModal({ isOpen, onClose, onContentClick }: FavoritesModalProps) {
-  // Mock favorites data - in a real app, this would come from user's favorites
-  const favorites: Content[] = [
-    {
-      id: 1,
-      title: "The Dark Knight",
-      titleArabic: "فارس الظلام",
-      description: "A superhero movie about Batman",
-      descriptionArabic: "فيلم عن باتمان والجوكر",
-      type: "movie",
-      year: 2008,
-      language: "English",
-      quality: "HD",
-      resolution: "1080p",
-      rating: "9.0",
-      duration: 152,
-      episodes: 0,
-      posterUrl: "https://images.unsplash.com/photo-1440404653325-ab127d49abc1?w=400&h=600&fit=crop",
-      videoUrl: "",
-      downloadUrl: "",
-      isActive: true,
-      createdAt: new Date(),
-      updatedAt: new Date()
-    },
-    {
-      id: 2,
-      title: "Breaking Bad",
-      titleArabic: "بريكنغ باد",
-      description: "A chemistry teacher becomes a drug dealer",
-      descriptionArabic: "مدرس كيمياء يصبح تاجر مخدرات",
-      type: "series",
-      year: 2008,
-      language: "English",
-      quality: "HD",
-      resolution: "1080p",
-      rating: "9.5",
-      duration: 0,
-      episodes: 62,
-      posterUrl: "https://images.unsplash.com/photo-1489599088293-daa0c0f60f0e?w=400&h=600&fit=crop",
-      videoUrl: "",
-      downloadUrl: "",
-      isActive: true,
-      createdAt: new Date(),
-      updatedAt: new Date()
+export default function FavoritesModal({ onContentSelect, children }: FavoritesModalProps) {
+  const { user } = useAuth();
+  const { data: favoritesData, isLoading } = useFavorites(user?.id);
+  const [selectedType, setSelectedType] = useState<string | null>(null);
+
+  const favorites = favoritesData?.content || [];
+  const filteredFavorites = selectedType 
+    ? favorites.filter((content: Content) => content.type === selectedType)
+    : favorites;
+
+  const getTypeCount = (type: string) => {
+    return favorites.filter((content: Content) => content.type === type).length;
+  };
+
+  const getTypeName = (type: string) => {
+    switch (type) {
+      case 'movie': return 'أفلام';
+      case 'series': return 'مسلسلات';
+      case 'tv': return 'تلفزيون';
+      case 'misc': return 'متنوع';
+      default: return type;
     }
-  ];
-
-  const handleContentClick = (content: Content) => {
-    onContentClick(content);
-    onClose();
   };
 
-  const removeFavorite = (contentId: number) => {
-    // In a real app, this would remove from user's favorites
-    console.log("Remove from favorites:", contentId);
+  const getTypeColor = (type: string) => {
+    switch (type) {
+      case 'movie': return 'bg-blue-500';
+      case 'series': return 'bg-green-500';
+      case 'tv': return 'bg-purple-500';
+      case 'misc': return 'bg-orange-500';
+      default: return 'bg-gray-500';
+    }
   };
+
+  const types = ['movie', 'series', 'tv', 'misc'];
+
+  if (!user) {
+    return null;
+  }
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-hidden">
+    <Dialog>
+      <DialogTrigger asChild>
+        {children || (
+          <Button variant="outline" className="flex items-center gap-2">
+            <Heart className="h-4 w-4" />
+            المفضلة ({favorites.length})
+          </Button>
+        )}
+      </DialogTrigger>
+      <DialogContent className="max-w-4xl max-h-[80vh]" dir="rtl">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <Heart className="w-5 h-5 text-red-500" />
-            قائمة المفضلة
+            <Heart className="h-5 w-5 text-red-500" />
+            المفضلة ({favorites.length})
           </DialogTitle>
         </DialogHeader>
 
-        <div className="max-h-[70vh] overflow-y-auto">
-          {favorites.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-              {favorites.map((item) => (
-                <div key={item.id} className="relative group">
-                  <ContentCard
-                    content={item}
-                    onClick={handleContentClick}
-                  />
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    className="absolute top-2 right-2 bg-black/50 hover:bg-black/70 text-white opacity-0 group-hover:opacity-100 transition-opacity"
-                    onClick={() => removeFavorite(item.id)}
+        <div className="flex flex-col gap-4">
+          {/* Type Filters */}
+          <div className="flex flex-wrap gap-2">
+            <Button
+              variant={selectedType === null ? "default" : "outline"}
+              size="sm"
+              onClick={() => setSelectedType(null)}
+              className="text-sm"
+            >
+              الكل ({favorites.length})
+            </Button>
+            {types.map(type => {
+              const count = getTypeCount(type);
+              return count > 0 ? (
+                <Button
+                  key={type}
+                  variant={selectedType === type ? "default" : "outline"}
+                  size="sm"
+                  onClick={() => setSelectedType(type)}
+                  className="text-sm"
+                >
+                  {getTypeName(type)} ({count})
+                </Button>
+              ) : null;
+            })}
+          </div>
+
+          {/* Content */}
+          <ScrollArea className="h-[400px] pr-4">
+            {isLoading ? (
+              <div className="space-y-4">
+                {[...Array(3)].map((_, i) => (
+                  <div key={i} className="flex gap-4 p-4 animate-pulse">
+                    <div className="w-24 h-36 bg-gray-200 rounded"></div>
+                    <div className="flex-1 space-y-2">
+                      <div className="h-4 bg-gray-200 rounded w-3/4"></div>
+                      <div className="h-4 bg-gray-200 rounded w-1/2"></div>
+                      <div className="h-4 bg-gray-200 rounded w-2/3"></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : filteredFavorites.length > 0 ? (
+              <div className="space-y-4">
+                {filteredFavorites.map((content: Content) => (
+                  <div
+                    key={content.id}
+                    className="flex gap-4 p-4 rounded-lg border hover:shadow-md transition-shadow cursor-pointer group"
+                    onClick={() => onContentSelect?.(content)}
                   >
-                    <X className="w-4 h-4" />
-                  </Button>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="text-center py-12">
-              <Heart className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-              <p className="text-gray-400 text-lg">لا توجد عناصر في المفضلة</p>
-              <p className="text-gray-500 text-sm mt-2">
-                اضغط على أيقونة القلب في أي محتوى لإضافته إلى المفضلة
-              </p>
-            </div>
-          )}
+                    <div className="relative">
+                      <div className="w-24 h-36 bg-gray-200 rounded overflow-hidden">
+                        {content.posterUrl ? (
+                          <img
+                            src={content.posterUrl}
+                            alt={content.titleArabic || content.title}
+                            className="w-full h-full object-cover"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex items-center justify-center bg-gray-300">
+                            <Play className="h-8 w-8 text-gray-500" />
+                          </div>
+                        )}
+                      </div>
+                      <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity rounded flex items-center justify-center">
+                        <Play className="h-8 w-8 text-white" />
+                      </div>
+                    </div>
+                    
+                    <div className="flex-1 space-y-2">
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2">
+                          <Badge className={cn("text-xs", getTypeColor(content.type))}>
+                            {getTypeName(content.type)}
+                          </Badge>
+                          <Badge variant="outline" className="text-xs">
+                            {content.quality}
+                          </Badge>
+                          {content.rating && (
+                            <Badge className="text-xs bg-yellow-500">
+                              <Star className="h-3 w-3 fill-current ml-1" />
+                              {content.rating}
+                            </Badge>
+                          )}
+                        </div>
+                        <h3 className="font-medium text-lg">
+                          {content.titleArabic || content.title}
+                        </h3>
+                        <p className="text-sm text-gray-600">
+                          {content.title}
+                        </p>
+                      </div>
+                      
+                      {content.description && (
+                        <p className="text-sm text-gray-500 line-clamp-2">
+                          {content.descriptionArabic || content.description}
+                        </p>
+                      )}
+                      
+                      <div className="flex items-center gap-4 text-xs text-gray-500">
+                        <span>{content.year}</span>
+                        <span>•</span>
+                        <span>{content.language}</span>
+                        {content.duration && (
+                          <>
+                            <span>•</span>
+                            <div className="flex items-center gap-1">
+                              <Clock className="h-3 w-3" />
+                              <span>{content.duration} دقيقة</span>
+                            </div>
+                          </>
+                        )}
+                        {content.episodes && content.episodes > 0 && (
+                          <>
+                            <span>•</span>
+                            <span>{content.episodes} حلقة</span>
+                          </>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div className="text-center py-12">
+                <Heart className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                <h3 className="text-lg font-medium mb-2">
+                  {selectedType ? `لا توجد ${getTypeName(selectedType)} في المفضلة` : "لا توجد مفضلة بعد"}
+                </h3>
+                <p className="text-gray-500">
+                  {selectedType 
+                    ? `ابدأ بإضافة ${getTypeName(selectedType)} إلى قائمة المفضلة`
+                    : "ابدأ بإضافة محتوى إلى قائمة المفضلة لديك"
+                  }
+                </p>
+              </div>
+            )}
+          </ScrollArea>
         </div>
       </DialogContent>
     </Dialog>
