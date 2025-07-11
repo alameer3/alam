@@ -8,7 +8,7 @@ import { useQuery } from "@tanstack/react-query";
 import Footer from "@/components/layout/footer";
 import ContentGrid from "@/components/content/content-grid";
 import EnhancedContentCard from "@/components/content/enhanced-content-card";
-import AdvancedVideoPlayer from "@/components/content/advanced-video-player";
+import { VideoPlayerDemo } from "@/components/ui/video-player-demo";
 import FavoritesModal from "@/components/user/favorites-modal";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/layout/ui/card";
 import { Button } from "@/components/layout/ui/button";
@@ -96,6 +96,60 @@ export default function Home() {
 
 
 
+      {/* Video Player Demo Section */}
+      <section className="section-bg py-16">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold mb-4 gradient-text">
+              مشغل الفيديو المتقدم الجديد
+            </h2>
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              استمتع بتجربة مشاهدة محسنة مع إعدادات الجودة المتعددة وخيارات السرعة والترجمة
+            </p>
+          </div>
+          
+          <VideoPlayerDemo
+            contentId={999}
+            title="Big Buck Bunny - Demo Video"
+            titleArabic="فيديو تجريبي - أرنب الدولارات الكبير"
+            posterUrl="https://images.unsplash.com/photo-1489599088293-daa0c0f60f0e?w=800&h=450&fit=crop"
+            videoUrl="https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"
+          />
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-12 max-w-4xl mx-auto">
+            <div className="text-center p-6 bg-card rounded-lg border">
+              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <TrendingUp className="w-6 h-6 text-primary" />
+              </div>
+              <h3 className="font-semibold mb-2">جودة متعددة</h3>
+              <p className="text-sm text-muted-foreground">
+                اختر من بين 480p، 720p، 1080p، و 4K
+              </p>
+            </div>
+            
+            <div className="text-center p-6 bg-card rounded-lg border">
+              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Star className="w-6 h-6 text-primary" />
+              </div>
+              <h3 className="font-semibold mb-2">متابعة المشاهدة</h3>
+              <p className="text-sm text-muted-foreground">
+                احفظ تقدمك وتابع من حيث توقفت
+              </p>
+            </div>
+            
+            <div className="text-center p-6 bg-card rounded-lg border">
+              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+                <User className="w-6 h-6 text-primary" />
+              </div>
+              <h3 className="font-semibold mb-2">ترجمات متعددة</h3>
+              <p className="text-sm text-muted-foreground">
+                دعم للترجمة العربية والإنجليزية
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Featured Movies */}
       <section className="section-bg">
         <div className="container mx-auto px-4">
@@ -146,13 +200,23 @@ export default function Home() {
 
       <Footer />
       
-      {/* Enhanced Video Player Modal */}
+      {/* Video Player Modal (will be replaced with new Advanced Player) */}
       {selectedContent && (
-        <AdvancedVideoPlayer
-          content={selectedContent}
-          onClose={() => setSelectedContent(null)}
-          autoPlay={true}
-        />
+        <div className="fixed inset-0 bg-black z-50 flex items-center justify-center">
+          <div className="relative w-full h-full max-w-6xl">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="absolute top-4 right-4 z-10 text-white hover:bg-white/20"
+              onClick={() => setSelectedContent(null)}
+            >
+              ✕
+            </Button>
+            <p className="text-white text-center mt-20">
+              مشغل الفيديو التجريبي - استخدم القسم التجريبي أعلاه لاختبار المشغل المتقدم
+            </p>
+          </div>
+        </div>
       )}
     </div>
   );

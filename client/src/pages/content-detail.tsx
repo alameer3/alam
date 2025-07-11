@@ -6,7 +6,7 @@ import { useAddToFavorites, useRemoveFromFavorites, useFavorites, useIncrementVi
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/layout/ui/separator";
+import { Separator } from "@/components/ui/separator";
 import { 
   Play, 
   Heart, 
@@ -24,7 +24,9 @@ import {
 import Header from "@/components/layout/header";
 import Navigation from "@/components/layout/navigation";
 import Footer from "@/components/layout/footer";
-import AdvancedVideoPlayer from "@/components/content/advanced-video-player";
+import { AdvancedVideoPlayer } from "@/components/ui/advanced-video-player";
+import { WatchProgressTracker, useWatchProgress } from "@/components/ui/watch-progress-tracker";
+import { ContinueWatchingDialog } from "@/components/ui/continue-watching-dialog";
 import CommentsSection from "@/components/user/comments-section";
 import ReviewsSection from "@/components/reviews/ReviewsSection";
 import { Content } from "@shared/schema";
@@ -35,6 +37,12 @@ export default function ContentDetail() {
   const { user } = useAuth();
   const [selectedContent, setSelectedContent] = useState<Content | null>(null);
   const [showComments, setShowComments] = useState(false);
+  const [showPlayer, setShowPlayer] = useState(false);
+  const [currentVideoTime, setCurrentVideoTime] = useState(0);
+  const [videoDuration, setVideoDuration] = useState(0);
+  const [showContinueDialog, setShowContinueDialog] = useState(false);
+  
+  const { savedProgress, clearProgress } = useWatchProgress(content?.id || 0);
   
   // Get content ID from URL params (would normally come from router)
   const contentId = new URLSearchParams(window.location.search).get('id');
@@ -56,8 +64,39 @@ export default function ContentDetail() {
       if (user) {
         await incrementViewMutation.mutateAsync(content.id);
       }
-      setSelectedContent(content);
+      
+      // التحقق من وجود تقدم محفوظ
+      if (savedProgress && savedProgress.currentTime > 60) { // أكثر من دقيقة
+        setShowContinueDialog(true);
+      } else {
+        setSelectedContent(content);
+        setShowPlayer(true);
+      }
     }
+  };
+
+  const handleContinueWatching = () => {
+    if (content && savedProgress) {
+      setSelectedContent(content);
+      setCurrentVideoTime(savedProgress.currentTime);
+      setShowPlayer(true);
+      setShowContinueDialog(false);
+    }
+  };
+
+  const handleRestartWatching = () => {
+    if (content) {
+      clearProgress();
+      setSelectedContent(content);
+      setCurrentVideoTime(0);
+      setShowPlayer(true);
+      setShowContinueDialog(false);
+    }
+  };
+
+  const handleVideoTimeUpdate = (currentTime: number, duration: number) => {
+    setCurrentVideoTime(currentTime);
+    setVideoDuration(duration);
   };
 
   const handleFavoriteToggle = async () => {
@@ -407,14 +446,61 @@ export default function ContentDetail() {
         </div>
       </div>
 
-      {/* Video Player Modal */}
-      {selectedContent && (
-        <AdvancedVideoPlayer
-          content={selectedContent}
-          onClose={() => setSelectedContent(null)}
-          autoPlay={true}
-        />
+      {/* Advanced Video Player Modal */}
+      {selectedContent && showPlayer && (
+        <div className="fixed inset-0 bg-black z-50 flex items-center justify-center">
+          <div className="relative w-full h-full max-w-6xl">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="absolute top-4 right-4 z-10 text-white hover:bg-white/20"
+              onClick={() => {
+                setSelectedContent(null);
+                setShowPlayer(false);
+              }}
+            >
+              ✕
+            </Button>
+            
+            <AdvancedVideoPlayer
+              src={selectedContent.videoUrl || "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4"}
+              poster={selectedContent.posterUrl}
+              title={selectedContent.titleArabic || selectedContent.title}
+              qualities={[
+                { label: "720p HD", value: "720p", url: selectedContent.videoUrl || "" },
+                { label: "1080p FHD", value: "1080p", url: selectedContent.videoUrl || "" },
+                { label: "4K UHD", value: "4k", url: selectedContent.videoUrl || "" }
+              ]}
+              subtitles={[
+                { label: "العربية", language: "ar", url: "" },
+                { label: "English", language: "en", url: "" }
+              ]}
+              onTimeUpdate={handleVideoTimeUpdate}
+              initialTime={currentVideoTime}
+              className="w-full h-full"
+            />
+            
+            {/* Watch Progress Tracker */}
+            <WatchProgressTracker
+              contentId={selectedContent.id}
+              currentTime={currentVideoTime}
+              duration={videoDuration}
+              title={selectedContent.titleArabic || selectedContent.title}
+            />
+          </div>
+        </div>
       )}
+
+      {/* Continue Watching Dialog */}
+      <ContinueWatchingDialog
+        isOpen={showContinueDialog}
+        onClose={() => setShowContinueDialog(false)}
+        onContinue={handleContinueWatching}
+        onRestart={handleRestartWatching}
+        title={content?.titleArabic || content?.title || ""}
+        currentTime={savedProgress?.currentTime || 0}
+        duration={savedProgress?.duration || 0}
+      />
 
       <Footer />
     </div>
