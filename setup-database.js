@@ -119,7 +119,8 @@ async function setupDatabase() {
     
     // Test queries
     const contentCount = await db.execute(sql`SELECT COUNT(*) as count FROM content`);
-    console.log(`✓ Database contains ${contentCount[0].count} content items`);
+    const count = contentCount.rows ? contentCount.rows[0]?.count : contentCount[0]?.count;
+    console.log(`✓ Database contains ${count || 0} content items`);
     
     console.log('\n🎉 Database setup completed successfully!');
     console.log('You can now switch to DatabaseStorage in server/storage.ts');

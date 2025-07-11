@@ -700,14 +700,14 @@ async function initializeStorage(): Promise<IStorage> {
   }
 }
 
-// Check database connectivity and fall back to memory storage if needed
-let storage: IStorage;
-try {
-  storage = new DatabaseStorage();
-  console.log("✓ Using PostgreSQL database storage");
-} catch (error) {
-  console.log("⚠ Database connection failed, using in-memory storage");
+// Initialize storage asynchronously
+let storage: IStorage = new TemporaryMemoryStorage(); // Default fallback
+
+initializeStorage().then(s => {
+  storage = s;
+}).catch(error => {
+  console.error("Failed to initialize storage:", error);
   storage = new TemporaryMemoryStorage();
-}
+});
 
 export { storage };
