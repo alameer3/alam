@@ -307,6 +307,15 @@ class TemporaryMemoryStorage implements IStorage {
     const newContent: Content = {
       id: Math.max(...this.content.map(c => c.id)) + 1,
       ...content,
+      description: content.description || null,
+      descriptionArabic: content.descriptionArabic || null,
+      rating: content.rating || null,
+      duration: content.duration || null,
+      episodes: content.episodes || null,
+      posterUrl: content.posterUrl || null,
+      videoUrl: content.videoUrl || null,
+      downloadUrl: content.downloadUrl || null,
+      isActive: content.isActive ?? true,
       createdAt: new Date(),
       updatedAt: new Date()
     };
@@ -379,8 +388,19 @@ class TemporaryMemoryStorage implements IStorage {
   }
 }
 
-// Using in-memory storage for development during migration
-export const storage = new TemporaryMemoryStorage();
+// Initialize storage - will try database first, fallback to memory
+async function initializeStorage(): Promise<IStorage> {
+  try {
+    const dbStorage = new DatabaseStorage();
+    // Test database connection
+    await dbStorage.getContentStats();
+    console.log("✓ Connected to PostgreSQL database");
+    return dbStorage;
+  } catch (error: any) {
+    console.log("⚠ Database not available, using in-memory storage:", error.message);
+    return new TemporaryMemoryStorage();
+  }
+}
 
-// Database connection for production (enable when DATABASE_URL is properly configured):
-// export const storage = new DatabaseStorage();
+// For now, use in-memory storage - can be switched to database when ready
+export const storage = new TemporaryMemoryStorage();

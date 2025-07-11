@@ -9,7 +9,7 @@ neonConfig.webSocketConstructor = ws;
 const defaultDatabaseUrl = "postgresql://localhost:5432/cinema_academy";
 
 if (!process.env.DATABASE_URL) {
-  console.log("DATABASE_URL not found, using in-memory storage for development");
+  console.log("DATABASE_URL not found, using local PostgreSQL database");
   process.env.DATABASE_URL = defaultDatabaseUrl;
 }
 

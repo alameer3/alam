@@ -10,6 +10,7 @@ Preferred communication style: Simple, everyday language.
 - User requested to remove dropdown menu from header
 - User wants complete replication of ak.sv design
 - User prefers Arabic communication
+- User wants to use PostgreSQL database instead of in-memory storage
 
 ## System Architecture
 
