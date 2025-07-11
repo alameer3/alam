@@ -6,12 +6,13 @@ This is a full-stack web application for an Arabic cinema streaming platform cal
 
 ## User Preferences
 
-Preferred communication style: Simple, everyday language.
+Preferred communication style: Simple, everyday language in Arabic.
 - User requested to remove dropdown menu from header
 - User wants complete replication of ak.sv design
-- User prefers Arabic communication
+- User prefers Arabic communication ✓ CONFIRMED
 - User wants to use PostgreSQL database instead of in-memory storage ✓ COMPLETED
 - Database successfully configured with Neon PostgreSQL
+- Migration from Replit Agent to Replit environment ✓ COMPLETED (July 11, 2025)
 
 ## System Architecture
 
