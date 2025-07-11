@@ -5,296 +5,342 @@ import { Badge } from "@/components/ui/badge";
 import { 
   Play, 
   Heart, 
+  Download, 
   Star, 
   Eye, 
-  Calendar, 
   Clock, 
-  Download,
-  Share2,
-  MoreHorizontal,
-  Info
+  Calendar,
+  MoreVertical,
+  Share,
+  Bookmark
 } from "lucide-react";
-import { Content } from "@shared/schema";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
-import { useAuth } from "@/hooks/useAuth";
-import { useAddToFavorites, useRemoveFromFavorites, useFavorites } from "@/hooks/useUserInteractions";
-import { useToast } from "@/hooks/use-toast";
+
+interface Content {
+  id: number;
+  title: string;
+  titleArabic: string;
+  description?: string;
+  type: string;
+  year: number;
+  language: string;
+  quality: string;
+  resolution: string;
+  rating: string;
+  duration?: number;
+  episodes?: number;
+  posterUrl?: string;
+  createdAt: string;
+  views?: number;
+}
 
 interface ResponsiveContentCardProps {
   content: Content;
-  onClick?: (content: Content) => void;
-  size?: 'sm' | 'md' | 'lg';
-  showDetails?: boolean;
+  size?: 'small' | 'medium' | 'large';
+  variant?: 'default' | 'minimal' | 'detailed';
   showActions?: boolean;
+  onPlay?: (content: Content) => void;
+  onFavorite?: (content: Content) => void;
 }
 
-export default function ResponsiveContentCard({ 
-  content, 
-  onClick, 
-  size = 'md',
-  showDetails = true,
-  showActions = true
+export function ResponsiveContentCard({
+  content,
+  size = 'medium',
+  variant = 'default',
+  showActions = true,
+  onPlay,
+  onFavorite
 }: ResponsiveContentCardProps) {
-  const { user } = useAuth();
-  const { toast } = useToast();
+  const [isFavorite, setIsFavorite] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
-  const [imageLoaded, setImageLoaded] = useState(false);
-  
-  const { data: favorites } = useFavorites(user?.id);
-  const addToFavoritesMutation = useAddToFavorites(user?.id);
-  const removeFromFavoritesMutation = useRemoveFromFavorites(user?.id);
 
-  const isFavorite = favorites?.content?.some(fav => fav.id === content.id);
-
-  const handleFavoriteToggle = async (e: React.MouseEvent) => {
-    e.stopPropagation();
-    
-    if (!user) {
-      toast({
-        title: "تسجيل الدخول مطلوب",
-        description: "يرجى تسجيل الدخول لإضافة العناصر إلى المفضلة",
-        variant: "destructive",
-      });
-      return;
-    }
-
-    try {
-      if (isFavorite) {
-        await removeFromFavoritesMutation.mutateAsync({ contentId: content.id });
-        toast({
-          title: "تم الحذف من المفضلة",
-          description: `تم حذف "${content.title}" من المفضلة`,
-        });
-      } else {
-        await addToFavoritesMutation.mutateAsync({ contentId: content.id });
-        toast({
-          title: "تم الإضافة للمفضلة",
-          description: `تم إضافة "${content.title}" للمفضلة`,
-        });
-      }
-    } catch (error) {
-      toast({
-        title: "خطأ",
-        description: "حدث خطأ أثناء تحديث المفضلة",
-        variant: "destructive",
-      });
-    }
+  const handleFavoriteClick = () => {
+    setIsFavorite(!isFavorite);
+    onFavorite?.(content);
   };
 
-  const handleShare = async (e: React.MouseEvent) => {
-    e.stopPropagation();
-    
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: content.title,
-          text: content.description,
-          url: window.location.origin + `/content/${content.id}`,
-        });
-      } catch (error) {
-        // User cancelled sharing
-      }
-    } else {
-      // Fallback to clipboard
-      await navigator.clipboard.writeText(window.location.origin + `/content/${content.id}`);
-      toast({
-        title: "تم نسخ الرابط",
-        description: "تم نسخ رابط المحتوى إلى الحافظة",
-      });
+  const handlePlayClick = () => {
+    onPlay?.(content);
+  };
+
+  const getQualityColor = (quality: string) => {
+    switch (quality.toLowerCase()) {
+      case '4k':
+      case 'uhd':
+        return 'bg-purple-500 text-white';
+      case 'hd':
+      case '1080p':
+        return 'bg-blue-500 text-white';
+      case '720p':
+        return 'bg-green-500 text-white';
+      default:
+        return 'bg-gray-500 text-white';
     }
   };
 
   const sizeClasses = {
-    sm: "w-48 h-64",
-    md: "w-64 h-80",
-    lg: "w-80 h-96"
-  };
-
-  const imageClasses = {
-    sm: "h-32",
-    md: "h-48",
-    lg: "h-64"
-  };
-
-  const getQualityColor = (quality: string) => {
-    switch (quality?.toLowerCase()) {
-      case '4k':
-        return 'bg-purple-500';
-      case 'fhd':
-      case '1080p':
-        return 'bg-blue-500';
-      case 'hd':
-      case '720p':
-        return 'bg-green-500';
-      default:
-        return 'bg-gray-500';
+    small: {
+      card: 'w-32',
+      image: 'h-44',
+      title: 'text-xs',
+      subtitle: 'text-xs',
+      badge: 'text-xs px-1 py-0.5'
+    },
+    medium: {
+      card: 'w-40',
+      image: 'h-56',
+      title: 'text-sm',
+      subtitle: 'text-xs',
+      badge: 'text-xs px-2 py-1'
+    },
+    large: {
+      card: 'w-52',
+      image: 'h-72',
+      title: 'text-base',
+      subtitle: 'text-sm',
+      badge: 'text-sm px-2 py-1'
     }
   };
 
-  const getTypeColor = (type: string) => {
-    switch (type?.toLowerCase()) {
-      case 'movie':
-        return 'bg-orange-500';
-      case 'series':
-        return 'bg-purple-500';
-      case 'tv':
-        return 'bg-blue-500';
-      default:
-        return 'bg-gray-500';
-    }
-  };
+  const currentSize = sizeClasses[size];
 
+  if (variant === 'minimal') {
+    return (
+      <Card 
+        className={cn(
+          "group cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-lg overflow-hidden",
+          currentSize.card
+        )}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        onClick={handlePlayClick}
+      >
+        <div className={cn("relative overflow-hidden bg-gradient-to-br from-primary/20 to-primary/5", currentSize.image)}>
+          {content.posterUrl ? (
+            <img 
+              src={content.posterUrl} 
+              alt={content.title}
+              className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center text-muted-foreground">
+              <Play className="h-8 w-8" />
+            </div>
+          )}
+          
+          {/* شارة الجودة */}
+          <Badge className={cn("absolute top-2 right-2", currentSize.badge, getQualityColor(content.quality))}>
+            {content.quality}
+          </Badge>
+          
+          {/* زر التشغيل */}
+          {isHovered && (
+            <div className="absolute inset-0 bg-black/50 flex items-center justify-center">
+              <Button size="sm" className="rounded-full w-12 h-12 p-0">
+                <Play className="h-6 w-6 fill-current" />
+              </Button>
+            </div>
+          )}
+        </div>
+        
+        <CardContent className="p-2">
+          <h3 className={cn("font-medium line-clamp-1", currentSize.title)}>{content.titleArabic}</h3>
+          <p className={cn("text-muted-foreground line-clamp-1", currentSize.subtitle)}>{content.year}</p>
+        </CardContent>
+      </Card>
+    );
+  }
+
+  if (variant === 'detailed') {
+    return (
+      <Card className="group hover:shadow-xl transition-all duration-300 overflow-hidden">
+        <div className="flex">
+          {/* الصورة */}
+          <div className="relative w-32 h-44 flex-shrink-0 overflow-hidden bg-gradient-to-br from-primary/20 to-primary/5">
+            {content.posterUrl ? (
+              <img 
+                src={content.posterUrl} 
+                alt={content.title}
+                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+              />
+            ) : (
+              <div className="w-full h-full flex items-center justify-center text-muted-foreground">
+                <Play className="h-6 w-6" />
+              </div>
+            )}
+            <Badge className={cn("absolute top-2 right-2 text-xs", getQualityColor(content.quality))}>
+              {content.quality}
+            </Badge>
+          </div>
+
+          {/* المحتوى */}
+          <CardContent className="flex-1 p-4">
+            <div className="flex items-start justify-between mb-2">
+              <div className="flex-1">
+                <h3 className="font-bold text-lg leading-tight line-clamp-1">{content.titleArabic}</h3>
+                <p className="text-sm text-muted-foreground line-clamp-1">{content.title}</p>
+              </div>
+              <div className="flex items-center gap-1 text-yellow-500">
+                <Star className="h-4 w-4 fill-current" />
+                <span className="text-sm font-medium">{content.rating}</span>
+              </div>
+            </div>
+
+            <p className="text-sm text-muted-foreground line-clamp-2 mb-3">
+              {content.description || "وصف غير متوفر"}
+            </p>
+
+            <div className="flex flex-wrap gap-1 mb-3">
+              <Badge variant="outline" className="text-xs">
+                <Calendar className="h-3 w-3 ml-1" />
+                {content.year}
+              </Badge>
+              <Badge variant="outline" className="text-xs">{content.language}</Badge>
+              {content.duration && (
+                <Badge variant="outline" className="text-xs">
+                  <Clock className="h-3 w-3 ml-1" />
+                  {Math.floor(content.duration / 60)}س {content.duration % 60}د
+                </Badge>
+              )}
+              {content.episodes && content.episodes > 0 && (
+                <Badge variant="outline" className="text-xs">{content.episodes} حلقة</Badge>
+              )}
+            </div>
+
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                <Button onClick={handlePlayClick} size="sm">
+                  <Play className="h-4 w-4 ml-2" />
+                  مشاهدة
+                </Button>
+                <Button 
+                  onClick={handleFavoriteClick}
+                  size="sm" 
+                  variant="outline"
+                  className={isFavorite ? "text-red-500 border-red-500" : ""}
+                >
+                  <Heart className={cn("h-4 w-4", isFavorite && "fill-current")} />
+                </Button>
+              </div>
+              
+              <div className="flex items-center gap-1 text-muted-foreground text-xs">
+                <Eye className="h-3 w-3" />
+                <span>{content.views || 0}</span>
+              </div>
+            </div>
+          </CardContent>
+        </div>
+      </Card>
+    );
+  }
+
+  // Default variant
   return (
     <Card 
       className={cn(
-        "group relative overflow-hidden cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-2xl",
-        "bg-card border-border",
-        sizeClasses[size]
+        "group cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-xl overflow-hidden",
+        currentSize.card
       )}
-      onClick={() => onClick?.(content)}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Image Container */}
-      <div className={cn("relative overflow-hidden", imageClasses[size])}>
-        {/* Placeholder while loading */}
-        {!imageLoaded && (
-          <div className="absolute inset-0 bg-muted animate-pulse flex items-center justify-center">
-            <div className="w-8 h-8 text-muted-foreground">
-              <svg className="w-full h-full" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M8 5v14l11-7z"/>
-              </svg>
-            </div>
+      <div className={cn("relative overflow-hidden bg-gradient-to-br from-primary/20 to-primary/5", currentSize.image)}>
+        {content.posterUrl ? (
+          <img 
+            src={content.posterUrl} 
+            alt={content.title}
+            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+          />
+        ) : (
+          <div className="w-full h-full flex items-center justify-center text-muted-foreground">
+            <Play className="h-8 w-8" />
           </div>
         )}
         
-        {/* Content Image */}
-        <img
-          src={content.posterUrl || "/api/placeholder/400/600"}
-          alt={content.title}
-          className={cn(
-            "w-full h-full object-cover transition-transform duration-300 group-hover:scale-110",
-            imageLoaded ? "opacity-100" : "opacity-0"
-          )}
-          onLoad={() => setImageLoaded(true)}
-          onError={() => setImageLoaded(true)}
-        />
-
-        {/* Overlay */}
-        <div className={cn(
-          "absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent",
-          "transition-opacity duration-300",
-          isHovered ? "opacity-100" : "opacity-0"
-        )} />
-
-        {/* Quality Badge */}
-        <Badge 
-          className={cn(
-            "absolute top-2 right-2 text-xs font-bold text-white",
-            getQualityColor(content.quality)
-          )}
-        >
+        {/* طبقة التدرج */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+        
+        {/* شارة الجودة */}
+        <Badge className={cn("absolute top-2 right-2", currentSize.badge, getQualityColor(content.quality))}>
           {content.quality}
         </Badge>
-
-        {/* Type Badge */}
-        <Badge 
-          className={cn(
-            "absolute top-2 left-2 text-xs font-bold text-white",
-            getTypeColor(content.type)
-          )}
-        >
-          {content.type === 'movie' ? 'فيلم' : 
-           content.type === 'series' ? 'مسلسل' : 
-           content.type === 'tv' ? 'تلفزيون' : 'منوع'}
-        </Badge>
-
-        {/* Play Button */}
-        <div className={cn(
-          "absolute inset-0 flex items-center justify-center transition-opacity duration-300",
-          isHovered ? "opacity-100" : "opacity-0"
-        )}>
-          <Button 
-            size="icon" 
-            className="w-16 h-16 rounded-full bg-primary/90 hover:bg-primary text-primary-foreground backdrop-blur-sm"
-          >
-            <Play className="w-8 h-8 ml-1" />
-          </Button>
+        
+        {/* التقييم */}
+        <div className="absolute top-2 left-2 flex items-center gap-1 bg-black/70 text-white px-2 py-1 rounded text-xs">
+          <Star className="h-3 w-3 fill-current text-yellow-500" />
+          <span>{content.rating}</span>
         </div>
 
-        {/* Action Buttons */}
-        {showActions && (
-          <div className={cn(
-            "absolute bottom-2 right-2 flex gap-2 transition-opacity duration-300",
-            isHovered ? "opacity-100" : "opacity-0"
-          )}>
-            <Button
-              size="icon"
-              variant="ghost"
-              className="w-8 h-8 bg-black/50 hover:bg-black/70 text-white backdrop-blur-sm"
-              onClick={handleFavoriteToggle}
-            >
-              <Heart className={cn("w-4 h-4", isFavorite && "fill-red-500 text-red-500")} />
-            </Button>
-            <Button
-              size="icon"
-              variant="ghost"
-              className="w-8 h-8 bg-black/50 hover:bg-black/70 text-white backdrop-blur-sm"
-              onClick={handleShare}
-            >
-              <Share2 className="w-4 h-4" />
-            </Button>
+        {/* أزرار التحكم السريعة */}
+        {showActions && isHovered && (
+          <div className="absolute bottom-2 left-2 right-2 space-y-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <div className="flex gap-2">
+              <Button onClick={handlePlayClick} size="sm" className="flex-1 h-8 text-xs">
+                <Play className="h-3 w-3 ml-1" />
+                مشاهدة
+              </Button>
+              <Button 
+                onClick={handleFavoriteClick}
+                size="sm" 
+                variant="secondary"
+                className={cn("h-8 w-8 p-0", isFavorite && "text-red-500")}
+              >
+                <Heart className={cn("h-3 w-3", isFavorite && "fill-current")} />
+              </Button>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button size="sm" variant="secondary" className="h-8 w-8 p-0">
+                    <MoreVertical className="h-3 w-3" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuItem>
+                    <Download className="h-4 w-4 ml-2" />
+                    تحميل
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Share className="h-4 w-4 ml-2" />
+                    مشاركة
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
+                    <Bookmark className="h-4 w-4 ml-2" />
+                    حفظ للمشاهدة لاحقاً
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+          </div>
+        )}
+
+        {/* عداد المشاهدات */}
+        {content.views && (
+          <div className="absolute bottom-2 left-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <div className="flex items-center gap-1 bg-black/70 text-white px-2 py-1 rounded text-xs">
+              <Eye className="h-3 w-3" />
+              <span>{content.views > 1000 ? `${(content.views / 1000).toFixed(1)}k` : content.views}</span>
+            </div>
           </div>
         )}
       </div>
 
-      {/* Content Details */}
-      {showDetails && (
-        <CardContent className="p-4 h-full flex flex-col">
-          <div className="flex-1">
-            <h3 className="font-bold text-lg mb-2 line-clamp-2 text-foreground">
-              {content.title}
-            </h3>
-            
-            <div className="flex items-center gap-2 mb-2 text-sm text-muted-foreground">
-              <Calendar className="w-4 h-4" />
-              <span>{new Date(content.releaseDate).getFullYear()}</span>
-              
-              <Clock className="w-4 h-4 ml-2" />
-              <span>{content.duration} دقيقة</span>
-            </div>
-
-            <div className="flex items-center gap-2 mb-2">
-              <div className="flex items-center gap-1">
-                <Star className="w-4 h-4 text-yellow-500 fill-current" />
-                <span className="text-sm font-medium">
-                  {content.rating ? content.rating.toFixed(1) : 'N/A'}
-                </span>
-              </div>
-              
-              <div className="flex items-center gap-1 text-muted-foreground">
-                <Eye className="w-4 h-4" />
-                <span className="text-sm">{content.views || 0}</span>
-              </div>
-            </div>
-
-            <p className="text-sm text-muted-foreground line-clamp-3">
-              {content.description}
-            </p>
-          </div>
-
-          <div className="flex flex-wrap gap-1 mt-3">
-            <Badge variant="secondary" className="text-xs">
-              {content.language}
-            </Badge>
-            {content.genres?.slice(0, 2).map((genre, index) => (
-              <Badge key={index} variant="outline" className="text-xs">
-                {genre}
-              </Badge>
-            ))}
-          </div>
-        </CardContent>
-      )}
+      <CardContent className="p-3">
+        <h3 className={cn("font-bold line-clamp-1 mb-1", currentSize.title)}>{content.titleArabic}</h3>
+        <p className={cn("text-muted-foreground line-clamp-1 mb-2", currentSize.subtitle)}>{content.title}</p>
+        
+        <div className="flex flex-wrap gap-1">
+          <Badge variant="outline" className="text-xs px-1 py-0.5">{content.year}</Badge>
+          <Badge variant="outline" className="text-xs px-1 py-0.5">{content.language}</Badge>
+          {content.episodes && content.episodes > 0 && (
+            <Badge variant="outline" className="text-xs px-1 py-0.5">{content.episodes} ح</Badge>
+          )}
+        </div>
+      </CardContent>
     </Card>
   );
 }

@@ -2,8 +2,7 @@ import { Switch, Route } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/layout/ui/toaster";
-import { TooltipProvider } from "@/components/layout/ui/tooltip";
-import { ThemeProvider } from "@/components/theme/theme-provider";
+import { AdvancedThemeProvider } from "@/components/theme/advanced-theme-provider";
 import Header from "@/components/layout/header";
 import Navigation from "@/components/layout/navigation";
 import NotFound from "@/pages/not-found";
@@ -41,18 +40,16 @@ function Router() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <ThemeProvider defaultTheme="cinema">
-        <TooltipProvider>
-          <div className="min-h-screen bg-background text-foreground arabic-font">
-            <Header />
-            <Navigation />
-            <main className="pt-32">
-              <Router />
-            </main>
-            <Toaster />
-          </div>
-        </TooltipProvider>
-      </ThemeProvider>
+      <AdvancedThemeProvider defaultTheme="cinema">
+        <div className="min-h-screen bg-background text-foreground arabic-font">
+          <Header />
+          <Navigation />
+          <main className="pt-32">
+            <Router />
+          </main>
+          <Toaster />
+        </div>
+      </AdvancedThemeProvider>
     </QueryClientProvider>
   );
 }

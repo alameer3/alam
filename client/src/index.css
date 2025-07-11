@@ -73,6 +73,78 @@
   --radius: 0.5rem;
 }
 
+/* Cinema Theme - للتجربة السينمائية */
+.cinema {
+  --background: hsl(15, 15%, 8%);
+  --foreground: hsl(43, 74%, 91%);
+  --muted: hsl(15, 15%, 12%);
+  --muted-foreground: hsl(43, 34%, 65%);
+  --popover: hsl(15, 15%, 10%);
+  --popover-foreground: hsl(43, 74%, 91%);
+  --card: hsl(15, 15%, 10%);
+  --card-foreground: hsl(43, 74%, 91%);
+  --border: hsl(43, 24%, 25%);
+  --input: hsl(15, 15%, 15%);
+  --primary: hsl(43, 74%, 66%);
+  --primary-foreground: hsl(15, 15%, 8%);
+  --secondary: hsl(15, 15%, 15%);
+  --secondary-foreground: hsl(43, 74%, 91%);
+  --accent: hsl(43, 24%, 25%);
+  --accent-foreground: hsl(43, 74%, 91%);
+  --destructive: hsl(0, 72%, 51%);
+  --destructive-foreground: hsl(43, 74%, 91%);
+  --ring: hsl(43, 74%, 66%);
+  --radius: 0.75rem;
+}
+
+/* Classic Theme - مظهر كلاسيكي أنيق */
+.classic {
+  --background: hsl(210, 11%, 15%);
+  --foreground: hsl(60, 30%, 96%);
+  --muted: hsl(210, 11%, 18%);
+  --muted-foreground: hsl(60, 5%, 75%);
+  --popover: hsl(210, 11%, 17%);
+  --popover-foreground: hsl(60, 30%, 96%);
+  --card: hsl(210, 11%, 17%);
+  --card-foreground: hsl(60, 30%, 96%);
+  --border: hsl(210, 11%, 28%);
+  --input: hsl(210, 11%, 20%);
+  --primary: hsl(200, 70%, 60%);
+  --primary-foreground: hsl(210, 11%, 15%);
+  --secondary: hsl(210, 11%, 20%);
+  --secondary-foreground: hsl(60, 30%, 96%);
+  --accent: hsl(210, 11%, 28%);
+  --accent-foreground: hsl(60, 30%, 96%);
+  --destructive: hsl(0, 75%, 58%);
+  --destructive-foreground: hsl(60, 30%, 96%);
+  --ring: hsl(200, 70%, 60%);
+  --radius: 0.3rem;
+}
+
+/* Modern Theme - مظهر عصري بألوان زاهية */
+.modern {
+  --background: hsl(240, 10%, 6%);
+  --foreground: hsl(0, 0%, 98%);
+  --muted: hsl(240, 10%, 10%);
+  --muted-foreground: hsl(240, 5%, 70%);
+  --popover: hsl(240, 10%, 8%);
+  --popover-foreground: hsl(0, 0%, 98%);
+  --card: hsl(240, 10%, 8%);
+  --card-foreground: hsl(0, 0%, 98%);
+  --border: hsl(240, 10%, 18%);
+  --input: hsl(240, 10%, 12%);
+  --primary: hsl(270, 95%, 65%);
+  --primary-foreground: hsl(0, 0%, 98%);
+  --secondary: hsl(240, 10%, 12%);
+  --secondary-foreground: hsl(0, 0%, 98%);
+  --accent: hsl(270, 30%, 25%);
+  --accent-foreground: hsl(0, 0%, 98%);
+  --destructive: hsl(350, 89%, 60%);
+  --destructive-foreground: hsl(0, 0%, 98%);
+  --ring: hsl(270, 95%, 65%);
+  --radius: 1rem;
+}
+
 /* Cinema Theme - Arabic Cinema Dark */
 .cinema {
   --background: hsl(240, 10%, 8%);
