@@ -88,15 +88,42 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Search route
   app.get("/api/search", async (req, res) => {
     try {
-      const query = req.query.q as string;
+      const query = req.query.query as string || req.query.q as string;
       const type = req.query.type as string;
+      const category = req.query.category as string;
+      const genre = req.query.genre as string;
+      const language = req.query.language as string;
+      const quality = req.query.quality as string;
+      const yearFrom = req.query.yearFrom as string;
+      const yearTo = req.query.yearTo as string;
+      const ratingMin = req.query.ratingMin as string;
+      const sortBy = req.query.sortBy as string || 'title';
+      const sortOrder = req.query.sortOrder as string || 'asc';
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 20;
       
       if (!query) {
-        return res.json({ content: [] });
+        return res.json({ content: [], total: 0 });
       }
 
-      const results = await storage.searchContent(query, type);
-      res.json({ content: results });
+      // Build advanced search filters
+      const filters = {
+        type,
+        category,
+        genre,
+        language,
+        quality,
+        yearFrom: yearFrom ? parseInt(yearFrom) : undefined,
+        yearTo: yearTo ? parseInt(yearTo) : undefined,
+        ratingMin: ratingMin ? parseFloat(ratingMin) : undefined,
+        sortBy,
+        sortOrder,
+        page,
+        limit
+      };
+
+      const results = await storage.searchContent(query, type, filters);
+      res.json({ content: results, total: results.length });
     } catch (error) {
       res.status(500).json({ error: "Search failed" });
     }
