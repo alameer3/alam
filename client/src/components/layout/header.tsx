@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
-import { Search, Bell, User, Crown, Heart, SlidersHorizontal } from "lucide-react";
+import { Search, Bell, User, Crown, Heart, SlidersHorizontal, Upload } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import SearchModal from "@/components/search/search-modal";
@@ -88,6 +88,13 @@ export default function Header() {
             </FavoritesModal>
             
 
+            
+            <Link href="/upload">
+              <Button variant="ghost" className="flex items-center space-x-2 space-x-reverse hover:bg-muted">
+                <Upload className="w-5 h-5" />
+                <span className="hidden lg:inline">رفع الملفات</span>
+              </Button>
+            </Link>
             
             <Button variant="ghost" className="flex items-center space-x-2 space-x-reverse hover:bg-muted">
               <User className="w-5 h-5" />

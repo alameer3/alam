@@ -1,11 +1,13 @@
 import { 
   users, content, genres, categories, contentGenres, contentCategories, userRatings,
   userComments, userReviews, reviewLikes, userFavorites, userWatchHistory, contentViews,
+  uploads, uploadChunks,
   type User, type InsertUser, type Content, type InsertContent, 
   type Genre, type InsertGenre, type Category, type InsertCategory,
   type UserComment, type InsertUserComment, type UserReview, type InsertUserReview,
   type ReviewLike, type InsertReviewLike, type UserFavorite, type InsertUserFavorite,
-  type UserWatchHistory, type InsertUserWatchHistory, type ContentView, type InsertContentView
+  type UserWatchHistory, type InsertUserWatchHistory, type ContentView, type InsertContentView,
+  type Upload, type InsertUpload, type UploadChunk, type InsertUploadChunk
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and, ilike, sql } from "drizzle-orm";
@@ -44,6 +46,21 @@ export interface IStorage {
   getUserFavorites(userId: number): Promise<Content[]>;
   addToWatchHistory(userId: number, contentId: number, progressMinutes?: number): Promise<void>;
   getUserWatchHistory(userId: number): Promise<Content[]>;
+  
+  // Upload operations
+  createUpload(upload: InsertUpload): Promise<Upload>;
+  getUpload(id: number): Promise<Upload | undefined>;
+  getUserUploads(userId: number): Promise<Upload[]>;
+  updateUpload(id: number, upload: Partial<InsertUpload>): Promise<Upload>;
+  deleteUpload(id: number): Promise<boolean>;
+  updateUploadProgress(id: number, progress: number): Promise<void>;
+  updateUploadStatus(id: number, status: string): Promise<void>;
+  
+  // Upload chunks operations
+  createUploadChunk(chunk: InsertUploadChunk): Promise<UploadChunk>;
+  getUploadChunks(uploadId: number): Promise<UploadChunk[]>;
+  updateUploadChunk(id: number, chunk: Partial<InsertUploadChunk>): Promise<UploadChunk>;
+  markChunkAsUploaded(id: number): Promise<void>;
   
   // Comments
   addComment(comment: InsertUserComment): Promise<UserComment>;
@@ -408,6 +425,83 @@ export class DatabaseStorage implements IStorage {
       comments: commentsCount?.count || 0
     };
   }
+
+  // Upload operations
+  async createUpload(insertUpload: InsertUpload): Promise<Upload> {
+    const [upload] = await db.insert(uploads).values(insertUpload).returning();
+    return upload;
+  }
+
+  async getUpload(id: number): Promise<Upload | undefined> {
+    const [upload] = await db.select().from(uploads).where(eq(uploads.id, id));
+    return upload || undefined;
+  }
+
+  async getUserUploads(userId: number): Promise<Upload[]> {
+    return await db
+      .select()
+      .from(uploads)
+      .where(eq(uploads.userId, userId))
+      .orderBy(desc(uploads.createdAt));
+  }
+
+  async updateUpload(id: number, updateUpload: Partial<InsertUpload>): Promise<Upload> {
+    const [upload] = await db
+      .update(uploads)
+      .set({ ...updateUpload, updatedAt: new Date() })
+      .where(eq(uploads.id, id))
+      .returning();
+    return upload;
+  }
+
+  async deleteUpload(id: number): Promise<boolean> {
+    const result = await db.delete(uploads).where(eq(uploads.id, id));
+    return result.rowCount > 0;
+  }
+
+  async updateUploadProgress(id: number, progress: number): Promise<void> {
+    await db
+      .update(uploads)
+      .set({ uploadProgress: progress, updatedAt: new Date() })
+      .where(eq(uploads.id, id));
+  }
+
+  async updateUploadStatus(id: number, status: string): Promise<void> {
+    await db
+      .update(uploads)
+      .set({ uploadStatus: status, updatedAt: new Date() })
+      .where(eq(uploads.id, id));
+  }
+
+  // Upload chunks operations
+  async createUploadChunk(insertChunk: InsertUploadChunk): Promise<UploadChunk> {
+    const [chunk] = await db.insert(uploadChunks).values(insertChunk).returning();
+    return chunk;
+  }
+
+  async getUploadChunks(uploadId: number): Promise<UploadChunk[]> {
+    return await db
+      .select()
+      .from(uploadChunks)
+      .where(eq(uploadChunks.uploadId, uploadId))
+      .orderBy(uploadChunks.chunkIndex);
+  }
+
+  async updateUploadChunk(id: number, updateChunk: Partial<InsertUploadChunk>): Promise<UploadChunk> {
+    const [chunk] = await db
+      .update(uploadChunks)
+      .set(updateChunk)
+      .where(eq(uploadChunks.id, id))
+      .returning();
+    return chunk;
+  }
+
+  async markChunkAsUploaded(id: number): Promise<void> {
+    await db
+      .update(uploadChunks)
+      .set({ isUploaded: true, uploadedAt: new Date() })
+      .where(eq(uploadChunks.id, id));
+  }
 }
 
 // Create a temporary in-memory storage for migration purposes
@@ -683,6 +777,52 @@ class TemporaryMemoryStorage implements IStorage {
 
   async getUserStats(userId: number): Promise<{ favorites: number, watchHistory: number, comments: number }> {
     return { favorites: 0, watchHistory: 0, comments: 0 };
+  }
+
+  // Upload operations - temporary implementation
+  async createUpload(upload: InsertUpload): Promise<Upload> {
+    throw new Error("Upload operations not implemented in temporary storage");
+  }
+
+  async getUpload(id: number): Promise<Upload | undefined> {
+    return undefined;
+  }
+
+  async getUserUploads(userId: number): Promise<Upload[]> {
+    return [];
+  }
+
+  async updateUpload(id: number, upload: Partial<InsertUpload>): Promise<Upload> {
+    throw new Error("Upload operations not implemented in temporary storage");
+  }
+
+  async deleteUpload(id: number): Promise<boolean> {
+    return false;
+  }
+
+  async updateUploadProgress(id: number, progress: number): Promise<void> {
+    // No-op for temporary storage
+  }
+
+  async updateUploadStatus(id: number, status: string): Promise<void> {
+    // No-op for temporary storage
+  }
+
+  // Upload chunks operations - temporary implementation
+  async createUploadChunk(chunk: InsertUploadChunk): Promise<UploadChunk> {
+    throw new Error("Upload chunk operations not implemented in temporary storage");
+  }
+
+  async getUploadChunks(uploadId: number): Promise<UploadChunk[]> {
+    return [];
+  }
+
+  async updateUploadChunk(id: number, chunk: Partial<InsertUploadChunk>): Promise<UploadChunk> {
+    throw new Error("Upload chunk operations not implemented in temporary storage");
+  }
+
+  async markChunkAsUploaded(id: number): Promise<void> {
+    // No-op for temporary storage
   }
 }
 
