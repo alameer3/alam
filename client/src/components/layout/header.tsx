@@ -87,6 +87,13 @@ export default function Header() {
               </Button>
             </FavoritesModal>
             
+            <Link href="/admin-dashboard">
+              <Button variant="ghost" className="flex items-center space-x-2 space-x-reverse hover:bg-muted">
+                <Crown className="w-5 h-5" />
+                <span className="hidden lg:inline">لوحة التحكم</span>
+              </Button>
+            </Link>
+            
             <Button variant="ghost" className="flex items-center space-x-2 space-x-reverse hover:bg-muted">
               <User className="w-5 h-5" />
               <span className="hidden lg:inline">أهلاً بك</span>
