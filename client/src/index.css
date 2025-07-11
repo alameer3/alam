@@ -73,28 +73,35 @@
   --radius: 0.5rem;
 }
 
-/* Cinema Theme - للتجربة السينمائية */
+/* Cinema Theme الجديد - ثيم سينمائي ذهبي مطور */
 .cinema {
-  --background: hsl(15, 15%, 8%);
-  --foreground: hsl(43, 74%, 91%);
-  --muted: hsl(15, 15%, 12%);
-  --muted-foreground: hsl(43, 34%, 65%);
-  --popover: hsl(15, 15%, 10%);
-  --popover-foreground: hsl(43, 74%, 91%);
-  --card: hsl(15, 15%, 10%);
-  --card-foreground: hsl(43, 74%, 91%);
-  --border: hsl(43, 24%, 25%);
-  --input: hsl(15, 15%, 15%);
-  --primary: hsl(43, 74%, 66%);
-  --primary-foreground: hsl(15, 15%, 8%);
-  --secondary: hsl(15, 15%, 15%);
-  --secondary-foreground: hsl(43, 74%, 91%);
-  --accent: hsl(43, 24%, 25%);
-  --accent-foreground: hsl(43, 74%, 91%);
-  --destructive: hsl(0, 72%, 51%);
-  --destructive-foreground: hsl(43, 74%, 91%);
-  --ring: hsl(43, 74%, 66%);
+  --background: hsl(220, 15%, 8%);
+  --foreground: hsl(45, 90%, 92%);
+  --muted: hsl(220, 12%, 12%);
+  --muted-foreground: hsl(45, 25%, 70%);
+  --popover: hsl(220, 16%, 10%);
+  --popover-foreground: hsl(45, 90%, 92%);
+  --card: hsl(220, 14%, 11%);
+  --card-foreground: hsl(45, 90%, 92%);
+  --border: hsl(45, 50%, 30%);
+  --input: hsl(220, 12%, 15%);
+  --primary: hsl(45, 100%, 65%);
+  --primary-foreground: hsl(220, 15%, 8%);
+  --secondary: hsl(45, 30%, 20%);
+  --secondary-foreground: hsl(45, 90%, 92%);
+  --accent: hsl(45, 60%, 35%);
+  --accent-foreground: hsl(45, 100%, 95%);
+  --destructive: hsl(0, 75%, 55%);
+  --destructive-foreground: hsl(45, 90%, 92%);
+  --ring: hsl(45, 100%, 65%);
   --radius: 0.75rem;
+  
+  /* متغيرات مخصصة للثيم السينمائي */
+  --cinema-gold: hsl(45, 100%, 65%);
+  --cinema-dark: hsl(220, 15%, 8%);
+  --cinema-card: hsl(220, 14%, 11%);
+  --cinema-border: hsl(45, 50%, 30%);
+  --cinema-gradient: linear-gradient(135deg, hsl(45, 100%, 65%) 0%, hsl(38, 95%, 55%) 100%);
 }
 
 /* Classic Theme - مظهر كلاسيكي أنيق */
@@ -145,35 +152,149 @@
   --radius: 1rem;
 }
 
-/* Cinema Theme - Arabic Cinema Dark */
-.cinema {
-  --background: hsl(240, 10%, 8%);
-  --foreground: hsl(0, 0%, 98%);
-  --muted: hsl(240, 3.7%, 15.9%);
-  --muted-foreground: hsl(240, 5%, 64.9%);
-  --popover: hsl(240, 10%, 8%);
-  --popover-foreground: hsl(0, 0%, 98%);
-  --card: hsl(240, 3.7%, 12%);
-  --card-foreground: hsl(0, 0%, 98%);
-  --border: hsl(240, 3.7%, 20%);
-  --input: hsl(240, 3.7%, 15.9%);
-  --primary: hsl(25, 100%, 50%);
-  --primary-foreground: hsl(0, 0%, 98%);
-  --secondary: hsl(240, 3.7%, 15.9%);
-  --secondary-foreground: hsl(0, 0%, 98%);
-  --accent: hsl(25, 100%, 50%);
-  --accent-foreground: hsl(0, 0%, 98%);
-  --destructive: hsl(0, 62.8%, 30.6%);
-  --destructive-foreground: hsl(0, 0%, 98%);
-  --ring: hsl(25, 100%, 50%);
-  --radius: 0.5rem;
+/* Retro Theme - ثيم ريترو بألوان دافئة */
+.retro {
+  --background: hsl(30, 25%, 15%);
+  --foreground: hsl(25, 40%, 90%);
+  --muted: hsl(30, 20%, 20%);
+  --muted-foreground: hsl(25, 25%, 70%);
+  --popover: hsl(30, 25%, 18%);
+  --popover-foreground: hsl(25, 40%, 90%);
+  --card: hsl(30, 22%, 18%);
+  --card-foreground: hsl(25, 40%, 90%);
+  --border: hsl(35, 35%, 35%);
+  --input: hsl(30, 20%, 22%);
+  --primary: hsl(35, 80%, 60%);
+  --primary-foreground: hsl(30, 25%, 15%);
+  --secondary: hsl(30, 18%, 25%);
+  --secondary-foreground: hsl(25, 40%, 90%);
+  --accent: hsl(35, 65%, 45%);
+  --accent-foreground: hsl(25, 40%, 90%);
+  --destructive: hsl(0, 70%, 55%);
+  --destructive-foreground: hsl(25, 40%, 90%);
+  --ring: hsl(35, 80%, 60%);
+  --radius: 0.4rem;
   
-  /* Custom Cinema Variables */
-  --dark-bg: hsl(240, 10%, 8%);
-  --card-bg: hsl(240, 3.7%, 12%);
-  --accent-orange: hsl(25, 100%, 50%);
-  --text-muted: hsl(240, 5%, 54%);
-  --border-dark: hsl(240, 3.7%, 20%);
+  /* متغيرات مخصصة للثيم الريترو */
+  --retro-orange: hsl(35, 80%, 60%);
+  --retro-brown: hsl(30, 25%, 15%);
+  --retro-card: hsl(30, 22%, 18%);
+  --retro-border: hsl(35, 35%, 35%);
+  --retro-gradient: linear-gradient(135deg, hsl(35, 80%, 60%) 0%, hsl(25, 75%, 50%) 100%);
+}
+
+/* تأثيرات بصرية خاصة للثيمات الجديدة */
+.cinema-effects {
+  /* تأثيرات خاصة بالثيم السينمائي */
+}
+
+.cinema .hero-section {
+  background: linear-gradient(135deg, 
+    var(--cinema-dark) 0%, 
+    hsl(220, 18%, 12%) 25%, 
+    hsl(220, 20%, 15%) 50%, 
+    hsl(220, 18%, 12%) 75%, 
+    var(--cinema-dark) 100%);
+}
+
+.cinema .content-card {
+  background: linear-gradient(135deg, var(--cinema-card) 0%, hsl(220, 16%, 13%) 100%);
+  border: 1px solid var(--cinema-border);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cinema .content-card:hover {
+  border-color: var(--cinema-gold);
+  box-shadow: 0 10px 30px rgba(255, 215, 0, 0.2);
+  transform: translateY(-4px) scale(1.02);
+}
+
+.classic .content-card {
+  background: linear-gradient(135deg, hsl(210, 11%, 17%) 0%, hsl(210, 13%, 19%) 100%);
+  border: 1px solid hsl(210, 11%, 28%);
+  transition: all 0.3s ease;
+}
+
+.classic .content-card:hover {
+  border-color: hsl(200, 70%, 60%);
+  box-shadow: 0 8px 25px rgba(70, 130, 180, 0.15);
+  transform: translateY(-2px);
+}
+
+.modern .content-card {
+  background: linear-gradient(135deg, hsl(240, 10%, 8%) 0%, hsl(240, 12%, 10%) 100%);
+  border: 1px solid hsl(240, 10%, 18%);
+  transition: all 0.3s ease;
+}
+
+.modern .content-card:hover {
+  border-color: hsl(270, 95%, 65%);
+  box-shadow: 0 8px 25px rgba(138, 43, 226, 0.2);
+  transform: translateY(-2px);
+}
+
+.retro .content-card {
+  background: linear-gradient(135deg, var(--retro-card) 0%, hsl(30, 24%, 20%) 100%);
+  border: 1px solid var(--retro-border);
+  transition: all 0.3s ease;
+}
+
+.retro .content-card:hover {
+  border-color: var(--retro-orange);
+  box-shadow: 0 8px 25px rgba(218, 165, 32, 0.15);
+  transform: translateY(-2px);
+}
+
+/* تحسينات خاصة بالعناوين للثيمات الجديدة */
+.cinema h1, .cinema h2, .cinema h3 {
+  background: var(--cinema-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: bold;
+}
+
+.modern h1, .modern h2, .modern h3 {
+  background: linear-gradient(135deg, hsl(180, 100%, 50%) 0%, hsl(280, 100%, 50%) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: bold;
+}
+
+.retro h1, .retro h2, .retro h3 {
+  background: var(--retro-gradient);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: bold;
+}
+
+/* تحسينات الأزرار للثيمات */
+.cinema .btn-primary {
+  background: var(--cinema-gradient);
+  color: var(--cinema-dark);
+  border: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.cinema .btn-primary:hover {
+  box-shadow: 0 5px 15px rgba(255, 215, 0, 0.3);
+  transform: translateY(-1px);
+}
+
+.retro .btn-primary {
+  background: var(--retro-gradient);
+  color: var(--retro-brown);
+  border: none;
+  font-weight: 600;
+  transition: all 0.3s ease;
+}
+
+.retro .btn-primary:hover {
+  box-shadow: 0 5px 15px rgba(218, 165, 32, 0.3);
+  transform: translateY(-1px);
 }
 
 @layer base {

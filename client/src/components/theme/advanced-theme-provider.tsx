@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 
-type Theme = "light" | "dark" | "cinema" | "classic" | "modern";
+type Theme = "light" | "dark" | "cinema" | "classic" | "modern" | "retro";
 
 type ThemeProviderProps = {
   children: React.ReactNode;
@@ -57,6 +57,11 @@ export function AdvancedThemeProvider({
       value: "modern" as Theme,
       label: "عصري",
       description: "مظهر عصري بألوان زاهية"
+    },
+    {
+      value: "retro" as Theme,
+      label: "ريترو",
+      description: "مظهر كلاسيكي قديم بألوان دافئة"
     }
   ];
 
@@ -64,7 +69,7 @@ export function AdvancedThemeProvider({
     const root = window.document.documentElement;
     
     // إزالة جميع classes السابقة
-    root.classList.remove("light", "dark", "cinema", "classic", "modern");
+    root.classList.remove("light", "dark", "cinema", "classic", "modern", "retro");
     
     // إضافة theme الجديد
     root.classList.add(theme);
