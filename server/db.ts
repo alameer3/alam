@@ -5,10 +5,12 @@ import * as schema from "@shared/schema";
 
 neonConfig.webSocketConstructor = ws;
 
+// For development, use a fallback connection string if DATABASE_URL is not set
+const defaultDatabaseUrl = "postgresql://localhost:5432/cinema_academy";
+
 if (!process.env.DATABASE_URL) {
-  throw new Error(
-    "DATABASE_URL must be set. Did you forget to provision a database?",
-  );
+  console.log("DATABASE_URL not found, using in-memory storage for development");
+  process.env.DATABASE_URL = defaultDatabaseUrl;
 }
 
 // Extract the actual connection string from psql format

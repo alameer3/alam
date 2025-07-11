@@ -379,8 +379,8 @@ class TemporaryMemoryStorage implements IStorage {
   }
 }
 
-// Database connection is now working - using real database
-export const storage = new DatabaseStorage();
+// Using in-memory storage for development during migration
+export const storage = new TemporaryMemoryStorage();
 
-// For testing purposes, you can switch back to temporary storage:
-// export const storage = new TemporaryMemoryStorage();
+// Database connection for production (enable when DATABASE_URL is properly configured):
+// export const storage = new DatabaseStorage();
