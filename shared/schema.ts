@@ -85,6 +85,28 @@ export const userComments = pgTable("user_comments", {
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
+export const userReviews = pgTable("user_reviews", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").notNull(),
+  contentId: integer("content_id").notNull(),
+  rating: integer("rating").notNull(), // 1-5 stars
+  title: text("title").notNull(),
+  review: text("review").notNull(),
+  likes: integer("likes").default(0).notNull(),
+  dislikes: integer("dislikes").default(0).notNull(),
+  isActive: boolean("is_active").default(true).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const reviewLikes = pgTable("review_likes", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").notNull(),
+  reviewId: integer("review_id").notNull(),
+  isLike: boolean("is_like").notNull(), // true for like, false for dislike
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
 export const userFavorites = pgTable("user_favorites", {
   id: serial("id").primaryKey(),
   userId: integer("user_id").notNull(),
@@ -113,6 +135,7 @@ export const contentRelations = relations(content, ({ many, one }) => ({
   contentCategories: many(contentCategories),
   userRatings: many(userRatings),
   comments: many(userComments),
+  reviews: many(userReviews),
   favorites: many(userFavorites),
   watchHistory: many(userWatchHistory),
   views: one(contentViews, {
@@ -165,6 +188,8 @@ export const userRatingRelations = relations(userRatings, ({ one }) => ({
 export const userRelations = relations(users, ({ many }) => ({
   ratings: many(userRatings),
   comments: many(userComments),
+  reviews: many(userReviews),
+  reviewLikes: many(reviewLikes),
   favorites: many(userFavorites),
   watchHistory: many(userWatchHistory),
 }));
@@ -214,6 +239,29 @@ export const contentViewRelations = relations(contentViews, ({ one }) => ({
   }),
 }));
 
+export const userReviewRelations = relations(userReviews, ({ one, many }) => ({
+  user: one(users, {
+    fields: [userReviews.userId],
+    references: [users.id],
+  }),
+  content: one(content, {
+    fields: [userReviews.contentId],
+    references: [content.id],
+  }),
+  reviewLikes: many(reviewLikes),
+}));
+
+export const reviewLikeRelations = relations(reviewLikes, ({ one }) => ({
+  user: one(users, {
+    fields: [reviewLikes.userId],
+    references: [users.id],
+  }),
+  review: one(userReviews, {
+    fields: [reviewLikes.reviewId],
+    references: [userReviews.id],
+  }),
+}));
+
 // Insert schemas
 export const insertUserSchema = createInsertSchema(users).omit({
   id: true,
@@ -260,6 +308,19 @@ export const insertContentViewSchema = createInsertSchema(contentViews).omit({
   lastViewedAt: true,
 });
 
+export const insertUserReviewSchema = createInsertSchema(userReviews).omit({
+  id: true,
+  likes: true,
+  dislikes: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertReviewLikeSchema = createInsertSchema(reviewLikes).omit({
+  id: true,
+  createdAt: true,
+});
+
 // Types
 export type User = typeof users.$inferSelect;
 export type InsertUser = z.infer<typeof insertUserSchema>;
@@ -278,6 +339,12 @@ export type InsertUserRating = z.infer<typeof insertUserRatingSchema>;
 
 export type UserComment = typeof userComments.$inferSelect;
 export type InsertUserComment = z.infer<typeof insertUserCommentSchema>;
+
+export type UserReview = typeof userReviews.$inferSelect;
+export type InsertUserReview = z.infer<typeof insertUserReviewSchema>;
+
+export type ReviewLike = typeof reviewLikes.$inferSelect;
+export type InsertReviewLike = z.infer<typeof insertReviewLikeSchema>;
 
 export type UserFavorite = typeof userFavorites.$inferSelect;
 export type InsertUserFavorite = z.infer<typeof insertUserFavoriteSchema>;

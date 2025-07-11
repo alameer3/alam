@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertContentSchema, insertGenreSchema, insertCategorySchema, insertUserSchema, insertUserCommentSchema, insertUserFavoriteSchema, insertUserWatchHistorySchema } from "@shared/schema";
+import { insertContentSchema, insertGenreSchema, insertCategorySchema, insertUserSchema, insertUserCommentSchema, insertUserReviewSchema, insertReviewLikeSchema, insertUserFavoriteSchema, insertUserWatchHistorySchema } from "@shared/schema";
 import { z } from "zod";
 
 export async function registerRoutes(app: Express): Promise<Server> {
@@ -337,6 +337,100 @@ export async function registerRoutes(app: Express): Promise<Server> {
       }
     } catch (error) {
       res.status(500).json({ error: "Failed to delete comment" });
+    }
+  });
+
+  // Reviews routes
+  app.post("/api/content/:id/reviews", async (req, res) => {
+    try {
+      const contentId = parseInt(req.params.id);
+      const reviewData = {
+        ...req.body,
+        contentId
+      };
+      
+      const validatedData = insertUserReviewSchema.parse(reviewData);
+      const review = await storage.addReview(validatedData);
+      res.status(201).json(review);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ error: error.errors });
+      } else {
+        res.status(500).json({ error: "Failed to add review" });
+      }
+    }
+  });
+
+  app.get("/api/content/:id/reviews", async (req, res) => {
+    try {
+      const contentId = parseInt(req.params.id);
+      const reviews = await storage.getContentReviews(contentId);
+      res.json(reviews);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch reviews" });
+    }
+  });
+
+  app.put("/api/reviews/:id", async (req, res) => {
+    try {
+      const reviewId = parseInt(req.params.id);
+      const { userId, ...reviewData } = req.body;
+      
+      const validatedData = insertUserReviewSchema.partial().parse(reviewData);
+      const review = await storage.updateReview(reviewId, userId, validatedData);
+      res.json(review);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        res.status(400).json({ error: error.errors });
+      } else {
+        res.status(500).json({ error: "Failed to update review" });
+      }
+    }
+  });
+
+  app.delete("/api/reviews/:id", async (req, res) => {
+    try {
+      const reviewId = parseInt(req.params.id);
+      const { userId } = req.body;
+      
+      const success = await storage.deleteReview(reviewId, userId);
+      
+      if (success) {
+        res.json({ message: "Review deleted" });
+      } else {
+        res.status(404).json({ error: "Review not found or not authorized" });
+      }
+    } catch (error) {
+      res.status(500).json({ error: "Failed to delete review" });
+    }
+  });
+
+  app.post("/api/reviews/:id/like", async (req, res) => {
+    try {
+      const reviewId = parseInt(req.params.id);
+      const { userId, isLike } = req.body;
+      
+      await storage.likeReview(userId, reviewId, isLike);
+      res.json({ message: "Review liked/disliked" });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to like/dislike review" });
+    }
+  });
+
+  app.get("/api/users/:userId/reviews/content/:contentId", async (req, res) => {
+    try {
+      const userId = parseInt(req.params.userId);
+      const contentId = parseInt(req.params.contentId);
+      
+      const review = await storage.getUserReviewForContent(userId, contentId);
+      
+      if (review) {
+        res.json(review);
+      } else {
+        res.status(404).json({ error: "Review not found" });
+      }
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch user review" });
     }
   });
 

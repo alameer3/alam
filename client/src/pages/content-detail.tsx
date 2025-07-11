@@ -3,9 +3,9 @@ import { useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { useAuth } from "@/hooks/useAuth";
 import { useAddToFavorites, useRemoveFromFavorites, useFavorites, useIncrementViewCount } from "@/hooks/useUserInteractions";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/layout/ui/card";
-import { Button } from "@/components/layout/ui/button";
-import { Badge } from "@/components/layout/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/layout/ui/separator";
 import { 
   Play, 
@@ -26,6 +26,7 @@ import Navigation from "@/components/layout/navigation";
 import Footer from "@/components/layout/footer";
 import AdvancedVideoPlayer from "@/components/content/advanced-video-player";
 import CommentsSection from "@/components/user/comments-section";
+import ReviewsSection from "@/components/reviews/ReviewsSection";
 import { Content } from "@shared/schema";
 import { cn } from "@/lib/utils";
 
@@ -283,6 +284,12 @@ export default function ContentDetail() {
                     </div>
                   )}
                 </div>
+              </div>
+
+              {/* Reviews Section */}
+              <Separator />
+              <div>
+                <ReviewsSection contentId={content.id} />
               </div>
 
               {/* Comments Section */}

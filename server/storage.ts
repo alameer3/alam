@@ -1,9 +1,10 @@
 import { 
   users, content, genres, categories, contentGenres, contentCategories, userRatings,
-  userComments, userFavorites, userWatchHistory, contentViews,
+  userComments, userReviews, reviewLikes, userFavorites, userWatchHistory, contentViews,
   type User, type InsertUser, type Content, type InsertContent, 
   type Genre, type InsertGenre, type Category, type InsertCategory,
-  type UserComment, type InsertUserComment, type UserFavorite, type InsertUserFavorite,
+  type UserComment, type InsertUserComment, type UserReview, type InsertUserReview,
+  type ReviewLike, type InsertReviewLike, type UserFavorite, type InsertUserFavorite,
   type UserWatchHistory, type InsertUserWatchHistory, type ContentView, type InsertContentView
 } from "@shared/schema";
 import { db } from "./db";
@@ -48,6 +49,14 @@ export interface IStorage {
   addComment(comment: InsertUserComment): Promise<UserComment>;
   getContentComments(contentId: number): Promise<UserComment[]>;
   deleteComment(commentId: number, userId: number): Promise<boolean>;
+  
+  // Reviews
+  addReview(review: InsertUserReview): Promise<UserReview>;
+  getContentReviews(contentId: number): Promise<UserReview[]>;
+  updateReview(reviewId: number, userId: number, review: Partial<InsertUserReview>): Promise<UserReview>;
+  deleteReview(reviewId: number, userId: number): Promise<boolean>;
+  likeReview(userId: number, reviewId: number, isLike: boolean): Promise<void>;
+  getUserReviewForContent(userId: number, contentId: number): Promise<UserReview | undefined>;
   
   // Views and stats
   incrementViewCount(contentId: number): Promise<void>;
@@ -298,6 +307,83 @@ export class DatabaseStorage implements IStorage {
         lastViewedAt: new Date()
       }
     });
+  }
+
+  // Review methods
+  async addReview(review: InsertUserReview): Promise<UserReview> {
+    const [newReview] = await db.insert(userReviews).values(review).returning();
+    return newReview;
+  }
+
+  async getContentReviews(contentId: number): Promise<UserReview[]> {
+    return await db
+      .select()
+      .from(userReviews)
+      .where(and(eq(userReviews.contentId, contentId), eq(userReviews.isActive, true)))
+      .orderBy(desc(userReviews.createdAt));
+  }
+
+  async updateReview(reviewId: number, userId: number, reviewData: Partial<InsertUserReview>): Promise<UserReview> {
+    const [updatedReview] = await db
+      .update(userReviews)
+      .set({ ...reviewData, updatedAt: new Date() })
+      .where(and(eq(userReviews.id, reviewId), eq(userReviews.userId, userId)))
+      .returning();
+    
+    if (!updatedReview) throw new Error("Review not found or not owned by user");
+    return updatedReview;
+  }
+
+  async deleteReview(reviewId: number, userId: number): Promise<boolean> {
+    const result = await db
+      .update(userReviews)
+      .set({ isActive: false })
+      .where(and(eq(userReviews.id, reviewId), eq(userReviews.userId, userId)))
+      .returning();
+    
+    return result.length > 0;
+  }
+
+  async likeReview(userId: number, reviewId: number, isLike: boolean): Promise<void> {
+    // First, remove any existing like/dislike
+    await db.delete(reviewLikes).where(
+      and(eq(reviewLikes.userId, userId), eq(reviewLikes.reviewId, reviewId))
+    );
+    
+    // Insert new like/dislike
+    await db.insert(reviewLikes).values({ userId, reviewId, isLike });
+    
+    // Update the review's like/dislike count
+    const [likesCount] = await db
+      .select({ count: sql<number>`count(*)::int` })
+      .from(reviewLikes)
+      .where(and(eq(reviewLikes.reviewId, reviewId), eq(reviewLikes.isLike, true)));
+    
+    const [dislikesCount] = await db
+      .select({ count: sql<number>`count(*)::int` })
+      .from(reviewLikes)
+      .where(and(eq(reviewLikes.reviewId, reviewId), eq(reviewLikes.isLike, false)));
+    
+    await db
+      .update(userReviews)
+      .set({ 
+        likes: likesCount?.count || 0,
+        dislikes: dislikesCount?.count || 0
+      })
+      .where(eq(userReviews.id, reviewId));
+  }
+
+  async getUserReviewForContent(userId: number, contentId: number): Promise<UserReview | undefined> {
+    const [review] = await db
+      .select()
+      .from(userReviews)
+      .where(and(
+        eq(userReviews.userId, userId), 
+        eq(userReviews.contentId, contentId),
+        eq(userReviews.isActive, true)
+      ));
+    
+    return review || undefined;
   }
 
   async getUserStats(userId: number): Promise<{ favorites: number, watchHistory: number, comments: number }> {
@@ -568,6 +654,31 @@ class TemporaryMemoryStorage implements IStorage {
 
   async incrementViewCount(contentId: number): Promise<void> {
     // Not implemented in temporary storage
+  }
+
+  // Review methods - not implemented for temporary storage
+  async addReview(review: InsertUserReview): Promise<UserReview> {
+    throw new Error("Not implemented in temporary storage");
+  }
+
+  async getContentReviews(contentId: number): Promise<UserReview[]> {
+    return [];
+  }
+
+  async updateReview(reviewId: number, userId: number, review: Partial<InsertUserReview>): Promise<UserReview> {
+    throw new Error("Not implemented in temporary storage");
+  }
+
+  async deleteReview(reviewId: number, userId: number): Promise<boolean> {
+    return false;
+  }
+
+  async likeReview(userId: number, reviewId: number, isLike: boolean): Promise<void> {
+    // Not implemented in temporary storage
+  }
+
+  async getUserReviewForContent(userId: number, contentId: number): Promise<UserReview | undefined> {
+    return undefined;
   }
 
   async getUserStats(userId: number): Promise<{ favorites: number, watchHistory: number, comments: number }> {
