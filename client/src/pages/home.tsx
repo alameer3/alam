@@ -4,8 +4,7 @@ import { Link } from "wouter";
 import { useAuth } from "@/hooks/useAuth";
 import { useFavorites } from "@/hooks/useUserInteractions";
 import { useQuery } from "@tanstack/react-query";
-import Header from "@/components/layout/header";
-import Navigation from "@/components/layout/navigation";
+
 import Footer from "@/components/layout/footer";
 import ContentGrid from "@/components/content/content-grid";
 import EnhancedContentCard from "@/components/content/enhanced-content-card";
@@ -43,8 +42,6 @@ export default function Home() {
 
   return (
     <div className="min-h-screen">
-      <Header />
-      <Navigation />
       
       {/* Hero Section */}
       <section className="hero-section">

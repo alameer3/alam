@@ -1,6 +1,5 @@
 import { useState } from "react";
-import Header from "@/components/layout/header";
-import Navigation from "@/components/layout/navigation";
+
 import Footer from "@/components/layout/footer";
 import ContentGrid from "@/components/content/content-grid";
 import Filters from "@/components/content/filters";
@@ -33,8 +32,6 @@ export default function Television() {
 
   return (
     <div className="min-h-screen">
-      <Header />
-      <Navigation />
       
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
