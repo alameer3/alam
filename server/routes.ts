@@ -472,6 +472,137 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Admin routes
+  app.get("/api/admin/stats", async (req, res) => {
+    try {
+      const stats = await storage.getContentStats();
+      const totalUsers = 8932; // Mock data - in real app, get from user table
+      const pendingApproval = 23; // Mock data - in real app, get from content with pending status
+      const totalViews = 2847392; // Mock data - in real app, get from content_views table
+      
+      res.json({
+        totalContent: Object.values(stats).reduce((a, b) => parseInt(a.toString()) + parseInt(b.toString()), 0),
+        totalUsers,
+        pendingApproval,
+        totalViews,
+        contentByType: stats
+      });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch admin stats" });
+    }
+  });
+
+  app.get("/api/content/pending", async (req, res) => {
+    try {
+      // Mock data for pending content approval
+      const pendingContent = [
+        {
+          id: 1,
+          title: "The Matrix",
+          titleArabic: "الماتريكس",
+          type: "movie",
+          submittedBy: "محمد أحمد",
+          submittedAt: new Date("2024-01-15"),
+          status: "pending",
+          priority: "high",
+          category: "أجنبي",
+          genre: "خيال علمي",
+          rating: 8.7,
+          posterUrl: "/api/placeholder/300/400",
+          description: "فيلم خيال علمي عن الواقع الافتراضي"
+        }
+      ];
+      res.json(pendingContent);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch pending content" });
+    }
+  });
+
+  app.get("/api/content/approved", async (req, res) => {
+    try {
+      // Mock data for approved content
+      const approvedContent = [
+        {
+          id: 3,
+          title: "Inception",
+          titleArabic: "البداية",
+          type: "movie",
+          approvedBy: "أحمد علي",
+          approvedAt: new Date("2024-01-13"),
+          status: "approved",
+          views: 15420,
+          rating: 8.8
+        }
+      ];
+      res.json(approvedContent);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch approved content" });
+    }
+  });
+
+  app.get("/api/content/rejected", async (req, res) => {
+    try {
+      // Mock data for rejected content
+      const rejectedContent = [
+        {
+          id: 4,
+          title: "Low Quality Movie",
+          titleArabic: "فيلم رديء الجودة",
+          type: "movie",
+          rejectedBy: "أحمد علي",
+          rejectedAt: new Date("2024-01-12"),
+          status: "rejected",
+          rejectionReason: "جودة الفيديو منخفضة جداً"
+        }
+      ];
+      res.json(rejectedContent);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch rejected content" });
+    }
+  });
+
+  app.post("/api/content/:id/approve", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const { adminId } = req.body;
+      
+      // In a real app, update content status to approved
+      // await storage.updateContent(id, { status: 'approved', approvedBy: adminId });
+      
+      res.json({ message: "Content approved successfully" });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to approve content" });
+    }
+  });
+
+  app.post("/api/content/:id/reject", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const { adminId, reason } = req.body;
+      
+      // In a real app, update content status to rejected
+      // await storage.updateContent(id, { status: 'rejected', rejectedBy: adminId, rejectionReason: reason });
+      
+      res.json({ message: "Content rejected successfully" });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to reject content" });
+    }
+  });
+
+  app.post("/api/content/:id/suspend", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      const { adminId } = req.body;
+      
+      // In a real app, update content status to suspended
+      // await storage.updateContent(id, { status: 'suspended', suspendedBy: adminId });
+      
+      res.json({ message: "Content suspended successfully" });
+    } catch (error) {
+      res.status(500).json({ error: "Failed to suspend content" });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }

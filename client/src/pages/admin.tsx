@@ -1,30 +1,23 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useLocation } from "wouter";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/layout/ui/card";
 import { Button } from "@/components/layout/ui/button";
 import { Input } from "@/components/layout/ui/input";
 import { Label } from "@/components/layout/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/layout/ui/tabs";
-import { Film, Tv, Monitor, Music, Plus, Edit, Trash2 } from "lucide-react";
-import AdminDashboard from "@/components/admin/admin-dashboard";
-import ContentManagement from "@/components/admin/content-management";
-import CategoriesManagement from "@/components/admin/categories-management";
-import SettingsManagement from "@/components/admin/settings-management";
+import { Shield, ArrowLeft } from "lucide-react";
 
 export default function Admin() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
   const [credentials, setCredentials] = useState({ username: "", password: "" });
-
-  const { data: stats } = useQuery({
-    queryKey: ['/api/stats'],
-    enabled: isAuthenticated,
-  });
+  const [, navigate] = useLocation();
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     // Simple admin check - in production, use proper authentication
     if (credentials.username === "admin" && credentials.password === "admin123") {
       setIsAuthenticated(true);
+      // Redirect to dashboard after login
+      navigate("/admin/dashboard");
     } else {
       alert("بيانات الدخول غير صحيحة");
     }
@@ -32,10 +25,13 @@ export default function Admin() {
 
   if (!isAuthenticated) {
     return (
-      <div className="min-h-screen bg-dark flex items-center justify-center">
+      <div className="min-h-screen bg-background flex items-center justify-center">
         <Card className="w-full max-w-md">
           <CardHeader>
-            <CardTitle className="text-center text-xl">لوحة التحكم الإدارية</CardTitle>
+            <CardTitle className="text-center text-xl flex items-center justify-center gap-2">
+              <Shield className="w-6 h-6" />
+              لوحة التحكم الإدارية
+            </CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleLogin} className="space-y-4">
@@ -47,6 +43,7 @@ export default function Admin() {
                   value={credentials.username}
                   onChange={(e) => setCredentials(prev => ({ ...prev, username: e.target.value }))}
                   required
+                  placeholder="admin"
                 />
               </div>
               <div>
@@ -57,63 +54,52 @@ export default function Admin() {
                   value={credentials.password}
                   onChange={(e) => setCredentials(prev => ({ ...prev, password: e.target.value }))}
                   required
+                  placeholder="admin123"
                 />
               </div>
-              <Button type="submit" className="w-full bg-orange-500 hover:bg-orange-600">
+              <Button type="submit" className="w-full">
                 تسجيل الدخول
               </Button>
             </form>
+            
+            <div className="mt-4 p-3 bg-muted rounded-md">
+              <p className="text-sm text-muted-foreground text-center">
+                بيانات الدخول التجريبية:<br />
+                المستخدم: admin<br />
+                كلمة المرور: admin123
+              </p>
+            </div>
+
+            <div className="mt-4 text-center">
+              <Button
+                variant="outline"
+                onClick={() => navigate("/")}
+                className="flex items-center gap-2"
+              >
+                <ArrowLeft className="w-4 h-4" />
+                العودة للصفحة الرئيسية
+              </Button>
+            </div>
           </CardContent>
         </Card>
       </div>
     );
   }
 
+  // If authenticated, redirect to dashboard
+  navigate("/admin/dashboard");
+  
   return (
-    <div className="min-h-screen bg-dark p-6">
-      <div className="max-w-7xl mx-auto">
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold text-white mb-2">لوحة التحكم الإدارية</h1>
-          <p className="text-gray-400">إدارة شاملة لمحتوى الموقع</p>
-        </div>
-
-        <Tabs defaultValue="dashboard" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-5">
-            <TabsTrigger value="dashboard">لوحة المعلومات</TabsTrigger>
-            <TabsTrigger value="content">إدارة المحتوى</TabsTrigger>
-            <TabsTrigger value="categories">الفئات</TabsTrigger>
-            <TabsTrigger value="users">المستخدمون</TabsTrigger>
-            <TabsTrigger value="settings">الإعدادات</TabsTrigger>
-          </TabsList>
-
-          <TabsContent value="dashboard">
-            <AdminDashboard stats={stats} />
-          </TabsContent>
-
-          <TabsContent value="content">
-            <ContentManagement />
-          </TabsContent>
-
-          <TabsContent value="categories">
-            <CategoriesManagement />
-          </TabsContent>
-
-          <TabsContent value="users">
-            <Card>
-              <CardHeader>
-                <CardTitle>إدارة المستخدمين</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-400">قريباً: إدارة المستخدمين (يتطلب نظام تسجيل الدخول)</p>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="settings">
-            <SettingsManagement />
-          </TabsContent>
-        </Tabs>
-      </div>
+    <div className="min-h-screen bg-background flex items-center justify-center">
+      <Card className="w-full max-w-md">
+        <CardContent className="p-6 text-center">
+          <Shield className="w-12 h-12 mx-auto mb-4 text-primary" />
+          <h2 className="text-lg font-semibold mb-2">جاري التحويل...</h2>
+          <p className="text-muted-foreground">
+            يتم تحويلك إلى لوحة التحكم الإدارية
+          </p>
+        </CardContent>
+      </Card>
     </div>
   );
 }

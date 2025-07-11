@@ -14,6 +14,7 @@ import Television from "@/pages/television";
 import Miscellaneous from "@/pages/miscellaneous";
 import ContentDetail from "@/pages/content-detail";
 import Admin from "@/pages/admin";
+import AdminDashboard from "@/pages/admin/dashboard";
 
 function Router() {
   return (
@@ -25,6 +26,7 @@ function Router() {
       <Route path="/miscellaneous" component={Miscellaneous} />
       <Route path="/content/:id" component={ContentDetail} />
       <Route path="/admin" component={Admin} />
+      <Route path="/admin/dashboard" component={AdminDashboard} />
       <Route component={NotFound} />
     </Switch>
   );
