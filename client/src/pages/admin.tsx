@@ -8,6 +8,8 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/layout/ui
 import { Film, Tv, Monitor, Music, Plus, Edit, Trash2 } from "lucide-react";
 import AdminDashboard from "@/components/admin/admin-dashboard";
 import ContentManagement from "@/components/admin/content-management";
+import CategoriesManagement from "@/components/admin/categories-management";
+import SettingsManagement from "@/components/admin/settings-management";
 
 export default function Admin() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -76,10 +78,11 @@ export default function Admin() {
         </div>
 
         <Tabs defaultValue="dashboard" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="dashboard">لوحة المعلومات</TabsTrigger>
             <TabsTrigger value="content">إدارة المحتوى</TabsTrigger>
             <TabsTrigger value="categories">الفئات</TabsTrigger>
+            <TabsTrigger value="users">المستخدمون</TabsTrigger>
             <TabsTrigger value="settings">الإعدادات</TabsTrigger>
           </TabsList>
 
@@ -92,25 +95,22 @@ export default function Admin() {
           </TabsContent>
 
           <TabsContent value="categories">
+            <CategoriesManagement />
+          </TabsContent>
+
+          <TabsContent value="users">
             <Card>
               <CardHeader>
-                <CardTitle>إدارة الفئات والتصنيفات</CardTitle>
+                <CardTitle>إدارة المستخدمين</CardTitle>
               </CardHeader>
               <CardContent>
-                <p className="text-gray-400">قريباً: إدارة الفئات والتصنيفات</p>
+                <p className="text-gray-400">قريباً: إدارة المستخدمين (يتطلب نظام تسجيل الدخول)</p>
               </CardContent>
             </Card>
           </TabsContent>
 
           <TabsContent value="settings">
-            <Card>
-              <CardHeader>
-                <CardTitle>إعدادات الموقع</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-400">قريباً: إعدادات الموقع العامة</p>
-              </CardContent>
-            </Card>
+            <SettingsManagement />
           </TabsContent>
         </Tabs>
       </div>

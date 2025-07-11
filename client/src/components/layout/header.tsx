@@ -1,19 +1,27 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
-import { Search, Bell, User, Crown } from "lucide-react";
+import { Search, Bell, User, Crown, Heart } from "lucide-react";
 import { Button } from "@/components/layout/ui/button";
 import { Input } from "@/components/layout/ui/input";
+import SearchModal from "@/components/search/search-modal";
+import FavoritesModal from "@/components/user/favorites-modal";
+import { Content } from "@shared/schema";
 
 export default function Header() {
   const [location] = useLocation();
   const [searchQuery, setSearchQuery] = useState("");
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [isFavoritesOpen, setIsFavoritesOpen] = useState(false);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     if (searchQuery.trim()) {
-      // TODO: Implement search functionality
-      console.log("Search query:", searchQuery);
+      setIsSearchOpen(true);
     }
+  };
+
+  const handleContentClick = (content: Content) => {
+    window.location.href = `/content/${content.id}`;
   };
 
   return (
@@ -46,6 +54,14 @@ export default function Header() {
 
           {/* User Menu */}
           <div className="flex items-center space-x-4 space-x-reverse">
+            <Button 
+              variant="ghost" 
+              className="hover:bg-card"
+              onClick={() => setIsFavoritesOpen(true)}
+            >
+              <Heart className="w-5 h-5" />
+              <span className="hidden lg:inline ml-2">المفضلة</span>
+            </Button>
             <Button variant="ghost" className="flex items-center space-x-2 space-x-reverse hover:bg-card">
               <User className="w-5 h-5" />
               <span className="hidden lg:inline">أهلاً بك</span>
@@ -57,6 +73,20 @@ export default function Header() {
           </div>
         </div>
       </div>
+
+      {/* Search Modal */}
+      <SearchModal
+        isOpen={isSearchOpen}
+        onClose={() => setIsSearchOpen(false)}
+        onContentClick={handleContentClick}
+      />
+
+      {/* Favorites Modal */}
+      <FavoritesModal
+        isOpen={isFavoritesOpen}
+        onClose={() => setIsFavoritesOpen(false)}
+        onContentClick={handleContentClick}
+      />
     </header>
   );
 }

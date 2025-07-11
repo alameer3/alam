@@ -92,11 +92,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const type = req.query.type as string;
       
       if (!query) {
-        return res.status(400).json({ error: "Search query is required" });
+        return res.json({ content: [] });
       }
 
       const results = await storage.searchContent(query, type);
-      res.json(results);
+      res.json({ content: results });
     } catch (error) {
       res.status(500).json({ error: "Search failed" });
     }
