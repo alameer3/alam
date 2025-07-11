@@ -30,6 +30,8 @@ This is a full-stack web application for an Arabic cinema streaming platform cal
 - تم إضافة شريط التنقل الثانوي (Navigation) مع روابط الصفحات الرئيسية
 - تم إنشاء قاعدة بيانات PostgreSQL وتهيئتها بالبيانات التجريبية
 - تم إصلاح جميع مشاكل API endpoints والاتصال بقاعدة البيانات
+- تم إزالة تكرار مكونات Header و Navigation من الصفحات الفردية
+- تم إزالة قسم "لوحة المستخدم" من الصفحة الرئيسية بناءً على طلب المستخدم
 
 ## System Architecture
 
