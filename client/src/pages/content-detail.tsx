@@ -42,8 +42,6 @@ export default function ContentDetail() {
   const [videoDuration, setVideoDuration] = useState(0);
   const [showContinueDialog, setShowContinueDialog] = useState(false);
   
-  const { savedProgress, clearProgress } = useWatchProgress(content?.id || 0);
-  
   // Get content ID from URL params (would normally come from router)
   const contentId = new URLSearchParams(window.location.search).get('id');
   
@@ -51,6 +49,8 @@ export default function ContentDetail() {
     queryKey: ["/api/content", contentId],
     enabled: !!contentId,
   });
+
+  const { savedProgress, clearProgress } = useWatchProgress(content?.id || 0);
 
   const { data: favoritesData } = useFavorites(user?.id);
   const addToFavoritesMutation = useAddToFavorites(user?.id);
