@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
+import { useLocation } from 'wouter';
 import { useQuery } from '@tanstack/react-query';
 import { 
   BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer,
-  PieChart, Pie, Cell, LineChart, Line, Area, AreaChart
+  PieChart, Pie, Cell, LineChart, Line
 } from 'recharts';
 import { 
   Users, Film, TrendingUp, Eye, Star, MessageSquare, Heart, Download,
-  Plus, Edit, Trash2, Search, Filter, Grid, List, Calendar, Clock
+  Plus, Edit, Trash2, Search, Filter, Grid, List, Calendar, Clock, LogOut, Shield
 } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
@@ -21,6 +22,8 @@ import { useToast } from '@/hooks/use-toast';
 import Header from '@/components/layout/header';
 import Navigation from '@/components/layout/navigation';
 import Footer from '@/components/layout/footer';
+import AdminGuard from '@/components/admin/admin-guard';
+import { useAdminAuth } from '@/hooks/useAdminAuth';
 
 // Mock data for admin dashboard
 const statsData = [
@@ -46,41 +49,13 @@ const topContent = [
   { id: 4, title: 'الوثائقي الجديد', views: 8420, rating: 4.7, type: 'وثائقي' }
 ];
 
-interface ContentFormData {
-  title: string;
-  titleArabic: string;
-  description: string;
-  descriptionArabic: string;
-  type: string;
-  year: number;
-  language: string;
-  quality: string;
-  rating: number;
-  duration: number;
-  posterUrl: string;
-  videoUrl: string;
-}
-
-export default function AdminDashboard() {
+function AdminDashboardContent() {
+  const [, setLocation] = useLocation();
   const [selectedView, setSelectedView] = useState<'grid' | 'list'>('grid');
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedType, setSelectedType] = useState('all');
   const [showAddDialog, setShowAddDialog] = useState(false);
-  const [formData, setFormData] = useState<ContentFormData>({
-    title: '',
-    titleArabic: '',
-    description: '',
-    descriptionArabic: '',
-    type: 'movie',
-    year: new Date().getFullYear(),
-    language: 'Arabic',
-    quality: 'HD',
-    rating: 0,
-    duration: 0,
-    posterUrl: '',
-    videoUrl: ''
-  });
-  
+  const { logout } = useAdminAuth();
   const { toast } = useToast();
 
   const { data: stats } = useQuery({
@@ -95,43 +70,6 @@ export default function AdminDashboard() {
       popularContent: topContent
     })
   });
-
-  const { data: contentList } = useQuery({
-    queryKey: ['/api/admin/content'],
-    queryFn: () => topContent
-  });
-
-  const handleAddContent = async () => {
-    try {
-      // Here you would make an API call to add content
-      console.log('Adding content:', formData);
-      toast({
-        title: 'تم إضافة المحتوى بنجاح',
-        description: 'تم إضافة المحتوى الجديد إلى قاعدة البيانات'
-      });
-      setShowAddDialog(false);
-      setFormData({
-        title: '',
-        titleArabic: '',
-        description: '',
-        descriptionArabic: '',
-        type: 'movie',
-        year: new Date().getFullYear(),
-        language: 'Arabic',
-        quality: 'HD',
-        rating: 0,
-        duration: 0,
-        posterUrl: '',
-        videoUrl: ''
-      });
-    } catch (error) {
-      toast({
-        title: 'خطأ في إضافة المحتوى',
-        description: 'حدث خطأ أثناء إضافة المحتوى. يرجى المحاولة مرة أخرى.',
-        variant: 'destructive'
-      });
-    }
-  };
 
   const StatCard = ({ title, value, icon: Icon, description, trend }: any) => (
     <Card>
@@ -152,6 +90,11 @@ export default function AdminDashboard() {
     </Card>
   );
 
+  const handleLogout = () => {
+    logout();
+    setLocation('/');
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -160,161 +103,26 @@ export default function AdminDashboard() {
       <main className="container mx-auto px-4 py-8">
         <div className="flex items-center justify-between mb-8">
           <div>
-            <h1 className="text-3xl font-bold">لوحة التحكم الإدارية</h1>
+            <h1 className="text-3xl font-bold flex items-center gap-2">
+              <Shield className="w-8 h-8 text-primary" />
+              لوحة التحكم الإدارية
+            </h1>
             <p className="text-muted-foreground mt-1">إدارة وتحليل منصة أكاديمية السينما</p>
           </div>
-          <Dialog open={showAddDialog} onOpenChange={setShowAddDialog}>
-            <DialogTrigger asChild>
-              <Button className="gap-2">
-                <Plus className="h-4 w-4" />
-                إضافة محتوى جديد
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="max-w-2xl">
-              <DialogHeader>
-                <DialogTitle>إضافة محتوى جديد</DialogTitle>
-              </DialogHeader>
-              <div className="grid gap-4 py-4">
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="title">العنوان (إنجليزي)</Label>
-                    <Input
-                      id="title"
-                      value={formData.title}
-                      onChange={(e) => setFormData({...formData, title: e.target.value})}
-                      placeholder="عنوان المحتوى"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="titleArabic">العنوان (عربي)</Label>
-                    <Input
-                      id="titleArabic"
-                      value={formData.titleArabic}
-                      onChange={(e) => setFormData({...formData, titleArabic: e.target.value})}
-                      placeholder="العنوان بالعربية"
-                    />
-                  </div>
-                </div>
-                
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="type">نوع المحتوى</Label>
-                    <Select value={formData.type} onValueChange={(value) => setFormData({...formData, type: value})}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="اختر نوع المحتوى" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="movie">فيلم</SelectItem>
-                        <SelectItem value="series">مسلسل</SelectItem>
-                        <SelectItem value="tv">برنامج تلفزيوني</SelectItem>
-                        <SelectItem value="misc">متنوع</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div>
-                    <Label htmlFor="year">سنة الإنتاج</Label>
-                    <Input
-                      id="year"
-                      type="number"
-                      value={formData.year}
-                      onChange={(e) => setFormData({...formData, year: parseInt(e.target.value)})}
-                      placeholder="2024"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <Label htmlFor="description">الوصف (إنجليزي)</Label>
-                  <Textarea
-                    id="description"
-                    value={formData.description}
-                    onChange={(e) => setFormData({...formData, description: e.target.value})}
-                    placeholder="وصف المحتوى"
-                  />
-                </div>
-                
-                <div>
-                  <Label htmlFor="descriptionArabic">الوصف (عربي)</Label>
-                  <Textarea
-                    id="descriptionArabic"
-                    value={formData.descriptionArabic}
-                    onChange={(e) => setFormData({...formData, descriptionArabic: e.target.value})}
-                    placeholder="وصف المحتوى بالعربية"
-                  />
-                </div>
-
-                <div className="grid grid-cols-3 gap-4">
-                  <div>
-                    <Label htmlFor="language">اللغة</Label>
-                    <Select value={formData.language} onValueChange={(value) => setFormData({...formData, language: value})}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="اختر اللغة" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="Arabic">عربي</SelectItem>
-                        <SelectItem value="English">إنجليزي</SelectItem>
-                        <SelectItem value="Hindi">هندي</SelectItem>
-                        <SelectItem value="Turkish">تركي</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div>
-                    <Label htmlFor="quality">الجودة</Label>
-                    <Select value={formData.quality} onValueChange={(value) => setFormData({...formData, quality: value})}>
-                      <SelectTrigger>
-                        <SelectValue placeholder="اختر الجودة" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        <SelectItem value="HD">HD</SelectItem>
-                        <SelectItem value="Full HD">Full HD</SelectItem>
-                        <SelectItem value="4K">4K</SelectItem>
-                        <SelectItem value="8K">8K</SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </div>
-                  <div>
-                    <Label htmlFor="duration">المدة (دقيقة)</Label>
-                    <Input
-                      id="duration"
-                      type="number"
-                      value={formData.duration}
-                      onChange={(e) => setFormData({...formData, duration: parseInt(e.target.value)})}
-                      placeholder="120"
-                    />
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="posterUrl">رابط الملصق</Label>
-                    <Input
-                      id="posterUrl"
-                      value={formData.posterUrl}
-                      onChange={(e) => setFormData({...formData, posterUrl: e.target.value})}
-                      placeholder="https://example.com/poster.jpg"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="videoUrl">رابط الفيديو</Label>
-                    <Input
-                      id="videoUrl"
-                      value={formData.videoUrl}
-                      onChange={(e) => setFormData({...formData, videoUrl: e.target.value})}
-                      placeholder="https://example.com/video.mp4"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="flex justify-end gap-2">
-                <Button variant="outline" onClick={() => setShowAddDialog(false)}>
-                  إلغاء
-                </Button>
-                <Button onClick={handleAddContent}>
-                  إضافة المحتوى
-                </Button>
-              </div>
-            </DialogContent>
-          </Dialog>
+          <div className="flex items-center gap-4">
+            <Button
+              variant="outline"
+              className="flex items-center gap-2"
+              onClick={handleLogout}
+            >
+              <LogOut className="w-4 h-4" />
+              تسجيل الخروج
+            </Button>
+            <Button className="gap-2">
+              <Plus className="h-4 w-4" />
+              إضافة محتوى جديد
+            </Button>
+          </div>
         </div>
 
         <Tabs defaultValue="overview" className="space-y-6">
@@ -389,18 +197,18 @@ export default function AdminDashboard() {
               <Card>
                 <CardHeader>
                   <CardTitle>المشاهدات والمستخدمين</CardTitle>
-                  <CardDescription>إحصائيات الستة أشهر الماضية</CardDescription>
+                  <CardDescription>إحصائيات الشهور الماضية</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <ResponsiveContainer width="100%" height={300}>
-                    <AreaChart data={viewsData}>
+                    <BarChart data={viewsData}>
                       <CartesianGrid strokeDasharray="3 3" />
                       <XAxis dataKey="month" />
                       <YAxis />
                       <Tooltip />
-                      <Area type="monotone" dataKey="views" stackId="1" stroke="#8884d8" fill="#8884d8" />
-                      <Area type="monotone" dataKey="users" stackId="1" stroke="#82ca9d" fill="#82ca9d" />
-                    </AreaChart>
+                      <Bar dataKey="views" fill="#8884d8" />
+                      <Bar dataKey="users" fill="#82ca9d" />
+                    </BarChart>
                   </ResponsiveContainer>
                 </CardContent>
               </Card>
@@ -408,31 +216,34 @@ export default function AdminDashboard() {
 
             <Card>
               <CardHeader>
-                <CardTitle>أشهر المحتوى</CardTitle>
-                <CardDescription>المحتوى الأكثر مشاهدة هذا الشهر</CardDescription>
+                <CardTitle>المحتوى الأكثر شعبية</CardTitle>
+                <CardDescription>المحتوى الأكثر مشاهدة وتقييماً</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {topContent.map((item, index) => (
-                    <div key={item.id} className="flex items-center justify-between p-4 border rounded-lg">
-                      <div className="flex items-center space-x-4">
-                        <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center text-primary-foreground font-bold">
-                          {index + 1}
+                  {topContent.map((item) => (
+                    <div key={item.id} className="flex items-center justify-between p-3 rounded-lg border">
+                      <div className="flex items-center space-x-4 space-x-reverse">
+                        <div className="w-12 h-12 bg-gradient-to-r from-orange-500 to-red-600 rounded-lg flex items-center justify-center">
+                          <Film className="w-6 h-6 text-white" />
                         </div>
                         <div>
                           <h3 className="font-semibold">{item.title}</h3>
-                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                            <Badge variant="secondary">{item.type}</Badge>
-                            <span className="flex items-center gap-1">
-                              <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                              {item.rating}
-                            </span>
-                          </div>
+                          <p className="text-sm text-muted-foreground">{item.type}</p>
                         </div>
                       </div>
-                      <div className="text-right">
-                        <div className="font-semibold">{item.views.toLocaleString()}</div>
-                        <div className="text-sm text-muted-foreground">مشاهدة</div>
+                      <div className="flex items-center space-x-4 space-x-reverse">
+                        <div className="text-center">
+                          <div className="text-sm font-semibold">{item.views.toLocaleString()}</div>
+                          <div className="text-xs text-muted-foreground">مشاهدة</div>
+                        </div>
+                        <div className="text-center">
+                          <div className="text-sm font-semibold flex items-center">
+                            <Star className="w-4 h-4 text-yellow-500 mr-1" />
+                            {item.rating}
+                          </div>
+                          <div className="text-xs text-muted-foreground">تقييم</div>
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -441,87 +252,18 @@ export default function AdminDashboard() {
             </Card>
           </TabsContent>
 
-          <TabsContent value="content" className="space-y-6">
-            <div className="flex items-center justify-between">
-              <h2 className="text-2xl font-bold">إدارة المحتوى</h2>
-              <div className="flex items-center gap-4">
-                <div className="flex items-center gap-2">
-                  <Search className="h-4 w-4" />
-                  <Input
-                    placeholder="البحث في المحتوى..."
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    className="w-64"
-                  />
-                </div>
-                <Select value={selectedType} onValueChange={setSelectedType}>
-                  <SelectTrigger className="w-32">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="all">كل الأنواع</SelectItem>
-                    <SelectItem value="movie">أفلام</SelectItem>
-                    <SelectItem value="series">مسلسلات</SelectItem>
-                    <SelectItem value="tv">برامج تلفزيونية</SelectItem>
-                    <SelectItem value="misc">متنوع</SelectItem>
-                  </SelectContent>
-                </Select>
-                <div className="flex items-center gap-1">
-                  <Button
-                    variant={selectedView === 'grid' ? 'default' : 'outline'}
-                    size="sm"
-                    onClick={() => setSelectedView('grid')}
-                  >
-                    <Grid className="h-4 w-4" />
-                  </Button>
-                  <Button
-                    variant={selectedView === 'list' ? 'default' : 'outline'}
-                    size="sm"
-                    onClick={() => setSelectedView('list')}
-                  >
-                    <List className="h-4 w-4" />
-                  </Button>
-                </div>
-              </div>
-            </div>
-
-            <div className="grid gap-4">
-              {contentList?.map((item) => (
-                <Card key={item.id}>
-                  <CardContent className="p-4">
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center space-x-4">
-                        <div className="w-16 h-16 bg-gray-200 rounded-lg flex items-center justify-center">
-                          <Film className="h-8 w-8 text-gray-400" />
-                        </div>
-                        <div>
-                          <h3 className="font-semibold">{item.title}</h3>
-                          <div className="flex items-center gap-2 text-sm text-muted-foreground">
-                            <Badge variant="secondary">{item.type}</Badge>
-                            <span className="flex items-center gap-1">
-                              <Star className="h-3 w-3 fill-yellow-400 text-yellow-400" />
-                              {item.rating}
-                            </span>
-                            <span className="flex items-center gap-1">
-                              <Eye className="h-3 w-3" />
-                              {item.views.toLocaleString()}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Button variant="outline" size="sm">
-                          <Edit className="h-4 w-4" />
-                        </Button>
-                        <Button variant="outline" size="sm">
-                          <Trash2 className="h-4 w-4" />
-                        </Button>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
+          <TabsContent value="content">
+            <Card>
+              <CardHeader>
+                <CardTitle>إدارة المحتوى</CardTitle>
+                <CardDescription>إضافة وتعديل وحذف المحتوى</CardDescription>
+              </CardHeader>
+              <CardContent>
+                <p className="text-center text-muted-foreground py-8">
+                  ستتوفر إدارة المحتوى قريباً...
+                </p>
+              </CardContent>
+            </Card>
           </TabsContent>
 
           <TabsContent value="users">
@@ -556,5 +298,13 @@ export default function AdminDashboard() {
       
       <Footer />
     </div>
+  );
+}
+
+export default function AdminDashboard() {
+  return (
+    <AdminGuard>
+      <AdminDashboardContent />
+    </AdminGuard>
   );
 }

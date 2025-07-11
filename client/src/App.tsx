@@ -16,6 +16,8 @@ import Search from "@/pages/search";
 import ContentDetail from "@/pages/content-detail";
 import Admin from "@/pages/admin";
 import AdminDashboard from "@/pages/admin-dashboard";
+import AdminLogin from "@/pages/admin-login";
+import SecretAdminAccess from "@/pages/secret-admin-access";
 
 function Router() {
   return (
@@ -28,7 +30,9 @@ function Router() {
       <Route path="/search" component={Search} />
       <Route path="/content/:id" component={ContentDetail} />
       <Route path="/admin" component={Admin} />
+      <Route path="/admin-login" component={AdminLogin} />
       <Route path="/admin-dashboard" component={AdminDashboard} />
+      <Route path="/secret-admin" component={SecretAdminAccess} />
       <Route component={NotFound} />
     </Switch>
   );
