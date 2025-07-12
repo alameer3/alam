@@ -73,212 +73,134 @@ export function AutoTrailerHero({
             className="w-full h-full object-cover"
             autoPlay
             muted={isMuted}
-            loop
             playsInline
             onLoadedData={handleVideoLoad}
+            poster={thumbnailUrl}
           >
             <source src={trailerUrl} type="video/mp4" />
+            متصفحك لا يدعم تشغيل الفيديو
           </video>
         ) : (
-          <img
-            src={thumbnailUrl || `/api/placeholder/1920/1080`}
-            alt={title}
-            className="w-full h-full object-cover"
+          <div
+            className="w-full h-full bg-cover bg-center"
+            style={{ backgroundImage: `url(${thumbnailUrl})` }}
           />
         )}
         
-        {/* Dark Overlay */}
+        {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-transparent" />
       </div>
 
       {/* Content */}
       <div className="relative z-10 flex items-center min-h-[70vh] px-4 md:px-8 lg:px-12">
-        <div className="max-w-4xl">
+        <div className="max-w-2xl">
+          
           {/* Title */}
-          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 drop-shadow-lg" dir="rtl">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight" dir="rtl">
             {title}
           </h1>
 
-          {/* Meta Info */}
+          {/* Details */}
           <div className="flex items-center gap-4 mb-6">
-            <div className="flex items-center gap-1">
+            <div className="flex items-center gap-2">
               <Star className="h-5 w-5 text-yellow-400 fill-current" />
               <span className="text-white font-medium">{rating}</span>
             </div>
-            <span className="text-white">{year}</span>
-            <span className="text-white">{duration}</span>
+            <Badge className="bg-white/20 text-white">
+              {year}
+            </Badge>
+            <Badge className="bg-red-600 text-white">
+              {duration}
+            </Badge>
           </div>
 
           {/* Genres */}
           <div className="flex flex-wrap gap-2 mb-6">
-            {genres.slice(0, 4).map((genre, index) => (
-              <Badge key={index} variant="secondary" className="bg-white/20 text-white border-white/30">
+            {genres.map((genre, index) => (
+              <Badge key={index} variant="outline" className="bg-black/50 text-white border-white/30">
                 {genre}
               </Badge>
             ))}
           </div>
 
           {/* Description */}
-          <p className="text-white text-lg md:text-xl mb-8 max-w-2xl leading-relaxed drop-shadow-sm" dir="rtl">
+          <p className="text-lg text-white/90 mb-8 leading-relaxed" dir="rtl">
             {description}
           </p>
 
           {/* Action Buttons */}
-          <div className="flex items-center gap-4 mb-8">
+          <div className="flex flex-wrap gap-4 mb-8">
             <Button
               size="lg"
-              className="bg-white text-black hover:bg-white/90 px-8 py-3 text-lg font-medium"
               onClick={onWatchNow}
+              className="bg-white text-black hover:bg-white/90 font-medium px-8"
             >
               <Play className="h-5 w-5 mr-2" />
-              مشاهدة الآن
+              شاهد الآن
             </Button>
-
+            
             <Button
               size="lg"
               variant="outline"
-              className="bg-white/20 text-white border-white/30 hover:bg-white/30 px-6 py-3"
               onClick={onAddToList}
+              className="bg-black/50 text-white border-white/30 hover:bg-black/70 font-medium px-8"
             >
               <Plus className="h-5 w-5 mr-2" />
-              إضافة للقائمة
+              إضافة لقائمتي
             </Button>
-
+            
             <Button
               size="lg"
               variant="outline"
-              className="bg-white/20 text-white border-white/30 hover:bg-white/30 px-6 py-3"
               onClick={onMoreInfo}
+              className="bg-black/50 text-white border-white/30 hover:bg-black/70 font-medium px-8"
             >
               <Info className="h-5 w-5 mr-2" />
               معلومات أكثر
             </Button>
           </div>
+
+          {/* Trailer Info */}
+          <div className="flex items-center gap-4 text-white/80">
+            <Badge className="bg-red-600 text-white">
+              مقطع دعائي
+            </Badge>
+            <span className="text-sm">
+              يتم التشغيل التلقائي للمقطع الدعائي
+            </span>
+          </div>
         </div>
       </div>
 
       {/* Video Controls */}
-      {showVideo && trailerUrl && (
-        <div className="absolute bottom-4 right-4 z-20">
-          <div className="flex items-center gap-2">
-            <Button
-              size="icon"
-              variant="outline"
-              className="bg-black/50 text-white border-white/30 hover:bg-black/70"
-              onClick={togglePlay}
-            >
-              {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
-            </Button>
-            
-            <Button
-              size="icon"
-              variant="outline"
-              className="bg-black/50 text-white border-white/30 hover:bg-black/70"
-              onClick={toggleMute}
-            >
-              {isMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
-            </Button>
-          </div>
-        </div>
-      )}
-
-      {/* Trailer Info Badge */}
-      {showVideo && trailerUrl && (
-        <div className="absolute top-4 left-4 z-20">
-          <Badge className="bg-red-600 text-white px-3 py-1">
-            مقطع دعائي
-          </Badge>
-        </div>
-      )}
-    </div>
-  );
-}
-
-// مكون المقطع الدعائي المصغر للكروت
-export function MiniTrailerCard({
-  title,
-  trailerUrl,
-  thumbnailUrl,
-  duration,
-  className = ""
-}: {
-  title: string;
-  trailerUrl: string;
-  thumbnailUrl: string;
-  duration: string;
-  className?: string;
-}) {
-  const [isHovered, setIsHovered] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
-
-  useEffect(() => {
-    let timer: NodeJS.Timeout;
-    
-    if (isHovered && trailerUrl) {
-      timer = setTimeout(() => {
-        setIsPlaying(true);
-      }, 1000);
-    } else {
-      setIsPlaying(false);
-    }
-
-    return () => {
-      if (timer) clearTimeout(timer);
-    };
-  }, [isHovered, trailerUrl]);
-
-  return (
-    <Card 
-      className={`relative overflow-hidden cursor-pointer group ${className}`}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-    >
-      <div className="aspect-video relative">
-        {isPlaying && trailerUrl ? (
-          <video
-            className="w-full h-full object-cover"
-            autoPlay
-            muted
-            loop
-            playsInline
-          >
-            <source src={trailerUrl} type="video/mp4" />
-          </video>
-        ) : (
-          <img
-            src={thumbnailUrl || `/api/placeholder/400/225`}
-            alt={title}
-            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-          />
-        )}
-
-        {/* Play Button Overlay */}
-        <div className="absolute inset-0 flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition-opacity">
+      {showVideo && (
+        <div className="absolute bottom-4 right-4 z-20 flex items-center gap-2">
           <Button
             size="icon"
             variant="ghost"
-            className="bg-white/20 text-white hover:bg-white/30 rounded-full"
+            onClick={togglePlay}
+            className="bg-black/50 text-white hover:bg-black/70"
           >
-            <Play className="h-6 w-6" />
+            {isPlaying ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}
+          </Button>
+          
+          <Button
+            size="icon"
+            variant="ghost"
+            onClick={toggleMute}
+            className="bg-black/50 text-white hover:bg-black/70"
+          >
+            {isMuted ? <VolumeX className="h-4 w-4" /> : <Volume2 className="h-4 w-4" />}
           </Button>
         </div>
+      )}
 
-        {/* Duration Badge */}
-        <Badge className="absolute bottom-2 right-2 bg-black/70 text-white text-xs">
-          {duration}
-        </Badge>
-
-        {/* Trailer Badge */}
-        <Badge className="absolute top-2 left-2 bg-red-600 text-white text-xs">
-          مقطع دعائي
-        </Badge>
-      </div>
-
-      <CardContent className="p-3">
-        <h4 className="font-medium text-sm line-clamp-2" dir="rtl">
-          {title}
-        </h4>
-      </CardContent>
-    </Card>
+      {/* Loading Indicator */}
+      {showVideo && !isLoaded && (
+        <div className="absolute inset-0 bg-black/50 flex items-center justify-center z-30">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
+        </div>
+      )}
+    </div>
   );
 }

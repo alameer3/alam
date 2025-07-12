@@ -1,15 +1,22 @@
 import { useState } from "react";
-import { Play, Pause, Volume2, VolumeX, Star, Clock, Eye, ThumbsUp, Share2, MoreHorizontal } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Play, Filter, Search, Calendar, Eye, Star, Clock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { Card, CardContent } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { 
+  Select, 
+  SelectContent, 
+  SelectItem, 
+  SelectTrigger, 
+  SelectValue 
+} from "@/components/ui/select";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
-import { TrailerPlayer } from "@/components/content/trailer-player";
-import { useTrailerPlayer } from "@/hooks/useTrailers";
+import { TrailerPlayer, MiniTrailerPlayer } from "./trailer-player";
 
 interface TrailerInfo {
   id: string;
+  contentId: number;
   title: string;
   description: string;
   duration: string;
@@ -24,280 +31,321 @@ interface TrailerInfo {
 }
 
 interface TrailerShowcaseProps {
-  contentId: number;
-  contentTitle: string;
   trailers: TrailerInfo[];
+  isLoading?: boolean;
+  onTrailerSelect?: (trailer: TrailerInfo) => void;
+  showFilters?: boolean;
+  className?: string;
 }
 
-export function TrailerShowcase({ contentId, contentTitle, trailers }: TrailerShowcaseProps) {
+export function TrailerShowcase({
+  trailers = [],
+  isLoading = false,
+  onTrailerSelect,
+  showFilters = true,
+  className = ""
+}: TrailerShowcaseProps) {
   const [selectedTrailer, setSelectedTrailer] = useState<TrailerInfo | null>(null);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const { playTrailer } = useTrailerPlayer();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedType, setSelectedType] = useState<string>("all");
+  const [sortBy, setSortBy] = useState("newest");
 
-  const handlePlayTrailer = (trailer: TrailerInfo) => {
-    setSelectedTrailer(trailer);
-    setIsDialogOpen(true);
-    playTrailer(trailer.id);
+  // Filter trailers based on search and type
+  const filteredTrailers = trailers.filter(trailer => {
+    const matchesSearch = trailer.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+                         trailer.description.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesType = selectedType === "all" || trailer.type === selectedType;
+    return matchesSearch && matchesType;
+  });
+
+  // Sort trailers
+  const sortedTrailers = [...filteredTrailers].sort((a, b) => {
+    switch (sortBy) {
+      case "newest":
+        return new Date(b.releaseDate).getTime() - new Date(a.releaseDate).getTime();
+      case "oldest":
+        return new Date(a.releaseDate).getTime() - new Date(b.releaseDate).getTime();
+      case "rating":
+        return b.rating - a.rating;
+      case "views":
+        return b.viewCount - a.viewCount;
+      default:
+        return 0;
+    }
+  });
+
+  // Group trailers by type
+  const trailersByType = {
+    trailer: sortedTrailers.filter(t => t.type === 'trailer'),
+    teaser: sortedTrailers.filter(t => t.type === 'teaser'),
+    'behind-scenes': sortedTrailers.filter(t => t.type === 'behind-scenes'),
+    interview: sortedTrailers.filter(t => t.type === 'interview')
   };
 
-  const groupedTrailers = trailers.reduce((acc, trailer) => {
-    if (!acc[trailer.type]) {
-      acc[trailer.type] = [];
+  const handleTrailerClick = (trailer: TrailerInfo) => {
+    setSelectedTrailer(trailer);
+    onTrailerSelect?.(trailer);
+  };
+
+  const formatViews = (views: number) => {
+    if (views >= 1000000) {
+      return `${(views / 1000000).toFixed(1)}M`;
+    } else if (views >= 1000) {
+      return `${(views / 1000).toFixed(1)}K`;
     }
-    acc[trailer.type].push(trailer);
-    return acc;
-  }, {} as Record<string, TrailerInfo[]>);
+    return views.toString();
+  };
 
   const getTypeLabel = (type: string) => {
     switch (type) {
-      case 'trailer': return 'مقاطع دعائية';
-      case 'teaser': return 'إعلانات تشويقية';
+      case 'trailer': return 'إعلان دعائي';
+      case 'teaser': return 'إعلان تشويقي';
       case 'behind-scenes': return 'كواليس';
-      case 'interview': return 'مقابلات';
+      case 'interview': return 'مقابلة';
       default: return type;
     }
   };
 
-  const getTypeBadgeColor = (type: string) => {
+  const getTypeColor = (type: string) => {
     switch (type) {
-      case 'trailer': return 'bg-red-500 text-white';
-      case 'teaser': return 'bg-blue-500 text-white';
-      case 'behind-scenes': return 'bg-green-500 text-white';
-      case 'interview': return 'bg-purple-500 text-white';
-      default: return 'bg-gray-500 text-white';
+      case 'trailer': return 'bg-red-600';
+      case 'teaser': return 'bg-blue-600';
+      case 'behind-scenes': return 'bg-green-600';
+      case 'interview': return 'bg-purple-600';
+      default: return 'bg-gray-600';
     }
   };
 
-  if (trailers.length === 0) {
+  if (isLoading) {
     return (
-      <Card>
-        <CardContent className="text-center py-8">
-          <div className="text-gray-500 dark:text-gray-400">
-            <Play className="h-12 w-12 mx-auto mb-4 opacity-50" />
-            <p className="text-lg font-medium" dir="rtl">لا توجد مقاطع دعائية متاحة حالياً</p>
-            <p className="text-sm mt-2" dir="rtl">سيتم إضافة المقاطع الدعائية قريباً</p>
-          </div>
-        </CardContent>
-      </Card>
+      <div className={`space-y-6 ${className}`}>
+        <div className="flex items-center justify-center py-12">
+          <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary"></div>
+        </div>
+      </div>
     );
   }
 
   return (
-    <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2" dir="rtl">
-            <Play className="h-5 w-5" />
-            المقاطع الدعائية - {contentTitle}
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Tabs defaultValue={Object.keys(groupedTrailers)[0]} className="w-full">
-            <TabsList className="grid w-full grid-cols-4">
-              {Object.keys(groupedTrailers).map((type) => (
-                <TabsTrigger key={type} value={type} className="text-xs">
-                  {getTypeLabel(type)} ({groupedTrailers[type].length})
-                </TabsTrigger>
-              ))}
-            </TabsList>
+    <div className={`space-y-6 ${className}`}>
+      {/* Main Player */}
+      {selectedTrailer && (
+        <div className="mb-8">
+          <TrailerPlayer
+            trailerUrl={selectedTrailer.url}
+            thumbnailUrl={selectedTrailer.thumbnail}
+            title={selectedTrailer.title}
+            autoPlay={true}
+            className="w-full max-w-4xl mx-auto"
+          />
+          
+          <div className="mt-4 text-center">
+            <h3 className="text-2xl font-bold mb-2" dir="rtl">
+              {selectedTrailer.title}
+            </h3>
+            <p className="text-muted-foreground mb-4" dir="rtl">
+              {selectedTrailer.description}
+            </p>
             
-            {Object.entries(groupedTrailers).map(([type, typeTrailers]) => (
-              <TabsContent key={type} value={type} className="space-y-4">
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  {typeTrailers.map((trailer) => (
-                    <TrailerCard
-                      key={trailer.id}
-                      trailer={trailer}
-                      onPlay={() => handlePlayTrailer(trailer)}
-                      typeColor={getTypeBadgeColor(trailer.type)}
-                    />
-                  ))}
-                </div>
-              </TabsContent>
-            ))}
-          </Tabs>
-        </CardContent>
-      </Card>
+            <div className="flex items-center justify-center gap-4 text-sm text-muted-foreground">
+              <div className="flex items-center gap-1">
+                <Eye className="h-4 w-4" />
+                <span>{formatViews(selectedTrailer.viewCount)} مشاهدة</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <Star className="h-4 w-4 text-yellow-400 fill-current" />
+                <span>{selectedTrailer.rating}</span>
+              </div>
+              <div className="flex items-center gap-1">
+                <Clock className="h-4 w-4" />
+                <span>{selectedTrailer.duration}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
-      {/* Dialog for playing trailer */}
-      <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-        <DialogContent className="max-w-4xl">
-          <DialogHeader>
-            <DialogTitle dir="rtl">
-              {selectedTrailer?.title}
-            </DialogTitle>
-            <DialogDescription dir="rtl">
-              {selectedTrailer?.description}
-            </DialogDescription>
-          </DialogHeader>
-          {selectedTrailer && (
-            <TrailerPlayer
-              trailerUrl={selectedTrailer.url}
-              thumbnailUrl={selectedTrailer.thumbnail}
-              title={selectedTrailer.title}
-              autoPlay
-              onEnded={() => setIsDialogOpen(false)}
-            />
-          )}
-        </DialogContent>
-      </Dialog>
+      {/* Filters */}
+      {showFilters && (
+        <div className="flex flex-col md:flex-row gap-4 mb-6">
+          <div className="flex-1">
+            <div className="relative">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                placeholder="البحث في المقاطع الدعائية..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className="pl-9"
+                dir="rtl"
+              />
+            </div>
+          </div>
+          
+          <Select value={selectedType} onValueChange={setSelectedType}>
+            <SelectTrigger className="w-full md:w-48">
+              <SelectValue placeholder="نوع المقطع" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="all">جميع الأنواع</SelectItem>
+              <SelectItem value="trailer">إعلان دعائي</SelectItem>
+              <SelectItem value="teaser">إعلان تشويقي</SelectItem>
+              <SelectItem value="behind-scenes">كواليس</SelectItem>
+              <SelectItem value="interview">مقابلة</SelectItem>
+            </SelectContent>
+          </Select>
+          
+          <Select value={sortBy} onValueChange={setSortBy}>
+            <SelectTrigger className="w-full md:w-48">
+              <SelectValue placeholder="ترتيب حسب" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="newest">الأحدث</SelectItem>
+              <SelectItem value="oldest">الأقدم</SelectItem>
+              <SelectItem value="rating">التقييم</SelectItem>
+              <SelectItem value="views">المشاهدات</SelectItem>
+            </SelectContent>
+          </Select>
+        </div>
+      )}
+
+      {/* Tabbed View */}
+      <Tabs defaultValue="all" className="w-full">
+        <TabsList className="grid w-full grid-cols-5">
+          <TabsTrigger value="all">الكل ({sortedTrailers.length})</TabsTrigger>
+          <TabsTrigger value="trailer">دعائي ({trailersByType.trailer.length})</TabsTrigger>
+          <TabsTrigger value="teaser">تشويقي ({trailersByType.teaser.length})</TabsTrigger>
+          <TabsTrigger value="behind-scenes">كواليس ({trailersByType['behind-scenes'].length})</TabsTrigger>
+          <TabsTrigger value="interview">مقابلات ({trailersByType.interview.length})</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value="all" className="space-y-4">
+          <TrailerGrid trailers={sortedTrailers} onTrailerClick={handleTrailerClick} />
+        </TabsContent>
+
+        <TabsContent value="trailer" className="space-y-4">
+          <TrailerGrid trailers={trailersByType.trailer} onTrailerClick={handleTrailerClick} />
+        </TabsContent>
+
+        <TabsContent value="teaser" className="space-y-4">
+          <TrailerGrid trailers={trailersByType.teaser} onTrailerClick={handleTrailerClick} />
+        </TabsContent>
+
+        <TabsContent value="behind-scenes" className="space-y-4">
+          <TrailerGrid trailers={trailersByType['behind-scenes']} onTrailerClick={handleTrailerClick} />
+        </TabsContent>
+
+        <TabsContent value="interview" className="space-y-4">
+          <TrailerGrid trailers={trailersByType.interview} onTrailerClick={handleTrailerClick} />
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
 
-function TrailerCard({ 
-  trailer, 
-  onPlay, 
-  typeColor 
+// Component for rendering trailer grid
+function TrailerGrid({ 
+  trailers, 
+  onTrailerClick 
 }: { 
-  trailer: TrailerInfo; 
-  onPlay: () => void; 
-  typeColor: string; 
+  trailers: TrailerInfo[], 
+  onTrailerClick: (trailer: TrailerInfo) => void 
 }) {
-  const [isHovered, setIsHovered] = useState(false);
+  if (trailers.length === 0) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-muted-foreground">لا توجد مقاطع دعائية متاحة</p>
+      </div>
+    );
+  }
+
+  const formatViews = (views: number) => {
+    if (views >= 1000000) {
+      return `${(views / 1000000).toFixed(1)}M`;
+    } else if (views >= 1000) {
+      return `${(views / 1000).toFixed(1)}K`;
+    }
+    return views.toString();
+  };
+
+  const getTypeLabel = (type: string) => {
+    switch (type) {
+      case 'trailer': return 'إعلان دعائي';
+      case 'teaser': return 'إعلان تشويقي';
+      case 'behind-scenes': return 'كواليس';
+      case 'interview': return 'مقابلة';
+      default: return type;
+    }
+  };
+
+  const getTypeColor = (type: string) => {
+    switch (type) {
+      case 'trailer': return 'bg-red-600';
+      case 'teaser': return 'bg-blue-600';
+      case 'behind-scenes': return 'bg-green-600';
+      case 'interview': return 'bg-purple-600';
+      default: return 'bg-gray-600';
+    }
+  };
 
   return (
-    <Card
-      className="group cursor-pointer transition-all duration-300 hover:shadow-lg hover:scale-105"
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
-      onClick={onPlay}
-    >
-      <div className="relative aspect-video overflow-hidden rounded-t-lg">
-        <img
-          src={trailer.thumbnail}
-          alt={trailer.title}
-          className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
-        />
-        
-        {/* Play button overlay */}
-        <div className="absolute inset-0 bg-black/30 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <Button
-            size="icon"
-            variant="ghost"
-            className="bg-white/20 hover:bg-white/30 text-white rounded-full w-16 h-16"
-          >
-            <Play className="h-8 w-8" />
-          </Button>
-        </div>
-        
-        {/* Type badge */}
-        <Badge className={`absolute top-2 left-2 ${typeColor} text-xs`}>
-          {trailer.type === 'trailer' ? 'مقطع دعائي' :
-           trailer.type === 'teaser' ? 'إعلان تشويقي' :
-           trailer.type === 'behind-scenes' ? 'كواليس' :
-           trailer.type === 'interview' ? 'مقابلة' : trailer.type}
-        </Badge>
-        
-        {/* Duration badge */}
-        <Badge className="absolute bottom-2 right-2 bg-black/70 text-white text-xs">
-          {trailer.duration}
-        </Badge>
-      </div>
-      
-      <CardContent className="p-4 space-y-3">
-        <div>
-          <h3 className="font-semibold text-sm line-clamp-2 group-hover:text-blue-600 transition-colors" dir="rtl">
-            {trailer.title}
-          </h3>
-          <p className="text-xs text-gray-600 dark:text-gray-400 mt-1 line-clamp-2" dir="rtl">
-            {trailer.description}
-          </p>
-        </div>
-        
-        <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400">
-          <div className="flex items-center gap-2">
-            <div className="flex items-center gap-1">
-              <Star className="h-3 w-3 text-yellow-400 fill-current" />
-              <span>{trailer.rating}</span>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {trailers.map((trailer) => (
+        <Card 
+          key={trailer.id} 
+          className="cursor-pointer hover:shadow-lg transition-shadow"
+          onClick={() => onTrailerClick(trailer)}
+        >
+          <CardContent className="p-0">
+            <div className="relative">
+              <MiniTrailerPlayer
+                trailerUrl={trailer.url}
+                thumbnailUrl={trailer.thumbnail}
+                title={trailer.title}
+                className="w-full"
+              />
+              
+              <Badge 
+                className={`absolute top-2 right-2 ${getTypeColor(trailer.type)} text-white`}
+              >
+                {getTypeLabel(trailer.type)}
+              </Badge>
+              
+              <div className="absolute bottom-2 left-2 flex items-center gap-2">
+                <Badge variant="secondary" className="bg-black/70 text-white">
+                  {trailer.duration}
+                </Badge>
+              </div>
             </div>
-            <div className="flex items-center gap-1">
-              <Eye className="h-3 w-3" />
-              <span>{trailer.viewCount.toLocaleString()}</span>
+            
+            <div className="p-4">
+              <h4 className="font-semibold mb-2 line-clamp-2" dir="rtl">
+                {trailer.title}
+              </h4>
+              
+              <p className="text-sm text-muted-foreground mb-3 line-clamp-2" dir="rtl">
+                {trailer.description}
+              </p>
+              
+              <div className="flex items-center justify-between text-sm text-muted-foreground">
+                <div className="flex items-center gap-1">
+                  <Eye className="h-3 w-3" />
+                  <span>{formatViews(trailer.viewCount)}</span>
+                </div>
+                
+                <div className="flex items-center gap-1">
+                  <Star className="h-3 w-3 text-yellow-400 fill-current" />
+                  <span>{trailer.rating}</span>
+                </div>
+                
+                <div className="flex items-center gap-1">
+                  <Calendar className="h-3 w-3" />
+                  <span>{new Date(trailer.releaseDate).toLocaleDateString('ar-SA')}</span>
+                </div>
+              </div>
             </div>
-          </div>
-          <div className="flex items-center gap-1">
-            <Clock className="h-3 w-3" />
-            <span>{new Date(trailer.releaseDate).toLocaleDateString('ar-EG')}</span>
-          </div>
-        </div>
-        
-        <div className="flex flex-wrap gap-1">
-          {trailer.genre.slice(0, 2).map((genre, index) => (
-            <Badge key={index} variant="outline" className="text-xs px-2 py-1">
-              {genre}
-            </Badge>
-          ))}
-          {trailer.genre.length > 2 && (
-            <Badge variant="outline" className="text-xs px-2 py-1">
-              +{trailer.genre.length - 2}
-            </Badge>
-          )}
-        </div>
-        
-        <div className="flex items-center justify-between pt-2">
-          <div className="flex items-center gap-2">
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={(e) => {
-                e.stopPropagation();
-                onPlay();
-              }}
-            >
-              <Play className="h-3 w-3 mr-1" />
-              تشغيل
-            </Button>
-          </div>
-          
-          <div className="flex items-center gap-1">
-            <Button size="sm" variant="ghost" className="p-1">
-              <ThumbsUp className="h-3 w-3" />
-            </Button>
-            <Button size="sm" variant="ghost" className="p-1">
-              <Share2 className="h-3 w-3" />
-            </Button>
-            <Button size="sm" variant="ghost" className="p-1">
-              <MoreHorizontal className="h-3 w-3" />
-            </Button>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
-  );
-}
-
-// Quick trailer preview component
-export function QuickTrailerPreview({ 
-  trailer, 
-  onPlay 
-}: { 
-  trailer: TrailerInfo; 
-  onPlay: () => void; 
-}) {
-  return (
-    <div className="flex items-center gap-3 p-3 bg-gray-50 dark:bg-gray-800 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 transition-colors cursor-pointer" onClick={onPlay}>
-      <div className="relative flex-shrink-0">
-        <img
-          src={trailer.thumbnail}
-          alt={trailer.title}
-          className="w-16 h-10 object-cover rounded"
-        />
-        <div className="absolute inset-0 flex items-center justify-center bg-black/20 rounded">
-          <Play className="h-4 w-4 text-white" />
-        </div>
-      </div>
-      
-      <div className="flex-1 min-w-0">
-        <h4 className="font-medium text-sm truncate" dir="rtl">
-          {trailer.title}
-        </h4>
-        <div className="flex items-center gap-2 text-xs text-gray-500 dark:text-gray-400 mt-1">
-          <span>{trailer.duration}</span>
-          <span>•</span>
-          <span>{trailer.viewCount.toLocaleString()} مشاهدة</span>
-        </div>
-      </div>
+          </CardContent>
+        </Card>
+      ))}
     </div>
   );
 }

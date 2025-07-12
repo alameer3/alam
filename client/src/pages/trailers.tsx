@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { TrailerShowcase } from "@/components/content/trailer-showcase";
-import { MiniTrailerCard } from "@/components/content/auto-trailer-hero";
+import { MiniTrailerPlayer } from "@/components/content/trailer-player";
 import { useTrendingTrailers, useFeaturedTrailer } from "@/hooks/useTrailers";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { ErrorMessage } from "@/components/ui/error-message";
@@ -240,7 +240,7 @@ export default function TrailersPage() {
             {trendingTrailers && (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 {trendingTrailers.map((trailer, index) => (
-                  <MiniTrailerCard
+                  <MiniTrailerPlayer
                     key={index}
                     title={trailer.title}
                     trailerUrl={trailer.trailerUrl}
