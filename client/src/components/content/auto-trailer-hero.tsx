@@ -116,7 +116,7 @@ export function AutoTrailerHero({
 
           {/* Genres */}
           <div className="flex flex-wrap gap-2 mb-6">
-            {genres.map((genre, index) => (
+            {genres && genres.length > 0 && genres.map((genre, index) => (
               <Badge key={index} variant="outline" className="bg-black/50 text-white border-white/30">
                 {genre}
               </Badge>
