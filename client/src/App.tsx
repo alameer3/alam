@@ -3,7 +3,8 @@ import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/layout/ui/toaster";
 import { AdvancedThemeProvider } from "@/components/theme/advanced-theme-provider";
-import Header from "@/components/layout/header";
+import { ResponsiveLayout } from "@/components/layout/responsive-layout";
+import { EnhancedResponsiveHeader } from "@/components/layout/enhanced-responsive-header";
 import Navigation from "@/components/layout/navigation";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
@@ -43,14 +44,14 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AdvancedThemeProvider defaultTheme="cinema">
-        <div className="min-h-screen bg-background text-foreground arabic-font">
-          <Header />
+        <ResponsiveLayout className="arabic-font">
+          <EnhancedResponsiveHeader />
           <Navigation />
-          <main className="pt-32">
+          <main className="pt-20 lg:pt-24 transition-all duration-300">
             <Router />
           </main>
           <Toaster />
-        </div>
+        </ResponsiveLayout>
       </AdvancedThemeProvider>
     </QueryClientProvider>
   );

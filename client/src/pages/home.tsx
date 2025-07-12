@@ -6,19 +6,21 @@ import { useFavorites } from "@/hooks/useUserInteractions";
 import { useQuery } from "@tanstack/react-query";
 
 import Footer from "@/components/layout/footer";
-import ContentGrid from "@/components/content/content-grid";
-import EnhancedContentCard from "@/components/content/enhanced-content-card";
+import { ResponsiveContentList } from "@/components/content/responsive-content-list";
+import { ResponsiveGrid, ResponsiveSpacing, useResponsive } from "@/components/layout/responsive-layout";
+import { EnhancedContentCard } from "@/components/content/enhanced-content-card";
 import { VideoPlayerDemo } from "@/components/ui/video-player-demo";
 import FavoritesModal from "@/components/user/favorites-modal";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/layout/ui/card";
-import { Button } from "@/components/layout/ui/button";
-import { Badge } from "@/components/layout/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { CONTENT_TYPES } from "@/lib/constants";
 import { Content } from "@shared/schema";
 
 export default function Home() {
   const [selectedContent, setSelectedContent] = useState<Content | null>(null);
   const { user } = useAuth();
+  const { isMobile, isTablet } = useResponsive();
   const { data: favoritesData } = useFavorites(user?.id);
   const { data: statsData } = useQuery({
     queryKey: ["/api/stats"],
@@ -44,54 +46,70 @@ export default function Home() {
     <div className="min-h-screen">
       
       {/* Hero Section */}
-      <section className="hero-section">
-        <div className="hero-overlay" />
+      <section className="hero-section relative overflow-hidden bg-gradient-to-br from-background via-background to-muted/20 py-16 lg:py-24">
         
         {/* Background decorative elements */}
-        <div className="absolute top-20 left-20 w-64 h-64 bg-purple-600/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-20 right-20 w-96 h-96 bg-orange-600/10 rounded-full blur-3xl" />
+        {!isMobile && (
+          <>
+            <div className="absolute top-20 left-20 w-64 h-64 bg-primary/10 rounded-full blur-3xl animate-pulse" />
+            <div className="absolute bottom-20 right-20 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-pulse delay-1000" />
+          </>
+        )}
 
         {/* Central content */}
-        <div className="relative z-10 text-center">
-          <div className="hero-logo">
-            <div className="hero-logo-inner">
-              <svg className="w-16 h-16 text-accent" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M8 5v14l11-7z"/>
-              </svg>
+        <ResponsiveSpacing 
+          padding={{ mobile: "px-4 py-8", tablet: "px-6 py-12", desktop: "px-8 py-16" }}
+          className="relative z-10"
+        >
+            <div className="text-center max-w-4xl mx-auto">
+              <div className="hero-logo mb-6">
+                <div className="w-20 h-20 mx-auto bg-gradient-to-br from-primary to-primary/70 rounded-2xl flex items-center justify-center shadow-2xl">
+                  <svg className="w-10 h-10 text-primary-foreground" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M8 5v14l11-7z"/>
+                  </svg>
+                </div>
+              </div>
+              
+              <h1 className={`font-bold mb-6 bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent ${
+                isMobile ? "text-3xl" : "text-4xl md:text-6xl"
+              }`}>
+                أكاديمية السينما
+              </h1>
+              
+              <p className={`text-muted-foreground mb-8 max-w-2xl mx-auto ${
+                isMobile ? "text-lg" : "text-xl"
+              }`}>
+                استمتع بمشاهدة أحدث الأفلام والمسلسلات العربية والأجنبية بجودة عالية
+              </p>
+              
+              {/* Quick Navigation */}
+              <ResponsiveGrid 
+                cols={{ mobile: 2, tablet: 4, desktop: 4 }}
+                gap={isMobile ? "gap-3" : "gap-4"}
+                className="max-w-2xl mx-auto"
+              >
+                <Link href="/movies" className="group p-4 bg-card/50 backdrop-blur-sm border border-border/50 rounded-xl hover:bg-card/80 transition-all duration-300 hover:scale-105">
+                  <Film className={`text-primary mb-3 mx-auto ${isMobile ? "w-6 h-6" : "w-8 h-8"}`} />
+                  <p className="font-semibold text-sm group-hover:text-primary transition-colors">الأفلام</p>
+                </Link>
+                
+                <Link href="/series" className="group p-4 bg-card/50 backdrop-blur-sm border border-border/50 rounded-xl hover:bg-card/80 transition-all duration-300 hover:scale-105">
+                  <Tv className={`text-primary mb-3 mx-auto ${isMobile ? "w-6 h-6" : "w-8 h-8"}`} />
+                  <p className="font-semibold text-sm group-hover:text-primary transition-colors">المسلسلات</p>
+                </Link>
+                
+                <Link href="/television" className="group p-4 bg-card/50 backdrop-blur-sm border border-border/50 rounded-xl hover:bg-card/80 transition-all duration-300 hover:scale-105">
+                  <Monitor className={`text-primary mb-3 mx-auto ${isMobile ? "w-6 h-6" : "w-8 h-8"}`} />
+                  <p className="font-semibold text-sm group-hover:text-primary transition-colors">التلفزيون</p>
+                </Link>
+                
+                <Link href="/miscellaneous" className="group p-4 bg-card/50 backdrop-blur-sm border border-border/50 rounded-xl hover:bg-card/80 transition-all duration-300 hover:scale-105">
+                  <Music className={`text-primary mb-3 mx-auto ${isMobile ? "w-6 h-6" : "w-8 h-8"}`} />
+                  <p className="font-semibold text-sm group-hover:text-primary transition-colors">المنوعات</p>
+                </Link>
+              </ResponsiveGrid>
             </div>
-          </div>
-          
-          <h1 className="text-4xl md:text-6xl font-bold mb-4 gradient-text">
-            أكاديمية السينما
-          </h1>
-          
-          <p className="text-xl text-muted mb-8 max-w-2xl mx-auto">
-            استمتع بمشاهدة أحدث الأفلام والمسلسلات العربية والأجنبية بجودة عالية
-          </p>
-          
-          {/* Quick Navigation */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-2xl mx-auto">
-            <Link href="/movies" className="quick-nav-card">
-              <Film className="w-8 h-8 text-accent mb-3 mx-auto" />
-              <p className="font-semibold">الأفلام</p>
-            </Link>
-            
-            <Link href="/series" className="quick-nav-card">
-              <Tv className="w-8 h-8 text-accent mb-3 mx-auto" />
-              <p className="font-semibold">المسلسلات</p>
-            </Link>
-            
-            <Link href="/television" className="quick-nav-card">
-              <Monitor className="w-8 h-8 text-accent mb-3 mx-auto" />
-              <p className="font-semibold">التلفزيون</p>
-            </Link>
-            
-            <Link href="/miscellaneous" className="quick-nav-card">
-              <Music className="w-8 h-8 text-accent mb-3 mx-auto" />
-              <p className="font-semibold">المنوعات</p>
-            </Link>
-          </div>
-        </div>
+          </ResponsiveSpacing>
       </section>
 
 
@@ -151,59 +169,101 @@ export default function Home() {
       </section>
 
       {/* Featured Movies */}
-      <section className="section-bg">
-        <div className="container mx-auto px-4">
-          <ContentGrid
-            contentType={CONTENT_TYPES.MOVIE}
-            title="أحدث الأفلام"
-            showViewAll={true}
-            onContentClick={handleContentClick}
-          />
-        </div>
-      </section>
+      <ResponsiveSpacing className="bg-muted/20">
+        <ResponsiveContentList
+          content={recentMovies?.content?.slice(0, isMobile ? 4 : 8) || []}
+          loading={!recentMovies}
+          title="أحدث الأفلام"
+          showViewOptions={!isMobile}
+          showSortOptions={!isMobile}
+          showFilterOptions={false}
+        />
+      </ResponsiveSpacing>
 
       {/* Featured Series */}
-      <section className="section-bg-alt">
-        <div className="container mx-auto px-4">
-          <ContentGrid
-            contentType={CONTENT_TYPES.SERIES}
-            title="أحدث المسلسلات"
-            showViewAll={true}
-            onContentClick={handleContentClick}
-          />
-        </div>
-      </section>
+      <ResponsiveSpacing className="bg-background">
+        <ResponsiveContentList
+          content={recentSeries?.content?.slice(0, isMobile ? 4 : 8) || []}
+          loading={!recentSeries}
+          title="أحدث المسلسلات"
+          showViewOptions={!isMobile}
+          showSortOptions={!isMobile}
+          showFilterOptions={false}
+        />
+      </ResponsiveSpacing>
 
-      {/* TV Shows */}
-      <section className="section-bg">
-        <div className="container mx-auto px-4">
-          <ContentGrid
-            contentType={CONTENT_TYPES.TV}
-            title="برامج التلفزيون"
-            showViewAll={true}
-            onContentClick={handleContentClick}
-          />
+      {/* Statistics Section */}
+      <ResponsiveSpacing className="bg-muted/20">
+        <div className="text-center mb-8">
+          <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+            إحصائيات المحتوى
+          </h2>
+          <p className="text-muted-foreground">
+            استكشف مكتبتنا الضخمة من المحتوى المتنوع
+          </p>
         </div>
-      </section>
-
-      {/* Miscellaneous */}
-      <section className="section-bg-alt">
-        <div className="container mx-auto px-4">
-          <ContentGrid
-            contentType={CONTENT_TYPES.MISC}
-            title="المنوعات"
-            showViewAll={true}
-            onContentClick={handleContentClick}
-          />
-        </div>
-      </section>
+        
+        <ResponsiveGrid 
+          cols={{ mobile: 2, tablet: 4, desktop: 4 }}
+          gap={isMobile ? "gap-4" : "gap-6"}
+          className="max-w-4xl mx-auto"
+        >
+          <Card className="text-center p-6 bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20">
+            <CardContent className="p-0">
+              <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Film className="w-6 h-6 text-primary" />
+              </div>
+              <h3 className="text-2xl font-bold text-primary mb-2">
+                {statsData?.movies || "0"}
+              </h3>
+              <p className="text-sm text-muted-foreground">فيلم</p>
+            </CardContent>
+          </Card>
+          
+          <Card className="text-center p-6 bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20">
+            <CardContent className="p-0">
+              <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Tv className="w-6 h-6 text-primary" />
+              </div>
+              <h3 className="text-2xl font-bold text-primary mb-2">
+                {statsData?.series || "0"}
+              </h3>
+              <p className="text-sm text-muted-foreground">مسلسل</p>
+            </CardContent>
+          </Card>
+          
+          <Card className="text-center p-6 bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20">
+            <CardContent className="p-0">
+              <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Monitor className="w-6 h-6 text-primary" />
+              </div>
+              <h3 className="text-2xl font-bold text-primary mb-2">
+                {statsData?.tv || "0"}
+              </h3>
+              <p className="text-sm text-muted-foreground">برنامج تلفزيوني</p>
+            </CardContent>
+          </Card>
+          
+          <Card className="text-center p-6 bg-gradient-to-br from-primary/10 to-primary/5 border-primary/20">
+            <CardContent className="p-0">
+              <div className="w-12 h-12 bg-primary/20 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Music className="w-6 h-6 text-primary" />
+              </div>
+              <h3 className="text-2xl font-bold text-primary mb-2">
+                {statsData?.misc || "0"}
+              </h3>
+              <p className="text-sm text-muted-foreground">متنوع</p>
+            </CardContent>
+          </Card>
+        </ResponsiveGrid>
+      </ResponsiveSpacing>
 
       <Footer />
       
-      {/* Video Player Modal (will be replaced with new Advanced Player) */}
+      {/* Video Player Modal */}
       {selectedContent && (
-        <div className="fixed inset-0 bg-black z-50 flex items-center justify-center">
-          <div className="relative w-full h-full max-w-6xl">
+        <div className="fixed inset-0 bg-black/90 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="relative w-full h-full max-w-6xl bg-background rounded-lg overflow-hidden">
             <Button
               variant="ghost"
               size="sm"

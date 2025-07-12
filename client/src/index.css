@@ -297,6 +297,121 @@
   transform: translateY(-1px);
 }
 
+/* تحسينات الواجهة المتجاوبة */
+.mobile-layout {
+  font-size: 0.9rem;
+}
+
+.mobile-layout .container {
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.tablet-layout {
+  font-size: 0.95rem;
+}
+
+.desktop-layout {
+  font-size: 1rem;
+}
+
+/* تحسينات الشبكة المتجاوبة */
+.responsive-grid {
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 768px) {
+  .responsive-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+}
+
+@media (min-width: 1024px) {
+  .responsive-grid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+}
+
+@media (min-width: 1280px) {
+  .responsive-grid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* تحسينات التنقل المحمول */
+.mobile-nav-overlay {
+  backdrop-filter: blur(20px);
+  background: rgba(0, 0, 0, 0.5);
+}
+
+/* تحسينات الكروت للمحمول */
+@media (max-width: 767px) {
+  .content-card {
+    border-radius: 0.75rem;
+    transition: all 0.3s ease;
+  }
+  
+  .content-card:hover {
+    transform: translateY(-2px) scale(1.02);
+  }
+  
+  .content-card-image {
+    border-radius: 0.5rem;
+  }
+}
+
+/* تحسينات الخط للشاشات الصغيرة */
+@media (max-width: 640px) {
+  .arabic-font {
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+  
+  h1 { font-size: 1.5rem; }
+  h2 { font-size: 1.25rem; }
+  h3 { font-size: 1.125rem; }
+  h4 { font-size: 1rem; }
+}
+
+/* تحسينات الشاشات الكبيرة */
+@media (min-width: 1920px) {
+  .container {
+    max-width: 1600px;
+  }
+  
+  .responsive-grid {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 2.5rem;
+  }
+}
+
+/* تحسينات الأداء للحركات */
+.performance-optimized {
+  will-change: transform, opacity;
+  transform: translateZ(0);
+}
+
+/* تحسينات التمرير السلس */
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  
+  .content-card,
+  .btn-primary,
+  .responsive-grid {
+    transition: none;
+  }
+}
+
 @layer base {
   * {
     @apply border-border;

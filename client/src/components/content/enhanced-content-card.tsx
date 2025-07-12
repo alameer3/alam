@@ -30,8 +30,11 @@ import { cn } from '@/lib/utils';
 interface EnhancedContentCardProps {
   content: Content;
   size?: 'sm' | 'md' | 'lg';
+  variant?: 'vertical' | 'horizontal';
   showProgress?: boolean;
   progress?: number;
+  showMetadata?: boolean;
+  showActions?: boolean;
   onPlay?: () => void;
   onFavorite?: () => void;
   onShare?: () => void;
@@ -42,8 +45,11 @@ interface EnhancedContentCardProps {
 export function EnhancedContentCard({
   content,
   size = 'md',
+  variant = 'vertical',
   showProgress = false,
   progress = 0,
+  showMetadata = true,
+  showActions = true,
   onPlay,
   onFavorite,
   onShare,
@@ -117,7 +123,10 @@ export function EnhancedContentCard({
     return `${minutes}د`;
   };
 
-  const formatRating = (rating: number) => {
+  const formatRating = (rating: number | null | undefined) => {
+    if (rating === null || rating === undefined || typeof rating !== 'number') {
+      return '0.0';
+    }
     return rating.toFixed(1);
   };
 
