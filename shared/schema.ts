@@ -23,13 +23,18 @@ export const categories = pgTable("categories", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
   nameArabic: text("name_arabic").notNull(),
-  type: text("type").notNull(), // movie, series, tv, misc
+  description: text("description"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
 export const genres = pgTable("genres", {
   id: serial("id").primaryKey(),
   name: text("name").notNull(),
   nameArabic: text("name_arabic").notNull(),
+  description: text("description"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
 });
 
 export const content = pgTable("content", {
