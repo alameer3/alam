@@ -24,6 +24,7 @@ import Profile from "@/pages/profile";
 import Watchlists from "@/pages/watchlists";
 import Notifications from "@/pages/notifications";
 import Dashboard from "@/pages/dashboard";
+import Security from "@/pages/security";
 
 
 function Router() {
@@ -46,6 +47,7 @@ function Router() {
       <Route path="/watchlists" component={Watchlists} />
       <Route path="/notifications" component={Notifications} />
       <Route path="/dashboard" component={Dashboard} />
+      <Route path="/security" component={Security} />
 
       <Route component={NotFound} />
     </Switch>

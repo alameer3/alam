@@ -24,7 +24,7 @@ import {
   User, 
   Settings,
   Crown,
-
+  Shield,
   Bell
 } from "lucide-react";
 
@@ -77,6 +77,12 @@ export function MobileNavigation() {
       label: "المفضلة",
       icon: Heart,
       description: "المحتوى المفضل لديك"
+    },
+    {
+      path: "/security",
+      label: "الأمان والحماية",
+      icon: Shield,
+      description: "إعدادات الأمان والحماية"
     },
 
   ];

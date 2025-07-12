@@ -325,6 +325,115 @@ export const insertReviewLikeSchema = createInsertSchema(reviewLikes).omit({
   createdAt: true,
 });
 
+// Security and Audit Tables
+export const auditLogs = pgTable("audit_logs", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").references(() => users.id),
+  action: text("action").notNull(),
+  resource: text("resource").notNull(),
+  resourceId: text("resource_id"),
+  details: text("details"), // JSON string
+  ipAddress: text("ip_address").notNull(),
+  userAgent: text("user_agent"),
+  success: boolean("success").notNull(),
+  errorMessage: text("error_message"),
+  timestamp: timestamp("timestamp").defaultNow().notNull(),
+});
+
+export const securityLogs = pgTable("security_logs", {
+  id: serial("id").primaryKey(),
+  ipAddress: text("ip_address").notNull(),
+  eventType: text("event_type").notNull(), // failed_login, suspicious_activity, etc.
+  details: text("details"), // JSON string
+  severity: text("severity").notNull(), // low, medium, high, critical
+  userAgent: text("user_agent"),
+  userId: integer("user_id").references(() => users.id),
+  timestamp: timestamp("timestamp").defaultNow().notNull(),
+});
+
+export const loginAttempts = pgTable("login_attempts", {
+  id: serial("id").primaryKey(),
+  ipAddress: text("ip_address").notNull(),
+  email: text("email"),
+  attempts: integer("attempts").notNull().default(1),
+  lastAttempt: timestamp("last_attempt").defaultNow().notNull(),
+  blocked: boolean("blocked").notNull().default(false),
+  blockedUntil: timestamp("blocked_until"),
+});
+
+export const userSessions = pgTable("user_sessions", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").references(() => users.id).notNull(),
+  sessionToken: text("session_token").notNull().unique(),
+  ipAddress: text("ip_address").notNull(),
+  userAgent: text("user_agent"),
+  expiresAt: timestamp("expires_at").notNull(),
+  isActive: boolean("is_active").notNull().default(true),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  lastUsed: timestamp("last_used").defaultNow().notNull(),
+});
+
+export const passwordResets = pgTable("password_resets", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").references(() => users.id).notNull(),
+  token: text("token").notNull().unique(),
+  expiresAt: timestamp("expires_at").notNull(),
+  used: boolean("used").notNull().default(false),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+// Security Relations
+export const auditLogRelations = relations(auditLogs, ({ one }) => ({
+  user: one(users, { fields: [auditLogs.userId], references: [users.id] }),
+}));
+
+export const securityLogRelations = relations(securityLogs, ({ one }) => ({
+  user: one(users, { fields: [securityLogs.userId], references: [users.id] }),
+}));
+
+export const loginAttemptRelations = relations(loginAttempts, ({ one }) => ({
+  // No direct user relation since we track by IP and email
+}));
+
+export const userSessionRelations = relations(userSessions, ({ one }) => ({
+  user: one(users, { fields: [userSessions.userId], references: [users.id] }),
+}));
+
+export const passwordResetRelations = relations(passwordResets, ({ one }) => ({
+  user: one(users, { fields: [passwordResets.userId], references: [users.id] }),
+}));
+
+// Security Schema Types
+export const insertAuditLogSchema = createInsertSchema(auditLogs, {
+  details: z.string().optional(),
+}).omit({
+  id: true,
+  timestamp: true,
+});
+
+export const insertSecurityLogSchema = createInsertSchema(securityLogs, {
+  details: z.string().optional(),
+}).omit({
+  id: true,
+  timestamp: true,
+});
+
+export const insertLoginAttemptSchema = createInsertSchema(loginAttempts).omit({
+  id: true,
+  lastAttempt: true,
+});
+
+export const insertUserSessionSchema = createInsertSchema(userSessions).omit({
+  id: true,
+  createdAt: true,
+  lastUsed: true,
+});
+
+export const insertPasswordResetSchema = createInsertSchema(passwordResets).omit({
+  id: true,
+  createdAt: true,
+});
+
 
 
 // Types
@@ -360,5 +469,21 @@ export type InsertUserWatchHistory = z.infer<typeof insertUserWatchHistorySchema
 
 export type ContentView = typeof contentViews.$inferSelect;
 export type InsertContentView = z.infer<typeof insertContentViewSchema>;
+
+// Security Types
+export type AuditLog = typeof auditLogs.$inferSelect;
+export type InsertAuditLog = z.infer<typeof insertAuditLogSchema>;
+
+export type SecurityLog = typeof securityLogs.$inferSelect;
+export type InsertSecurityLog = z.infer<typeof insertSecurityLogSchema>;
+
+export type LoginAttempt = typeof loginAttempts.$inferSelect;
+export type InsertLoginAttempt = z.infer<typeof insertLoginAttemptSchema>;
+
+export type UserSession = typeof userSessions.$inferSelect;
+export type InsertUserSession = z.infer<typeof insertUserSessionSchema>;
+
+export type PasswordReset = typeof passwordResets.$inferSelect;
+export type InsertPasswordReset = z.infer<typeof insertPasswordResetSchema>;
 
 

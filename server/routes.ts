@@ -7,6 +7,7 @@ import adminRoutes from "./routes/admin";
 import performanceRoutes from "./routes/performance";
 import authRoutes from "./routes/auth";
 import userRoutes from "./routes/users";
+import securityRoutes from "./routes/security";
 import { cacheMiddleware, clearCache, trackQueryPerformance } from "./middleware/cache";
 import { QueryOptimizer } from "./middleware/performance";
 import { initializeBackupSystem } from "./middleware/backup";
@@ -659,6 +660,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.status(500).json({ error: "Failed to suspend content" });
     }
   });
+
+  // Security routes
+  app.use("/api/security", securityRoutes);
 
   const httpServer = createServer(app);
   return httpServer;

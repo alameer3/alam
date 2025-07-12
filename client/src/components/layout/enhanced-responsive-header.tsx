@@ -15,7 +15,7 @@ import {
   Heart, 
   Film, 
   Crown,
-
+  Shield,
   Settings,
   SlidersHorizontal,
 
@@ -184,8 +184,15 @@ export function EnhancedResponsiveHeader() {
                   </Button>
                 </Link>
                 
-
-                
+                <Link href="/security">
+                  <Button 
+                    variant="ghost" 
+                    size="icon"
+                    className="rounded-full hover:bg-muted/50"
+                  >
+                    <Shield className="h-5 w-5" />
+                  </Button>
+                </Link>
 
               </>
             )}

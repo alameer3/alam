@@ -1,20 +1,21 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
-import { setupSecurity, sanitizeInput } from "./middleware/security";
+import { securityHeaders, validateInput, checkSecurityStatus } from "./middleware/security";
 import { performanceMiddleware } from "./middleware/performance";
 import { initializeDatabaseOptimizations } from "./middleware/database";
 
 const app = express();
 
 // Setup security middleware
-setupSecurity(app);
+app.use(securityHeaders);
+app.use(checkSecurityStatus);
 
 // Performance monitoring
 app.use(performanceMiddleware);
 
-// Input sanitization
-app.use(sanitizeInput);
+// Input sanitization and validation
+app.use(validateInput);
 
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: false, limit: '10mb' }));
