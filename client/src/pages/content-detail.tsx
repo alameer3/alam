@@ -125,7 +125,7 @@ export default function ContentDetail() {
           url: window.location.href,
         });
       } catch (error) {
-        console.log('Error sharing:', error);
+        // Handle sharing error silently
       }
     } else {
       // Fallback: copy URL to clipboard

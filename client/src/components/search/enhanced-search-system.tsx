@@ -67,7 +67,7 @@ export function EnhancedSearchSystem({
       try {
         setSearchHistory(JSON.parse(history));
       } catch (error) {
-        console.error('Error loading search history:', error);
+        // Handle error silently or show user-friendly message
       }
     }
   }, []);

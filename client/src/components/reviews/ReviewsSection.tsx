@@ -96,7 +96,7 @@ export default function ReviewsSection({ contentId }: ReviewsSectionProps) {
       setEditingReview(null);
       setFormData({ rating: 5, title: '', review: '' });
     } catch (error) {
-      console.error('Error submitting review:', error);
+      // Handle error silently or show user-friendly message
     }
   };
 
@@ -115,7 +115,7 @@ export default function ReviewsSection({ contentId }: ReviewsSectionProps) {
       try {
         await deleteReviewMutation.mutateAsync(reviewId);
       } catch (error) {
-        console.error('Error deleting review:', error);
+        // Handle error silently or show user-friendly message
       }
     }
   };
@@ -130,7 +130,7 @@ export default function ReviewsSection({ contentId }: ReviewsSectionProps) {
         isLike
       });
     } catch (error) {
-      console.error('Error liking review:', error);
+      // Handle error silently or show user-friendly message
     }
   };
 

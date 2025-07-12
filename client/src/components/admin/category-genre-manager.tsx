@@ -442,7 +442,7 @@ export default function CategoryGenreManager() {
           }}
           onSubmit={(data) => {
             // Update logic would go here
-            console.log('Update genre:', data);
+
           }}
           isLoading={false}
           mode="edit"
@@ -460,7 +460,7 @@ export default function CategoryGenreManager() {
           }}
           onSubmit={(data) => {
             // Update logic would go here
-            console.log('Update category:', data);
+
           }}
           isLoading={false}
           mode="edit"

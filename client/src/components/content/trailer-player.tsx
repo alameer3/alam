@@ -179,7 +179,7 @@ export function TrailerPlayer({
   const handleQualityChange = (newQuality: string) => {
     setQuality(newQuality);
     // In a real implementation, you would change the video source here
-    console.log('Quality changed to:', newQuality);
+
   };
 
   const handleSpeedChange = (newSpeed: number) => {

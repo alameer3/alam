@@ -150,7 +150,7 @@ const SubscriptionManagement: React.FC = () => {
 
   const handleSubscribe = () => {
     // سيتم إضافة معالجة الدفع هنا لاحقاً
-    console.log('Subscribing to plan:', selectedPlan);
+    // Handle subscription logic here
     setIsUpgradeDialogOpen(false);
   };
 

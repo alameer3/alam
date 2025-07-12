@@ -6,6 +6,7 @@ import { AdvancedThemeProvider } from "@/components/theme/advanced-theme-provide
 import { ResponsiveLayout } from "@/components/layout/responsive-layout";
 import { EnhancedResponsiveHeader } from "@/components/layout/enhanced-responsive-header";
 import { EnhancedNavigation } from "@/components/layout/enhanced-navigation";
+import { ErrorBoundary } from "@/components/ui/error-boundary";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
 import Movies from "@/pages/movies";
@@ -59,14 +60,16 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AdvancedThemeProvider defaultTheme="yemen">
-        <ResponsiveLayout className="arabic-font">
-          <EnhancedResponsiveHeader />
-          <EnhancedNavigation />
-          <main className="pt-20 lg:pt-24 transition-all duration-300">
-            <Router />
-          </main>
-          <Toaster />
-        </ResponsiveLayout>
+        <ErrorBoundary>
+          <ResponsiveLayout className="arabic-font">
+            <EnhancedResponsiveHeader />
+            <EnhancedNavigation />
+            <main className="pt-20 lg:pt-24 transition-all duration-300">
+              <Router />
+            </main>
+            <Toaster />
+          </ResponsiveLayout>
+        </ErrorBoundary>
       </AdvancedThemeProvider>
     </QueryClientProvider>
   );

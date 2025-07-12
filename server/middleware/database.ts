@@ -14,7 +14,7 @@ export class DatabaseOptimizer {
       await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_content_language ON content(language)`);
       await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_content_quality ON content(quality)`);
       await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_content_rating ON content(rating)`);
-      await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_content_active ON content("isActive")`);
+      await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_content_active ON content(is_active)`);
       await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_content_created_at ON content(created_at)`);
       
       // Content search index
@@ -23,7 +23,7 @@ export class DatabaseOptimizer {
       // User table indexes
       await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_users_username ON users(username)`);
       await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_users_email ON users(email)`);
-      await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_users_active ON users("isActive")`);
+      await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_users_active ON users(is_active)`);
       
       // Relationship table indexes
       await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_content_genres_content ON content_genres(content_id)`);
