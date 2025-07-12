@@ -15,6 +15,15 @@ This is a full-stack web application for an Arabic cinema streaming platform cal
 - نقل المشروع من Replit Agent إلى بيئة Replit ✓ مكتمل (11 يوليو 2025)
 - جميع الردود والتوثيق باللغة العربية ✓ مؤكد (11 يوليو 2025)
 
+## Recent Changes (12 يوليو 2025)
+- **تم إكمال ترحيل المشروع النهائي وحذف جميع مكونات الذكاء الاصطناعي والرفع** (12 يوليو 2025):
+  - إزالة جميع صفحات ومكونات الذكاء الاصطناعي (AI features، RecommendationSection، SmartSearch)
+  - حذف نظام رفع الملفات بالكامل (Upload manager، File upload components)
+  - تنظيف schema وحذف جداول uploads و uploadChunks
+  - إزالة أيقونة الرفع من شريط التنقل العلوي
+  - تنظيف جميع API routes وdependencies المرتبطة بالميزات المحذوفة
+  - المشروع الآن يعمل كنظام إدارة محتوى سينمائي بسيط وأنيق بدون ميزات معقدة
+
 ## Recent Changes (11 يوليو 2025)
 - **تم إكمال الترحيل النهائي من Replit Agent إلى بيئة Replit بنجاح**
 - **تم إكمال عملية الترحيل بالكامل مع إعداد قاعدة بيانات PostgreSQL جديدة** (11 يوليو 2025)
