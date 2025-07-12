@@ -3,7 +3,7 @@ import { Content } from "../../shared/schema";
 import { DatabaseStorage } from "../storage";
 
 // the newest OpenAI model is "gpt-4o" which was released May 13, 2024. do not change this unless explicitly requested by the user
-const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+const openai = process.env.OPENAI_API_KEY ? new OpenAI({ apiKey: process.env.OPENAI_API_KEY }) : null;
 
 export interface UserPreferences {
   favoriteGenres: string[];
@@ -66,47 +66,57 @@ export class RecommendationEngine {
     preferences: UserPreferences,
     content: Content[]
   ): Promise<RecommendationScore[]> {
-    const prompt = `
-      تحليل تفضيلات المستخدم وتقديم توصيات ذكية:
-      
-      تفضيلات المستخدم:
-      - الأنواع المفضلة: ${preferences.favoriteGenres.join(', ')}
-      - الفئات المفضلة: ${preferences.favoriteCategories.join(', ')}
-      - التقييم المفضل: ${preferences.ratingPreference}
-      - تاريخ المشاهدة: ${preferences.watchHistory.slice(-5).map(c => c.title).join(', ')}
-      
-      المحتوى المتاح:
-      ${content.slice(0, 20).map(c => `
-        - ID: ${c.id}
-        - العنوان: ${c.title}
-        - النوع: ${c.type}
-        - التقييم: ${c.rating}
-        - الوصف: ${c.description?.substring(0, 100) || 'لا يوجد وصف'}
-      `).join('\n')}
-      
-      قم بتقييم كل عنصر من المحتوى وإعطاء نقاط من 1-100 مع تفسير الأسباب.
-      أجب بصيغة JSON فقط:
-      {
-        "recommendations": [
-          {
-            "contentId": number,
-            "score": number,
-            "reasons": ["السبب الأول", "السبب الثاني"]
-          }
-        ]
-      }
-    `;
+    if (!openai) {
+      // Fallback to basic recommendation algorithm
+      return this.generateBasicRecommendations(preferences, content);
+    }
 
-    const response = await openai.chat.completions.create({
-      model: "gpt-4o",
-      messages: [{ role: "user", content: prompt }],
-      response_format: { type: "json_object" },
-      temperature: 0.7,
-      max_tokens: 2000,
-    });
+    try {
+      const prompt = `
+        تحليل تفضيلات المستخدم وتقديم توصيات ذكية:
+        
+        تفضيلات المستخدم:
+        - الأنواع المفضلة: ${preferences.favoriteGenres.join(', ')}
+        - الفئات المفضلة: ${preferences.favoriteCategories.join(', ')}
+        - التقييم المفضل: ${preferences.ratingPreference}
+        - تاريخ المشاهدة: ${preferences.watchHistory.slice(-5).map(c => c.title).join(', ')}
+        
+        المحتوى المتاح:
+        ${content.slice(0, 20).map(c => `
+          - ID: ${c.id}
+          - العنوان: ${c.title}
+          - النوع: ${c.type}
+          - التقييم: ${c.rating}
+          - الوصف: ${c.description?.substring(0, 100) || 'لا يوجد وصف'}
+        `).join('\n')}
+        
+        قم بتقييم كل عنصر من المحتوى وإعطاء نقاط من 1-100 مع تفسير الأسباب.
+        أجب بصيغة JSON فقط:
+        {
+          "recommendations": [
+            {
+              "contentId": number,
+              "score": number,
+              "reasons": ["السبب الأول", "السبب الثاني"]
+            }
+          ]
+        }
+      `;
 
-    const result = JSON.parse(response.choices[0].message.content || '{"recommendations": []}');
-    return result.recommendations || [];
+      const response = await openai.chat.completions.create({
+        model: "gpt-4o",
+        messages: [{ role: "user", content: prompt }],
+        response_format: { type: "json_object" },
+        temperature: 0.7,
+        max_tokens: 2000,
+      });
+
+      const result = JSON.parse(response.choices[0].message.content || '{"recommendations": []}');
+      return result.recommendations || [];
+    } catch (error) {
+      console.error('Error with AI recommendations, falling back to basic algorithm:', error);
+      return this.generateBasicRecommendations(preferences, content);
+    }
   }
 
   /**
@@ -118,6 +128,10 @@ export class RecommendationEngine {
     emotions: string[];
     keywords: string[];
   }> {
+    if (!openai) {
+      return this.basicSentimentAnalysis(text);
+    }
+
     try {
       const response = await openai.chat.completions.create({
         model: "gpt-4o",
@@ -165,6 +179,10 @@ export class RecommendationEngine {
     type?: string,
     limit: number = 10
   ): Promise<Content[]> {
+    if (!openai) {
+      return this.basicSearch(query, type, limit);
+    }
+
     try {
       // Get all content
       const allContent = await this.getAllContent();
@@ -228,6 +246,10 @@ export class RecommendationEngine {
     contentTags: string[];
     ageRating: string;
   }> {
+    if (!openai) {
+      return this.basicCategorization(content);
+    }
+
     try {
       const prompt = `
         قم بتحليل وتصنيف هذا المحتوى:
@@ -268,12 +290,7 @@ export class RecommendationEngine {
       };
     } catch (error) {
       console.error('Error auto-categorizing content:', error);
-      return {
-        suggestedGenres: [],
-        suggestedCategories: [],
-        contentTags: [],
-        ageRating: 'غير محدد'
-      };
+      return this.basicCategorization(content);
     }
   }
 
@@ -408,31 +425,38 @@ export class RecommendationEngine {
       return recommendations
         .sort((a, b) => b.score - a.score)
         .slice(0, limit);
-        
     } catch (error) {
       console.error('Error generating enhanced basic recommendations:', error);
-      return this.generateBasicRecommendations(userId, limit);
+      return [];
     }
   }
 
   /**
-   * Simple basic recommendations fallback
+   * Basic recommendation algorithm fallback
    */
   private async generateBasicRecommendations(
-    userId: number, 
-    limit: number
+    preferences: UserPreferences,
+    content: Content[]
   ): Promise<RecommendationScore[]> {
-    try {
-      const { content } = await this.storage.getContentByType('movie', 1, limit);
-      return content.map(c => ({
-        contentId: c.id,
-        score: c.rating || 50,
-        reasons: ['توصية أساسية بناءً على التقييم']
-      }));
-    } catch (error) {
-      console.error('Error generating basic recommendations:', error);
-      return [];
+    const recommendations: RecommendationScore[] = [];
+    
+    for (const item of content) {
+      let score = item.rating || 50;
+      const reasons: string[] = ['محتوى مقترح'];
+      
+      if (item.rating && item.rating >= 4) {
+        score += 10;
+        reasons.push('تقييم عالي');
+      }
+      
+      recommendations.push({
+        contentId: item.id,
+        score: Math.min(100, score),
+        reasons
+      });
     }
+    
+    return recommendations.sort((a, b) => b.score - a.score);
   }
 
   /**
@@ -444,51 +468,89 @@ export class RecommendationEngine {
     emotions: string[];
     keywords: string[];
   } {
-    const positiveWords = ['رائع', 'ممتاز', 'جميل', 'أعجبني', 'مفيد', 'رائع', 'جيد', 'ممتع'];
-    const negativeWords = ['سيء', 'مملل', 'لا أعجبني', 'ضعيف', 'سيء', 'مخيب'];
+    const positiveWords = ['ممتاز', 'رائع', 'جميل', 'أحب', 'أعجبني', 'مذهل', 'جيد'];
+    const negativeWords = ['سيء', 'كره', 'فظيع', 'مملل', 'لا أحب', 'ضعيف'];
     
-    const words = text.toLowerCase().split(/\s+/);
     let positiveCount = 0;
     let negativeCount = 0;
+    const keywords: string[] = [];
     
-    words.forEach(word => {
-      if (positiveWords.some(pos => word.includes(pos))) positiveCount++;
-      if (negativeWords.some(neg => word.includes(neg))) negativeCount++;
-    });
+    for (const word of positiveWords) {
+      if (text.includes(word)) {
+        positiveCount++;
+        keywords.push(word);
+      }
+    }
+    
+    for (const word of negativeWords) {
+      if (text.includes(word)) {
+        negativeCount++;
+        keywords.push(word);
+      }
+    }
     
     let rating = 3; // Default neutral
     if (positiveCount > negativeCount) {
-      rating = 4 + (positiveCount - negativeCount > 2 ? 1 : 0);
+      rating = Math.min(5, 3 + positiveCount);
     } else if (negativeCount > positiveCount) {
-      rating = 2 - (negativeCount - positiveCount > 2 ? 1 : 0);
+      rating = Math.max(1, 3 - negativeCount);
     }
     
-    const emotions = [];
-    if (positiveCount > 0) emotions.push('إيجابي');
-    if (negativeCount > 0) emotions.push('سلبي');
-    if (positiveCount === 0 && negativeCount === 0) emotions.push('محايد');
-    
     return {
-      rating: Math.max(1, Math.min(5, rating)),
+      rating,
       confidence: 0.6,
-      emotions,
-      keywords: words.slice(0, 5)
+      emotions: positiveCount > negativeCount ? ['إيجابي'] : negativeCount > positiveCount ? ['سلبي'] : ['محايد'],
+      keywords
     };
   }
 
   /**
    * Basic search fallback
    */
-  private async basicSearch(
-    query: string,
-    type?: string,
-    limit: number = 10
-  ): Promise<Content[]> {
-    try {
-      return await this.storage.searchContent(query, type);
-    } catch (error) {
-      console.error('Error in basic search:', error);
-      return [];
-    }
+  private async basicSearch(query: string, type?: string, limit: number = 10): Promise<Content[]> {
+    const allContent = await this.getAllContent();
+    let content = type ? allContent.filter(c => c.type === type) : allContent;
+    
+    const lowerQuery = query.toLowerCase();
+    const results = content.filter(item => 
+      item.title.toLowerCase().includes(lowerQuery) ||
+      (item.description && item.description.toLowerCase().includes(lowerQuery))
+    );
+    
+    return results.slice(0, limit);
+  }
+
+  /**
+   * Basic categorization fallback
+   */
+  private basicCategorization(content: Content): {
+    suggestedGenres: string[];
+    suggestedCategories: string[];
+    contentTags: string[];
+    ageRating: string;
+  } {
+    const genres: string[] = [];
+    const categories: string[] = [];
+    const tags: string[] = [];
+    
+    // Basic categorization based on title and description
+    const text = (content.title + ' ' + (content.description || '')).toLowerCase();
+    
+    if (text.includes('أكشن') || text.includes('action')) genres.push('أكشن');
+    if (text.includes('كوميديا') || text.includes('comedy')) genres.push('كوميديا');
+    if (text.includes('دراما') || text.includes('drama')) genres.push('دراما');
+    if (text.includes('رومانسي') || text.includes('romance')) genres.push('رومانسي');
+    
+    if (text.includes('عربي') || text.includes('arab')) categories.push('عربي');
+    if (text.includes('أجنبي') || text.includes('foreign')) categories.push('أجنبي');
+    if (text.includes('هندي') || text.includes('hindi')) categories.push('هندي');
+    if (text.includes('تركي') || text.includes('turkish')) categories.push('تركي');
+    
+    return {
+      suggestedGenres: genres,
+      suggestedCategories: categories,
+      contentTags: tags,
+      ageRating: 'غير محدد'
+    };
   }
 }
