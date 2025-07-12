@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { MobileNavigation } from "./mobile-navigation";
 import { AdvancedThemeSwitcher } from "@/components/theme/advanced-theme-switcher";
 import { useResponsive } from "./responsive-layout";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuthData } from "@/hooks/useAuth";
 import { 
   Search, 
   Bell, 
@@ -31,7 +31,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export function EnhancedResponsiveHeader() {
   const [location, navigate] = useLocation();
-  const { user } = useAuth();
+  const { user, isAuthenticated, logout } = useAuthData();
   const { isMobile, isTablet } = useResponsive();
   const [searchQuery, setSearchQuery] = useState("");
   const [isSearchFocused, setIsSearchFocused] = useState(false);
@@ -186,59 +186,83 @@ export function EnhancedResponsiveHeader() {
               </>
             )}
 
-            {/* User Menu */}
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button 
-                  variant="ghost" 
-                  className="relative rounded-full p-1 hover:bg-muted/50"
-                >
-                  <Avatar className="h-8 w-8">
-                    <AvatarImage src={user?.avatar} alt={user?.username} />
-                    <AvatarFallback className="bg-gradient-to-br from-primary to-primary/70 text-primary-foreground">
-                      {user?.username?.[0]?.toUpperCase() || "ع"}
-                    </AvatarFallback>
-                  </Avatar>
-                </Button>
-              </DropdownMenuTrigger>
-              
-              <DropdownMenuContent align="end" className="w-56 bg-background/95 backdrop-blur-xl border border-border/50">
-                <DropdownMenuLabel className="font-normal">
-                  <div className="flex flex-col space-y-1 text-right">
-                    <p className="text-sm font-medium">
-                      {user?.username || "مستخدم عادي"}
-                    </p>
-                    <p className="text-xs text-muted-foreground">
-                      {user?.email || "user@example.com"}
-                    </p>
-                  </div>
-                </DropdownMenuLabel>
+            {/* User Authentication */}
+            {isAuthenticated && user ? (
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button 
+                    variant="ghost" 
+                    className="relative rounded-full p-1 hover:bg-muted/50"
+                  >
+                    <Avatar className="h-8 w-8">
+                      <AvatarImage src={user?.profileImageUrl || ""} alt={user?.username || "User"} />
+                      <AvatarFallback className="bg-gradient-to-br from-primary to-primary/70 text-primary-foreground">
+                        {user?.firstName?.charAt(0).toUpperCase() || user?.username?.charAt(0).toUpperCase() || "U"}
+                      </AvatarFallback>
+                    </Avatar>
+                  </Button>
+                </DropdownMenuTrigger>
                 
-                <DropdownMenuSeparator />
-                
-                <DropdownMenuItem className="text-right cursor-pointer">
-                  <User className="ml-2 h-4 w-4" />
-                  الملف الشخصي
-                </DropdownMenuItem>
-                
-                <DropdownMenuItem className="text-right cursor-pointer">
-                  <Heart className="ml-2 h-4 w-4" />
-                  المفضلة
-                </DropdownMenuItem>
-                
-                <DropdownMenuItem className="text-right cursor-pointer">
-                  <Settings className="ml-2 h-4 w-4" />
-                  الإعدادات
-                </DropdownMenuItem>
-                
-                <DropdownMenuSeparator />
-                
-                <DropdownMenuItem className="text-right cursor-pointer text-primary">
-                  <Crown className="ml-2 h-4 w-4" />
-                  ترقية إلى VIP
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
+                <DropdownMenuContent align="end" className="w-56 bg-background/95 backdrop-blur-xl border border-border/50">
+                  <DropdownMenuLabel className="font-normal">
+                    <div className="flex flex-col space-y-1 text-right">
+                      <p className="text-sm font-medium">
+                        {user?.firstName || user?.username || "مستخدم"}
+                      </p>
+                      <p className="text-xs text-muted-foreground">
+                        {user?.email || "غير محدد"}
+                      </p>
+                    </div>
+                  </DropdownMenuLabel>
+                  
+                  <DropdownMenuSeparator />
+                  
+                  <DropdownMenuItem className="text-right cursor-pointer">
+                    <User className="ml-2 h-4 w-4" />
+                    الملف الشخصي
+                  </DropdownMenuItem>
+                  
+                  <DropdownMenuItem className="text-right cursor-pointer">
+                    <Heart className="ml-2 h-4 w-4" />
+                    المفضلة
+                  </DropdownMenuItem>
+                  
+                  <DropdownMenuItem className="text-right cursor-pointer">
+                    <Settings className="ml-2 h-4 w-4" />
+                    الإعدادات
+                  </DropdownMenuItem>
+                  
+                  {user?.isAdmin && (
+                    <>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem className="text-right cursor-pointer">
+                        <Crown className="ml-2 h-4 w-4" />
+                        لوحة التحكم
+                      </DropdownMenuItem>
+                    </>
+                  )}
+                  
+                  <DropdownMenuSeparator />
+                  
+                  <DropdownMenuItem className="text-right cursor-pointer" onClick={logout}>
+                    تسجيل الخروج
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            ) : (
+              <div className="flex items-center gap-2">
+                <Link href="/login">
+                  <Button variant="ghost" size="sm">
+                    تسجيل الدخول
+                  </Button>
+                </Link>
+                <Link href="/register">
+                  <Button size="sm">
+                    إنشاء حساب
+                  </Button>
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </div>

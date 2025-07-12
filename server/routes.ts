@@ -5,6 +5,7 @@ import { insertContentSchema, insertGenreSchema, insertCategorySchema, insertUse
 import { z } from "zod";
 import adminRoutes from "./routes/admin";
 import performanceRoutes from "./routes/performance";
+import authRoutes from "./routes/auth";
 import { cacheMiddleware, clearCache } from "./middleware/cache";
 import { QueryOptimizer } from "./middleware/performance";
 import { initializeBackupSystem } from "./middleware/backup";
@@ -217,24 +218,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Auth route for mock user
-  app.get("/api/auth/user", async (req, res) => {
-    // Mock user for demonstration purposes
-    const mockUser = {
-      id: 1,
-      username: "test_user",
-      email: "test@example.com",
-      firstName: "محمد",
-      lastName: "أحمد",
-      profileImageUrl: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop&crop=face",
-      isAdmin: false,
-      isActive: true,
-      createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString(),
-    };
-    
-    res.json(mockUser);
-  });
+  // Auth routes
+  app.use("/api/auth", authRoutes);
 
   // User routes
   app.post("/api/users", async (req, res) => {

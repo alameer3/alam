@@ -12,9 +12,19 @@ export async function apiRequest(
   url: string,
   data?: unknown | undefined,
 ): Promise<Response> {
+  // استخراج الـ token من localStorage
+  const token = localStorage.getItem('auth_token');
+  
+  const headers: Record<string, string> = data ? { "Content-Type": "application/json" } : {};
+  
+  // إضافة Authorization header إذا كان الـ token متوفر
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+
   const res = await fetch(url, {
     method,
-    headers: data ? { "Content-Type": "application/json" } : {},
+    headers,
     body: data ? JSON.stringify(data) : undefined,
     credentials: "include",
   });
@@ -29,8 +39,16 @@ export const getQueryFn: <T>(options: {
 }) => QueryFunction<T> =
   ({ on401: unauthorizedBehavior }) =>
   async ({ queryKey }) => {
+    const token = localStorage.getItem('auth_token');
+    const headers: Record<string, string> = {};
+    
+    if (token) {
+      headers['Authorization'] = `Bearer ${token}`;
+    }
+
     const res = await fetch(queryKey.join("/") as string, {
       credentials: "include",
+      headers,
     });
 
     if (unauthorizedBehavior === "returnNull" && res.status === 401) {
@@ -55,3 +73,32 @@ export const queryClient = new QueryClient({
     },
   },
 });
+
+// دالة API request مُحسنة للعمل مع useAuth hook
+export async function apiRequestForAuth(
+  url: string,
+  options: RequestInit = {}
+): Promise<any> {
+  const token = localStorage.getItem('auth_token');
+  
+  const headers: Record<string, string> = {
+    'Content-Type': 'application/json',
+    ...options.headers,
+  };
+
+  if (token) {
+    headers['Authorization'] = `Bearer ${token}`;
+  }
+
+  const response = await fetch(url, {
+    headers,
+    ...options,
+  });
+
+  if (!response.ok) {
+    const errorData = await response.json().catch(() => ({}));
+    throw new Error(errorData.message || `${response.status}: ${response.statusText}`);
+  }
+
+  return response.json();
+}

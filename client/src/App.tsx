@@ -18,6 +18,8 @@ import Admin from "@/pages/admin";
 import AdminDashboard from "@/pages/admin-dashboard";
 import AdminLogin from "@/pages/admin-login";
 import SecretAdminAccess from "@/pages/secret-admin-access";
+import Login from "@/pages/login";
+import Register from "@/pages/register";
 
 
 function Router() {
@@ -34,6 +36,8 @@ function Router() {
       <Route path="/admin-login" component={AdminLogin} />
       <Route path="/admin-dashboard" component={AdminDashboard} />
       <Route path="/secret-admin" component={SecretAdminAccess} />
+      <Route path="/login" component={Login} />
+      <Route path="/register" component={Register} />
 
       <Route component={NotFound} />
     </Switch>
