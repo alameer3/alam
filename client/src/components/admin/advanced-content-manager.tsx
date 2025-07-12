@@ -1,712 +1,689 @@
-import { useState } from "react";
-import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/layout/ui/card";
-import { Button } from "@/components/layout/ui/button";
-import { Input } from "@/components/layout/ui/input";
-import { Label } from "@/components/layout/ui/label";
-import { Textarea } from "@/components/layout/ui/textarea";
-import { Badge } from "@/components/layout/ui/badge";
-import { Switch } from "@/components/layout/ui/switch";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/layout/ui/tabs";
-import { 
-  Dialog, 
-  DialogContent, 
-  DialogHeader, 
-  DialogTitle, 
-  DialogTrigger,
-  DialogDescription
-} from "@/components/layout/ui/dialog";
-import { 
-  Select, 
-  SelectContent, 
-  SelectItem, 
-  SelectTrigger, 
-  SelectValue 
-} from "@/components/layout/ui/select";
-import { 
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/layout/ui/alert-dialog";
+import React, { useState } from 'react';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/layout/ui/textarea';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Badge } from '@/components/layout/ui/badge';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from '@/components/layout/ui/dialog';
+import { Separator } from '@/components/layout/ui/separator';
+import { ScrollArea } from '@/components/layout/ui/scroll-area';
 import { 
   Plus, 
+  Users, 
+  Image, 
+  Star, 
   Edit, 
   Trash2, 
-  Eye, 
-  EyeOff, 
-  Upload, 
-  Download,
-  Filter,
-  Search,
+  Save, 
+  X,
+  ExternalLink,
   Calendar,
-  Star,
-  PlayCircle,
-  Film,
-  Tv,
-  Monitor,
-  Folder,
-  Save,
-  X
-} from "lucide-react";
-import { Content, InsertContent } from "@shared/schema";
-import { apiRequest } from "@/lib/queryClient";
-import { useToast } from "@/hooks/use-toast";
-import { cn } from "@/lib/utils";
+  MapPin
+} from 'lucide-react';
+import { LoadingSpinner } from '@/components/ui/loading-spinner';
+import { ErrorMessage } from '@/components/ui/error-message';
+import { useToast } from '@/hooks/use-toast';
 
-interface AdvancedContentManagerProps {
-  initialType?: string;
+interface CastMember {
+  id: number;
+  name: string;
+  nameArabic?: string;
+  role: string;
+  biography?: string;
+  birthDate?: string;
+  nationality?: string;
+  imageUrl?: string;
+  imdbId?: string;
 }
 
-export default function AdvancedContentManager({ initialType = "movie" }: AdvancedContentManagerProps) {
-  const [selectedType, setSelectedType] = useState(initialType);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [selectedContent, setSelectedContent] = useState<Content | null>(null);
-  const [isCreateDialogOpen, setIsCreateDialogOpen] = useState(false);
-  const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
-  const [filterStatus, setFilterStatus] = useState<'all' | 'active' | 'inactive'>('all');
-  const [currentPage, setCurrentPage] = useState(1);
-  const [sortBy, setSortBy] = useState('title');
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
-  
+interface ContentImage {
+  id: number;
+  contentId: number;
+  imageUrl: string;
+  type: string;
+  description?: string;
+  descriptionArabic?: string;
+  order: number;
+}
+
+interface ExternalRating {
+  id: number;
+  contentId: number;
+  source: string;
+  rating: string;
+  maxRating?: string;
+  url?: string;
+}
+
+interface Content {
+  id: number;
+  title: string;
+  titleArabic?: string;
+  type: string;
+}
+
+export default function AdvancedContentManager() {
+  const [selectedContentId, setSelectedContentId] = useState<number | null>(null);
+  const [activeTab, setActiveTab] = useState('cast');
+  const [editingCast, setEditingCast] = useState<CastMember | null>(null);
+  const [editingImage, setEditingImage] = useState<ContentImage | null>(null);
+  const [editingRating, setEditingRating] = useState<ExternalRating | null>(null);
+  const [isAddingCast, setIsAddingCast] = useState(false);
+  const [isAddingImage, setIsAddingImage] = useState(false);
+  const [isAddingRating, setIsAddingRating] = useState(false);
+
   const { toast } = useToast();
   const queryClient = useQueryClient();
 
-  // Fetch content data
-  const { data: contentData, isLoading: isContentLoading } = useQuery({
-    queryKey: ['/api/content', selectedType, currentPage, filterStatus, sortBy, sortOrder],
-    queryFn: async () => {
-      const params = new URLSearchParams({
-        page: currentPage.toString(),
-        limit: '20',
-        status: filterStatus !== 'all' ? filterStatus : '',
-        sortBy,
-        sortOrder
-      });
-      
-      const response = await apiRequest(`/api/content/${selectedType}?${params}`);
-      return response;
-    }
+  // جلب قائمة المحتوى
+  const { data: contentList, isLoading: contentLoading } = useQuery<Content[]>({
+    queryKey: ['/api/content/all']
   });
 
-  // Fetch categories and genres
-  const { data: categories } = useQuery({
-    queryKey: ['/api/categories'],
+  // جلب أعضاء فريق العمل
+  const { data: castMembers, isLoading: castLoading } = useQuery<CastMember[]>({
+    queryKey: ['/api/enhanced/cast-members']
   });
 
-  const { data: genres } = useQuery({
-    queryKey: ['/api/genres'],
+  // جلب فريق عمل المحتوى المحدد
+  const { data: contentCast, isLoading: contentCastLoading } = useQuery({
+    queryKey: ['/api/enhanced/content', selectedContentId, 'cast'],
+    enabled: !!selectedContentId
   });
 
-  // Create content mutation
-  const createContentMutation = useMutation({
-    mutationFn: async (contentData: InsertContent) => {
-      return await apiRequest('/api/content', {
+  // جلب صور المحتوى المحدد
+  const { data: contentImages, isLoading: contentImagesLoading } = useQuery<ContentImage[]>({
+    queryKey: ['/api/enhanced/content', selectedContentId, 'images'],
+    enabled: !!selectedContentId
+  });
+
+  // جلب تقييمات المحتوى المحدد
+  const { data: contentRatings, isLoading: contentRatingsLoading } = useQuery<ExternalRating[]>({
+    queryKey: ['/api/enhanced/content', selectedContentId, 'external-ratings'],
+    enabled: !!selectedContentId
+  });
+
+  // طفرات للتحديث
+  const createCastMutation = useMutation({
+    mutationFn: async (data: Partial<CastMember>) => {
+      const response = await fetch('/api/enhanced/cast-members', {
         method: 'POST',
-        body: JSON.stringify(contentData)
-      });
-    },
-    onSuccess: () => {
-      toast({
-        title: "تم إنشاء المحتوى بنجاح",
-        description: "تم إضافة المحتوى الجديد إلى قاعدة البيانات"
-      });
-      queryClient.invalidateQueries({ queryKey: ['/api/content'] });
-      setIsCreateDialogOpen(false);
-    },
-    onError: (error) => {
-      toast({
-        title: "خطأ في إنشاء المحتوى",
-        description: error.message || "حدث خطأ أثناء إضافة المحتوى",
-        variant: "destructive"
-      });
-    }
-  });
-
-  // Update content mutation
-  const updateContentMutation = useMutation({
-    mutationFn: async ({ id, data }: { id: number; data: Partial<InsertContent> }) => {
-      return await apiRequest(`/api/content/${id}`, {
-        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data)
       });
+      if (!response.ok) throw new Error('فشل في إنشاء عضو فريق العمل');
+      return response.json();
     },
     onSuccess: () => {
-      toast({
-        title: "تم تحديث المحتوى بنجاح",
-        description: "تم حفظ التغييرات على المحتوى"
-      });
-      queryClient.invalidateQueries({ queryKey: ['/api/content'] });
-      setIsEditDialogOpen(false);
-      setSelectedContent(null);
-    },
-    onError: (error) => {
-      toast({
-        title: "خطأ في تحديث المحتوى",
-        description: error.message || "حدث خطأ أثناء تحديث المحتوى",
-        variant: "destructive"
-      });
+      queryClient.invalidateQueries({ queryKey: ['/api/enhanced/cast-members'] });
+      setIsAddingCast(false);
+      toast({ title: 'تم إضافة عضو فريق العمل بنجاح' });
     }
   });
 
-  // Delete content mutation
-  const deleteContentMutation = useMutation({
-    mutationFn: async (id: number) => {
-      return await apiRequest(`/api/content/${id}`, {
-        method: 'DELETE'
+  const addContentCastMutation = useMutation({
+    mutationFn: async (data: { castMemberId: number; character?: string; order: number }) => {
+      const response = await fetch(`/api/enhanced/content/${selectedContentId}/cast`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
       });
+      if (!response.ok) throw new Error('فشل في إضافة عضو فريق العمل للمحتوى');
+      return response.json();
     },
     onSuccess: () => {
-      toast({
-        title: "تم حذف المحتوى بنجاح",
-        description: "تم حذف المحتوى من قاعدة البيانات"
-      });
-      queryClient.invalidateQueries({ queryKey: ['/api/content'] });
-    },
-    onError: (error) => {
-      toast({
-        title: "خطأ في حذف المحتوى",
-        description: error.message || "حدث خطأ أثناء حذف المحتوى",
-        variant: "destructive"
-      });
+      queryClient.invalidateQueries({ queryKey: ['/api/enhanced/content', selectedContentId, 'cast'] });
+      toast({ title: 'تم ربط عضو فريق العمل بالمحتوى' });
     }
   });
 
-  // Toggle content status
-  const toggleContentStatus = async (content: Content) => {
-    await updateContentMutation.mutateAsync({
-      id: content.id,
-      data: { isActive: !content.isActive }
-    });
-  };
-
-  // Filter content based on search query
-  const filteredContent = contentData?.content?.filter((item: Content) => {
-    const matchesSearch = item.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         item.titleArabic?.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                         item.description?.toLowerCase().includes(searchQuery.toLowerCase());
-    
-    const matchesStatus = filterStatus === 'all' || 
-                         (filterStatus === 'active' && item.isActive) ||
-                         (filterStatus === 'inactive' && !item.isActive);
-    
-    return matchesSearch && matchesStatus;
-  }) || [];
-
-  const getTypeIcon = (type: string) => {
-    switch (type) {
-      case 'movie':
-        return <Film className="w-4 h-4" />;
-      case 'series':
-        return <PlayCircle className="w-4 h-4" />;
-      case 'tv':
-        return <Tv className="w-4 h-4" />;
-      case 'misc':
-        return <Monitor className="w-4 h-4" />;
-      default:
-        return <Folder className="w-4 h-4" />;
+  const addContentImageMutation = useMutation({
+    mutationFn: async (data: Partial<ContentImage>) => {
+      const response = await fetch(`/api/enhanced/content/${selectedContentId}/images`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      if (!response.ok) throw new Error('فشل في إضافة صورة للمحتوى');
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/enhanced/content', selectedContentId, 'images'] });
+      setIsAddingImage(false);
+      toast({ title: 'تم إضافة الصورة بنجاح' });
     }
-  };
+  });
 
-  const getTypeLabel = (type: string) => {
-    switch (type) {
-      case 'movie':
-        return 'أفلام';
-      case 'series':
-        return 'مسلسلات';
-      case 'tv':
-        return 'تلفزيون';
-      case 'misc':
-        return 'منوعات';
-      default:
-        return 'غير محدد';
+  const addExternalRatingMutation = useMutation({
+    mutationFn: async (data: Partial<ExternalRating>) => {
+      const response = await fetch(`/api/enhanced/content/${selectedContentId}/external-ratings`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      if (!response.ok) throw new Error('فشل في إضافة التقييم الخارجي');
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['/api/enhanced/content', selectedContentId, 'external-ratings'] });
+      setIsAddingRating(false);
+      toast({ title: 'تم إضافة التقييم الخارجي بنجاح' });
     }
-  };
+  });
+
+  const selectedContent = contentList?.find(c => c.id === selectedContentId);
+
+  if (contentLoading) {
+    return (
+      <div className="flex justify-center items-center h-64">
+        <LoadingSpinner />
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-6">
-      {/* Header */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-3xl font-bold">إدارة المحتوى المتقدمة</h1>
-          <p className="text-muted-foreground">
-            إدارة شاملة للأفلام والمسلسلات والبرامج التلفزيونية
-          </p>
-        </div>
-        
-        <div className="flex items-center gap-2">
-          <Button
-            onClick={() => setIsCreateDialogOpen(true)}
-            className="flex items-center gap-2"
-          >
-            <Plus className="w-4 h-4" />
-            إضافة محتوى جديد
-          </Button>
-        </div>
-      </div>
-
-      {/* Content Type Tabs */}
-      <Tabs value={selectedType} onValueChange={setSelectedType} className="w-full">
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="movie" className="flex items-center gap-2">
-            <Film className="w-4 h-4" />
-            أفلام
-          </TabsTrigger>
-          <TabsTrigger value="series" className="flex items-center gap-2">
-            <PlayCircle className="w-4 h-4" />
-            مسلسلات
-          </TabsTrigger>
-          <TabsTrigger value="tv" className="flex items-center gap-2">
-            <Tv className="w-4 h-4" />
-            تلفزيون
-          </TabsTrigger>
-          <TabsTrigger value="misc" className="flex items-center gap-2">
-            <Monitor className="w-4 h-4" />
-            منوعات
-          </TabsTrigger>
-        </TabsList>
-
-        {/* Filters and Search */}
-        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between mt-6">
-          <div className="flex items-center gap-4">
-            <div className="relative">
-              <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground w-4 h-4" />
-              <Input
-                placeholder="البحث في المحتوى..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-64 pr-10"
-              />
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <Users className="h-5 w-5" />
+            إدارة المحتوى المتطور
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div>
+              <Label>اختر المحتوى</Label>
+              <Select value={selectedContentId?.toString() || ''} onValueChange={(value) => setSelectedContentId(parseInt(value))}>
+                <SelectTrigger>
+                  <SelectValue placeholder="اختر محتوى للإدارة" />
+                </SelectTrigger>
+                <SelectContent>
+                  {contentList?.map((content) => (
+                    <SelectItem key={content.id} value={content.id.toString()}>
+                      {content.title} ({content.type})
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
             </div>
-            
-            <Select value={filterStatus} onValueChange={(value: 'all' | 'active' | 'inactive') => setFilterStatus(value)}>
-              <SelectTrigger className="w-40">
-                <SelectValue />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">جميع الحالات</SelectItem>
-                <SelectItem value="active">مفعل</SelectItem>
-                <SelectItem value="inactive">غير مفعل</SelectItem>
-              </SelectContent>
-            </Select>
-          </div>
 
-          <div className="flex items-center gap-2">
-            <Badge variant="outline" className="text-sm">
-              {filteredContent.length} عنصر
-            </Badge>
+            {selectedContent && (
+              <div className="p-4 bg-muted/50 rounded-lg">
+                <h3 className="font-semibold">{selectedContent.title}</h3>
+                {selectedContent.titleArabic && (
+                  <p className="text-sm text-muted-foreground">{selectedContent.titleArabic}</p>
+                )}
+                <Badge variant="secondary" className="mt-2">{selectedContent.type}</Badge>
+              </div>
+            )}
           </div>
-        </div>
+        </CardContent>
+      </Card>
 
-        {/* Content List */}
-        <TabsContent value={selectedType} className="space-y-4">
-          {isContentLoading ? (
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {Array.from({ length: 6 }).map((_, i) => (
-                <Card key={i} className="animate-pulse">
-                  <div className="h-48 bg-muted rounded-t-lg" />
-                  <CardContent className="p-4 space-y-3">
-                    <div className="h-4 bg-muted rounded w-3/4" />
-                    <div className="h-3 bg-muted rounded w-1/2" />
-                    <div className="h-3 bg-muted rounded w-full" />
-                  </CardContent>
-                </Card>
-              ))}
-            </div>
-          ) : filteredContent.length === 0 ? (
-            <Card>
-              <CardContent className="p-8 text-center">
-                <div className="flex flex-col items-center gap-4">
-                  <Folder className="w-16 h-16 text-muted-foreground" />
-                  <div>
-                    <h3 className="text-lg font-semibold">لا يوجد محتوى</h3>
-                    <p className="text-muted-foreground">
-                      لم يتم العثور على أي محتوى في هذا القسم
-                    </p>
-                  </div>
-                  <Button onClick={() => setIsCreateDialogOpen(true)}>
-                    إضافة محتوى جديد
-                  </Button>
-                </div>
-              </CardContent>
-            </Card>
-          ) : (
-            <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-              {filteredContent.map((item) => (
-                <Card key={item.id} className="group hover:shadow-lg transition-shadow">
-                  <div className="relative">
-                    <img
-                      src={item.posterUrl || "/api/placeholder/300/400"}
-                      alt={item.title}
-                      className="w-full h-48 object-cover rounded-t-lg"
+      {selectedContentId && (
+        <Tabs value={activeTab} onValueChange={setActiveTab} className="space-y-4">
+          <TabsList className="grid w-full grid-cols-3">
+            <TabsTrigger value="cast" className="flex items-center gap-2">
+              <Users className="h-4 w-4" />
+              فريق العمل
+            </TabsTrigger>
+            <TabsTrigger value="images" className="flex items-center gap-2">
+              <Image className="h-4 w-4" />
+              الصور
+            </TabsTrigger>
+            <TabsTrigger value="ratings" className="flex items-center gap-2">
+              <Star className="h-4 w-4" />
+              التقييمات
+            </TabsTrigger>
+          </TabsList>
+
+          {/* إدارة فريق العمل */}
+          <TabsContent value="cast" className="space-y-4">
+            <div className="flex justify-between items-center">
+              <h3 className="text-lg font-semibold">فريق العمل</h3>
+              <div className="flex gap-2">
+                <Dialog open={isAddingCast} onOpenChange={setIsAddingCast}>
+                  <DialogTrigger asChild>
+                    <Button size="sm">
+                      <Plus className="h-4 w-4 mr-2" />
+                      إضافة عضو جديد
+                    </Button>
+                  </DialogTrigger>
+                  <DialogContent>
+                    <DialogHeader>
+                      <DialogTitle>إضافة عضو فريق عمل جديد</DialogTitle>
+                      <DialogDescription>
+                        أضف معلومات عضو فريق العمل الجديد
+                      </DialogDescription>
+                    </DialogHeader>
+                    <CastMemberForm 
+                      onSubmit={(data) => createCastMutation.mutate(data)}
+                      isLoading={createCastMutation.isPending}
                     />
-                    <div className="absolute top-2 right-2 flex gap-1">
-                      <Badge variant={item.isActive ? "default" : "secondary"}>
-                        {item.isActive ? "مفعل" : "غير مفعل"}
-                      </Badge>
-                      <Badge variant="outline">
-                        {item.quality}
-                      </Badge>
-                    </div>
-                  </div>
-                  
-                  <CardContent className="p-4">
-                    <div className="space-y-2">
-                      <h3 className="font-semibold line-clamp-1">{item.title}</h3>
-                      <p className="text-sm text-muted-foreground line-clamp-1">
-                        {item.titleArabic}
-                      </p>
-                      <div className="flex items-center gap-2 text-xs text-muted-foreground">
-                        <Calendar className="w-3 h-3" />
-                        <span>{new Date(item.releaseDate).getFullYear()}</span>
-                        <Star className="w-3 h-3 ml-2" />
-                        <span>{item.rating || 'N/A'}</span>
-                      </div>
-                      <p className="text-xs text-muted-foreground line-clamp-2">
-                        {item.description}
-                      </p>
-                    </div>
-                    
-                    <div className="flex items-center gap-2 mt-4">
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => {
-                          setSelectedContent(item);
-                          setIsEditDialogOpen(true);
-                        }}
-                      >
-                        <Edit className="w-3 h-3" />
-                      </Button>
-                      
-                      <Button
-                        size="sm"
-                        variant="outline"
-                        onClick={() => toggleContentStatus(item)}
-                      >
-                        {item.isActive ? <EyeOff className="w-3 h-3" /> : <Eye className="w-3 h-3" />}
-                      </Button>
-                      
-                      <AlertDialog>
-                        <AlertDialogTrigger asChild>
-                          <Button size="sm" variant="destructive">
-                            <Trash2 className="w-3 h-3" />
-                          </Button>
-                        </AlertDialogTrigger>
-                        <AlertDialogContent>
-                          <AlertDialogHeader>
-                            <AlertDialogTitle>تأكيد الحذف</AlertDialogTitle>
-                            <AlertDialogDescription>
-                              هل أنت متأكد من حذف "{item.title}"؟ لا يمكن التراجع عن هذا الإجراء.
-                            </AlertDialogDescription>
-                          </AlertDialogHeader>
-                          <AlertDialogFooter>
-                            <AlertDialogCancel>إلغاء</AlertDialogCancel>
-                            <AlertDialogAction
-                              onClick={() => deleteContentMutation.mutate(item.id)}
-                              className="bg-destructive hover:bg-destructive/90"
-                            >
-                              حذف
-                            </AlertDialogAction>
-                          </AlertDialogFooter>
-                        </AlertDialogContent>
-                      </AlertDialog>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+                  </DialogContent>
+                </Dialog>
+                
+                <Select onValueChange={(value) => {
+                  if (value && contentCast) {
+                    const order = contentCast.length;
+                    addContentCastMutation.mutate({
+                      castMemberId: parseInt(value),
+                      order
+                    });
+                  }
+                }}>
+                  <SelectTrigger className="w-48">
+                    <SelectValue placeholder="ربط عضو موجود" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {castMembers?.map((member) => (
+                      <SelectItem key={member.id} value={member.id.toString()}>
+                        {member.name} - {member.role}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
-          )}
-        </TabsContent>
-      </Tabs>
 
-      {/* Create Content Dialog */}
-      <ContentFormDialog
-        isOpen={isCreateDialogOpen}
-        onClose={() => setIsCreateDialogOpen(false)}
-        onSubmit={(data) => createContentMutation.mutate(data)}
-        isLoading={createContentMutation.isPending}
-        mode="create"
-        categories={categories || []}
-        genres={genres || []}
-        defaultType={selectedType}
-      />
+            {contentCastLoading ? (
+              <LoadingSpinner />
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                {contentCast?.map((cast: any) => (
+                  <Card key={cast.id}>
+                    <CardContent className="p-4">
+                      <div className="flex items-center space-x-4 space-x-reverse">
+                        <div className="w-12 h-12 bg-muted rounded-full flex items-center justify-center overflow-hidden">
+                          {cast.castMember.imageUrl ? (
+                            <img 
+                              src={cast.castMember.imageUrl} 
+                              alt={cast.castMember.name}
+                              className="w-full h-full object-cover"
+                            />
+                          ) : (
+                            <Users className="h-6 w-6" />
+                          )}
+                        </div>
+                        <div className="flex-1 text-right">
+                          <h4 className="font-medium">{cast.castMember.name}</h4>
+                          <p className="text-sm text-muted-foreground">{cast.castMember.role}</p>
+                          {cast.character && (
+                            <p className="text-xs text-primary">{cast.character}</p>
+                          )}
+                        </div>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            )}
+          </TabsContent>
 
-      {/* Edit Content Dialog */}
-      {selectedContent && (
-        <ContentFormDialog
-          isOpen={isEditDialogOpen}
-          onClose={() => {
-            setIsEditDialogOpen(false);
-            setSelectedContent(null);
-          }}
-          onSubmit={(data) => updateContentMutation.mutate({ 
-            id: selectedContent.id, 
-            data 
-          })}
-          isLoading={updateContentMutation.isPending}
-          mode="edit"
-          initialData={selectedContent}
-          categories={categories || []}
-          genres={genres || []}
-        />
+          {/* إدارة الصور */}
+          <TabsContent value="images" className="space-y-4">
+            <div className="flex justify-between items-center">
+              <h3 className="text-lg font-semibold">معرض الصور</h3>
+              <Dialog open={isAddingImage} onOpenChange={setIsAddingImage}>
+                <DialogTrigger asChild>
+                  <Button size="sm">
+                    <Plus className="h-4 w-4 mr-2" />
+                    إضافة صورة
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>إضافة صورة جديدة</DialogTitle>
+                    <DialogDescription>
+                      أضف صورة جديدة للمحتوى
+                    </DialogDescription>
+                  </DialogHeader>
+                  <ContentImageForm 
+                    onSubmit={(data) => addContentImageMutation.mutate(data)}
+                    isLoading={addContentImageMutation.isPending}
+                  />
+                </DialogContent>
+              </Dialog>
+            </div>
+
+            {contentImagesLoading ? (
+              <LoadingSpinner />
+            ) : (
+              <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                {contentImages?.map((image) => (
+                  <Card key={image.id} className="overflow-hidden">
+                    <div className="aspect-square bg-muted">
+                      <img 
+                        src={image.imageUrl} 
+                        alt={image.description || 'صورة المحتوى'}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
+                    <CardContent className="p-2">
+                      <Badge variant="outline" size="sm">{image.type}</Badge>
+                      {image.description && (
+                        <p className="text-xs text-muted-foreground mt-1 truncate">
+                          {image.description}
+                        </p>
+                      )}
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            )}
+          </TabsContent>
+
+          {/* إدارة التقييمات */}
+          <TabsContent value="ratings" className="space-y-4">
+            <div className="flex justify-between items-center">
+              <h3 className="text-lg font-semibold">التقييمات الخارجية</h3>
+              <Dialog open={isAddingRating} onOpenChange={setIsAddingRating}>
+                <DialogTrigger asChild>
+                  <Button size="sm">
+                    <Plus className="h-4 w-4 mr-2" />
+                    إضافة تقييم
+                  </Button>
+                </DialogTrigger>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>إضافة تقييم خارجي</DialogTitle>
+                    <DialogDescription>
+                      أضف تقييم من مصدر خارجي
+                    </DialogDescription>
+                  </DialogHeader>
+                  <ExternalRatingForm 
+                    onSubmit={(data) => addExternalRatingMutation.mutate(data)}
+                    isLoading={addExternalRatingMutation.isPending}
+                  />
+                </DialogContent>
+              </Dialog>
+            </div>
+
+            {contentRatingsLoading ? (
+              <LoadingSpinner />
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                {contentRatings?.map((rating) => (
+                  <Card key={rating.id}>
+                    <CardContent className="p-4 text-center">
+                      <h4 className="font-semibold capitalize mb-2">
+                        {rating.source.replace('_', ' ')}
+                      </h4>
+                      <div className="text-2xl font-bold text-primary mb-2">
+                        {rating.rating}
+                        {rating.maxRating && <span className="text-sm text-muted-foreground">/{rating.maxRating}</span>}
+                      </div>
+                      {rating.url && (
+                        <Button variant="outline" size="sm" onClick={() => window.open(rating.url, '_blank')}>
+                          <ExternalLink className="h-3 w-3 mr-1" />
+                          زيارة
+                        </Button>
+                      )}
+                    </CardContent>
+                  </Card>
+                ))}
+              </div>
+            )}
+          </TabsContent>
+        </Tabs>
       )}
     </div>
   );
 }
 
-// Content Form Dialog Component
-interface ContentFormDialogProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onSubmit: (data: any) => void;
-  isLoading: boolean;
-  mode: 'create' | 'edit';
-  initialData?: Content;
-  categories: any[];
-  genres: any[];
-  defaultType?: string;
-}
-
-function ContentFormDialog({
-  isOpen,
-  onClose,
-  onSubmit,
-  isLoading,
-  mode,
-  initialData,
-  categories,
-  genres,
-  defaultType = 'movie'
-}: ContentFormDialogProps) {
-  const [formData, setFormData] = useState(() => ({
-    title: initialData?.title || '',
-    titleArabic: initialData?.titleArabic || '',
-    description: initialData?.description || '',
-    type: initialData?.type || defaultType,
-    releaseDate: initialData?.releaseDate || new Date().toISOString().split('T')[0],
-    duration: initialData?.duration || 0,
-    language: initialData?.language || 'Arabic',
-    quality: initialData?.quality || 'HD',
-    resolution: initialData?.resolution || '1080p',
-    rating: initialData?.rating || 0,
-    posterUrl: initialData?.posterUrl || '',
-    trailerUrl: initialData?.trailerUrl || '',
-    streamingUrl: initialData?.streamingUrl || '',
-    isActive: initialData?.isActive ?? true,
-    year: initialData?.year || new Date().getFullYear(),
-    country: initialData?.country || 'مصر',
-    director: initialData?.director || '',
-    cast: initialData?.cast || '',
-    genres: initialData?.genres || [],
-    categories: initialData?.categories || []
-  }));
+// مكون نموذج عضو فريق العمل
+function CastMemberForm({ onSubmit, isLoading }: { onSubmit: (data: any) => void; isLoading: boolean }) {
+  const [formData, setFormData] = useState({
+    name: '',
+    nameArabic: '',
+    role: '',
+    biography: '',
+    birthDate: '',
+    nationality: '',
+    imageUrl: '',
+    imdbId: ''
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSubmit(formData);
   };
 
-  const handleInputChange = (field: string, value: any) => {
-    setFormData(prev => ({
-      ...prev,
-      [field]: value
-    }));
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <Label>الاسم</Label>
+          <Input 
+            value={formData.name}
+            onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
+            required
+          />
+        </div>
+        <div>
+          <Label>الاسم بالعربية</Label>
+          <Input 
+            value={formData.nameArabic}
+            onChange={(e) => setFormData(prev => ({ ...prev, nameArabic: e.target.value }))}
+          />
+        </div>
+      </div>
+      
+      <div>
+        <Label>الدور</Label>
+        <Select value={formData.role} onValueChange={(value) => setFormData(prev => ({ ...prev, role: value }))}>
+          <SelectTrigger>
+            <SelectValue placeholder="اختر الدور" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="actor">ممثل</SelectItem>
+            <SelectItem value="actress">ممثلة</SelectItem>
+            <SelectItem value="director">مخرج</SelectItem>
+            <SelectItem value="producer">منتج</SelectItem>
+            <SelectItem value="writer">كاتب</SelectItem>
+            <SelectItem value="cinematographer">مدير تصوير</SelectItem>
+            <SelectItem value="composer">ملحن</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
+
+      <div>
+        <Label>السيرة الذاتية</Label>
+        <Textarea 
+          value={formData.biography}
+          onChange={(e) => setFormData(prev => ({ ...prev, biography: e.target.value }))}
+          placeholder="نبذة مختصرة عن السيرة الذاتية"
+        />
+      </div>
+
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <Label>تاريخ الميلاد</Label>
+          <Input 
+            type="date"
+            value={formData.birthDate}
+            onChange={(e) => setFormData(prev => ({ ...prev, birthDate: e.target.value }))}
+          />
+        </div>
+        <div>
+          <Label>الجنسية</Label>
+          <Input 
+            value={formData.nationality}
+            onChange={(e) => setFormData(prev => ({ ...prev, nationality: e.target.value }))}
+          />
+        </div>
+      </div>
+
+      <div>
+        <Label>رابط الصورة</Label>
+        <Input 
+          value={formData.imageUrl}
+          onChange={(e) => setFormData(prev => ({ ...prev, imageUrl: e.target.value }))}
+          placeholder="https://example.com/image.jpg"
+        />
+      </div>
+
+      <div>
+        <Label>معرف IMDb</Label>
+        <Input 
+          value={formData.imdbId}
+          onChange={(e) => setFormData(prev => ({ ...prev, imdbId: e.target.value }))}
+          placeholder="nm0000123"
+        />
+      </div>
+
+      <div className="flex justify-end gap-2">
+        <Button type="submit" disabled={isLoading}>
+          {isLoading ? <LoadingSpinner /> : <Save className="h-4 w-4 mr-2" />}
+          حفظ
+        </Button>
+      </div>
+    </form>
+  );
+}
+
+// مكون نموذج صورة المحتوى
+function ContentImageForm({ onSubmit, isLoading }: { onSubmit: (data: any) => void; isLoading: boolean }) {
+  const [formData, setFormData] = useState({
+    imageUrl: '',
+    type: '',
+    description: '',
+    descriptionArabic: '',
+    order: 0
+  });
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onSubmit(formData);
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-        <DialogHeader>
-          <DialogTitle>
-            {mode === 'create' ? 'إضافة محتوى جديد' : 'تحرير المحتوى'}
-          </DialogTitle>
-          <DialogDescription>
-            {mode === 'create' 
-              ? 'قم بإدخال بيانات المحتوى الجديد'
-              : 'قم بتحرير بيانات المحتوى'
-            }
-          </DialogDescription>
-        </DialogHeader>
-        
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="title">العنوان (بالإنجليزية)</Label>
-              <Input
-                id="title"
-                value={formData.title}
-                onChange={(e) => handleInputChange('title', e.target.value)}
-                required
-              />
-            </div>
-            
-            <div className="space-y-2">
-              <Label htmlFor="titleArabic">العنوان (بالعربية)</Label>
-              <Input
-                id="titleArabic"
-                value={formData.titleArabic}
-                onChange={(e) => handleInputChange('titleArabic', e.target.value)}
-              />
-            </div>
-          </div>
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div>
+        <Label>رابط الصورة</Label>
+        <Input 
+          value={formData.imageUrl}
+          onChange={(e) => setFormData(prev => ({ ...prev, imageUrl: e.target.value }))}
+          placeholder="https://example.com/image.jpg"
+          required
+        />
+      </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="description">الوصف</Label>
-            <Textarea
-              id="description"
-              value={formData.description}
-              onChange={(e) => handleInputChange('description', e.target.value)}
-              rows={4}
-            />
-          </div>
+      <div>
+        <Label>نوع الصورة</Label>
+        <Select value={formData.type} onValueChange={(value) => setFormData(prev => ({ ...prev, type: value }))}>
+          <SelectTrigger>
+            <SelectValue placeholder="اختر نوع الصورة" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="poster">بوستر</SelectItem>
+            <SelectItem value="backdrop">خلفية</SelectItem>
+            <SelectItem value="still">لقطة من العمل</SelectItem>
+            <SelectItem value="behind_scenes">كواليس</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="type">النوع</Label>
-              <Select
-                value={formData.type}
-                onValueChange={(value) => handleInputChange('type', value)}
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="movie">فيلم</SelectItem>
-                  <SelectItem value="series">مسلسل</SelectItem>
-                  <SelectItem value="tv">تلفزيون</SelectItem>
-                  <SelectItem value="misc">منوعات</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+      <div>
+        <Label>الوصف</Label>
+        <Input 
+          value={formData.description}
+          onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+          placeholder="وصف الصورة"
+        />
+      </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="language">اللغة</Label>
-              <Select
-                value={formData.language}
-                onValueChange={(value) => handleInputChange('language', value)}
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="Arabic">عربي</SelectItem>
-                  <SelectItem value="English">إنجليزي</SelectItem>
-                  <SelectItem value="Hindi">هندي</SelectItem>
-                  <SelectItem value="Turkish">تركي</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
+      <div>
+        <Label>الوصف بالعربية</Label>
+        <Input 
+          value={formData.descriptionArabic}
+          onChange={(e) => setFormData(prev => ({ ...prev, descriptionArabic: e.target.value }))}
+          placeholder="وصف الصورة بالعربية"
+        />
+      </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="quality">الجودة</Label>
-              <Select
-                value={formData.quality}
-                onValueChange={(value) => handleInputChange('quality', value)}
-              >
-                <SelectTrigger>
-                  <SelectValue />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="4K">4K</SelectItem>
-                  <SelectItem value="FHD">FHD</SelectItem>
-                  <SelectItem value="HD">HD</SelectItem>
-                  <SelectItem value="SD">SD</SelectItem>
-                </SelectContent>
-              </Select>
-            </div>
-          </div>
+      <div className="flex justify-end gap-2">
+        <Button type="submit" disabled={isLoading}>
+          {isLoading ? <LoadingSpinner /> : <Save className="h-4 w-4 mr-2" />}
+          حفظ
+        </Button>
+      </div>
+    </form>
+  );
+}
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="releaseDate">تاريخ الإصدار</Label>
-              <Input
-                id="releaseDate"
-                type="date"
-                value={formData.releaseDate}
-                onChange={(e) => handleInputChange('releaseDate', e.target.value)}
-              />
-            </div>
+// مكون نموذج التقييم الخارجي
+function ExternalRatingForm({ onSubmit, isLoading }: { onSubmit: (data: any) => void; isLoading: boolean }) {
+  const [formData, setFormData] = useState({
+    source: '',
+    rating: '',
+    maxRating: '',
+    url: ''
+  });
 
-            <div className="space-y-2">
-              <Label htmlFor="duration">المدة (بالدقائق)</Label>
-              <Input
-                id="duration"
-                type="number"
-                value={formData.duration}
-                onChange={(e) => handleInputChange('duration', parseInt(e.target.value))}
-              />
-            </div>
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    onSubmit(formData);
+  };
 
-            <div className="space-y-2">
-              <Label htmlFor="rating">التقييم</Label>
-              <Input
-                id="rating"
-                type="number"
-                step="0.1"
-                min="0"
-                max="10"
-                value={formData.rating}
-                onChange={(e) => handleInputChange('rating', parseFloat(e.target.value))}
-              />
-            </div>
-          </div>
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <div>
+        <Label>المصدر</Label>
+        <Select value={formData.source} onValueChange={(value) => setFormData(prev => ({ ...prev, source: value }))}>
+          <SelectTrigger>
+            <SelectValue placeholder="اختر مصدر التقييم" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="imdb">IMDb</SelectItem>
+            <SelectItem value="rotten_tomatoes">Rotten Tomatoes</SelectItem>
+            <SelectItem value="metacritic">Metacritic</SelectItem>
+            <SelectItem value="letterboxd">Letterboxd</SelectItem>
+            <SelectItem value="other">أخرى</SelectItem>
+          </SelectContent>
+        </Select>
+      </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="posterUrl">رابط الصورة</Label>
-              <Input
-                id="posterUrl"
-                value={formData.posterUrl}
-                onChange={(e) => handleInputChange('posterUrl', e.target.value)}
-                placeholder="https://example.com/poster.jpg"
-              />
-            </div>
+      <div className="grid grid-cols-2 gap-4">
+        <div>
+          <Label>التقييم</Label>
+          <Input 
+            value={formData.rating}
+            onChange={(e) => setFormData(prev => ({ ...prev, rating: e.target.value }))}
+            placeholder="8.5"
+            required
+          />
+        </div>
+        <div>
+          <Label>أقصى تقييم</Label>
+          <Input 
+            value={formData.maxRating}
+            onChange={(e) => setFormData(prev => ({ ...prev, maxRating: e.target.value }))}
+            placeholder="10"
+          />
+        </div>
+      </div>
 
-            <div className="space-y-2">
-              <Label htmlFor="trailerUrl">رابط المقطع الدعائي</Label>
-              <Input
-                id="trailerUrl"
-                value={formData.trailerUrl}
-                onChange={(e) => handleInputChange('trailerUrl', e.target.value)}
-                placeholder="https://example.com/trailer.mp4"
-              />
-            </div>
-          </div>
+      <div>
+        <Label>رابط المصدر</Label>
+        <Input 
+          value={formData.url}
+          onChange={(e) => setFormData(prev => ({ ...prev, url: e.target.value }))}
+          placeholder="https://www.imdb.com/title/tt1234567/"
+        />
+      </div>
 
-          <div className="space-y-2">
-            <Label htmlFor="streamingUrl">رابط المشاهدة</Label>
-            <Input
-              id="streamingUrl"
-              value={formData.streamingUrl}
-              onChange={(e) => handleInputChange('streamingUrl', e.target.value)}
-              placeholder="https://example.com/stream.mp4"
-            />
-          </div>
-
-          <div className="flex items-center space-x-2 space-x-reverse">
-            <Switch
-              checked={formData.isActive}
-              onCheckedChange={(checked) => handleInputChange('isActive', checked)}
-            />
-            <Label>محتوى مفعل</Label>
-          </div>
-
-          <div className="flex justify-end gap-2">
-            <Button type="button" variant="outline" onClick={onClose}>
-              إلغاء
-            </Button>
-            <Button type="submit" disabled={isLoading}>
-              {isLoading ? 'جاري الحفظ...' : mode === 'create' ? 'إنشاء' : 'حفظ'}
-            </Button>
-          </div>
-        </form>
-      </DialogContent>
-    </Dialog>
+      <div className="flex justify-end gap-2">
+        <Button type="submit" disabled={isLoading}>
+          {isLoading ? <LoadingSpinner /> : <Save className="h-4 w-4 mr-2" />}
+          حفظ
+        </Button>
+      </div>
+    </form>
   );
 }

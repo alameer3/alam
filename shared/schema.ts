@@ -54,6 +54,16 @@ export const content = pgTable("content", {
   posterUrl: text("poster_url"),
   videoUrl: text("video_url"),
   downloadUrl: text("download_url"),
+  // تطوير المحتوى الجديد
+  trailerUrl: text("trailer_url"), // رابط المقطع الدعائي
+  imdbId: text("imdb_id"), // معرف IMDb
+  tmdbId: text("tmdb_id"), // معرف The Movie Database
+  rottenTomatoesScore: integer("rotten_tomatoes_score"), // تقييم الطماطم المتعفنة
+  metacriticScore: integer("metacritic_score"), // تقييم Metacritic
+  country: text("country"), // بلد الإنتاج
+  budget: text("budget"), // الميزانية
+  boxOffice: text("box_office"), // إيرادات شباك التذاكر
+  awards: text("awards"), // الجوائز
   isActive: boolean("is_active").default(true).notNull(),
   createdAt: timestamp("created_at").defaultNow().notNull(),
   updatedAt: timestamp("updated_at").defaultNow().notNull(),
@@ -136,6 +146,54 @@ export const contentViews = pgTable("content_views", {
   lastViewedAt: timestamp("last_viewed_at").defaultNow().notNull(),
 });
 
+// جدول فريق العمل
+export const castMembers = pgTable("cast_members", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  nameArabic: text("name_arabic"),
+  role: text("role").notNull(), // actor, director, writer, producer, etc.
+  biography: text("biography"),
+  birthDate: text("birth_date"),
+  nationality: text("nationality"),
+  imageUrl: text("image_url"),
+  imdbId: text("imdb_id"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+// جدول ربط المحتوى بفريق العمل
+export const contentCast = pgTable("content_cast", {
+  id: serial("id").primaryKey(),
+  contentId: integer("content_id").notNull(),
+  castMemberId: integer("cast_member_id").notNull(),
+  character: text("character"), // الشخصية التي يلعبها في هذا المحتوى
+  order: integer("order").default(0), // ترتيب الظهور
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+// جدول الصور الإضافية
+export const contentImages = pgTable("content_images", {
+  id: serial("id").primaryKey(),
+  contentId: integer("content_id").notNull(),
+  imageUrl: text("image_url").notNull(),
+  type: text("type").notNull(), // poster, backdrop, still, behind_scenes
+  description: text("description"),
+  descriptionArabic: text("description_arabic"),
+  order: integer("order").default(0),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+// جدول التقييمات الخارجية
+export const externalRatings = pgTable("external_ratings", {
+  id: serial("id").primaryKey(),
+  contentId: integer("content_id").notNull(),
+  source: text("source").notNull(), // imdb, rotten_tomatoes, metacritic, etc.
+  rating: text("rating").notNull(),
+  maxRating: text("max_rating"),
+  url: text("url"),
+  lastUpdated: timestamp("last_updated").defaultNow().notNull(),
+});
+
 // Relations
 export const contentRelations = relations(content, ({ many, one }) => ({
   contentGenres: many(contentGenres),
@@ -143,6 +201,9 @@ export const contentRelations = relations(content, ({ many, one }) => ({
   userRatings: many(userRatings),
   comments: many(userComments),
   reviews: many(userReviews),
+  cast: many(contentCast),
+  images: many(contentImages),
+  externalRatings: many(externalRatings),
   favorites: many(userFavorites),
   watchHistory: many(userWatchHistory),
   views: one(contentViews, {
@@ -311,6 +372,12 @@ export const insertUserWatchHistorySchema = createInsertSchema(userWatchHistory)
   id: true,
   watchedAt: true,
 });
+
+// Insert schemas - الأنواع الجديدة لتطوير المحتوى
+export const insertCastMemberSchema = createInsertSchema(castMembers).omit({ id: true, createdAt: true, updatedAt: true });
+export const insertContentCastSchema = createInsertSchema(contentCast).omit({ id: true, createdAt: true });
+export const insertContentImageSchema = createInsertSchema(contentImages).omit({ id: true, createdAt: true });
+export const insertExternalRatingSchema = createInsertSchema(externalRatings).omit({ id: true, lastUpdated: true });
 
 export const insertContentViewSchema = createInsertSchema(contentViews).omit({
   id: true,
@@ -490,5 +557,48 @@ export type InsertUserSession = z.infer<typeof insertUserSessionSchema>;
 
 export type PasswordReset = typeof passwordResets.$inferSelect;
 export type InsertPasswordReset = z.infer<typeof insertPasswordResetSchema>;
+
+// العلاقات الجديدة للمحتوى المتقدم
+export const castMemberRelations = relations(castMembers, ({ many }) => ({
+  contentCast: many(contentCast),
+}));
+
+export const contentCastRelations = relations(contentCast, ({ one }) => ({
+  content: one(content, {
+    fields: [contentCast.contentId],
+    references: [content.id],
+  }),
+  castMember: one(castMembers, {
+    fields: [contentCast.castMemberId],
+    references: [castMembers.id],
+  }),
+}));
+
+export const contentImageRelations = relations(contentImages, ({ one }) => ({
+  content: one(content, {
+    fields: [contentImages.contentId],
+    references: [content.id],
+  }),
+}));
+
+export const externalRatingRelations = relations(externalRatings, ({ one }) => ({
+  content: one(content, {
+    fields: [externalRatings.contentId],
+    references: [content.id],
+  }),
+}));
+
+// الأنواع الجديدة للمحتوى المتقدم
+export type CastMember = typeof castMembers.$inferSelect;
+export type InsertCastMember = z.infer<typeof insertCastMemberSchema>;
+
+export type ContentCast = typeof contentCast.$inferSelect;
+export type InsertContentCast = z.infer<typeof insertContentCastSchema>;
+
+export type ContentImage = typeof contentImages.$inferSelect;
+export type InsertContentImage = z.infer<typeof insertContentImageSchema>;
+
+export type ExternalRating = typeof externalRatings.$inferSelect;
+export type InsertExternalRating = z.infer<typeof insertExternalRatingSchema>;
 
 

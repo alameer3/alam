@@ -1,11 +1,14 @@
 import { 
   users, content, genres, categories, contentGenres, contentCategories, userRatings,
   userComments, userReviews, reviewLikes, userFavorites, userWatchHistory, contentViews,
+  castMembers, contentCast, contentImages, externalRatings,
   type User, type InsertUser, type Content, type InsertContent, 
   type Genre, type InsertGenre, type Category, type InsertCategory,
   type UserComment, type InsertUserComment, type UserReview, type InsertUserReview,
   type ReviewLike, type InsertReviewLike, type UserFavorite, type InsertUserFavorite,
-  type UserWatchHistory, type InsertUserWatchHistory, type ContentView, type InsertContentView
+  type UserWatchHistory, type InsertUserWatchHistory, type ContentView, type InsertContentView,
+  type CastMember, type InsertCastMember, type ContentCast, type InsertContentCast,
+  type ContentImage, type InsertContentImage, type ExternalRating, type InsertExternalRating
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and, ilike, sql } from "drizzle-orm";
@@ -64,6 +67,30 @@ export interface IStorage {
   incrementViewCount(contentId: number): Promise<void>;
   getContentStats(): Promise<{ movies: number, series: number, tv: number, misc: number }>;
   getUserStats(userId: number): Promise<{ favorites: number, watchHistory: number, comments: number }>;
+  
+  // Cast and crew operations (تطوير المحتوى الجديد)
+  getAllCastMembers(): Promise<CastMember[]>;
+  getCastMemberById(id: number): Promise<CastMember | undefined>;
+  createCastMember(castMember: InsertCastMember): Promise<CastMember>;
+  updateCastMember(id: number, castMember: Partial<InsertCastMember>): Promise<CastMember>;
+  deleteCastMember(id: number): Promise<boolean>;
+  
+  // Content cast operations
+  getContentCast(contentId: number): Promise<(ContentCast & { castMember: CastMember })[]>;
+  addContentCast(contentCast: InsertContentCast): Promise<ContentCast>;
+  removeContentCast(contentId: number, castMemberId: number): Promise<boolean>;
+  
+  // Content images operations
+  getContentImages(contentId: number, type?: string): Promise<ContentImage[]>;
+  addContentImage(image: InsertContentImage): Promise<ContentImage>;
+  updateContentImage(id: number, image: Partial<InsertContentImage>): Promise<ContentImage>;
+  deleteContentImage(id: number): Promise<boolean>;
+  
+  // External ratings operations
+  getContentExternalRatings(contentId: number): Promise<ExternalRating[]>;
+  addExternalRating(rating: InsertExternalRating): Promise<ExternalRating>;
+  updateExternalRating(id: number, rating: Partial<InsertExternalRating>): Promise<ExternalRating>;
+  deleteExternalRating(id: number): Promise<boolean>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -412,6 +439,124 @@ export class DatabaseStorage implements IStorage {
     };
   }
 
+  // ================= طرق المحتوى المتطور الجديدة =================
+  
+  // Cast Members operations
+  async getAllCastMembers(): Promise<CastMember[]> {
+    return await db.select().from(castMembers).orderBy(castMembers.name);
+  }
+
+  async getCastMemberById(id: number): Promise<CastMember | undefined> {
+    const [castMember] = await db.select().from(castMembers).where(eq(castMembers.id, id));
+    return castMember || undefined;
+  }
+
+  async createCastMember(insertCastMember: InsertCastMember): Promise<CastMember> {
+    const [castMember] = await db.insert(castMembers).values(insertCastMember).returning();
+    return castMember;
+  }
+
+  async updateCastMember(id: number, updateCastMember: Partial<InsertCastMember>): Promise<CastMember> {
+    const [castMember] = await db
+      .update(castMembers)
+      .set({ ...updateCastMember, updatedAt: new Date() })
+      .where(eq(castMembers.id, id))
+      .returning();
+    return castMember;
+  }
+
+  async deleteCastMember(id: number): Promise<boolean> {
+    const result = await db.delete(castMembers).where(eq(castMembers.id, id));
+    return result.rowCount > 0;
+  }
+
+  // Content Cast operations
+  async getContentCast(contentId: number): Promise<(ContentCast & { castMember: CastMember })[]> {
+    const result = await db
+      .select({
+        contentCast: contentCast,
+        castMember: castMembers
+      })
+      .from(contentCast)
+      .innerJoin(castMembers, eq(contentCast.castMemberId, castMembers.id))
+      .where(eq(contentCast.contentId, contentId))
+      .orderBy(contentCast.order, castMembers.name);
+    
+    return result.map(r => ({ ...r.contentCast, castMember: r.castMember }));
+  }
+
+  async addContentCast(insertContentCast: InsertContentCast): Promise<ContentCast> {
+    const [newContentCast] = await db.insert(contentCast).values(insertContentCast).returning();
+    return newContentCast;
+  }
+
+  async removeContentCast(contentId: number, castMemberId: number): Promise<boolean> {
+    const result = await db
+      .delete(contentCast)
+      .where(and(eq(contentCast.contentId, contentId), eq(contentCast.castMemberId, castMemberId)));
+    return result.rowCount > 0;
+  }
+
+  // Content Images operations
+  async getContentImages(contentId: number, type?: string): Promise<ContentImage[]> {
+    const whereConditions = [eq(contentImages.contentId, contentId)];
+    if (type) {
+      whereConditions.push(eq(contentImages.type, type));
+    }
+    
+    return await db
+      .select()
+      .from(contentImages)
+      .where(and(...whereConditions))
+      .orderBy(contentImages.order, contentImages.createdAt);
+  }
+
+  async addContentImage(insertContentImage: InsertContentImage): Promise<ContentImage> {
+    const [newImage] = await db.insert(contentImages).values(insertContentImage).returning();
+    return newImage;
+  }
+
+  async updateContentImage(id: number, updateContentImage: Partial<InsertContentImage>): Promise<ContentImage> {
+    const [image] = await db
+      .update(contentImages)
+      .set(updateContentImage)
+      .where(eq(contentImages.id, id))
+      .returning();
+    return image;
+  }
+
+  async deleteContentImage(id: number): Promise<boolean> {
+    const result = await db.delete(contentImages).where(eq(contentImages.id, id));
+    return result.rowCount > 0;
+  }
+
+  // External Ratings operations
+  async getContentExternalRatings(contentId: number): Promise<ExternalRating[]> {
+    return await db
+      .select()
+      .from(externalRatings)
+      .where(eq(externalRatings.contentId, contentId))
+      .orderBy(externalRatings.source);
+  }
+
+  async addExternalRating(insertExternalRating: InsertExternalRating): Promise<ExternalRating> {
+    const [rating] = await db.insert(externalRatings).values(insertExternalRating).returning();
+    return rating;
+  }
+
+  async updateExternalRating(id: number, updateExternalRating: Partial<InsertExternalRating>): Promise<ExternalRating> {
+    const [rating] = await db
+      .update(externalRatings)
+      .set({ ...updateExternalRating, lastUpdated: new Date() })
+      .where(eq(externalRatings.id, id))
+      .returning();
+    return rating;
+  }
+
+  async deleteExternalRating(id: number): Promise<boolean> {
+    const result = await db.delete(externalRatings).where(eq(externalRatings.id, id));
+    return result.rowCount > 0;
+  }
 
 }
 
@@ -690,6 +835,123 @@ class TemporaryMemoryStorage implements IStorage {
     return { favorites: 0, watchHistory: 0, comments: 0 };
   }
 
+  // المحتوى المتطور - طرق وهمية للتخزين المؤقت
+  async getAllCastMembers(): Promise<CastMember[]> {
+    return [];
+  }
+  
+  async getCastMemberById(id: number): Promise<CastMember | undefined> {
+    return undefined;
+  }
+  
+  async createCastMember(castMember: InsertCastMember): Promise<CastMember> {
+    const newCastMember: CastMember = {
+      id: Date.now(),
+      ...castMember,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    return newCastMember;
+  }
+  
+  async updateCastMember(id: number, castMember: Partial<InsertCastMember>): Promise<CastMember> {
+    const updated: CastMember = {
+      id,
+      name: castMember.name || "",
+      nameArabic: castMember.nameArabic || null,
+      role: castMember.role || "",
+      biography: castMember.biography || null,
+      birthDate: castMember.birthDate || null,
+      nationality: castMember.nationality || null,
+      imageUrl: castMember.imageUrl || null,
+      imdbId: castMember.imdbId || null,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    return updated;
+  }
+  
+  async deleteCastMember(id: number): Promise<boolean> {
+    return true;
+  }
+  
+  async getContentCast(contentId: number): Promise<(ContentCast & { castMember: CastMember })[]> {
+    return [];
+  }
+  
+  async addContentCast(contentCast: InsertContentCast): Promise<ContentCast> {
+    const newContentCast: ContentCast = {
+      id: Date.now(),
+      ...contentCast,
+      createdAt: new Date()
+    };
+    return newContentCast;
+  }
+  
+  async removeContentCast(contentId: number, castMemberId: number): Promise<boolean> {
+    return true;
+  }
+  
+  async getContentImages(contentId: number, type?: string): Promise<ContentImage[]> {
+    return [];
+  }
+  
+  async addContentImage(image: InsertContentImage): Promise<ContentImage> {
+    const newImage: ContentImage = {
+      id: Date.now(),
+      ...image,
+      createdAt: new Date()
+    };
+    return newImage;
+  }
+  
+  async updateContentImage(id: number, image: Partial<InsertContentImage>): Promise<ContentImage> {
+    const updated: ContentImage = {
+      id,
+      contentId: image.contentId || 0,
+      imageUrl: image.imageUrl || "",
+      type: image.type || "",
+      description: image.description || null,
+      descriptionArabic: image.descriptionArabic || null,
+      order: image.order || 0,
+      createdAt: new Date()
+    };
+    return updated;
+  }
+  
+  async deleteContentImage(id: number): Promise<boolean> {
+    return true;
+  }
+  
+  async getContentExternalRatings(contentId: number): Promise<ExternalRating[]> {
+    return [];
+  }
+  
+  async addExternalRating(rating: InsertExternalRating): Promise<ExternalRating> {
+    const newRating: ExternalRating = {
+      id: Date.now(),
+      ...rating,
+      lastUpdated: new Date()
+    };
+    return newRating;
+  }
+  
+  async updateExternalRating(id: number, rating: Partial<InsertExternalRating>): Promise<ExternalRating> {
+    const updated: ExternalRating = {
+      id,
+      contentId: rating.contentId || 0,
+      source: rating.source || "",
+      rating: rating.rating || "",
+      maxRating: rating.maxRating || null,
+      url: rating.url || null,
+      lastUpdated: new Date()
+    };
+    return updated;
+  }
+  
+  async deleteExternalRating(id: number): Promise<boolean> {
+    return true;
+  }
 
 }
 

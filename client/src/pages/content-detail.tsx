@@ -29,6 +29,7 @@ import { WatchProgressTracker, useWatchProgress } from "@/components/ui/watch-pr
 import { ContinueWatchingDialog } from "@/components/ui/continue-watching-dialog";
 import CommentsSection from "@/components/user/comments-section";
 import ReviewsSection from "@/components/reviews/ReviewsSection";
+import EnhancedContentDetail from '@/components/content/enhanced-content-detail';
 import { Content } from "@shared/schema";
 import { cn } from "@/lib/utils";
 
@@ -324,6 +325,9 @@ export default function ContentDetail() {
                   )}
                 </div>
               </div>
+
+              {/* Enhanced Content Details */}
+              <EnhancedContentDetail contentId={content.id} />
 
               {/* Reviews Section */}
               <Separator />

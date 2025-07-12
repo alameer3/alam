@@ -29,6 +29,7 @@ import SettingsManagement from '@/components/admin/settings-management';
 import SecurityDashboard from '@/components/security/security-dashboard';
 import PasswordStrengthChecker from '@/components/security/password-strength-checker';
 import { PerformanceDashboard } from '@/components/admin/PerformanceDashboard';
+import AdvancedContentManager from '@/components/admin/advanced-content-manager';
 
 // Mock data for admin dashboard
 const statsData = [
@@ -157,7 +158,7 @@ function UnifiedAdminPanelContent() {
         </div>
 
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-7">
+          <TabsList className="grid w-full grid-cols-8">
             <TabsTrigger value="overview" className="flex items-center gap-2">
               <BarChart3 className="w-4 h-4" />
               نظرة عامة
@@ -165,6 +166,10 @@ function UnifiedAdminPanelContent() {
             <TabsTrigger value="content" className="flex items-center gap-2">
               <Film className="w-4 h-4" />
               إدارة المحتوى
+            </TabsTrigger>
+            <TabsTrigger value="enhanced" className="flex items-center gap-2">
+              <Star className="w-4 h-4" />
+              المحتوى المتطور
             </TabsTrigger>
             <TabsTrigger value="users" className="flex items-center gap-2">
               <Users className="w-4 h-4" />
@@ -274,6 +279,11 @@ function UnifiedAdminPanelContent() {
           {/* إدارة المحتوى */}
           <TabsContent value="content">
             <ContentManagement />
+          </TabsContent>
+
+          {/* إدارة المحتوى المتطور */}
+          <TabsContent value="enhanced">
+            <AdvancedContentManager />
           </TabsContent>
 
           {/* إدارة المستخدمين */}

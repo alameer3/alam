@@ -8,6 +8,7 @@ import performanceRoutes from "./routes/performance";
 import authRoutes from "./routes/auth";
 import userRoutes from "./routes/users";
 import securityRoutes from "./routes/security";
+import enhancedContentRoutes from "./routes/enhanced-content";
 // import { cacheMiddleware, clearCache, trackQueryPerformance } from "./middleware/cache";
 // import { QueryOptimizer } from "./middleware/performance";
 import { initializeBackupSystem } from "./middleware/backup";
@@ -541,6 +542,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Register user routes  
   userRoutes(app);
+  
+  // Enhanced content routes for cast, images, and external ratings
+  app.use("/api/enhanced", enhancedContentRoutes);
 
   // Admin routes
   app.get("/api/admin/stats", async (req, res) => {
