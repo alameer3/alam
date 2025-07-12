@@ -12,7 +12,9 @@ import {
   Play,
   Sparkles,
   TrendingUp,
-  Crown
+  Crown,
+  BarChart3,
+  CreditCard
 } from "lucide-react";
 
 const navigationItems = [
@@ -51,6 +53,18 @@ const navigationItems = [
     label: "مقاطع دعائية", 
     icon: Play,
     description: "المقاطع الدعائية والكواليس"
+  },
+  { 
+    path: "/analytics", 
+    label: "التحليلات", 
+    icon: BarChart3,
+    description: "إحصائيات وتحليلات المنصة"
+  },
+  { 
+    path: "/subscriptions", 
+    label: "الاشتراكات", 
+    icon: CreditCard,
+    description: "خطط الاشتراك والدفع"
   }
 ];
 

@@ -122,6 +122,90 @@ export const reviewLikes = pgTable("review_likes", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
+// جداول نظام الاشتراكات والتحليلات المتقدمة
+export const subscriptionPlans = pgTable("subscription_plans", {
+  id: serial("id").primaryKey(),
+  name: text("name").notNull(),
+  nameArabic: text("name_arabic").notNull(),
+  description: text("description"),
+  descriptionArabic: text("description_arabic"),
+  price: decimal("price", { precision: 10, scale: 2 }).notNull(),
+  currency: text("currency").default("USD").notNull(),
+  duration: integer("duration").notNull(), // in days
+  features: text("features").array().default([]),
+  featuresArabic: text("features_arabic").array().default([]),
+  maxStreams: integer("max_streams").default(1).notNull(),
+  maxDownloads: integer("max_downloads").default(0).notNull(),
+  hasHDAccess: boolean("has_hd_access").default(false).notNull(),
+  has4KAccess: boolean("has_4k_access").default(false).notNull(),
+  hasOfflineAccess: boolean("has_offline_access").default(false).notNull(),
+  isActive: boolean("is_active").default(true).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const userSubscriptions = pgTable("user_subscriptions", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").notNull(),
+  planId: integer("plan_id").notNull(),
+  status: text("status").notNull(), // active, canceled, expired, pending
+  startDate: timestamp("start_date").notNull(),
+  endDate: timestamp("end_date").notNull(),
+  stripeCustomerId: text("stripe_customer_id"),
+  stripeSubscriptionId: text("stripe_subscription_id"),
+  autoRenew: boolean("auto_renew").default(true).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+export const userAnalytics = pgTable("user_analytics", {
+  id: serial("id").primaryKey(),
+  userId: integer("user_id").notNull(),
+  sessionId: text("session_id").notNull(),
+  contentId: integer("content_id"),
+  action: text("action").notNull(), // view, play, pause, stop, complete, skip, search, filter
+  platform: text("platform"), // web, mobile, desktop
+  deviceType: text("device_type"), // phone, tablet, desktop
+  browser: text("browser"),
+  ipAddress: text("ip_address"),
+  location: text("location"),
+  watchDuration: integer("watch_duration").default(0), // in seconds
+  quality: text("quality"), // 480p, 720p, 1080p, 4K
+  timestamp: timestamp("timestamp").defaultNow().notNull(),
+  metadata: text("metadata"), // JSON string for additional data
+});
+
+export const contentAnalytics = pgTable("content_analytics", {
+  id: serial("id").primaryKey(),
+  contentId: integer("content_id").notNull(),
+  date: timestamp("date").notNull(),
+  views: integer("views").default(0).notNull(),
+  uniqueViews: integer("unique_views").default(0).notNull(),
+  totalWatchTime: integer("total_watch_time").default(0).notNull(), // in seconds
+  completionRate: decimal("completion_rate", { precision: 5, scale: 2 }).default("0.00").notNull(),
+  avgRating: decimal("avg_rating", { precision: 3, scale: 1 }).default("0.0").notNull(),
+  shares: integer("shares").default(0).notNull(),
+  downloads: integer("downloads").default(0).notNull(),
+  comments: integer("comments").default(0).notNull(),
+  likes: integer("likes").default(0).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+export const systemAnalytics = pgTable("system_analytics", {
+  id: serial("id").primaryKey(),
+  date: timestamp("date").notNull(),
+  totalUsers: integer("total_users").default(0).notNull(),
+  activeUsers: integer("active_users").default(0).notNull(),
+  newUsers: integer("new_users").default(0).notNull(),
+  totalContent: integer("total_content").default(0).notNull(),
+  totalViews: integer("total_views").default(0).notNull(),
+  totalWatchTime: integer("total_watch_time").default(0).notNull(),
+  subscriptionRevenue: decimal("subscription_revenue", { precision: 10, scale: 2 }).default("0.00").notNull(),
+  activeSubscriptions: integer("active_subscriptions").default(0).notNull(),
+  churnRate: decimal("churn_rate", { precision: 5, scale: 2 }).default("0.00").notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
 export const userFavorites = pgTable("user_favorites", {
   id: serial("id").primaryKey(),
   userId: integer("user_id").notNull(),
@@ -391,6 +475,50 @@ export const insertUserReviewSchema = createInsertSchema(userReviews).omit({
   createdAt: true,
   updatedAt: true,
 });
+
+// Insert schemas للجداول الجديدة
+export const insertSubscriptionPlanSchema = createInsertSchema(subscriptionPlans).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertUserSubscriptionSchema = createInsertSchema(userSubscriptions).omit({
+  id: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+export const insertUserAnalyticsSchema = createInsertSchema(userAnalytics).omit({
+  id: true,
+  timestamp: true,
+});
+
+export const insertContentAnalyticsSchema = createInsertSchema(contentAnalytics).omit({
+  id: true,
+  createdAt: true,
+});
+
+export const insertSystemAnalyticsSchema = createInsertSchema(systemAnalytics).omit({
+  id: true,
+  createdAt: true,
+});
+
+// Types للجداول الجديدة
+export type SubscriptionPlan = typeof subscriptionPlans.$inferSelect;
+export type InsertSubscriptionPlan = z.infer<typeof insertSubscriptionPlanSchema>;
+
+export type UserSubscription = typeof userSubscriptions.$inferSelect;
+export type InsertUserSubscription = z.infer<typeof insertUserSubscriptionSchema>;
+
+export type UserAnalytics = typeof userAnalytics.$inferSelect;
+export type InsertUserAnalytics = z.infer<typeof insertUserAnalyticsSchema>;
+
+export type ContentAnalytics = typeof contentAnalytics.$inferSelect;
+export type InsertContentAnalytics = z.infer<typeof insertContentAnalyticsSchema>;
+
+export type SystemAnalytics = typeof systemAnalytics.$inferSelect;
+export type InsertSystemAnalytics = z.infer<typeof insertSystemAnalyticsSchema>;
 
 export const insertReviewLikeSchema = createInsertSchema(reviewLikes).omit({
   id: true,

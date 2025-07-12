@@ -10,6 +10,8 @@ import userRoutes from "./routes/users";
 import securityRoutes from "./routes/security";
 import enhancedContentRoutes from "./routes/enhanced-content";
 import trailerRoutes from "./routes/trailers";
+import analyticsRoutes from "./routes/analytics";
+import subscriptionRoutes from "./routes/subscriptions";
 // import { cacheMiddleware, clearCache, trackQueryPerformance } from "./middleware/cache";
 // import { QueryOptimizer } from "./middleware/performance";
 import { initializeBackupSystem } from "./middleware/backup";
@@ -683,6 +685,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Security routes
   app.use("/api/security", securityRoutes);
+
+  // Analytics routes
+  app.use("/api/analytics", analyticsRoutes);
+
+  // Subscription routes
+  app.use("/api/subscriptions", subscriptionRoutes);
 
   const httpServer = createServer(app);
   return httpServer;
