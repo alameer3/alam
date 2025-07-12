@@ -9,6 +9,7 @@ import authRoutes from "./routes/auth";
 import userRoutes from "./routes/users";
 import securityRoutes from "./routes/security";
 import enhancedContentRoutes from "./routes/enhanced-content";
+import trailerRoutes from "./routes/trailers";
 // import { cacheMiddleware, clearCache, trackQueryPerformance } from "./middleware/cache";
 // import { QueryOptimizer } from "./middleware/performance";
 import { initializeBackupSystem } from "./middleware/backup";
@@ -545,6 +546,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Enhanced content routes for cast, images, and external ratings
   app.use("/api/enhanced", enhancedContentRoutes);
+  
+  // Trailer routes
+  app.use("/api/trailers", trailerRoutes);
 
   // Admin routes
   app.get("/api/admin/stats", async (req, res) => {

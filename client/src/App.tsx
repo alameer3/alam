@@ -24,6 +24,7 @@ import Watchlists from "@/pages/watchlists";
 import Notifications from "@/pages/notifications";
 import Dashboard from "@/pages/dashboard";
 import UnifiedAdminPanel from "@/pages/unified-admin-panel";
+import Trailers from "@/pages/trailers";
 
 
 function Router() {
@@ -46,6 +47,7 @@ function Router() {
       <Route path="/watchlists" component={Watchlists} />
       <Route path="/notifications" component={Notifications} />
       <Route path="/dashboard" component={Dashboard} />
+      <Route path="/trailers" component={Trailers} />
 
       <Route component={NotFound} />
     </Switch>

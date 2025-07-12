@@ -8,6 +8,8 @@ import { ResponsiveGrid, ResponsiveSpacing, useResponsive } from "@/components/l
 import { EnhancedContentCard } from "@/components/ui/enhanced-content-card";
 import { VideoPlayerDemo } from "@/components/ui/video-player-demo";
 import { EnhancedHeroSection } from "@/components/ui/enhanced-hero-section";
+import { AutoTrailerHero } from "@/components/content/auto-trailer-hero";
+import { useFeaturedTrailer } from "@/hooks/useTrailers";
 
 export default function Home() {
   const { isMobile } = useResponsive();
@@ -29,6 +31,8 @@ export default function Home() {
     queryFn: () => fetch('/api/content/stats').then(res => res.json())
   });
 
+  const { data: featuredTrailer } = useFeaturedTrailer();
+
   const statsData = stats ? {
     movies: stats.movies?.toString() || "0",
     series: stats.series?.toString() || "0", 
@@ -42,6 +46,25 @@ export default function Home() {
 
   return (
     <div className="min-h-screen">
+      
+      {/* Featured Trailer Hero - Auto-play */}
+      {featuredTrailer && (
+        <AutoTrailerHero
+          contentId={featuredTrailer.contentId}
+          title={featuredTrailer.title}
+          description={featuredTrailer.description}
+          trailerUrl={featuredTrailer.trailerUrl}
+          thumbnailUrl={featuredTrailer.thumbnailUrl}
+          rating={featuredTrailer.rating}
+          year={featuredTrailer.year}
+          genres={featuredTrailer.genres}
+          duration={featuredTrailer.duration}
+          onWatchNow={() => window.location.href = `/content/${featuredTrailer.contentId}`}
+          onAddToList={() => console.log('Add to list')}
+          onMoreInfo={() => window.location.href = `/content/${featuredTrailer.contentId}`}
+          className="mb-8"
+        />
+      )}
       
       {/* Enhanced Hero Section */}
       <EnhancedHeroSection 

@@ -9,6 +9,7 @@ import {
   Monitor, 
   Music, 
   Home, 
+  Play,
   Sparkles,
   TrendingUp,
   Crown
@@ -44,6 +45,12 @@ const navigationItems = [
     label: "متنوعات", 
     icon: Music,
     description: "محتوى متنوع"
+  },
+  { 
+    path: "/trailers", 
+    label: "مقاطع دعائية", 
+    icon: Play,
+    description: "المقاطع الدعائية والكواليس"
   }
 ];
 
