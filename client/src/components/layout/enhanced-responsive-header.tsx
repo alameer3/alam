@@ -16,7 +16,8 @@ import {
   Crown,
   Upload,
   Settings,
-  SlidersHorizontal
+  SlidersHorizontal,
+  Brain
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -176,6 +177,15 @@ export function EnhancedResponsiveHeader() {
                   onClick={() => navigate("/favorites")}
                 >
                   <Heart className="h-5 w-5" />
+                </Button>
+                
+                <Button 
+                  variant="ghost" 
+                  size="icon"
+                  className="rounded-full hover:bg-purple-100 hover:text-purple-600"
+                  onClick={() => navigate("/ai-features")}
+                >
+                  <Brain className="h-5 w-5" />
                 </Button>
                 
                 <Button 

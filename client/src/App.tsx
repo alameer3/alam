@@ -19,6 +19,7 @@ import AdminDashboard from "@/pages/admin-dashboard";
 import AdminLogin from "@/pages/admin-login";
 import SecretAdminAccess from "@/pages/secret-admin-access";
 import UploadManager from "@/pages/UploadManager";
+import AIFeatures from "@/pages/ai-features";
 
 function Router() {
   return (
@@ -35,6 +36,7 @@ function Router() {
       <Route path="/admin-dashboard" component={AdminDashboard} />
       <Route path="/secret-admin" component={SecretAdminAccess} />
       <Route path="/upload" component={UploadManager} />
+      <Route path="/ai-features" component={AIFeatures} />
       <Route component={NotFound} />
     </Switch>
   );
