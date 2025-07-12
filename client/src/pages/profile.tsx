@@ -1,418 +1,551 @@
 import { useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
 import { queryClient } from "@/lib/queryClient";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Separator } from "@/components/ui/separator";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Progress } from "@/components/ui/progress";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Switch } from "@/components/ui/switch";
+import { Separator } from "@/components/ui/separator";
+import { Progress } from "@/components/ui/progress";
 import { toast } from "@/hooks/use-toast";
 import { EnhancedContentCard } from "@/components/content/enhanced-content-card";
-import { User, Heart, Clock, MessageCircle, Star, Settings, Edit, Save, X } from "lucide-react";
-import type { Content, User as UserType } from "@shared/schema";
+import { 
+  User, 
+  Settings, 
+  Heart, 
+  Star, 
+  Clock, 
+  Edit, 
+  Camera, 
+  Mail, 
+  Shield,
+  Calendar,
+  MapPin,
+  Film,
+  Tv,
+  Trophy,
+  Activity,
+  Eye,
+  MessageCircle,
+  Bookmark,
+  Download,
+  Bell,
+  Lock,
+  Globe,
+  Monitor,
+  Smartphone,
+  Save
+} from "lucide-react";
 
-interface UserStats {
-  favorites: number;
-  watchHistory: number;
-  comments: number;
-  reviewsCount?: number;
-  totalWatchTime?: number;
-}
-
-interface UserProfile extends UserType {
-  joinedDate?: string;
-  lastActive?: string;
-  bio?: string;
-  favoriteGenres?: string[];
+interface UserProfile {
+  id: number;
+  username: string;
+  email: string;
+  avatar: string;
+  bio: string;
+  location: string;
+  joinDate: string;
+  isVerified: boolean;
+  stats: {
+    watchedMovies: number;
+    watchedSeries: number;
+    favorites: number;
+    reviews: number;
+    lists: number;
+    watchTime: number;
+  };
+  preferences: {
+    language: string;
+    theme: string;
+    notifications: boolean;
+    autoplay: boolean;
+    quality: string;
+    subtitles: boolean;
+  };
+  recentActivity: Array<{
+    id: number;
+    type: string;
+    title: string;
+    timestamp: string;
+  }>;
 }
 
 export default function Profile() {
-  const [editMode, setEditMode] = useState(false);
-  const [formData, setFormData] = useState({
-    username: "",
-    email: "",
-    bio: ""
-  });
-
-  // Mock current user ID - في التطبيق الحقيقي سيأتي من نظام المصادقة
+  const [isEditing, setIsEditing] = useState(false);
+  const [selectedTab, setSelectedTab] = useState("overview");
   const currentUserId = 1;
 
-  const { data: userProfile, isLoading: profileLoading } = useQuery<UserProfile>({
+  const { data: profile, isLoading } = useQuery<UserProfile>({
     queryKey: [`/api/users/${currentUserId}/profile`],
   });
 
-  const { data: userStats, isLoading: statsLoading } = useQuery<UserStats>({
-    queryKey: [`/api/users/${currentUserId}/stats`],
-  });
-
-  const { data: favorites = [], isLoading: favoritesLoading } = useQuery<Content[]>({
-    queryKey: [`/api/users/${currentUserId}/favorites`],
-  });
-
-  const { data: watchHistory = [], isLoading: historyLoading } = useQuery<Content[]>({
-    queryKey: [`/api/users/${currentUserId}/watch-history`],
-  });
+  // Mock data for demonstration
+  const mockProfile: UserProfile = {
+    id: 1,
+    username: "مستخدم Yemen Flix",
+    email: "user@yemenflix.com",
+    avatar: "https://api.dicebear.com/7.x/avataaars/svg?seed=user",
+    bio: "محب للسينما والمسلسلات الجيدة. أستمتع بمشاهدة الأفلام الكلاسيكية والحديثة على حد سواء.",
+    location: "صنعاء، اليمن",
+    joinDate: "2024-01-15",
+    isVerified: true,
+    stats: {
+      watchedMovies: 127,
+      watchedSeries: 43,
+      favorites: 25,
+      reviews: 18,
+      lists: 5,
+      watchTime: 2847 // in hours
+    },
+    preferences: {
+      language: "ar",
+      theme: "dark",
+      notifications: true,
+      autoplay: false,
+      quality: "1080p",
+      subtitles: true
+    },
+    recentActivity: [
+      {
+        id: 1,
+        type: "watch",
+        title: "شاهد فيلم The Dark Knight",
+        timestamp: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString()
+      },
+      {
+        id: 2,
+        type: "review",
+        title: "كتب مراجعة لفيلم Inception",
+        timestamp: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString()
+      },
+      {
+        id: 3,
+        type: "favorite",
+        title: "أضاف Breaking Bad للمفضلة",
+        timestamp: new Date(Date.now() - 1000 * 60 * 60 * 48).toISOString()
+      }
+    ]
+  };
 
   const updateProfileMutation = useMutation({
     mutationFn: async (data: Partial<UserProfile>) => {
       const response = await fetch(`/api/users/${currentUserId}/profile`, {
-        method: 'PUT',
+        method: 'PATCH',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       });
-      if (!response.ok) throw new Error('فشل في تحديث الملف الشخصي');
+      if (!response.ok) throw new Error('Failed to update profile');
       return response.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: [`/api/users/${currentUserId}/profile`] });
+      setIsEditing(false);
       toast({ title: "تم تحديث الملف الشخصي بنجاح", variant: "default" });
-      setEditMode(false);
-    },
-    onError: () => {
-      toast({ title: "خطأ في تحديث الملف الشخصي", variant: "destructive" });
     },
   });
 
-  const handleEditToggle = () => {
-    if (editMode) {
-      setEditMode(false);
-    } else {
-      setFormData({
-        username: userProfile?.username || "",
-        email: userProfile?.email || "",
-        bio: userProfile?.bio || ""
-      });
-      setEditMode(true);
+  const getActivityIcon = (type: string) => {
+    switch (type) {
+      case 'watch': return Eye;
+      case 'review': return MessageCircle;
+      case 'favorite': return Heart;
+      case 'list': return Bookmark;
+      default: return Activity;
     }
   };
 
-  const handleSave = () => {
-    updateProfileMutation.mutate(formData);
+  const formatWatchTime = (hours: number) => {
+    const days = Math.floor(hours / 24);
+    const remainingHours = hours % 24;
+    return `${days} يوم و ${remainingHours} ساعة`;
   };
-
-  if (profileLoading || statsLoading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 p-4">
-        <div className="max-w-6xl mx-auto space-y-6">
-          <div className="h-32 bg-slate-200 dark:bg-slate-700 rounded-lg animate-pulse" />
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="h-64 bg-slate-200 dark:bg-slate-700 rounded-lg animate-pulse" />
-            <div className="md:col-span-2 h-64 bg-slate-200 dark:bg-slate-700 rounded-lg animate-pulse" />
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  const completionPercentage = Math.min(
-    ((userStats?.favorites || 0) + (userStats?.watchHistory || 0)) * 10, 100
-  );
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-50 to-slate-100 dark:from-slate-900 dark:to-slate-800 p-4">
       <div className="max-w-6xl mx-auto space-y-6">
         
-        {/* Header Profile Card */}
-        <Card className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-0 shadow-xl">
-          <CardContent className="p-8">
-            <div className="flex flex-col md:flex-row items-start md:items-center gap-6">
-              <Avatar className="w-24 h-24 ring-4 ring-blue-500/20">
-                <AvatarImage src={`https://api.dicebear.com/7.x/avataaars/svg?seed=${userProfile?.username}`} />
-                <AvatarFallback className="text-2xl bg-gradient-to-br from-blue-500 to-purple-600 text-white">
-                  {userProfile?.username?.slice(0, 2).toUpperCase()}
-                </AvatarFallback>
-              </Avatar>
-
+        {/* Profile Header */}
+        <Card className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-0 shadow-xl overflow-hidden">
+          <div className="h-32 bg-gradient-to-r from-blue-500 via-purple-500 to-pink-500"></div>
+          <CardContent className="relative -mt-16 pb-6">
+            <div className="flex flex-col md:flex-row items-start md:items-end gap-6">
+              <div className="relative">
+                <Avatar className="h-32 w-32 border-4 border-white dark:border-slate-800 shadow-lg">
+                  <AvatarImage src={mockProfile.avatar} alt={mockProfile.username} />
+                  <AvatarFallback className="bg-gradient-to-br from-blue-500 to-purple-600 text-white text-2xl">
+                    {mockProfile.username.slice(0, 2)}
+                  </AvatarFallback>
+                </Avatar>
+                <Button 
+                  size="sm" 
+                  className="absolute bottom-0 right-0 rounded-full h-10 w-10 p-0"
+                  disabled={updateProfileMutation.isPending}
+                >
+                  <Camera className="h-4 w-4" />
+                </Button>
+              </div>
+              
               <div className="flex-1 space-y-4">
-                <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
                   <div>
-                    {editMode ? (
-                      <div className="space-y-2">
-                        <Input
-                          value={formData.username}
-                          onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-                          className="text-xl font-bold"
-                          placeholder="اسم المستخدم"
-                        />
-                        <Input
-                          value={formData.email}
-                          onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                          placeholder="البريد الإلكتروني"
-                        />
-                      </div>
-                    ) : (
-                      <>
-                        <h1 className="text-3xl font-bold text-slate-900 dark:text-white">
-                          {userProfile?.username || "مستخدم Yemen Flix"}
-                        </h1>
-                        <p className="text-slate-600 dark:text-slate-300">
-                          {userProfile?.email || "user@yemenflix.com"}
-                        </p>
-                      </>
-                    )}
-                  </div>
-                  
-                  <div className="flex gap-2">
-                    {editMode ? (
-                      <>
-                        <Button onClick={handleSave} disabled={updateProfileMutation.isPending} size="sm">
-                          <Save className="h-4 w-4 mr-2" />
-                          حفظ
-                        </Button>
-                        <Button onClick={handleEditToggle} variant="outline" size="sm">
-                          <X className="h-4 w-4 mr-2" />
-                          إلغاء
-                        </Button>
-                      </>
-                    ) : (
-                      <Button onClick={handleEditToggle} variant="outline" size="sm">
-                        <Edit className="h-4 w-4 mr-2" />
-                        تعديل
-                      </Button>
-                    )}
+                    <h1 className="text-2xl font-bold text-slate-900 dark:text-white flex items-center gap-2">
+                      {mockProfile.username}
+                      {mockProfile.isVerified && (
+                        <Badge variant="secondary" className="gap-1">
+                          <Shield className="h-3 w-3" />
+                          موثق
+                        </Badge>
+                      )}
+                    </h1>
+                    <div className="flex items-center gap-4 text-sm text-slate-600 dark:text-slate-400">
+                      <span className="flex items-center gap-1">
+                        <Mail className="h-4 w-4" />
+                        {mockProfile.email}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <MapPin className="h-4 w-4" />
+                        {mockProfile.location}
+                      </span>
+                      <span className="flex items-center gap-1">
+                        <Calendar className="h-4 w-4" />
+                        عضو منذ {new Date(mockProfile.joinDate).toLocaleDateString('ar-EG')}
+                      </span>
+                    </div>
                   </div>
                 </div>
-
-                {editMode ? (
-                  <Textarea
-                    value={formData.bio}
-                    onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
-                    placeholder="نبذة عنك..."
-                    className="min-h-20"
-                  />
-                ) : (
-                  <p className="text-slate-600 dark:text-slate-300">
-                    {userProfile?.bio || "مرحباً! أنا عضو في منصة Yemen Flix وأحب مشاهدة الأفلام والمسلسلات العربية."}
-                  </p>
-                )}
-
-                <div className="flex flex-wrap gap-2">
-                  <Badge variant="secondary" className="bg-blue-100 dark:bg-blue-900/30 text-blue-700 dark:text-blue-300">
-                    <User className="h-3 w-3 mr-1" />
-                    عضو منذ {userProfile?.joinedDate || "يناير 2024"}
-                  </Badge>
-                  <Badge variant="secondary" className="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-300">
-                    نشط اليوم
-                  </Badge>
+                
+                <p className="text-slate-700 dark:text-slate-300">
+                  {mockProfile.bio}
+                </p>
+                
+                <div className="flex gap-2">
+                  <Button 
+                    onClick={() => setIsEditing(!isEditing)}
+                    className="gap-2"
+                  >
+                    <Edit className="h-4 w-4" />
+                    {isEditing ? "إلغاء التعديل" : "تعديل الملف الشخصي"}
+                  </Button>
+                  <Button variant="outline" className="gap-2">
+                    <Settings className="h-4 w-4" />
+                    الإعدادات
+                  </Button>
                 </div>
               </div>
-            </div>
-
-            <Separator className="my-6" />
-
-            {/* Stats Row */}
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-              <div className="text-center">
-                <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                  {userStats?.favorites || 0}
-                </div>
-                <div className="text-sm text-slate-600 dark:text-slate-300">المفضلة</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-green-600 dark:text-green-400">
-                  {userStats?.watchHistory || 0}
-                </div>
-                <div className="text-sm text-slate-600 dark:text-slate-300">المشاهدات</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">
-                  {userStats?.comments || 0}
-                </div>
-                <div className="text-sm text-slate-600 dark:text-slate-300">التعليقات</div>
-              </div>
-              <div className="text-center">
-                <div className="text-2xl font-bold text-orange-600 dark:text-orange-400">
-                  {userStats?.reviewsCount || 0}
-                </div>
-                <div className="text-sm text-slate-600 dark:text-slate-300">المراجعات</div>
-              </div>
-            </div>
-
-            {/* Progress Section */}
-            <div className="mt-6 space-y-2">
-              <div className="flex justify-between text-sm">
-                <span className="text-slate-600 dark:text-slate-300">مستوى النشاط</span>
-                <span className="text-slate-600 dark:text-slate-300">{completionPercentage}%</span>
-              </div>
-              <Progress value={completionPercentage} className="h-2" />
             </div>
           </CardContent>
         </Card>
 
-        {/* Tabs Content */}
-        <Tabs defaultValue="favorites" className="space-y-6">
+        <Tabs value={selectedTab} onValueChange={setSelectedTab} className="space-y-6">
           <TabsList className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm">
-            <TabsTrigger value="favorites" className="gap-2">
-              <Heart className="h-4 w-4" />
-              المفضلة ({userStats?.favorites || 0})
+            <TabsTrigger value="overview" className="gap-2">
+              <User className="h-4 w-4" />
+              نظرة عامة
             </TabsTrigger>
-            <TabsTrigger value="history" className="gap-2">
-              <Clock className="h-4 w-4" />
-              سجل المشاهدة ({userStats?.watchHistory || 0})
+            <TabsTrigger value="stats" className="gap-2">
+              <Trophy className="h-4 w-4" />
+              الإحصائيات
             </TabsTrigger>
             <TabsTrigger value="activity" className="gap-2">
-              <MessageCircle className="h-4 w-4" />
-              النشاطات
+              <Activity className="h-4 w-4" />
+              النشاط
+            </TabsTrigger>
+            <TabsTrigger value="preferences" className="gap-2">
+              <Settings className="h-4 w-4" />
+              التفضيلات
             </TabsTrigger>
           </TabsList>
 
-          <TabsContent value="favorites">
-            <Card className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-0 shadow-xl">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Heart className="h-5 w-5 text-red-500" />
-                  المحتوى المفضل
-                </CardTitle>
-                <CardDescription>
-                  الأفلام والمسلسلات التي أضفتها إلى المفضلة
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                {favoritesLoading ? (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {[...Array(6)].map((_, i) => (
-                      <div key={i} className="h-48 bg-slate-200 dark:bg-slate-700 rounded-lg animate-pulse" />
-                    ))}
+          <TabsContent value="overview" className="space-y-6">
+            {isEditing ? (
+              <Card className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-0 shadow-xl">
+                <CardHeader>
+                  <CardTitle>تعديل الملف الشخصي</CardTitle>
+                  <CardDescription>
+                    قم بتحديث معلوماتك الشخصية
+                  </CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                      <Label htmlFor="username">اسم المستخدم</Label>
+                      <Input id="username" defaultValue={mockProfile.username} />
+                    </div>
+                    <div>
+                      <Label htmlFor="email">البريد الإلكتروني</Label>
+                      <Input id="email" type="email" defaultValue={mockProfile.email} />
+                    </div>
                   </div>
-                ) : favorites.length > 0 ? (
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {favorites.map((content) => (
-                      <EnhancedContentCard
-                        key={content.id}
-                        content={content}
-                        showActions={true}
-                        className="hover:scale-105 transition-transform duration-200"
-                      />
-                    ))}
+                  
+                  <div>
+                    <Label htmlFor="location">الموقع</Label>
+                    <Input id="location" defaultValue={mockProfile.location} />
                   </div>
-                ) : (
-                  <div className="text-center py-12">
-                    <Heart className="h-12 w-12 text-slate-400 mx-auto mb-4" />
-                    <h3 className="text-lg font-semibold text-slate-600 dark:text-slate-300">
-                      لا توجد عناصر مفضلة بعد
+                  
+                  <div>
+                    <Label htmlFor="bio">نبذة شخصية</Label>
+                    <Textarea id="bio" defaultValue={mockProfile.bio} rows={4} />
+                  </div>
+                  
+                  <div className="flex justify-end gap-2">
+                    <Button variant="outline" onClick={() => setIsEditing(false)}>
+                      إلغاء
+                    </Button>
+                    <Button onClick={() => updateProfileMutation.mutate({})}>
+                      <Save className="h-4 w-4 mr-2" />
+                      حفظ التغييرات
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {/* Stats Cards */}
+                <Card className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-0 shadow-xl">
+                  <CardContent className="p-6 text-center">
+                    <Film className="h-12 w-12 text-blue-500 mx-auto mb-4" />
+                    <h3 className="text-2xl font-bold text-slate-900 dark:text-white">
+                      {mockProfile.stats.watchedMovies}
                     </h3>
-                    <p className="text-slate-500 dark:text-slate-400">
-                      ابدأ بإضافة أفلام ومسلسلات إلى المفضلة لتظهر هنا
-                    </p>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
+                    <p className="text-slate-600 dark:text-slate-400">أفلام تمت مشاهدتها</p>
+                  </CardContent>
+                </Card>
+                
+                <Card className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-0 shadow-xl">
+                  <CardContent className="p-6 text-center">
+                    <Tv className="h-12 w-12 text-purple-500 mx-auto mb-4" />
+                    <h3 className="text-2xl font-bold text-slate-900 dark:text-white">
+                      {mockProfile.stats.watchedSeries}
+                    </h3>
+                    <p className="text-slate-600 dark:text-slate-400">مسلسلات تمت مشاهدتها</p>
+                  </CardContent>
+                </Card>
+                
+                <Card className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-0 shadow-xl">
+                  <CardContent className="p-6 text-center">
+                    <Heart className="h-12 w-12 text-red-500 mx-auto mb-4" />
+                    <h3 className="text-2xl font-bold text-slate-900 dark:text-white">
+                      {mockProfile.stats.favorites}
+                    </h3>
+                    <p className="text-slate-600 dark:text-slate-400">عناصر مفضلة</p>
+                  </CardContent>
+                </Card>
+              </div>
+            )}
           </TabsContent>
 
-          <TabsContent value="history">
-            <Card className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-0 shadow-xl">
-              <CardHeader>
-                <CardTitle className="flex items-center gap-2">
-                  <Clock className="h-5 w-5 text-blue-500" />
-                  سجل المشاهدة
-                </CardTitle>
-                <CardDescription>
-                  المحتوى الذي شاهدته مؤخراً
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                {historyLoading ? (
-                  <div className="space-y-4">
-                    {[...Array(5)].map((_, i) => (
-                      <div key={i} className="h-20 bg-slate-200 dark:bg-slate-700 rounded-lg animate-pulse" />
-                    ))}
+          <TabsContent value="stats" className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-0 shadow-xl">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Trophy className="h-5 w-5" />
+                    إحصائيات المشاهدة
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div>
+                    <div className="flex justify-between mb-2">
+                      <span>الأفلام</span>
+                      <span>{mockProfile.stats.watchedMovies}</span>
+                    </div>
+                    <Progress value={(mockProfile.stats.watchedMovies / 200) * 100} />
                   </div>
-                ) : watchHistory.length > 0 ? (
+                  
+                  <div>
+                    <div className="flex justify-between mb-2">
+                      <span>المسلسلات</span>
+                      <span>{mockProfile.stats.watchedSeries}</span>
+                    </div>
+                    <Progress value={(mockProfile.stats.watchedSeries / 100) * 100} />
+                  </div>
+                  
+                  <div>
+                    <div className="flex justify-between mb-2">
+                      <span>المراجعات</span>
+                      <span>{mockProfile.stats.reviews}</span>
+                    </div>
+                    <Progress value={(mockProfile.stats.reviews / 50) * 100} />
+                  </div>
+                  
+                  <Separator />
+                  
+                  <div className="text-center">
+                    <Clock className="h-8 w-8 text-blue-500 mx-auto mb-2" />
+                    <h4 className="text-lg font-semibold">إجمالي وقت المشاهدة</h4>
+                    <p className="text-2xl font-bold text-blue-600">
+                      {formatWatchTime(mockProfile.stats.watchTime)}
+                    </p>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-0 shadow-xl">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Star className="h-5 w-5" />
+                    إنجازات وجوائز
+                  </CardTitle>
+                </CardHeader>
+                <CardContent>
                   <div className="space-y-4">
-                    {watchHistory.map((content) => (
-                      <div key={content.id} className="flex items-center gap-4 p-4 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
-                        <img
-                          src={content.posterUrl || "/placeholder-poster.jpg"}
-                          alt={content.title}
-                          className="w-16 h-20 object-cover rounded"
-                        />
-                        <div className="flex-1">
-                          <h4 className="font-semibold text-slate-900 dark:text-white">
-                            {content.title}
-                          </h4>
-                          <p className="text-sm text-slate-600 dark:text-slate-300">
-                            {content.type} • {content.year}
-                          </p>
-                          <div className="flex items-center gap-2 mt-2">
-                            <Progress value={Math.random() * 100} className="h-1 flex-1" />
-                            <span className="text-xs text-slate-500">
-                              {Math.floor(Math.random() * 100)}%
-                            </span>
-                          </div>
-                        </div>
-                        <Button variant="outline" size="sm">
-                          متابعة المشاهدة
-                        </Button>
+                    <div className="flex items-center gap-3 p-3 bg-yellow-50 dark:bg-yellow-900/20 rounded-lg">
+                      <Trophy className="h-8 w-8 text-yellow-500" />
+                      <div>
+                        <h4 className="font-semibold">مشاهد محترف</h4>
+                        <p className="text-sm text-slate-600 dark:text-slate-400">
+                          شاهد أكثر من 100 فيلم
+                        </p>
                       </div>
-                    ))}
+                    </div>
+                    
+                    <div className="flex items-center gap-3 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
+                      <Star className="h-8 w-8 text-blue-500" />
+                      <div>
+                        <h4 className="font-semibold">ناقد بارع</h4>
+                        <p className="text-sm text-slate-600 dark:text-slate-400">
+                          كتب أكثر من 10 مراجعات
+                        </p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-center gap-3 p-3 bg-purple-50 dark:bg-purple-900/20 rounded-lg">
+                      <Heart className="h-8 w-8 text-purple-500" />
+                      <div>
+                        <h4 className="font-semibold">جامع مفضلات</h4>
+                        <p className="text-sm text-slate-600 dark:text-slate-400">
+                          أضاف أكثر من 20 عنصر للمفضلة
+                        </p>
+                      </div>
+                    </div>
                   </div>
-                ) : (
-                  <div className="text-center py-12">
-                    <Clock className="h-12 w-12 text-slate-400 mx-auto mb-4" />
-                    <h3 className="text-lg font-semibold text-slate-600 dark:text-slate-300">
-                      لا يوجد سجل مشاهدة
-                    </h3>
-                    <p className="text-slate-500 dark:text-slate-400">
-                      ابدأ بمشاهدة المحتوى ليظهر سجل المشاهدة هنا
-                    </p>
-                  </div>
-                )}
-              </CardContent>
-            </Card>
+                </CardContent>
+              </Card>
+            </div>
           </TabsContent>
 
-          <TabsContent value="activity">
+          <TabsContent value="activity" className="space-y-6">
             <Card className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-0 shadow-xl">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2">
-                  <MessageCircle className="h-5 w-5 text-green-500" />
-                  النشاطات الأخيرة
+                  <Activity className="h-5 w-5" />
+                  النشاط الأخير
                 </CardTitle>
                 <CardDescription>
-                  تعليقاتك ومراجعاتك الأخيرة
+                  آخر الأنشطة التي قمت بها على المنصة
                 </CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {/* Sample activity items */}
-                  <div className="flex gap-4 p-4 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
-                    <div className="w-2 h-2 bg-blue-500 rounded-full mt-2"></div>
-                    <div className="flex-1">
-                      <p className="text-sm text-slate-600 dark:text-slate-300">
-                        <span className="font-semibold">قمت بإضافة تعليق</span> على فيلم "الفارس الأسود"
-                      </p>
-                      <p className="text-xs text-slate-500 mt-1">منذ ساعتين</p>
-                    </div>
-                  </div>
-                  
-                  <div className="flex gap-4 p-4 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
-                    <div className="w-2 h-2 bg-green-500 rounded-full mt-2"></div>
-                    <div className="flex-1">
-                      <p className="text-sm text-slate-600 dark:text-slate-300">
-                        <span className="font-semibold">أضفت إلى المفضلة</span> مسلسل "Breaking Bad"
-                      </p>
-                      <p className="text-xs text-slate-500 mt-1">منذ يوم واحد</p>
-                    </div>
-                  </div>
-
-                  <div className="flex gap-4 p-4 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
-                    <div className="w-2 h-2 bg-yellow-500 rounded-full mt-2"></div>
-                    <div className="flex-1">
-                      <p className="text-sm text-slate-600 dark:text-slate-300">
-                        <span className="font-semibold">قيمت بـ 5 نجوم</span> فيلم "الفارس الأسود"
-                      </p>
-                      <p className="text-xs text-slate-500 mt-1">منذ 3 أيام</p>
-                    </div>
-                  </div>
+                  {mockProfile.recentActivity.map((activity) => {
+                    const IconComponent = getActivityIcon(activity.type);
+                    return (
+                      <div key={activity.id} className="flex items-center gap-4 p-3 bg-slate-50 dark:bg-slate-700/50 rounded-lg">
+                        <div className="p-2 bg-blue-100 dark:bg-blue-900/30 rounded-lg">
+                          <IconComponent className="h-5 w-5 text-blue-600" />
+                        </div>
+                        <div className="flex-1">
+                          <p className="font-medium text-slate-900 dark:text-white">
+                            {activity.title}
+                          </p>
+                          <p className="text-sm text-slate-500">
+                            {new Date(activity.timestamp).toLocaleString('ar-EG')}
+                          </p>
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          <TabsContent value="preferences" className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <Card className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-0 shadow-xl">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Monitor className="h-5 w-5" />
+                    تفضيلات العرض
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Label>التشغيل التلقائي</Label>
+                      <p className="text-sm text-slate-600 dark:text-slate-400">
+                        تشغيل الحلقة التالية تلقائياً
+                      </p>
+                    </div>
+                    <Switch defaultChecked={mockProfile.preferences.autoplay} />
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Label>الترجمة</Label>
+                      <p className="text-sm text-slate-600 dark:text-slate-400">
+                        إظهار الترجمة افتراضياً
+                      </p>
+                    </div>
+                    <Switch defaultChecked={mockProfile.preferences.subtitles} />
+                  </div>
+                  
+                  <div>
+                    <Label>جودة الفيديو الافتراضية</Label>
+                    <select className="w-full mt-2 p-2 rounded border" defaultValue={mockProfile.preferences.quality}>
+                      <option value="720p">720p HD</option>
+                      <option value="1080p">1080p Full HD</option>
+                      <option value="4k">4K Ultra HD</option>
+                    </select>
+                  </div>
+                </CardContent>
+              </Card>
+              
+              <Card className="bg-white/80 dark:bg-slate-800/80 backdrop-blur-sm border-0 shadow-xl">
+                <CardHeader>
+                  <CardTitle className="flex items-center gap-2">
+                    <Bell className="h-5 w-5" />
+                    تفضيلات الإشعارات
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Label>الإشعارات العامة</Label>
+                      <p className="text-sm text-slate-600 dark:text-slate-400">
+                        تلقي جميع الإشعارات
+                      </p>
+                    </div>
+                    <Switch defaultChecked={mockProfile.preferences.notifications} />
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Label>إشعارات المحتوى الجديد</Label>
+                      <p className="text-sm text-slate-600 dark:text-slate-400">
+                        عند إضافة محتوى جديد
+                      </p>
+                    </div>
+                    <Switch defaultChecked={true} />
+                  </div>
+                  
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Label>إشعارات التفاعل</Label>
+                      <p className="text-sm text-slate-600 dark:text-slate-400">
+                        عند الإعجاب بمراجعاتك
+                      </p>
+                    </div>
+                    <Switch defaultChecked={true} />
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
           </TabsContent>
         </Tabs>
       </div>

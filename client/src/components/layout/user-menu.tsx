@@ -154,10 +154,10 @@ export function UserMenu({ isMobile = false, className = "" }: UserMenuProps) {
           </SheetHeader>
           
           <div className="mt-6 space-y-2">
-            {menuItems.map((item) => {
+            {menuItems.map((item, index) => {
               const IconComponent = item.icon;
               return (
-                <Link key={item.href} href={item.href}>
+                <Link key={`mobile-menu-${index}-${item.href}`} href={item.href}>
                   <Button
                     variant="ghost"
                     className="w-full justify-start gap-3 h-auto py-3 px-3"
@@ -247,10 +247,10 @@ export function UserMenu({ isMobile = false, className = "" }: UserMenuProps) {
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
         
-        {menuItems.map((item) => {
+        {menuItems.map((item, index) => {
           const IconComponent = item.icon;
           return (
-            <Link key={item.href} href={item.href}>
+            <Link key={`dropdown-menu-${index}-${item.href}`} href={item.href}>
               <DropdownMenuItem className="flex items-center gap-2 cursor-pointer">
                 <IconComponent className="h-4 w-4" />
                 <span className="flex-1">{item.label}</span>
