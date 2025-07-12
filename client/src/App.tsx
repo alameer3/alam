@@ -15,7 +15,6 @@ import Miscellaneous from "@/pages/miscellaneous";
 import Search from "@/pages/search";
 import ContentDetail from "@/pages/content-detail";
 import Admin from "@/pages/admin";
-import AdminDashboard from "@/pages/admin-dashboard";
 import AdminLogin from "@/pages/admin-login";
 import SecretAdminAccess from "@/pages/secret-admin-access";
 import Login from "@/pages/login";
@@ -24,7 +23,7 @@ import Profile from "@/pages/profile";
 import Watchlists from "@/pages/watchlists";
 import Notifications from "@/pages/notifications";
 import Dashboard from "@/pages/dashboard";
-import Security from "@/pages/security";
+import UnifiedAdminPanel from "@/pages/unified-admin-panel";
 
 
 function Router() {
@@ -39,15 +38,14 @@ function Router() {
       <Route path="/content/:id" component={ContentDetail} />
       <Route path="/admin" component={Admin} />
       <Route path="/admin-login" component={AdminLogin} />
-      <Route path="/admin-dashboard" component={AdminDashboard} />
       <Route path="/secret-admin" component={SecretAdminAccess} />
+      <Route path="/unified-admin" component={UnifiedAdminPanel} />
       <Route path="/login" component={Login} />
       <Route path="/register" component={Register} />
       <Route path="/profile" component={Profile} />
       <Route path="/watchlists" component={Watchlists} />
       <Route path="/notifications" component={Notifications} />
       <Route path="/dashboard" component={Dashboard} />
-      <Route path="/security" component={Security} />
 
       <Route component={NotFound} />
     </Switch>

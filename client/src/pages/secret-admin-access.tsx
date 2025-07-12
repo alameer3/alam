@@ -23,7 +23,7 @@ export default function SecretAdminAccess() {
 
   const handleSecretAccess = () => {
     if (secretCode === "CINEMA-ADMIN-2024") {
-      setLocation("/admin-login");
+      setLocation("/unified-admin");
     } else {
       alert("كود الوصول غير صحيح!");
     }

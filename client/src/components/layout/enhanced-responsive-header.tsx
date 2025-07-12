@@ -80,7 +80,6 @@ export function EnhancedResponsiveHeader() {
             <nav className="hidden lg:flex items-center space-x-6 space-x-reverse">
               {[
                 { path: "/", label: "الرئيسية" },
-                { path: "/dashboard", label: "لوحة التحكم" },
                 { path: "/movies", label: "أفلام" },
                 { path: "/series", label: "مسلسلات" },
                 { path: "/television", label: "تلفزيون" },
@@ -181,16 +180,6 @@ export function EnhancedResponsiveHeader() {
                     className="rounded-full hover:bg-muted/50"
                   >
                     <Heart className="h-5 w-5" />
-                  </Button>
-                </Link>
-                
-                <Link href="/security">
-                  <Button 
-                    variant="ghost" 
-                    size="icon"
-                    className="rounded-full hover:bg-muted/50"
-                  >
-                    <Shield className="h-5 w-5" />
                   </Button>
                 </Link>
 

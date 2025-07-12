@@ -78,12 +78,6 @@ export function MobileNavigation() {
       icon: Heart,
       description: "المحتوى المفضل لديك"
     },
-    {
-      path: "/security",
-      label: "الأمان والحماية",
-      icon: Shield,
-      description: "إعدادات الأمان والحماية"
-    },
 
   ];
 
