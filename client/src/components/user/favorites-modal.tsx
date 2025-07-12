@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useFavorites } from "@/hooks/useUserInteractions";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/layout/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/layout/ui/dialog";
 import { Button } from "@/components/layout/ui/button";
 import { Badge } from "@/components/layout/ui/badge";
 import { ScrollArea } from "@/components/layout/ui/scroll-area";
@@ -70,6 +70,9 @@ export default function FavoritesModal({ onContentSelect, children }: FavoritesM
             <Heart className="h-5 w-5 text-red-500" />
             المفضلة ({favorites.length})
           </DialogTitle>
+          <DialogDescription>
+            قائمة المحتوى المفضل لديك
+          </DialogDescription>
         </DialogHeader>
 
         <div className="flex flex-col gap-4">

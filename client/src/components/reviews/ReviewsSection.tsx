@@ -9,7 +9,8 @@ import {
   DialogHeader, 
   DialogTitle, 
   DialogTrigger,
-  DialogClose
+  DialogClose,
+  DialogDescription
 } from '@/components/ui/dialog';
 import { 
   Star, 
@@ -205,6 +206,9 @@ export default function ReviewsSection({ contentId }: ReviewsSectionProps) {
                 <DialogTitle>
                   {editingReview ? 'تعديل المراجعة' : 'إضافة مراجعة جديدة'}
                 </DialogTitle>
+                <DialogDescription>
+                  {editingReview ? 'قم بتحديث مراجعتك وتقييمك' : 'شارك رأيك وقيم المحتوى'}
+                </DialogDescription>
               </DialogHeader>
               
               <form onSubmit={handleSubmitReview} className="space-y-4">

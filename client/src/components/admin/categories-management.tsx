@@ -5,7 +5,7 @@ import { Button } from "@/components/layout/ui/button";
 import { Input } from "@/components/layout/ui/input";
 import { Label } from "@/components/layout/ui/label";
 import { Textarea } from "@/components/layout/ui/textarea";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/layout/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/layout/ui/dialog";
 import { Plus, Edit, Trash2, Tag, Folder } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Genre, Category, insertGenreSchema, insertCategorySchema } from "@shared/schema";
@@ -113,6 +113,9 @@ export default function CategoriesManagement() {
               <DialogContent>
                 <DialogHeader>
                   <DialogTitle>إضافة نوع جديد</DialogTitle>
+                  <DialogDescription>
+                    قم بإضافة نوع جديد للمحتوى
+                  </DialogDescription>
                 </DialogHeader>
                 <form onSubmit={handleGenreSubmit} className="space-y-4">
                   <div>
@@ -191,6 +194,9 @@ export default function CategoriesManagement() {
               <DialogContent>
                 <DialogHeader>
                   <DialogTitle>إضافة فئة جديدة</DialogTitle>
+                  <DialogDescription>
+                    قم بإضافة فئة جديدة للمحتوى
+                  </DialogDescription>
                 </DialogHeader>
                 <form onSubmit={handleCategorySubmit} className="space-y-4">
                   <div>

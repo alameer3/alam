@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/layout/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/layout/ui/dialog";
 import { Input } from "@/components/layout/ui/input";
 import { Button } from "@/components/layout/ui/button";
 import { Search, X } from "lucide-react";
@@ -47,6 +47,9 @@ export default function SearchModal({ isOpen, onClose, onContentClick }: SearchM
             <Search className="w-5 h-5" />
             البحث في المحتوى
           </DialogTitle>
+          <DialogDescription>
+            ابحث عن الأفلام والمسلسلات والبرامج التلفزيونية
+          </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4">
@@ -75,7 +78,7 @@ export default function SearchModal({ isOpen, onClose, onContentClick }: SearchM
           <div className="max-h-[60vh] overflow-y-auto">
             {isLoading && (
               <div className="text-center py-8">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-orange-500 mx-auto"></div>
+                <div className="animate-spin rounded-full h-8 w-8 border-2 border-gray-300 border-t-orange-500 mx-auto"></div>
                 <p className="text-gray-400 mt-2">جاري البحث...</p>
               </div>
             )}

@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from '@/components/ui/dialog';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useToast } from '@/hooks/use-toast';
 import { useAuthData } from '@/hooks/useAuth';
@@ -139,6 +139,9 @@ export function UserProfile() {
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
               <DialogTitle>تحديث الملف الشخصي</DialogTitle>
+              <DialogDescription>
+                قم بتحديث معلوماتك الشخصية
+              </DialogDescription>
             </DialogHeader>
             <form onSubmit={profileForm.handleSubmit(onProfileSubmit)} className="space-y-4">
               <div className="grid grid-cols-2 gap-4">
@@ -200,6 +203,9 @@ export function UserProfile() {
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
               <DialogTitle>تغيير كلمة المرور</DialogTitle>
+              <DialogDescription>
+                قم بتغيير كلمة المرور الحالية إلى كلمة مرور جديدة
+              </DialogDescription>
             </DialogHeader>
             <form onSubmit={passwordForm.handleSubmit(onPasswordSubmit)} className="space-y-4">
               <div className="space-y-2">

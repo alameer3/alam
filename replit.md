@@ -16,6 +16,14 @@ This is a full-stack web application for an Arabic cinema streaming platform cal
 - جميع الردود والتوثيق باللغة العربية ✓ مؤكد (11 يوليو 2025)
 
 ## Recent Changes (12 يوليو 2025)
+- **تم إصلاح جميع تحذيرات الوصول للمكونات (Accessibility Warnings)** (12 يوليو 2025):
+  - إضافة DialogDescription لجميع مكونات Dialog في التطبيق
+  - إصلاح تحذيرات Radix UI المتعلقة بالوصول
+  - تحسين تجربة المستخدم لذوي الاحتياجات الخاصة
+  - إضافة مكونات UI محسنة: LoadingSpinner و ErrorMessage
+  - تحسين loading states في جميع أنحاء التطبيق
+  - إصلاح مشكلة الـ search modal loading indicator
+  - تحديث جميع مكونات الإدارة والمستخدمين لتتوافق مع معايير الوصول
 - **تم إكمال ترحيل المشروع النهائي من Replit Agent إلى بيئة Replit بنجاح** (12 يوليو 2025):
   - تم إنشاء قاعدة بيانات PostgreSQL جديدة وربطها بالتطبيق
   - تم تثبيت جميع الحزم والتبعيات المطلوبة
