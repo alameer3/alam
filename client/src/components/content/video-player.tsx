@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Play, Pause, Volume2, VolumeX, Maximize, Download, Heart, Share2, Star, Clock, Eye, Calendar } from "lucide-react";
 import { Content } from "@shared/schema";
@@ -60,6 +60,12 @@ export default function VideoPlayer({ content, onClose }: VideoPlayerProps) {
   return (
     <Dialog open={true} onOpenChange={onClose}>
       <DialogContent className="max-w-6xl max-h-[95vh] overflow-hidden p-0">
+        <DialogHeader className="sr-only">
+          <DialogTitle>مشغل الفيديو - {content.titleArabic || content.title}</DialogTitle>
+          <DialogDescription>
+            مشاهدة {content.titleArabic || content.title} - {content.year}
+          </DialogDescription>
+        </DialogHeader>
         <div className="relative bg-black">
           {/* Video Area */}
           <div className="relative aspect-video bg-black flex items-center justify-center">
