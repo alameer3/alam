@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Content } from "@shared/schema";
-import { useAuth } from "@/hooks/useAuth";
-import { useFavorites } from "@/hooks/useUserInteractions";
 import { useQuery } from "@tanstack/react-query";
 
 import Footer from "@/components/layout/footer";
@@ -10,7 +8,6 @@ import { ResponsiveGrid, ResponsiveSpacing, useResponsive } from "@/components/l
 import { EnhancedContentCard } from "@/components/ui/enhanced-content-card";
 import { VideoPlayerDemo } from "@/components/ui/video-player-demo";
 import { EnhancedHeroSection } from "@/components/ui/enhanced-hero-section";
-import FavoritesModal from "@/components/user/favorites-modal";
 
 export default function Home() {
   const { isMobile } = useResponsive();
