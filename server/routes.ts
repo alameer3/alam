@@ -6,6 +6,7 @@ import { z } from "zod";
 import adminRoutes from "./routes/admin";
 import performanceRoutes from "./routes/performance";
 import authRoutes from "./routes/auth";
+import userRoutes from "./routes/users";
 import { cacheMiddleware, clearCache } from "./middleware/cache";
 import { QueryOptimizer } from "./middleware/performance";
 import { initializeBackupSystem } from "./middleware/backup";
@@ -520,6 +521,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Initialize backup system
   initializeBackupSystem();
+  
+  // Register user routes  
+  userRoutes(app);
 
   // Admin routes
   app.get("/api/admin/stats", async (req, res) => {

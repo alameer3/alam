@@ -3,6 +3,7 @@ import { cn } from "@/lib/utils";
 
 const navItems = [
   { href: "/", label: "الرئيسية" },
+  { href: "/dashboard", label: "لوحة التحكم" },
   { href: "/movies", label: "الأفلام" },
   { href: "/series", label: "المسلسلات" },
   { href: "/television", label: "التلفزيون" },

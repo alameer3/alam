@@ -20,6 +20,10 @@ import AdminLogin from "@/pages/admin-login";
 import SecretAdminAccess from "@/pages/secret-admin-access";
 import Login from "@/pages/login";
 import Register from "@/pages/register";
+import Profile from "@/pages/profile";
+import Watchlists from "@/pages/watchlists";
+import Notifications from "@/pages/notifications";
+import Dashboard from "@/pages/dashboard";
 
 
 function Router() {
@@ -38,6 +42,10 @@ function Router() {
       <Route path="/secret-admin" component={SecretAdminAccess} />
       <Route path="/login" component={Login} />
       <Route path="/register" component={Register} />
+      <Route path="/profile" component={Profile} />
+      <Route path="/watchlists" component={Watchlists} />
+      <Route path="/notifications" component={Notifications} />
+      <Route path="/dashboard" component={Dashboard} />
 
       <Route component={NotFound} />
     </Switch>

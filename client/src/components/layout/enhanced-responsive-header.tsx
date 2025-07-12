@@ -7,6 +7,7 @@ import { MobileNavigation } from "./mobile-navigation";
 import { AdvancedThemeSwitcher } from "@/components/theme/advanced-theme-switcher";
 import { useResponsive } from "./responsive-layout";
 import { useAuthData } from "@/hooks/useAuth";
+import { UserMenu } from "./user-menu";
 import { 
   Search, 
   Bell, 
@@ -79,11 +80,11 @@ export function EnhancedResponsiveHeader() {
             <nav className="hidden lg:flex items-center space-x-6 space-x-reverse">
               {[
                 { path: "/", label: "الرئيسية" },
+                { path: "/dashboard", label: "لوحة التحكم" },
                 { path: "/movies", label: "أفلام" },
                 { path: "/series", label: "مسلسلات" },
                 { path: "/television", label: "تلفزيون" },
                 { path: "/miscellaneous", label: "متنوع" },
-                { path: "/upload-center", label: "رفع الملفات" },
               ].map((item) => (
                 <Link key={item.path} href={item.path}>
                   <Button 
@@ -152,33 +153,36 @@ export function EnhancedResponsiveHeader() {
             {!isMobile && <AdvancedThemeSwitcher />}
             
             {/* Notifications */}
-            <Button 
-              variant="ghost" 
-              size="icon"
-              className="relative rounded-full hover:bg-muted/50"
-            >
-              <Bell className="h-5 w-5" />
-              {notifications > 0 && (
-                <Badge 
-                  variant="destructive" 
-                  className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs"
-                >
-                  {notifications}
-                </Badge>
-              )}
-            </Button>
+            <Link href="/notifications">
+              <Button 
+                variant="ghost" 
+                size="icon"
+                className="relative rounded-full hover:bg-muted/50"
+              >
+                <Bell className="h-5 w-5" />
+                {notifications > 0 && (
+                  <Badge 
+                    variant="destructive" 
+                    className="absolute -top-1 -right-1 h-5 w-5 rounded-full p-0 flex items-center justify-center text-xs"
+                  >
+                    {notifications}
+                  </Badge>
+                )}
+              </Button>
+            </Link>
 
             {/* Quick Actions - Hidden on Mobile */}
             {!isMobile && (
               <>
-                <Button 
-                  variant="ghost" 
-                  size="icon"
-                  className="rounded-full hover:bg-muted/50"
-                  onClick={() => navigate("/favorites")}
-                >
-                  <Heart className="h-5 w-5" />
-                </Button>
+                <Link href="/watchlists">
+                  <Button 
+                    variant="ghost" 
+                    size="icon"
+                    className="rounded-full hover:bg-muted/50"
+                  >
+                    <Heart className="h-5 w-5" />
+                  </Button>
+                </Link>
                 
 
                 
@@ -186,83 +190,8 @@ export function EnhancedResponsiveHeader() {
               </>
             )}
 
-            {/* User Authentication */}
-            {isAuthenticated && user ? (
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <Button 
-                    variant="ghost" 
-                    className="relative rounded-full p-1 hover:bg-muted/50"
-                  >
-                    <Avatar className="h-8 w-8">
-                      <AvatarImage src={user?.profileImageUrl || ""} alt={user?.username || "User"} />
-                      <AvatarFallback className="bg-gradient-to-br from-primary to-primary/70 text-primary-foreground">
-                        {user?.firstName?.charAt(0).toUpperCase() || user?.username?.charAt(0).toUpperCase() || "U"}
-                      </AvatarFallback>
-                    </Avatar>
-                  </Button>
-                </DropdownMenuTrigger>
-                
-                <DropdownMenuContent align="end" className="w-56 bg-background/95 backdrop-blur-xl border border-border/50">
-                  <DropdownMenuLabel className="font-normal">
-                    <div className="flex flex-col space-y-1 text-right">
-                      <p className="text-sm font-medium">
-                        {user?.firstName || user?.username || "مستخدم"}
-                      </p>
-                      <p className="text-xs text-muted-foreground">
-                        {user?.email || "غير محدد"}
-                      </p>
-                    </div>
-                  </DropdownMenuLabel>
-                  
-                  <DropdownMenuSeparator />
-                  
-                  <DropdownMenuItem className="text-right cursor-pointer">
-                    <User className="ml-2 h-4 w-4" />
-                    الملف الشخصي
-                  </DropdownMenuItem>
-                  
-                  <DropdownMenuItem className="text-right cursor-pointer">
-                    <Heart className="ml-2 h-4 w-4" />
-                    المفضلة
-                  </DropdownMenuItem>
-                  
-                  <DropdownMenuItem className="text-right cursor-pointer">
-                    <Settings className="ml-2 h-4 w-4" />
-                    الإعدادات
-                  </DropdownMenuItem>
-                  
-                  {user?.isAdmin && (
-                    <>
-                      <DropdownMenuSeparator />
-                      <DropdownMenuItem className="text-right cursor-pointer">
-                        <Crown className="ml-2 h-4 w-4" />
-                        لوحة التحكم
-                      </DropdownMenuItem>
-                    </>
-                  )}
-                  
-                  <DropdownMenuSeparator />
-                  
-                  <DropdownMenuItem className="text-right cursor-pointer" onClick={logout}>
-                    تسجيل الخروج
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
-            ) : (
-              <div className="flex items-center gap-2">
-                <Link href="/login">
-                  <Button variant="ghost" size="sm">
-                    تسجيل الدخول
-                  </Button>
-                </Link>
-                <Link href="/register">
-                  <Button size="sm">
-                    إنشاء حساب
-                  </Button>
-                </Link>
-              </div>
-            )}
+            {/* User Menu */}
+            <UserMenu isMobile={isMobile} />
           </div>
         </div>
       </div>
