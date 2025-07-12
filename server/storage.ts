@@ -239,15 +239,17 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getContentStats(): Promise<{ movies: number, series: number, tv: number, misc: number }> {
-    const stats = await db.select({
-      type: content.type,
-      count: sql<number>`count(*)`
-    }).from(content)
-      .where(eq(content.isActive, true))
-      .groupBy(content.type);
+    const stats = await db.execute(sql`
+      SELECT type, COUNT(*) as count 
+      FROM content 
+      WHERE "isActive" = true 
+      GROUP BY type
+    `);
 
     const result = { movies: 0, series: 0, tv: 0, misc: 0 };
-    stats.forEach(stat => {
+    const rows = Array.isArray(stats) ? stats : stats.rows || [];
+    
+    rows.forEach((stat: any) => {
       if (stat.type === 'movie') result.movies = Number(stat.count);
       else if (stat.type === 'series') result.series = Number(stat.count);
       else if (stat.type === 'tv') result.tv = Number(stat.count);
