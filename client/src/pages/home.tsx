@@ -11,8 +11,7 @@ import { ResponsiveGrid, ResponsiveSpacing, useResponsive } from "@/components/l
 import { EnhancedContentCard } from "@/components/content/enhanced-content-card";
 import { VideoPlayerDemo } from "@/components/ui/video-player-demo";
 import FavoritesModal from "@/components/user/favorites-modal";
-import { RecommendationSection } from "@/components/ai/RecommendationSection";
-import { SmartSearch } from "@/components/ai/SmartSearch";
+
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -170,30 +169,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* AI Features Section */}
-      {user && (
-        <ResponsiveSpacing className="bg-gradient-to-br from-purple-50 to-blue-50 dark:from-purple-900/20 dark:to-blue-900/20">
-          <div className="space-y-8">
-            <div className="text-center">
-              <h2 className="text-3xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
-                الذكاء الاصطناعي والتوصيات
-              </h2>
-              <p className="text-muted-foreground max-w-2xl mx-auto">
-                اكتشف توصيات مخصصة وبحث ذكي مدعوم بالذكاء الاصطناعي
-              </p>
-            </div>
-            
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-              <div>
-                <RecommendationSection />
-              </div>
-              <div>
-                <SmartSearch />
-              </div>
-            </div>
-          </div>
-        </ResponsiveSpacing>
-      )}
+
 
       {/* Featured Movies */}
       <ResponsiveSpacing className="bg-muted/20">

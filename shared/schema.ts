@@ -122,39 +122,7 @@ export const userWatchHistory = pgTable("user_watch_history", {
   progressMinutes: integer("progress_minutes").default(0),
 });
 
-// Upload management tables
-export const uploads = pgTable("uploads", {
-  id: serial("id").primaryKey(),
-  fileName: text("file_name").notNull(),
-  originalName: text("original_name").notNull(),
-  mimeType: text("mime_type").notNull(),
-  size: integer("size").notNull(), // in bytes
-  uploadStatus: text("upload_status").notNull().default("pending"), // pending, processing, completed, failed
-  uploadProgress: integer("upload_progress").default(0), // 0-100
-  userId: integer("user_id").notNull(),
-  contentId: integer("content_id"), // linked content if applicable
-  fileType: text("file_type").notNull(), // video, image, subtitle, etc.
-  quality: text("quality"), // for video files
-  resolution: text("resolution"), // for video files
-  duration: integer("duration"), // for video files in seconds
-  thumbnailUrl: text("thumbnail_url"),
-  processedUrl: text("processed_url"),
-  storageUrl: text("storage_url").notNull(),
-  compressionLevel: text("compression_level").default("medium"), // low, medium, high
-  isActive: boolean("is_active").default(true).notNull(),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-  updatedAt: timestamp("updated_at").defaultNow().notNull(),
-});
 
-export const uploadChunks = pgTable("upload_chunks", {
-  id: serial("id").primaryKey(),
-  uploadId: integer("upload_id").notNull(),
-  chunkIndex: integer("chunk_index").notNull(),
-  chunkSize: integer("chunk_size").notNull(),
-  isUploaded: boolean("is_uploaded").default(false).notNull(),
-  uploadedAt: timestamp("uploaded_at"),
-  createdAt: timestamp("created_at").defaultNow().notNull(),
-});
 
 export const contentViews = pgTable("content_views", {
   id: serial("id").primaryKey(),
@@ -226,7 +194,6 @@ export const userRelations = relations(users, ({ many }) => ({
   reviewLikes: many(reviewLikes),
   favorites: many(userFavorites),
   watchHistory: many(userWatchHistory),
-  uploads: many(uploads),
 }));
 
 export const userCommentRelations = relations(userComments, ({ one, many }) => ({
@@ -297,24 +264,7 @@ export const reviewLikeRelations = relations(reviewLikes, ({ one }) => ({
   }),
 }));
 
-export const uploadRelations = relations(uploads, ({ one, many }) => ({
-  user: one(users, {
-    fields: [uploads.userId],
-    references: [users.id],
-  }),
-  content: one(content, {
-    fields: [uploads.contentId],
-    references: [content.id],
-  }),
-  chunks: many(uploadChunks),
-}));
 
-export const uploadChunkRelations = relations(uploadChunks, ({ one }) => ({
-  upload: one(uploads, {
-    fields: [uploadChunks.uploadId],
-    references: [uploads.id],
-  }),
-}));
 
 // Insert schemas
 export const insertUserSchema = createInsertSchema(users).omit({
@@ -375,22 +325,7 @@ export const insertReviewLikeSchema = createInsertSchema(reviewLikes).omit({
   createdAt: true,
 });
 
-export const insertUploadSchema = createInsertSchema(uploads).omit({
-  id: true,
-  uploadStatus: true,
-  uploadProgress: true,
-  thumbnailUrl: true,
-  processedUrl: true,
-  createdAt: true,
-  updatedAt: true,
-});
 
-export const insertUploadChunkSchema = createInsertSchema(uploadChunks).omit({
-  id: true,
-  isUploaded: true,
-  uploadedAt: true,
-  createdAt: true,
-});
 
 // Types
 export type User = typeof users.$inferSelect;
@@ -426,8 +361,4 @@ export type InsertUserWatchHistory = z.infer<typeof insertUserWatchHistorySchema
 export type ContentView = typeof contentViews.$inferSelect;
 export type InsertContentView = z.infer<typeof insertContentViewSchema>;
 
-export type Upload = typeof uploads.$inferSelect;
-export type InsertUpload = z.infer<typeof insertUploadSchema>;
 
-export type UploadChunk = typeof uploadChunks.$inferSelect;
-export type InsertUploadChunk = z.infer<typeof insertUploadChunkSchema>;
