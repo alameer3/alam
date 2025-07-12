@@ -37,7 +37,7 @@ export default function Header() {
                 <path d="M8 5v14l11-7z"/>
               </svg>
             </div>
-            <span className="text-2xl font-bold hidden md:block">أكاديمية السينما</span>
+            <span className="text-2xl font-bold hidden md:block">YEMEN 🇾🇪 FLIX</span>
           </Link>
 
           {/* Search Bar */}

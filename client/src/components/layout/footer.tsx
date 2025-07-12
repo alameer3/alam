@@ -14,10 +14,10 @@ export default function Footer() {
                   <path d="M8 5v14l11-7z"/>
                 </svg>
               </div>
-              <span className="text-2xl font-bold">أكاديمية السينما</span>
+              <span className="text-2xl font-bold">YEMEN 🇾🇪 FLIX</span>
             </div>
             <p className="text-muted mb-4">
-              منصة رائدة لمشاهدة الأفلام والمسلسلات العربية والأجنبية بجودة عالية
+              منصة يمنية رائدة لمشاهدة الأفلام والمسلسلات العربية والأجنبية بجودة عالية
             </p>
             <div className="flex space-x-4 space-x-reverse">
               <a href="#" className="text-muted hover:text-accent">
@@ -60,7 +60,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-gray-700 mt-8 pt-8 text-center text-muted">
-          <p>&copy; 2024 أكاديمية السينما. جميع الحقوق محفوظة.</p>
+          <p>&copy; 2024 YEMEN 🇾🇪 FLIX. جميع الحقوق محفوظة.</p>
         </div>
       </div>
     </footer>

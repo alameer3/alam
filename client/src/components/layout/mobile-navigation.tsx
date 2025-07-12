@@ -114,10 +114,10 @@ export function MobileNavigation() {
                 </div>
                 <div>
                   <SheetTitle className="text-right text-lg font-bold">
-                    أكاديمية السينما
+                    YEMEN 🇾🇪 FLIX
                   </SheetTitle>
                   <p className="text-sm text-muted-foreground text-right">
-                    استكشف عالم السينما
+                    استكشف عالم السينما اليمنية
                   </p>
                 </div>
               </div>

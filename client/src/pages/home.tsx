@@ -74,13 +74,13 @@ export default function Home() {
               <h1 className={`font-bold mb-6 bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent ${
                 isMobile ? "text-3xl" : "text-4xl md:text-6xl"
               }`}>
-                أكاديمية السينما
+                YEMEN 🇾🇪 FLIX
               </h1>
               
               <p className={`text-muted-foreground mb-8 max-w-2xl mx-auto ${
                 isMobile ? "text-lg" : "text-xl"
               }`}>
-                استمتع بمشاهدة أحدث الأفلام والمسلسلات العربية والأجنبية بجودة عالية
+                استمتع بمشاهدة أحدث الأفلام والمسلسلات العربية والأجنبية من اليمن إلى العالم
               </p>
               
               {/* Quick Navigation */}

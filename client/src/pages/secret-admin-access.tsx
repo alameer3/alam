@@ -48,8 +48,8 @@ export default function SecretAdminAccess() {
               <path d="M8 5v14l11-7z"/>
             </svg>
           </div>
-          <h1 className="text-3xl font-bold mt-4">أكاديمية السينما</h1>
-          <p className="text-muted-foreground mt-2">منصة الأفلام والمسلسلات</p>
+          <h1 className="text-3xl font-bold mt-4">YEMEN 🇾🇪 FLIX</h1>
+          <p className="text-muted-foreground mt-2">منصة الأفلام والمسلسلات اليمنية</p>
           
           {clickCount > 0 && clickCount < 5 && (
             <p className="text-xs text-muted-foreground mt-2">

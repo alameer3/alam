@@ -2,7 +2,7 @@
 
 ## Overview
 
-This is a full-stack web application for an Arabic cinema streaming platform called "أكاديمية السينما" (Cinema Academy). The application provides a comprehensive movie and TV show catalog with features for browsing, filtering, and managing multimedia content across different categories (movies, series, TV shows, and miscellaneous content).
+This is a full-stack web application for an Arabic cinema streaming platform called "YEMEN 🇾🇪 FLIX" (Yemen Flix). The application provides a comprehensive movie and TV show catalog with features for browsing, filtering, and managing multimedia content across different categories (movies, series, TV shows, and miscellaneous content).
 
 ## User Preferences
 
@@ -16,6 +16,11 @@ This is a full-stack web application for an Arabic cinema streaming platform cal
 - جميع الردود والتوثيق باللغة العربية ✓ مؤكد (11 يوليو 2025)
 
 ## Recent Changes (12 يوليو 2025)
+- **تم تغيير اسم الموقع إلى "YEMEN 🇾🇪 FLIX"** (12 يوليو 2025):
+  - تحديث جميع عناصر الواجهة لتعكس الاسم الجديد
+  - تحديث الشعار والعنوان في جميع الصفحات
+  - تحديث الوصف ليعكس الهوية اليمنية للمنصة
+  - تحديث إعدادات الإدارة والتكوين
 - **تم إكمال ترحيل المشروع إلى بيئة Replit بنجاح** (12 يوليو 2025):
   - جميع الحزم والتبعيات تم تثبيتها بنجاح
   - التطبيق يعمل بشكل مثالي على المنفذ 5000

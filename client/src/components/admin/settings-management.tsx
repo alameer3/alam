@@ -11,8 +11,8 @@ import { useToast } from "@/hooks/use-toast";
 
 export default function SettingsManagement() {
   const [settings, setSettings] = useState({
-    siteName: "أكاديمية السينما",
-    siteDescription: "منصة الأفلام والمسلسلات الرائدة",
+    siteName: "YEMEN 🇾🇪 FLIX",
+    siteDescription: "منصة الأفلام والمسلسلات اليمنية الرائدة",
     adminEmail: "admin@example.com",
     allowRegistration: true,
     enableComments: true,
