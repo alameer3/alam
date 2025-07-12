@@ -54,18 +54,7 @@ const navigationItems = [
     icon: Play,
     description: "المقاطع الدعائية والكواليس"
   },
-  { 
-    path: "/analytics", 
-    label: "التحليلات", 
-    icon: BarChart3,
-    description: "إحصائيات وتحليلات المنصة"
-  },
-  { 
-    path: "/subscriptions", 
-    label: "الاشتراكات", 
-    icon: CreditCard,
-    description: "خطط الاشتراك والدفع"
-  }
+
 ];
 
 const featuredItems = [
