@@ -1,120 +1,163 @@
 #!/usr/bin/env node
+/**
+ * سكريبت رفع التحديثات إلى GitHub - محسن
+ * يقوم بإضافة التغييرات وإنشاء commit ورفعها للـ GitHub
+ */
 
 const { execSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
-/**
- * سكريبت رفع التحديثات إلى GitHub
- * يقوم بإضافة التغييرات وإنشاء commit ورفعها للـ GitHub
- */
-
 function getCurrentDate() {
   const now = new Date();
-  const date = now.toLocaleDateString('ar-EG');
-  const time = now.toLocaleTimeString('ar-EG');
-  return `${date} - ${time}`;
+  return now.toLocaleDateString('ar-EG', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit'
+  });
 }
 
 function getProjectStats() {
-  try {
-    // قراءة إحصائيات من package.json
-    const packageJson = JSON.parse(fs.readFileSync('package.json', 'utf8'));
-    
-    // حساب عدد الملفات
-    const getFileCount = (dir) => {
-      const files = fs.readdirSync(dir, { withFileTypes: true });
-      let count = 0;
-      for (const file of files) {
-        if (file.name.startsWith('.') || file.name === 'node_modules') continue;
-        if (file.isDirectory()) {
-          count += getFileCount(path.join(dir, file.name));
-        } else {
-          count++;
-        }
-      }
-      return count;
-    };
+  const stats = {
+    files: 0,
+    lines: 0,
+    jsFiles: 0,
+    tsFiles: 0,
+    components: 0
+  };
 
-    const fileCount = getFileCount('.');
-    
-    return {
-      name: packageJson.name || 'yemen-flix',
-      version: packageJson.version || '1.0.0',
-      fileCount
-    };
-  } catch (error) {
-    return {
-      name: 'yemen-flix',
-      version: '1.0.0',
-      fileCount: 'غير محدد'
-    };
+  function countFiles(dir) {
+    try {
+      const files = fs.readdirSync(dir);
+      files.forEach(file => {
+        const filePath = path.join(dir, file);
+        const stat = fs.statSync(filePath);
+        
+        if (stat.isDirectory() && !file.startsWith('.') && file !== 'node_modules') {
+          countFiles(filePath);
+        } else if (stat.isFile()) {
+          stats.files++;
+          
+          if (file.endsWith('.js')) stats.jsFiles++;
+          if (file.endsWith('.ts') || file.endsWith('.tsx')) stats.tsFiles++;
+          if (file.includes('component') || file.includes('Component')) stats.components++;
+          
+          try {
+            const content = fs.readFileSync(filePath, 'utf8');
+            stats.lines += content.split('\n').length;
+          } catch (e) {
+            // تجاهل الملفات الثنائية
+          }
+        }
+      });
+    } catch (e) {
+      // تجاهل الأخطاء
+    }
   }
+
+  countFiles('.');
+  return stats;
 }
 
 function executeCommand(command, description) {
   try {
     console.log(`🔄 ${description}...`);
-    const output = execSync(command, { encoding: 'utf8', stdio: 'pipe' });
+    const result = execSync(command, { encoding: 'utf8', stdio: 'pipe' });
     console.log(`✅ ${description} مكتمل`);
-    return output;
+    return result;
   } catch (error) {
-    console.error(`❌ خطأ في ${description}:`);
-    console.error(error.message);
+    console.error(`❌ خطأ في ${description}: ${error.message}`);
     return null;
   }
 }
 
 function main() {
-  console.log('🚀 بدء عملية رفع التحديثات إلى GitHub...\n');
+  console.log('🚀 بدء رفع التحديثات إلى GitHub - YEMEN 🇾🇪 FLIX');
+  console.log('=' .repeat(60));
 
-  const stats = getProjectStats();
-  const currentDate = getCurrentDate();
+  // فحص وجود git
+  const gitStatus = executeCommand('git status --porcelain', 'فحص حالة Git');
+  if (gitStatus === null) {
+    console.error('❌ خطأ: المجلد الحالي ليس Git repository');
+    console.log('💡 تشغيل: git init لتهيئة Git repository');
+    return;
+  }
+
+  // حفظ حالة التطوير
+  executeCommand('node development-state-manager.cjs save', 'حفظ حالة التطوير');
+
+  // إضافة جميع التغييرات
+  executeCommand('git add .', 'إضافة جميع التغييرات');
 
   // التحقق من وجود تغييرات
-  const statusOutput = executeCommand('git status --porcelain', 'فحص التغييرات');
-  if (!statusOutput || statusOutput.trim() === '') {
+  const changes = executeCommand('git diff --cached --name-only', 'فحص التغييرات');
+  if (!changes || changes.trim() === '') {
     console.log('ℹ️ لا توجد تغييرات جديدة للرفع');
     return;
   }
 
-  console.log('📊 إحصائيات المشروع:');
-  console.log(`- اسم المشروع: ${stats.name}`);
-  console.log(`- الإصدار: ${stats.version}`);
-  console.log(`- عدد الملفات: ${stats.fileCount}`);
-  console.log('');
+  // عرض الملفات المُغيّرة
+  console.log('\n📁 الملفات المُغيّرة:');
+  changes.split('\n').filter(f => f.trim()).forEach(file => {
+    console.log(`   • ${file}`);
+  });
 
-  // إضافة جميع التغييرات
-  if (!executeCommand('git add .', 'إضافة التغييرات')) return;
+  // إنشاء رسالة commit
+  const currentDate = getCurrentDate();
+  const stats = getProjectStats();
+  
+  const commitMessage = `تحديث المشروع - ${currentDate}
 
-  // إنشاء رسالة commit تلقائية
-  const commitMessage = `🔄 تحديث تلقائي: ${currentDate}
+📊 إحصائيات المشروع:
+• إجمالي الملفات: ${stats.files}
+• إجمالي الأسطر: ${stats.lines.toLocaleString()}
+• ملفات JavaScript: ${stats.jsFiles}
+• ملفات TypeScript: ${stats.tsFiles}
+• المكونات: ${stats.components}
 
-📊 إحصائيات:
-- المشروع: ${stats.name} v${stats.version}
-- الملفات: ${stats.fileCount}
-- قاعدة البيانات: PostgreSQL متصلة
-- المحتوى: 40+ عنصر (أفلام ومسلسلات)
-- الميزات: نظام إدارة متكامل مع ذكاء اصطناعي
+🔧 التحسينات:
+• تحديث نظام إدارة الحالة
+• تحسين واجهة المستخدم
+• إضافة ميزات جديدة
+• إصلاح مشاكل وتحسينات
 
-🎬 منصة يمن فليكس - Yemen Flix Streaming Platform`;
+📝 الحالة: نشط ومُحدث
+🏷️ المرحلة: تطوير مستمر`;
 
   // إنشاء commit
-  if (!executeCommand(`git commit -m "${commitMessage}"`, 'إنشاء commit')) return;
+  const commitResult = executeCommand(
+    `git commit -m "${commitMessage}"`,
+    'إنشاء commit'
+  );
 
-  // رفع إلى GitHub
-  if (!executeCommand('git push origin main', 'رفع إلى GitHub')) {
-    console.log('ℹ️ محاولة رفع إلى branch master...');
-    executeCommand('git push origin master', 'رفع إلى GitHub (master)');
+  if (commitResult === null) {
+    console.error('❌ فشل في إنشاء commit');
+    return;
   }
 
-  console.log('\n🎉 تم رفع التحديثات بنجاح إلى GitHub!');
-  console.log('🔗 يمكنك الآن استيراد المشروع من GitHub إلى أي بيئة Replit جديدة');
+  // رفع التحديثات
+  const pushResult = executeCommand('git push origin main', 'رفع التحديثات إلى GitHub');
+  
+  if (pushResult === null) {
+    console.error('❌ فشل في رفع التحديثات');
+    console.log('💡 تأكد من:');
+    console.log('   • وجود اتصال بالإنترنت');
+    console.log('   • صحة رابط GitHub repository');
+    console.log('   • صلاحيات الوصول لـ repository');
+    return;
+  }
+
+  // عرض النتيجة
+  console.log('\n' + '=' .repeat(60));
+  console.log('✅ تم رفع التحديثات بنجاح!');
+  console.log(`📅 التاريخ: ${currentDate}`);
+  console.log(`📊 الملفات المُحدثة: ${changes.split('\n').filter(f => f.trim()).length}`);
+  console.log(`💻 إجمالي الأسطر: ${stats.lines.toLocaleString()}`);
+  console.log('🔗 يمكنك الآن رؤية التحديثات على GitHub');
+  console.log('=' .repeat(60));
 }
 
 // تشغيل السكريبت
-if (require.main === module) {
-  main();
-}
-
-module.exports = { main };
+main();
