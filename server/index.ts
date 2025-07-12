@@ -1,10 +1,23 @@
 import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
+import { setupSecurity, sanitizeInput } from "./middleware/security";
+import { performanceMiddleware } from "./middleware/performance";
+import { initializeDatabaseOptimizations } from "./middleware/database";
 
 const app = express();
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+
+// Setup security middleware
+setupSecurity(app);
+
+// Performance monitoring
+app.use(performanceMiddleware);
+
+// Input sanitization
+app.use(sanitizeInput);
+
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: false, limit: '10mb' }));
 
 app.use((req, res, next) => {
   const start = Date.now();
@@ -37,6 +50,9 @@ app.use((req, res, next) => {
 });
 
 (async () => {
+  // Initialize database optimizations
+  await initializeDatabaseOptimizations();
+  
   const server = await registerRoutes(app);
 
   app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {

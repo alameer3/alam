@@ -29,6 +29,7 @@ import AdvancedContentManager from "@/components/admin/advanced-content-manager"
 import CategoryGenreManager from "@/components/admin/category-genre-manager";
 import FileUploadManager from "@/components/admin/file-upload-manager";
 import ContentApprovalSystem from "@/components/admin/content-approval-system";
+import { PerformanceDashboard } from "@/components/admin/PerformanceDashboard";
 
 export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState("overview");
@@ -139,7 +140,7 @@ export default function AdminDashboard() {
 
       {/* Admin Navigation Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid w-full grid-cols-5">
+        <TabsList className="grid w-full grid-cols-6">
           <TabsTrigger value="overview" className="flex items-center gap-2">
             <BarChart3 className="w-4 h-4" />
             نظرة عامة
@@ -159,6 +160,10 @@ export default function AdminDashboard() {
           <TabsTrigger value="files" className="flex items-center gap-2">
             <Upload className="w-4 h-4" />
             رفع الملفات
+          </TabsTrigger>
+          <TabsTrigger value="performance" className="flex items-center gap-2">
+            <Activity className="w-4 h-4" />
+            الأداء والأمان
           </TabsTrigger>
         </TabsList>
 
@@ -318,6 +323,14 @@ export default function AdminDashboard() {
                   <Upload className="w-4 h-4" />
                   رفع الملفات
                 </Button>
+                <Button
+                  onClick={() => setActiveTab("performance")}
+                  variant="outline"
+                  className="flex items-center gap-2"
+                >
+                  <Activity className="w-4 h-4" />
+                  الأداء والأمان
+                </Button>
               </div>
             </CardContent>
           </Card>
@@ -341,6 +354,11 @@ export default function AdminDashboard() {
         {/* File Upload Tab */}
         <TabsContent value="files">
           <FileUploadManager />
+        </TabsContent>
+
+        {/* Performance & Security Tab */}
+        <TabsContent value="performance">
+          <PerformanceDashboard />
         </TabsContent>
       </Tabs>
     </div>

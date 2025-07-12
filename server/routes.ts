@@ -5,48 +5,77 @@ import { insertContentSchema, insertGenreSchema, insertCategorySchema, insertUse
 import { z } from "zod";
 import adminRoutes from "./routes/admin";
 import uploadRoutes from "./routes/upload";
+import performanceRoutes from "./routes/performance";
+import { cacheMiddleware, clearCache } from "./middleware/cache";
+import { QueryOptimizer } from "./middleware/performance";
+import { initializeBackupSystem } from "./middleware/backup";
 
 export async function registerRoutes(app: Express): Promise<Server> {
-  // Content routes
-  app.get("/api/content/:type", async (req, res) => {
-    try {
-      const { type } = req.params;
-      const page = parseInt(req.query.page as string) || 1;
-      const limit = parseInt(req.query.limit as string) || 20;
-      const filters = {
-        year: req.query.year,
-        language: req.query.language,
-        quality: req.query.quality,
-        resolution: req.query.resolution,
-        rating: req.query.rating
-      };
+  // Content routes with caching
+  app.get("/api/content/:type", 
+    cacheMiddleware({ 
+      ttl: 300, // 5 minutes
+      keyGenerator: (req) => `content:${req.params.type}:${JSON.stringify(req.query)}`
+    }),
+    async (req, res) => {
+      try {
+        const { type } = req.params;
+        const page = parseInt(req.query.page as string) || 1;
+        const limit = parseInt(req.query.limit as string) || 20;
+        const filters = {
+          year: req.query.year,
+          language: req.query.language,
+          quality: req.query.quality,
+          resolution: req.query.resolution,
+          rating: req.query.rating
+        };
 
-      const result = await storage.getContentByType(type, page, limit, filters);
-      res.json(result);
-    } catch (error) {
-      res.status(500).json({ error: "Failed to fetch content" });
-    }
-  });
-
-  app.get("/api/content/item/:id", async (req, res) => {
-    try {
-      const id = parseInt(req.params.id);
-      const content = await storage.getContent(id);
-      
-      if (!content) {
-        return res.status(404).json({ error: "Content not found" });
+        const result = await QueryOptimizer.optimizeQuery(
+          `content:${type}:${page}:${limit}:${JSON.stringify(filters)}`,
+          () => storage.getContentByType(type, page, limit, filters),
+          300
+        );
+        res.json(result);
+      } catch (error) {
+        res.status(500).json({ error: "Failed to fetch content" });
       }
-
-      res.json(content);
-    } catch (error) {
-      res.status(500).json({ error: "Failed to fetch content" });
     }
-  });
+  );
+
+  app.get("/api/content/item/:id", 
+    cacheMiddleware({ 
+      ttl: 600, // 10 minutes
+      keyGenerator: (req) => `content:item:${req.params.id}`
+    }),
+    async (req, res) => {
+      try {
+        const id = parseInt(req.params.id);
+        const content = await QueryOptimizer.optimizeQuery(
+          `content:item:${id}`,
+          () => storage.getContent(id),
+          600
+        );
+        
+        if (!content) {
+          return res.status(404).json({ error: "Content not found" });
+        }
+
+        res.json(content);
+      } catch (error) {
+        res.status(500).json({ error: "Failed to fetch content" });
+      }
+    }
+  );
 
   app.post("/api/content", async (req, res) => {
     try {
       const validatedData = insertContentSchema.parse(req.body);
       const content = await storage.createContent(validatedData);
+      
+      // Clear content cache when new content is created
+      clearCache('content:');
+      QueryOptimizer.clearQueryCache('content:');
+      
       res.status(201).json(content);
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -479,6 +508,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Upload routes
   app.use("/api/uploads", uploadRoutes);
+  
+  // Performance routes
+  app.use("/api/performance", performanceRoutes);
+  
+  // Initialize backup system
+  initializeBackupSystem();
 
   // Admin routes
   app.get("/api/admin/stats", async (req, res) => {
