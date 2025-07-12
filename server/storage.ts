@@ -221,10 +221,10 @@ export class DatabaseStorage implements IStorage {
 
     const result = { movies: 0, series: 0, tv: 0, misc: 0 };
     stats.forEach(stat => {
-      if (stat.type === 'movie') result.movies = stat.count;
-      else if (stat.type === 'series') result.series = stat.count;
-      else if (stat.type === 'tv') result.tv = stat.count;
-      else if (stat.type === 'misc') result.misc = stat.count;
+      if (stat.type === 'movie') result.movies = Number(stat.count);
+      else if (stat.type === 'series') result.series = Number(stat.count);
+      else if (stat.type === 'tv') result.tv = Number(stat.count);
+      else if (stat.type === 'misc') result.misc = Number(stat.count);
     });
 
     return result;
@@ -693,28 +693,6 @@ class TemporaryMemoryStorage implements IStorage {
 
 }
 
-// Initialize storage - will try database first, fallback to memory
-async function initializeStorage(): Promise<IStorage> {
-  try {
-    const dbStorage = new DatabaseStorage();
-    // Test database connection
-    await dbStorage.getContentStats();
-    console.log("✓ Connected to PostgreSQL database");
-    return dbStorage;
-  } catch (error: any) {
-    console.log("⚠ Database not available, using in-memory storage:", error.message);
-    return new TemporaryMemoryStorage();
-  }
-}
-
-// Initialize storage asynchronously
-let storage: IStorage = new TemporaryMemoryStorage(); // Default fallback
-
-initializeStorage().then(s => {
-  storage = s;
-}).catch(error => {
-  console.error("Failed to initialize storage:", error);
-  storage = new TemporaryMemoryStorage();
-});
-
-export { storage };
+// Force use of DatabaseStorage since we have PostgreSQL
+console.log("🔧 Initializing DatabaseStorage...");
+export const storage = new DatabaseStorage();
