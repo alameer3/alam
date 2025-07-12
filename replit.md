@@ -16,6 +16,19 @@ This is a full-stack web application for an Arabic cinema streaming platform cal
 - جميع الردود والتوثيق باللغة العربية ✓ مؤكد (11 يوليو 2025)
 
 ## Recent Changes (12 يوليو 2025)
+- **تم إضافة قاعدة بيانات PostgreSQL جديدة وملء المحتوى** (12 يوليو 2025):
+  - إنشاء قاعدة بيانات PostgreSQL جديدة وربطها بالتطبيق
+  - تطبيق جميع migrations وإنشاء جداول قاعدة البيانات
+  - إضافة البيانات الأولية: مستخدم إداري، 12 فئة، 15 نوع
+  - إضافة 35+ محتوى تجريبي متنوع (أفلام ومسلسلات):
+    - محتوى عربي: الرسالة، وجدة، ذيب، باب الحارة، الهيبة
+    - أفلام أجنبية: Inception، The Dark Knight، Forrest Gump
+    - مسلسلات أجنبية: Stranger Things، Friends، The Crown
+    - أفلام هندية: 3 Idiots، Dangal، Lagaan
+    - محتوى تركي: قيامة أرطغرل، القرن العظيم، العشق الممنوع
+    - محتوى كوري: Parasite، Squid Game، Crash Landing on You
+  - تحديث نظام التخزين لاستخدام قاعدة البيانات بدلاً من الذاكرة
+  - التطبيق الآن يعمل بالكامل مع قاعدة بيانات PostgreSQL حقيقية
 - **تم إصلاح جميع تحذيرات الوصول للمكونات (Accessibility Warnings)** (12 يوليو 2025):
   - إضافة DialogDescription لجميع مكونات Dialog في التطبيق
   - إصلاح تحذيرات Radix UI المتعلقة بالوصول
