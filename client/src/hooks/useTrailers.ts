@@ -75,10 +75,7 @@ export function useAddTrailer() {
     mutationFn: (trailerData: Omit<TrailerInfo, 'id'>) => 
       apiRequest('/api/trailers', {
         method: 'POST',
-        body: JSON.stringify(trailerData),
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        body: trailerData,
       }),
     onSuccess: (newTrailer: TrailerInfo) => {
       // تحديث cache للمقاطع الدعائية للمحتوى المحدد

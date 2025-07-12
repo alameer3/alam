@@ -8,14 +8,22 @@ async function throwIfResNotOk(res: Response) {
 }
 
 export async function apiRequest(
-  method: string,
   url: string,
-  data?: unknown | undefined,
+  options?: {
+    method?: string;
+    body?: unknown;
+    headers?: Record<string, string>;
+  }
 ): Promise<Response> {
+  const method = options?.method || 'GET';
+  const data = options?.body;
   // استخراج الـ token من localStorage
   const token = localStorage.getItem('auth_token');
   
-  const headers: Record<string, string> = data ? { "Content-Type": "application/json" } : {};
+  const headers: Record<string, string> = {
+    ...(data ? { "Content-Type": "application/json" } : {}),
+    ...(options?.headers || {})
+  };
   
   // إضافة Authorization header إذا كان الـ token متوفر
   if (token) {
