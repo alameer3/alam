@@ -25,8 +25,6 @@ import Notifications from "@/pages/notifications";
 import Dashboard from "@/pages/dashboard";
 import UnifiedAdminPanel from "@/pages/unified-admin-panel";
 import Trailers from "@/pages/trailers";
-import AnalyticsPage from "@/pages/analytics";
-import SubscriptionsPage from "@/pages/subscriptions";
 
 
 function Router() {
@@ -50,8 +48,7 @@ function Router() {
       <Route path="/notifications" component={Notifications} />
       <Route path="/dashboard" component={Dashboard} />
       <Route path="/trailers" component={Trailers} />
-      <Route path="/analytics" component={AnalyticsPage} />
-      <Route path="/subscriptions" component={SubscriptionsPage} />
+
 
       <Route component={NotFound} />
     </Switch>

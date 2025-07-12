@@ -30,6 +30,8 @@ import SecurityDashboard from '@/components/security/security-dashboard';
 import PasswordStrengthChecker from '@/components/security/password-strength-checker';
 import { PerformanceDashboard } from '@/components/admin/PerformanceDashboard';
 import AdvancedContentManager from '@/components/admin/advanced-content-manager';
+import AdvancedAnalyticsDashboard from '@/components/analytics/advanced-analytics-dashboard';
+import SubscriptionManagement from '@/components/subscription/subscription-management';
 
 // Mock data for admin dashboard
 const statsData = [
@@ -184,8 +186,12 @@ function UnifiedAdminPanelContent() {
               الأداء والمراقبة
             </TabsTrigger>
             <TabsTrigger value="analytics" className="flex items-center gap-2">
-              <TrendingUp className="w-4 h-4" />
+              <BarChart3 className="w-4 h-4" />
               التحليلات
+            </TabsTrigger>
+            <TabsTrigger value="subscriptions" className="flex items-center gap-2">
+              <UserCheck className="w-4 h-4" />
+              الاشتراكات
             </TabsTrigger>
             <TabsTrigger value="settings" className="flex items-center gap-2">
               <Cog className="w-4 h-4" />
@@ -495,21 +501,12 @@ function UnifiedAdminPanelContent() {
 
           {/* التحليلات */}
           <TabsContent value="analytics">
-            <Card>
-              <CardHeader>
-                <CardTitle dir="rtl">التحليلات المتقدمة</CardTitle>
-                <CardDescription dir="rtl">تحليلات مفصلة للمنصة</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="text-center py-12">
-                  <TrendingUp className="h-16 w-16 text-gray-400 mx-auto mb-4" />
-                  <h3 className="text-xl font-semibold mb-2" dir="rtl">التحليلات المتقدمة</h3>
-                  <p className="text-gray-600 dark:text-gray-300" dir="rtl">
-                    ستتوفر التحليلات المتقدمة قريباً...
-                  </p>
-                </div>
-              </CardContent>
-            </Card>
+            <AdvancedAnalyticsDashboard />
+          </TabsContent>
+
+          {/* الاشتراكات */}
+          <TabsContent value="subscriptions">
+            <SubscriptionManagement />
           </TabsContent>
 
           {/* الإعدادات */}
