@@ -110,7 +110,7 @@ function AdminDashboardContent() {
               <Shield className="w-8 h-8 text-primary" />
               لوحة التحكم الإدارية
             </h1>
-            <p className="text-muted-foreground mt-1">إدارة وتحليل منصة أكاديمية السينما</p>
+            <p className="text-muted-foreground mt-1">إدارة وتحليل منصة 𝐘𝐄𝐌𝐄𝐍 🇾🇪 𝐅𝐋𝐈𝐗</p>
           </div>
           <div className="flex items-center gap-4">
             <Button

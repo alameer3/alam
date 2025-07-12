@@ -126,7 +126,7 @@ export default function AdminDashboard() {
         <div>
           <h1 className="text-3xl font-bold">لوحة التحكم الإدارية</h1>
           <p className="text-muted-foreground">
-            إدارة شاملة لمنصة أكاديمية السينما
+            إدارة شاملة لمنصة 𝐘𝐄𝐌𝐄𝐍 🇾🇪 𝐅𝐋𝐈𝐗
           </p>
         </div>
         
