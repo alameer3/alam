@@ -24,7 +24,7 @@ import {
   User, 
   Settings,
   Crown,
-  Upload,
+
   Bell
 } from "lucide-react";
 
@@ -78,12 +78,7 @@ export function MobileNavigation() {
       icon: Heart,
       description: "المحتوى المفضل لديك"
     },
-    {
-      path: "/upload-center",
-      label: "رفع الملفات",
-      icon: Upload,
-      description: "رفع محتوى جديد"
-    }
+
   ];
 
   const isCurrentPath = (path: string) => {
