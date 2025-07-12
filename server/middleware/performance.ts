@@ -1,4 +1,5 @@
 import type { Request, Response, NextFunction } from "express";
+import { trackQueryPerformance } from "./cache";
 
 // Performance monitoring middleware
 export function performanceMiddleware(req: Request, res: Response, next: NextFunction) {
@@ -44,10 +45,8 @@ export class QueryOptimizer {
     const result = await queryFn();
     const duration = Date.now() - start;
     
-    // Log slow database queries
-    if (duration > 500) {
-      console.warn(`🐌 Slow database query: ${queryKey} took ${duration}ms`);
-    }
+    // Track performance metrics
+    trackQueryPerformance(queryKey, duration);
     
     // Cache the result
     this.queryCache.set(queryKey, {
@@ -55,7 +54,6 @@ export class QueryOptimizer {
       timestamp: Date.now()
     });
     
-    console.log(`Query executed: ${queryKey} - ${duration}ms`);
     return result;
   }
   

@@ -102,13 +102,11 @@ export class DatabaseStorage implements IStorage {
   }
 
   async getContentByType(type: string, page: number = 1, limit: number = 20, filters?: any): Promise<{ content: Content[], total: number }> {
-    const baseCondition = and(
+    // Build efficient conditions
+    const conditions = [
       eq(content.type, type),
       eq(content.isActive, true)
-    );
-
-    // Build conditions array
-    const conditions = [baseCondition];
+    ];
     
     if (filters) {
       if (filters.year) {
@@ -128,21 +126,24 @@ export class DatabaseStorage implements IStorage {
       }
     }
 
-    const finalCondition = conditions.length > 1 ? and(...conditions) : conditions[0];
-    
+    const finalCondition = and(...conditions);
     const offset = (page - 1) * limit;
-    const contentItems = await db.select().from(content)
-      .where(finalCondition)
-      .orderBy(desc(content.createdAt))
-      .limit(limit)
-      .offset(offset);
-
-    const [{ count }] = await db.select({ count: sql<number>`count(*)` }).from(content)
-      .where(finalCondition);
+    
+    // Use parallel queries for better performance
+    const [contentResult, countResult] = await Promise.all([
+      db.select().from(content)
+        .where(finalCondition)
+        .orderBy(desc(content.createdAt))
+        .limit(limit)
+        .offset(offset),
+      
+      db.select({ count: sql<number>`count(*)` }).from(content)
+        .where(finalCondition)
+    ]);
 
     return {
-      content: contentItems,
-      total: count
+      content: contentResult,
+      total: countResult[0].count
     };
   }
 

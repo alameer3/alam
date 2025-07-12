@@ -7,7 +7,7 @@ import adminRoutes from "./routes/admin";
 import performanceRoutes from "./routes/performance";
 import authRoutes from "./routes/auth";
 import userRoutes from "./routes/users";
-import { cacheMiddleware, clearCache } from "./middleware/cache";
+import { cacheMiddleware, clearCache, trackQueryPerformance } from "./middleware/cache";
 import { QueryOptimizer } from "./middleware/performance";
 import { initializeBackupSystem } from "./middleware/backup";
 
@@ -31,11 +31,15 @@ export async function registerRoutes(app: Express): Promise<Server> {
           rating: req.query.rating
         };
 
+        // Add performance monitoring
+        const startTime = Date.now();
         const result = await QueryOptimizer.optimizeQuery(
           `content:${type}:${page}:${limit}:${JSON.stringify(filters)}`,
           () => storage.getContentByType(type, page, limit, filters),
           300
         );
+        const duration = Date.now() - startTime;
+        trackQueryPerformance(`content:${type}:${page}:${limit}:${JSON.stringify(filters)}`, duration);
         res.json(result);
       } catch (error) {
         res.status(500).json({ error: "Failed to fetch content" });

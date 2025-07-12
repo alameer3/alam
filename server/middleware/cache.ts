@@ -63,5 +63,48 @@ export function cleanExpiredCache() {
   }
 }
 
+// Performance monitoring
+interface QueryMetrics {
+  queryKey: string;
+  executionTime: number;
+  timestamp: number;
+}
+
+const queryMetrics: QueryMetrics[] = [];
+const MAX_METRICS = 1000; // Keep last 1000 queries
+
+export function trackQueryPerformance(queryKey: string, executionTime: number) {
+  queryMetrics.push({
+    queryKey,
+    executionTime,
+    timestamp: Date.now()
+  });
+  
+  // Remove old metrics
+  if (queryMetrics.length > MAX_METRICS) {
+    queryMetrics.splice(0, queryMetrics.length - MAX_METRICS);
+  }
+  
+  // Log slow queries
+  if (executionTime > 500) {
+    console.log(`🐌 Slow database query: ${queryKey} took ${executionTime}ms`);
+  } else {
+    console.log(`Query executed: ${queryKey} - ${executionTime}ms`);
+  }
+}
+
+export function getPerformanceMetrics() {
+  const recent = queryMetrics.filter(m => Date.now() - m.timestamp < 60000); // Last minute
+  const avgTime = recent.length > 0 ? recent.reduce((sum, m) => sum + m.executionTime, 0) / recent.length : 0;
+  const slowQueries = recent.filter(m => m.executionTime > 500);
+  
+  return {
+    totalQueries: recent.length,
+    averageTime: Math.round(avgTime),
+    slowQueries: slowQueries.length,
+    cacheSize: cache.size
+  };
+}
+
 // Schedule cache cleanup every 10 minutes
 setInterval(cleanExpiredCache, 10 * 60 * 1000);

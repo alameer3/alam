@@ -1,6 +1,7 @@
 import { Router } from 'express';
 import { DatabaseOptimizer } from '../middleware/database';
 import { BackupManager } from '../middleware/backup';
+import { getPerformanceMetrics } from '../middleware/cache';
 
 const router = Router();
 
@@ -16,6 +17,9 @@ router.get('/dashboard', async (req, res) => {
     
     // Get backup status
     const backupStatus = await BackupManager.getBackupStatus();
+    
+    // Get query performance metrics
+    const queryMetrics = getPerformanceMetrics();
     
     const performanceData = {
       system: {
@@ -35,6 +39,7 @@ router.get('/dashboard', async (req, res) => {
         error: dbHealth.error
       },
       backup: backupStatus,
+      queries: queryMetrics,
       timestamp: new Date().toISOString()
     };
     

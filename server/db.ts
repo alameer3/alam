@@ -24,5 +24,14 @@ if (databaseUrl.startsWith("psql '") && databaseUrl.endsWith("'")) {
 
 console.log('Database URL configured successfully');
 
-export const pool = new Pool({ connectionString: databaseUrl });
+// Optimized connection pool configuration
+export const pool = new Pool({ 
+  connectionString: databaseUrl,
+  maxPoolSize: 10,
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 5000,
+  acquireTimeoutMillis: 60000,
+  statementTimeoutMillis: 30000
+});
+
 export const db = drizzle({ client: pool, schema });
