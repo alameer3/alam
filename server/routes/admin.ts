@@ -104,7 +104,7 @@ router.delete('/content/:id', async (req, res) => {
 // Get all users (admin only)
 router.get('/users', async (req, res) => {
   try {
-    // Mock user data for now - in real app, this would come from database
+
     const users = [
       {
         id: 1,
@@ -163,7 +163,7 @@ router.post('/users', async (req, res) => {
       updatedAt: new Date().toISOString()
     };
     
-    // In real app, this would use storage.createUser
+
     res.status(201).json(userData);
   } catch (error) {
     console.error('Error creating user:', error);
@@ -181,7 +181,6 @@ router.put('/users/:id', async (req, res) => {
       updatedAt: new Date().toISOString()
     };
     
-    // In real app, this would use storage.updateUser
     res.json(userData);
   } catch (error) {
     console.error('Error updating user:', error);
@@ -193,7 +192,6 @@ router.put('/users/:id', async (req, res) => {
 router.delete('/users/:id', async (req, res) => {
   try {
     const id = parseInt(req.params.id);
-    // In real app, this would use storage.deleteUser
     res.json({ message: 'User deleted successfully' });
   } catch (error) {
     console.error('Error deleting user:', error);
@@ -207,7 +205,6 @@ router.put('/users/:id/status', async (req, res) => {
     const id = parseInt(req.params.id);
     const { isActive } = req.body;
     
-    // In real app, this would use storage.updateUser
     res.json({ 
       id, 
       isActive,

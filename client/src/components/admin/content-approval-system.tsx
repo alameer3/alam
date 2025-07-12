@@ -1,16 +1,16 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/layout/ui/card";
-import { Button } from "@/components/layout/ui/button";
-import { Badge } from "@/components/layout/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/layout/ui/tabs";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { 
   Dialog, 
   DialogContent, 
   DialogHeader, 
   DialogTitle, 
   DialogDescription
-} from "@/components/layout/ui/dialog";
+} from "@/components/ui/dialog";
 import { 
   AlertDialog,
   AlertDialogAction,
@@ -20,7 +20,7 @@ import {
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-} from "@/components/layout/ui/alert-dialog";
+} from "@/components/ui/alert-dialog";
 import { 
   CheckCircle, 
   XCircle, 
@@ -40,7 +40,7 @@ import { Content } from "@shared/schema";
 import { apiRequest } from "@/lib/queryClient";
 import { useToast } from "@/hooks/use-toast";
 import { cn } from "@/lib/utils";
-import { Textarea } from "@/components/layout/ui/textarea";
+import { Textarea } from "@/components/ui/textarea";
 
 interface ContentApprovalSystemProps {
   adminId?: number;

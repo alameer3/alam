@@ -2,6 +2,7 @@ import { Pool, neonConfig } from '@neondatabase/serverless';
 import { drizzle } from 'drizzle-orm/neon-serverless';
 import ws from "ws";
 import * as schema from "@shared/schema";
+import { DATABASE_CONFIG } from './config/constants';
 
 neonConfig.webSocketConstructor = ws;
 
@@ -27,8 +28,8 @@ if (!process.env.DATABASE_URL) {
   // Optimized connection pool configuration
   pool = new Pool({ 
     connectionString: databaseUrl,
-    idleTimeoutMillis: 30000,
-    connectionTimeoutMillis: 5000,
+    idleTimeoutMillis: DATABASE_CONFIG.IDLE_TIMEOUT,
+    connectionTimeoutMillis: DATABASE_CONFIG.CONNECTION_TIMEOUT,
   });
 
   db = drizzle({ client: pool, schema });

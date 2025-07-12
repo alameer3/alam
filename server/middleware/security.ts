@@ -2,14 +2,15 @@ import { Request, Response, NextFunction } from 'express';
 import rateLimit from 'express-rate-limit';
 import helmet from 'helmet';
 import { createHash, randomBytes, scryptSync, timingSafeEqual } from 'crypto';
+import { RATE_LIMITS, SECURITY } from '../config/constants';
 
 // Rate limiting configurations
 export const authRateLimit = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 5, // Maximum 5 login attempts per 15 minutes
+  windowMs: RATE_LIMITS.AUTH.WINDOW_MS,
+  max: RATE_LIMITS.AUTH.MAX_ATTEMPTS,
   message: {
-    error: 'تم تجاوز عدد محاولات تسجيل الدخول المسموح. حاول مرة أخرى خلال 15 دقيقة.',
-    retryAfter: '15 minutes'
+    error: RATE_LIMITS.AUTH.MESSAGE,
+    retryAfter: RATE_LIMITS.AUTH.RETRY_AFTER
   },
   standardHeaders: true,
   legacyHeaders: false,
@@ -17,22 +18,22 @@ export const authRateLimit = rateLimit({
 });
 
 export const apiRateLimit = rateLimit({
-  windowMs: 1 * 60 * 1000, // 1 minute
-  max: 100, // Maximum 100 requests per minute
+  windowMs: RATE_LIMITS.API.WINDOW_MS,
+  max: RATE_LIMITS.API.MAX_REQUESTS,
   message: {
-    error: 'تم تجاوز الحد المسموح من الطلبات. حاول مرة أخرى لاحقاً.',
-    retryAfter: '1 minute'
+    error: RATE_LIMITS.API.MESSAGE,
+    retryAfter: RATE_LIMITS.API.RETRY_AFTER
   },
   standardHeaders: true,
   legacyHeaders: false
 });
 
 export const strictRateLimit = rateLimit({
-  windowMs: 5 * 60 * 1000, // 5 minutes
-  max: 10, // Maximum 10 requests per 5 minutes for sensitive operations
+  windowMs: RATE_LIMITS.STRICT.WINDOW_MS,
+  max: RATE_LIMITS.STRICT.MAX_REQUESTS,
   message: {
-    error: 'تم تجاوز الحد المسموح للعمليات الحساسة. حاول مرة أخرى خلال 5 دقائق.',
-    retryAfter: '5 minutes'
+    error: RATE_LIMITS.STRICT.MESSAGE,
+    retryAfter: RATE_LIMITS.STRICT.RETRY_AFTER
   },
   standardHeaders: true,
   legacyHeaders: false
@@ -245,7 +246,7 @@ export const enhancedAuth = (req: Request, res: Response, next: NextFunction) =>
 
     // Verify token (implement your token verification logic here)
     // For now, we'll add a placeholder
-    req.user = { id: 1, role: 'user' }; // Replace with actual token verification
+    req.user = { id: 1, role: 'user' };
     
     next();
   } catch (error) {

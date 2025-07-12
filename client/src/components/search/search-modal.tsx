@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/layout/ui/dialog";
-import { Input } from "@/components/layout/ui/input";
-import { Button } from "@/components/layout/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 import { Search, X } from "lucide-react";
 import { Content } from "@shared/schema";
 import ContentCard from "@/components/content/content-card";

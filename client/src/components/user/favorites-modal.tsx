@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useFavorites } from "@/hooks/useUserInteractions";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/layout/ui/dialog";
-import { Button } from "@/components/layout/ui/button";
-import { Badge } from "@/components/layout/ui/badge";
-import { ScrollArea } from "@/components/layout/ui/scroll-area";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { Heart, X, Play, Clock, Star } from "lucide-react";
 import { Content } from "@shared/schema";
 import { cn } from "@/lib/utils";

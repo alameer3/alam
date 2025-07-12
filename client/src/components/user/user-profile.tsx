@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useFavorites, useUserStats } from "@/hooks/useUserInteractions";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/layout/ui/card";
-import { Button } from "@/components/layout/ui/button";
-import { Badge } from "@/components/layout/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/layout/ui/avatar";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/layout/ui/tabs";
-import { ScrollArea } from "@/components/layout/ui/scroll-area";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ScrollArea } from "@/components/ui/scroll-area";
 import { 
   User, 
   Heart, 

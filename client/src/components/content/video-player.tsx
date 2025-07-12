@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/layout/ui/dialog";
-import { Button } from "@/components/layout/ui/button";
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
 import { Play, Pause, Volume2, VolumeX, Maximize, Download, Heart, Share2, Star, Clock, Eye, Calendar } from "lucide-react";
 import { Content } from "@shared/schema";
 

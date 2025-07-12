@@ -1,11 +1,11 @@
 import { useState, useRef, useEffect } from "react";
 import { useAuth } from "@/hooks/useAuth";
 import { useAddToWatchHistory, useIncrementViewCount } from "@/hooks/useUserInteractions";
-import { Card, CardContent } from "@/components/layout/ui/card";
-import { Button } from "@/components/layout/ui/button";
-import { Badge } from "@/components/layout/ui/badge";
-import { Slider } from "@/components/layout/ui/slider";
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/layout/ui/tooltip";
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Slider } from "@/components/ui/slider";
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { 
   Play, 
   Pause, 

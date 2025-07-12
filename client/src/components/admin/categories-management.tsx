@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/layout/ui/card";
-import { Button } from "@/components/layout/ui/button";
-import { Input } from "@/components/layout/ui/input";
-import { Label } from "@/components/layout/ui/label";
-import { Textarea } from "@/components/layout/ui/textarea";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/layout/ui/dialog";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
 import { Plus, Edit, Trash2, Tag, Folder } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 import { Genre, Category, insertGenreSchema, insertCategorySchema } from "@shared/schema";

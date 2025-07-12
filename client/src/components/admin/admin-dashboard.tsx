@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/layout/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Film, Tv, Monitor, Music, TrendingUp, Users, Download, Eye } from "lucide-react";
 
 interface AdminDashboardProps {

@@ -1,4 +1,4 @@
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/layout/ui/select";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { LANGUAGES, GENRES, YEARS, RATINGS, QUALITY_OPTIONS } from "@/lib/constants";
 
 interface FiltersProps {

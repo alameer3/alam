@@ -227,7 +227,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // OLD ROUTE REMOVED - FIXED VERSION IS AT TOP
+
 
   // Admin cache management
   app.post("/api/admin/clear-cache", async (req, res) => {

@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { Button } from "@/components/layout/ui/button";
-import { Skeleton } from "@/components/layout/ui/skeleton";
+import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import ContentCard from "./content-card";
 import { Content } from "@shared/schema";
 

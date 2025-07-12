@@ -1,5 +1,5 @@
 import { Star, Download, Play } from "lucide-react";
-import { Badge } from "@/components/layout/ui/badge";
+import { Badge } from "@/components/ui/badge";
 import { Content } from "@shared/schema";
 import { QUALITY_OPTIONS } from "@/lib/constants";
 import { useLocation } from "wouter";
