@@ -8,15 +8,15 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { useAdvancedTheme } from "./advanced-theme-provider";
-import { Sun, Moon, Camera, Palette, Zap, Monitor, Clock } from "lucide-react";
+import { Sun, Moon, Camera, Palette, Crown, Star, Monitor, Flag } from "lucide-react";
 
 const themeIcons = {
   light: Sun,
   dark: Moon,
+  yemen: Flag,
   cinema: Camera,
-  classic: Palette,
-  modern: Zap,
-  retro: Clock,
+  royal: Crown,
+  heritage: Star,
 };
 
 export function AdvancedThemeSwitcher() {

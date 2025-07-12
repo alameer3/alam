@@ -5,7 +5,7 @@ import { Toaster } from "@/components/layout/ui/toaster";
 import { AdvancedThemeProvider } from "@/components/theme/advanced-theme-provider";
 import { ResponsiveLayout } from "@/components/layout/responsive-layout";
 import { EnhancedResponsiveHeader } from "@/components/layout/enhanced-responsive-header";
-import Navigation from "@/components/layout/navigation";
+import { EnhancedNavigation } from "@/components/layout/enhanced-navigation";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
 import Movies from "@/pages/movies";
@@ -55,10 +55,10 @@ function Router() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <AdvancedThemeProvider defaultTheme="cinema">
+      <AdvancedThemeProvider defaultTheme="yemen">
         <ResponsiveLayout className="arabic-font">
           <EnhancedResponsiveHeader />
-          <Navigation />
+          <EnhancedNavigation />
           <main className="pt-20 lg:pt-24 transition-all duration-300">
             <Router />
           </main>

@@ -73,6 +73,36 @@
   --radius: 0.5rem;
 }
 
+/* Yemen Theme - مظهر يمني أصيل مع ألوان العلم اليمني */
+.yemen {
+  --background: hsl(210, 25%, 6%);
+  --foreground: hsl(45, 95%, 95%);
+  --muted: hsl(210, 20%, 10%);
+  --muted-foreground: hsl(45, 20%, 75%);
+  --popover: hsl(210, 25%, 8%);
+  --popover-foreground: hsl(45, 95%, 95%);
+  --card: hsl(210, 22%, 9%);
+  --card-foreground: hsl(45, 95%, 95%);
+  --border: hsl(0, 80%, 35%);
+  --input: hsl(210, 20%, 12%);
+  --primary: hsl(0, 85%, 58%);
+  --primary-foreground: hsl(45, 95%, 95%);
+  --secondary: hsl(45, 30%, 25%);
+  --secondary-foreground: hsl(45, 95%, 95%);
+  --accent: hsl(220, 80%, 50%);
+  --accent-foreground: hsl(45, 95%, 95%);
+  --destructive: hsl(0, 75%, 55%);
+  --destructive-foreground: hsl(45, 95%, 95%);
+  --ring: hsl(0, 85%, 58%);
+  --radius: 0.75rem;
+  
+  /* ألوان العلم اليمني */
+  --yemen-red: hsl(0, 85%, 58%);
+  --yemen-white: hsl(45, 95%, 95%);
+  --yemen-black: hsl(210, 25%, 6%);
+  --yemen-gradient: linear-gradient(135deg, hsl(0, 85%, 58%) 0%, hsl(45, 95%, 95%) 50%, hsl(220, 80%, 50%) 100%);
+}
+
 /* Cinema Theme الجديد - ثيم سينمائي ذهبي مطور */
 .cinema {
   --background: hsl(220, 15%, 8%);
@@ -104,28 +134,62 @@
   --cinema-gradient: linear-gradient(135deg, hsl(45, 100%, 65%) 0%, hsl(38, 95%, 55%) 100%);
 }
 
-/* Classic Theme - مظهر كلاسيكي أنيق */
-.classic {
-  --background: hsl(210, 11%, 15%);
-  --foreground: hsl(60, 30%, 96%);
-  --muted: hsl(210, 11%, 18%);
-  --muted-foreground: hsl(60, 5%, 75%);
-  --popover: hsl(210, 11%, 17%);
-  --popover-foreground: hsl(60, 30%, 96%);
-  --card: hsl(210, 11%, 17%);
-  --card-foreground: hsl(60, 30%, 96%);
-  --border: hsl(210, 11%, 28%);
-  --input: hsl(210, 11%, 20%);
-  --primary: hsl(200, 70%, 60%);
-  --primary-foreground: hsl(210, 11%, 15%);
-  --secondary: hsl(210, 11%, 20%);
-  --secondary-foreground: hsl(60, 30%, 96%);
-  --accent: hsl(210, 11%, 28%);
-  --accent-foreground: hsl(60, 30%, 96%);
+/* Royal Theme - مظهر ملكي فاخر */
+.royal {
+  --background: hsl(240, 20%, 5%);
+  --foreground: hsl(50, 90%, 95%);
+  --muted: hsl(240, 15%, 8%);
+  --muted-foreground: hsl(50, 15%, 75%);
+  --popover: hsl(240, 20%, 7%);
+  --popover-foreground: hsl(50, 90%, 95%);
+  --card: hsl(240, 18%, 8%);
+  --card-foreground: hsl(50, 90%, 95%);
+  --border: hsl(280, 60%, 40%);
+  --input: hsl(240, 15%, 10%);
+  --primary: hsl(280, 80%, 60%);
+  --primary-foreground: hsl(50, 90%, 95%);
+  --secondary: hsl(240, 25%, 15%);
+  --secondary-foreground: hsl(50, 90%, 95%);
+  --accent: hsl(50, 100%, 60%);
+  --accent-foreground: hsl(240, 20%, 5%);
   --destructive: hsl(0, 75%, 58%);
-  --destructive-foreground: hsl(60, 30%, 96%);
-  --ring: hsl(200, 70%, 60%);
-  --radius: 0.3rem;
+  --destructive-foreground: hsl(50, 90%, 95%);
+  --ring: hsl(280, 80%, 60%);
+  --radius: 1rem;
+  
+  /* متغيرات ملكية */
+  --royal-purple: hsl(280, 80%, 60%);
+  --royal-gold: hsl(50, 100%, 60%);
+  --royal-gradient: linear-gradient(135deg, hsl(280, 80%, 60%) 0%, hsl(50, 100%, 60%) 100%);
+}
+
+/* Heritage Theme - مظهر تراثي عربي */
+.heritage {
+  --background: hsl(30, 15%, 8%);
+  --foreground: hsl(40, 85%, 92%);
+  --muted: hsl(30, 12%, 11%);
+  --muted-foreground: hsl(40, 20%, 70%);
+  --popover: hsl(30, 15%, 9%);
+  --popover-foreground: hsl(40, 85%, 92%);
+  --card: hsl(30, 14%, 10%);
+  --card-foreground: hsl(40, 85%, 92%);
+  --border: hsl(40, 60%, 35%);
+  --input: hsl(30, 12%, 13%);
+  --primary: hsl(40, 90%, 55%);
+  --primary-foreground: hsl(30, 15%, 8%);
+  --secondary: hsl(30, 40%, 20%);
+  --secondary-foreground: hsl(40, 85%, 92%);
+  --accent: hsl(15, 80%, 50%);
+  --accent-foreground: hsl(40, 85%, 92%);
+  --destructive: hsl(0, 75%, 55%);
+  --destructive-foreground: hsl(40, 85%, 92%);
+  --ring: hsl(40, 90%, 55%);
+  --radius: 0.75rem;
+  
+  /* ألوان تراثية */
+  --heritage-gold: hsl(40, 90%, 55%);
+  --heritage-copper: hsl(15, 80%, 50%);
+  --heritage-gradient: linear-gradient(135deg, hsl(40, 90%, 55%) 0%, hsl(15, 80%, 50%) 100%);
 }
 
 /* Modern Theme - مظهر عصري بألوان زاهية */
@@ -183,60 +247,88 @@
   --retro-gradient: linear-gradient(135deg, hsl(35, 80%, 60%) 0%, hsl(25, 75%, 50%) 100%);
 }
 
-/* تأثيرات بصرية خاصة للثيمات الجديدة */
-.cinema-effects {
-  /* تأثيرات خاصة بالثيم السينمائي */
+/* أنماط مخصصة للتطبيق */
+.hero-section {
+  position: relative;
+  overflow: hidden;
 }
 
-.cinema .hero-section {
-  background: linear-gradient(135deg, 
-    var(--cinema-dark) 0%, 
-    hsl(220, 18%, 12%) 25%, 
-    hsl(220, 20%, 15%) 50%, 
-    hsl(220, 18%, 12%) 75%, 
-    var(--cinema-dark) 100%);
+.content-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: var(--radius);
 }
 
-.cinema .content-card {
-  background: linear-gradient(135deg, var(--cinema-card) 0%, hsl(220, 16%, 13%) 100%);
-  border: 1px solid var(--cinema-border);
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+.content-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
 }
 
-.cinema .content-card:hover {
-  border-color: var(--cinema-gold);
-  box-shadow: 0 10px 30px rgba(255, 215, 0, 0.2);
-  transform: translateY(-4px) scale(1.02);
+.gradient-text {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
-.classic .content-card {
-  background: linear-gradient(135deg, hsl(210, 11%, 17%) 0%, hsl(210, 13%, 19%) 100%);
-  border: 1px solid hsl(210, 11%, 28%);
-  transition: all 0.3s ease;
+.glass-effect {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
 }
 
-.classic .content-card:hover {
-  border-color: hsl(200, 70%, 60%);
-  box-shadow: 0 8px 25px rgba(70, 130, 180, 0.15);
-  transform: translateY(-2px);
+.neon-glow {
+  box-shadow: 0 0 20px var(--primary), 0 0 40px var(--primary), 0 0 60px var(--primary);
 }
 
-.modern .content-card {
-  background: linear-gradient(135deg, hsl(240, 10%, 8%) 0%, hsl(240, 12%, 10%) 100%);
-  border: 1px solid hsl(240, 10%, 18%);
-  transition: all 0.3s ease;
+.floating-animation {
+  animation: float 6s ease-in-out infinite;
 }
 
-.modern .content-card:hover {
-  border-color: hsl(270, 95%, 65%);
-  box-shadow: 0 8px 25px rgba(138, 43, 226, 0.2);
-  transform: translateY(-2px);
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-20px); }
 }
 
-.retro .content-card {
-  background: linear-gradient(135deg, var(--retro-card) 0%, hsl(30, 24%, 20%) 100%);
-  border: 1px solid var(--retro-border);
-  transition: all 0.3s ease;
+.pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes pulse-glow {
+  from { box-shadow: 0 0 20px var(--primary); }
+  to { box-shadow: 0 0 30px var(--primary), 0 0 40px var(--primary); }
+}
+
+/* تحسينات إضافية للواجهة */
+.enhanced-card {
+  background: linear-gradient(135deg, var(--card) 0%, var(--muted) 100%);
+  border: 1px solid var(--border);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.enhanced-card:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  border-color: var(--primary);
+}
+
+/* أنماط خاصة بالثيمات */
+.yemen .hero-section {
+  background: linear-gradient(135deg, var(--background) 0%, var(--muted) 100%);
+}
+
+.yemen .content-card {
+  border-color: var(--yemen-red);
+}
+
+.royal .content-card {
+  background: linear-gradient(135deg, var(--card) 0%, var(--muted) 100%);
+  border-color: var(--royal-purple);
+}
+
+.heritage .content-card {
+  background: linear-gradient(135deg, var(--card) 0%, var(--muted) 100%);
+  border-color: var(--heritage-gold);
 }
 
 .retro .content-card:hover {
