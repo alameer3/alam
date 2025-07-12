@@ -79,7 +79,7 @@ export function MobileNavigation() {
       description: "المحتوى المفضل لديك"
     },
     {
-      path: "/upload",
+      path: "/upload-center",
       label: "رفع الملفات",
       icon: Upload,
       description: "رفع محتوى جديد"

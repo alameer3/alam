@@ -83,6 +83,7 @@ export function EnhancedResponsiveHeader() {
                 { path: "/series", label: "مسلسلات" },
                 { path: "/television", label: "تلفزيون" },
                 { path: "/miscellaneous", label: "متنوع" },
+                { path: "/upload-center", label: "رفع الملفات" },
               ].map((item) => (
                 <Link key={item.path} href={item.path}>
                   <Button 

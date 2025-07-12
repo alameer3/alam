@@ -7,6 +7,7 @@ import adminRoutes from "./routes/admin";
 import uploadRoutes from "./routes/upload";
 import performanceRoutes from "./routes/performance";
 import aiRoutes from "./routes/ai";
+import { uploadsRouter } from "./routes/uploads";
 import { cacheMiddleware, clearCache } from "./middleware/cache";
 import { QueryOptimizer } from "./middleware/performance";
 import { initializeBackupSystem } from "./middleware/backup";
@@ -509,6 +510,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Upload routes
   app.use("/api/uploads", uploadRoutes);
+  app.use("/api/uploads", uploadsRouter);
   
   // Performance routes
   app.use("/api/performance", performanceRoutes);
