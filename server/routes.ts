@@ -507,6 +507,31 @@ export async function registerRoutes(app: Express): Promise<Server> {
   
   // Performance routes
   app.use("/api/performance", performanceRoutes);
+
+  // Content management routes
+  app.get('/api/content/all', async (req, res) => {
+    try {
+      const movieContent = await storage.getContentByType('movie', 1, 50);
+      const seriesContent = await storage.getContentByType('series', 1, 50);
+      const tvContent = await storage.getContentByType('tv', 1, 50);
+      const miscContent = await storage.getContentByType('misc', 1, 50);
+      
+      const allContent = [
+        ...movieContent.content,
+        ...seriesContent.content,
+        ...tvContent.content,
+        ...miscContent.content
+      ];
+      
+      res.json({
+        content: allContent,
+        total: allContent.length
+      });
+    } catch (error) {
+      console.error('Error fetching all content:', error);
+      res.status(500).json({ error: 'Failed to fetch content' });
+    }
+  });
   
   // Initialize backup system
   initializeBackupSystem();

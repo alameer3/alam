@@ -24,6 +24,9 @@ import Navigation from '@/components/layout/navigation';
 import Footer from '@/components/layout/footer';
 import AdminGuard from '@/components/admin/admin-guard';
 import { useAdminAuth } from '@/hooks/useAdminAuth';
+import ContentManagement from '@/components/admin/content-management';
+import UserManagement from '@/components/admin/user-management';
+import SettingsManagement from '@/components/admin/settings-management';
 
 // Mock data for admin dashboard
 const statsData = [
@@ -126,11 +129,12 @@ function AdminDashboardContent() {
         </div>
 
         <Tabs defaultValue="overview" className="space-y-6">
-          <TabsList className="grid w-full grid-cols-4">
+          <TabsList className="grid w-full grid-cols-5">
             <TabsTrigger value="overview">نظرة عامة</TabsTrigger>
             <TabsTrigger value="content">إدارة المحتوى</TabsTrigger>
-            <TabsTrigger value="users">المستخدمين</TabsTrigger>
+            <TabsTrigger value="users">إدارة المستخدمين</TabsTrigger>
             <TabsTrigger value="analytics">التحليلات</TabsTrigger>
+            <TabsTrigger value="settings">الإعدادات</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">
@@ -253,31 +257,11 @@ function AdminDashboardContent() {
           </TabsContent>
 
           <TabsContent value="content">
-            <Card>
-              <CardHeader>
-                <CardTitle>إدارة المحتوى</CardTitle>
-                <CardDescription>إضافة وتعديل وحذف المحتوى</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-center text-muted-foreground py-8">
-                  ستتوفر إدارة المحتوى قريباً...
-                </p>
-              </CardContent>
-            </Card>
+            <ContentManagement />
           </TabsContent>
 
           <TabsContent value="users">
-            <Card>
-              <CardHeader>
-                <CardTitle>إدارة المستخدمين</CardTitle>
-                <CardDescription>قائمة بجميع المستخدمين المسجلين</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-center text-muted-foreground py-8">
-                  ستتوفر إدارة المستخدمين قريباً...
-                </p>
-              </CardContent>
-            </Card>
+            <UserManagement />
           </TabsContent>
 
           <TabsContent value="analytics">
@@ -292,6 +276,10 @@ function AdminDashboardContent() {
                 </p>
               </CardContent>
             </Card>
+          </TabsContent>
+
+          <TabsContent value="settings">
+            <SettingsManagement />
           </TabsContent>
         </Tabs>
       </main>

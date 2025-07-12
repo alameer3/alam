@@ -90,6 +90,152 @@ router.delete('/content/:id', async (req, res) => {
   try {
     const id = parseInt(req.params.id);
     const success = await storage.deleteContent(id);
+    if (success) {
+      res.json({ message: 'Content deleted successfully' });
+    } else {
+      res.status(404).json({ error: 'Content not found' });
+    }
+  } catch (error) {
+    console.error('Error deleting content:', error);
+    res.status(500).json({ error: 'Failed to delete content' });
+  }
+});
+
+// Get all users (admin only)
+router.get('/users', async (req, res) => {
+  try {
+    // Mock user data for now - in real app, this would come from database
+    const users = [
+      {
+        id: 1,
+        username: 'admin',
+        email: 'admin@example.com',
+        role: 'admin',
+        isActive: true,
+        createdAt: new Date('2024-01-01').toISOString(),
+        updatedAt: new Date('2024-01-01').toISOString()
+      },
+      {
+        id: 2,
+        username: 'user1',
+        email: 'user1@example.com',
+        role: 'user',
+        isActive: true,
+        createdAt: new Date('2024-01-15').toISOString(),
+        updatedAt: new Date('2024-01-15').toISOString()
+      },
+      {
+        id: 3,
+        username: 'user2',
+        email: 'user2@example.com',
+        role: 'user',
+        isActive: false,
+        createdAt: new Date('2024-02-01').toISOString(),
+        updatedAt: new Date('2024-02-01').toISOString()
+      }
+    ];
+
+    const stats = {
+      total: users.length,
+      active: users.filter(u => u.isActive).length,
+      admins: users.filter(u => u.role === 'admin').length,
+      newThisMonth: users.filter(u => {
+        const created = new Date(u.createdAt);
+        const now = new Date();
+        return created.getMonth() === now.getMonth() && created.getFullYear() === now.getFullYear();
+      }).length
+    };
+
+    res.json({ users, ...stats });
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    res.status(500).json({ error: 'Failed to fetch users' });
+  }
+});
+
+// Create new user
+router.post('/users', async (req, res) => {
+  try {
+    const userData = {
+      ...req.body,
+      id: Date.now(), // Mock ID generation
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+    
+    // In real app, this would use storage.createUser
+    res.status(201).json(userData);
+  } catch (error) {
+    console.error('Error creating user:', error);
+    res.status(500).json({ error: 'Failed to create user' });
+  }
+});
+
+// Update user
+router.put('/users/:id', async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    const userData = {
+      ...req.body,
+      id,
+      updatedAt: new Date().toISOString()
+    };
+    
+    // In real app, this would use storage.updateUser
+    res.json(userData);
+  } catch (error) {
+    console.error('Error updating user:', error);
+    res.status(500).json({ error: 'Failed to update user' });
+  }
+});
+
+// Delete user
+router.delete('/users/:id', async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    // In real app, this would use storage.deleteUser
+    res.json({ message: 'User deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting user:', error);
+    res.status(500).json({ error: 'Failed to delete user' });
+  }
+});
+
+// Toggle user status
+router.put('/users/:id/status', async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    const { isActive } = req.body;
+    
+    // In real app, this would use storage.updateUser
+    res.json({ 
+      id, 
+      isActive,
+      message: `User ${isActive ? 'activated' : 'deactivated'} successfully` 
+    });
+  } catch (error) {
+    console.error('Error updating user status:', error);
+    res.status(500).json({ error: 'Failed to update user status' });
+  }
+});
+
+// Update content
+router.put('/content/:id', validateRequest(insertContentSchema.partial()), async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    const content = await storage.updateContent(id, req.body);
+    res.json(content);
+  } catch (error) {
+    console.error('Error updating content:', error);
+    res.status(500).json({ error: 'Failed to update content' });
+  }
+});
+
+// Delete content
+router.delete('/content/:id', async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    const success = await storage.deleteContent(id);
     
     if (success) {
       res.json({ message: 'Content deleted successfully' });
