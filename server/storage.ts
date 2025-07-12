@@ -693,6 +693,18 @@ class TemporaryMemoryStorage implements IStorage {
 
 }
 
-// Force use of DatabaseStorage since we have PostgreSQL
-console.log("🔧 Initializing DatabaseStorage...");
-export const storage = new DatabaseStorage();
+// Check if DATABASE_URL is available, use appropriate storage
+console.log("🔧 Checking database availability...");
+const isDatabaseAvailable = Boolean(process.env.DATABASE_URL);
+
+let storage: IStorage;
+
+if (isDatabaseAvailable) {
+  console.log("✅ Using DatabaseStorage with PostgreSQL");
+  storage = new DatabaseStorage();
+} else {
+  console.log("⚠️ Using TemporaryMemoryStorage (no database available)");
+  storage = new TemporaryMemoryStorage();
+}
+
+export { storage };
