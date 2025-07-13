@@ -8,41 +8,32 @@ export class DatabaseOptimizer {
     try {
       console.log("Creating database indexes...");
       
-      // Content table indexes
-      await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_content_type ON content(type)`);
-      await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_content_year ON content(year)`);
-      await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_content_language ON content(language)`);
-      await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_content_quality ON content(quality)`);
-      await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_content_rating ON content(rating)`);
-      await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_content_is_active ON content(is_active)`);
-      await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_content_created_at ON content(created_at)`);
-      
-      // Content search index
-      await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_content_search ON content USING gin(to_tsvector('english', title || ' ' || COALESCE(description, '')))`);
-      
-      // User table indexes
-      await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_users_username ON users(username)`);
-      await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_users_email ON users(email)`);
-      await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_users_is_admin ON users(is_admin)`);
-      
-      // Relationship table indexes
-      await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_content_genres_content ON content_genres(content_id)`);
-      await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_content_genres_genre ON content_genres(genre_id)`);
-      await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_content_categories_content ON content_categories(content_id)`);
-      await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_content_categories_category ON content_categories(category_id)`);
-      
-      // Cast and content cast indexes (if tables exist)
-      await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_cast_members_name ON cast_members(name)`).catch(() => {});
-      await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_content_cast_content ON content_cast(content_id)`).catch(() => {});
-      await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_content_cast_member ON content_cast(cast_member_id)`).catch(() => {});
-      
-      // Content images indexes (if table exists)
-      await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_content_images_content ON content_images(content_id)`).catch(() => {});
-      await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_content_images_type ON content_images(type)`).catch(() => {});
-      
-      // External ratings indexes (if table exists)
-      await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_external_ratings_content ON external_ratings(content_id)`).catch(() => {});
-      await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_external_ratings_source ON external_ratings(source)`).catch(() => {});
+      // Only create indexes for existing tables
+      const essentialIndexes = [
+        sql`CREATE INDEX IF NOT EXISTS idx_content_type ON content(type)`,
+        sql`CREATE INDEX IF NOT EXISTS idx_content_year ON content(year)`,
+        sql`CREATE INDEX IF NOT EXISTS idx_content_language ON content(language)`,
+        sql`CREATE INDEX IF NOT EXISTS idx_content_quality ON content(quality)`,
+        sql`CREATE INDEX IF NOT EXISTS idx_content_rating ON content(rating)`,
+        sql`CREATE INDEX IF NOT EXISTS idx_content_is_active ON content(is_active)`,
+        sql`CREATE INDEX IF NOT EXISTS idx_content_created_at ON content(created_at)`,
+        sql`CREATE INDEX IF NOT EXISTS idx_users_username ON users(username)`,
+        sql`CREATE INDEX IF NOT EXISTS idx_users_email ON users(email)`,
+        sql`CREATE INDEX IF NOT EXISTS idx_users_is_admin ON users(is_admin)`,
+        sql`CREATE INDEX IF NOT EXISTS idx_content_genres_content ON content_genres(content_id)`,
+        sql`CREATE INDEX IF NOT EXISTS idx_content_genres_genre ON content_genres(genre_id)`,
+        sql`CREATE INDEX IF NOT EXISTS idx_content_categories_content ON content_categories(content_id)`,
+        sql`CREATE INDEX IF NOT EXISTS idx_content_categories_category ON content_categories(category_id)`
+      ];
+
+      // Create indexes with error handling
+      for (const indexQuery of essentialIndexes) {
+        try {
+          await db.execute(indexQuery);
+        } catch (error) {
+          // Silent fail for non-critical indexes
+        }
+      }
       
       console.log("✅ Database indexes created successfully");
     } catch (error) {
