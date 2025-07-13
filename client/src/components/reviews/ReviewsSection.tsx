@@ -111,7 +111,7 @@ export default function ReviewsSection({ contentId }: ReviewsSectionProps) {
   };
 
   const handleDeleteReview = async (reviewId: number) => {
-    if (confirm('هل أنت متأكد من حذف هذه المراجعة؟')) {
+    if (window.confirm('هل أنت متأكد من حذف هذه المراجعة؟')) {
       try {
         await deleteReviewMutation.mutateAsync(reviewId);
       } catch (error) {

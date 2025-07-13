@@ -25,7 +25,7 @@ export default function SecretAdminAccess() {
     if (secretCode === "CINEMA-ADMIN-2024") {
       setLocation("/unified-admin");
     } else {
-      alert("كود الوصول غير صحيح!");
+      window.alert("كود الوصول غير صحيح!");
     }
   };
 
