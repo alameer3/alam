@@ -1,5 +1,5 @@
-import { db } from './server/db.js';
-import { users, categories, genres, content, subscriptionPlans, userSubscriptions, systemAnalytics } from './shared/schema.js';
+import { db } from './server/db.ts';
+import { users, categories, genres, content, subscriptionPlans, userSubscriptions, systemAnalytics } from './shared/schema.ts';
 
 async function initializeDatabase() {
   console.log('🔧 Initializing database...');
