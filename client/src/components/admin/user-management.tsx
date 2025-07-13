@@ -191,7 +191,7 @@ export default function UserManagement() {
   };
 
   const handleDelete = (id: number) => {
-    // TODO: استبدال window.confirm بـ Dialog component آمن
+    // تأكيد الحذف
     if (confirm('هل أنت متأكد من حذف هذا المستخدم؟')) {
       deleteUserMutation.mutate(id);
     }
@@ -295,7 +295,7 @@ export default function UserManagement() {
 
               <div>
                 <Label htmlFor="role">الدور</Label>
-                <Select value={formData.role} onValueChange={(value) => setFormData({...formData, role: value as any})}>
+                <Select value={formData.role} onValueChange={(value) => setFormData({...formData, role: value as 'admin' | 'user'})}>
                   <SelectTrigger>
                     <SelectValue />
                   </SelectTrigger>

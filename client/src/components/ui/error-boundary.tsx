@@ -39,7 +39,10 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
     
     // Log error to console in development
     if (process.env.NODE_ENV === 'development') {
-      console.error('Error caught by boundary:', error, errorInfo);
+      // Error tracking for production - remove console.error in production
+      if (process.env.NODE_ENV !== 'production') {
+        console.error('Error caught by boundary:', error, errorInfo);
+      }
     }
   }
 

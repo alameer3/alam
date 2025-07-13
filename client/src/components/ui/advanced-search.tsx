@@ -65,7 +65,7 @@ export function AdvancedSearch({ onSearch, className }: AdvancedSearchProps) {
     }
   }, []);
 
-  const updateFilter = (key: keyof SearchFilters, value: any) => {
+  const updateFilter = (key: keyof SearchFilters, value: string | number | boolean) => {
     setFilters(prev => ({ ...prev, [key]: value }));
   };
 

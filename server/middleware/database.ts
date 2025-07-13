@@ -46,6 +46,11 @@ export class DatabaseOptimizer {
     try {
       console.log("Analyzing database performance...");
       
+      if (!db) {
+        console.log("⚠️  Database connection not available, skipping performance analysis");
+        return;
+      }
+      
       // Get table sizes
       const tableSizes = await db.execute(sql`
         SELECT 
@@ -101,6 +106,11 @@ export class DatabaseOptimizer {
     try {
       console.log("Optimizing database settings...");
       
+      if (!db) {
+        console.log("⚠️  Database connection not available, skipping optimization");
+        return;
+      }
+      
       // Set connection pool settings
       await db.execute(sql`SET statement_timeout = '30s'`);
       await db.execute(sql`SET lock_timeout = '10s'`);
@@ -115,6 +125,11 @@ export class DatabaseOptimizer {
   // Database health check
   static async healthCheck() {
     try {
+      if (!db) {
+        console.log("⚠️  Database connection not available");
+        return { healthy: false, error: "Database connection not available" };
+      }
+      
       const start = Date.now();
       await db.execute(sql`SELECT 1`);
       const duration = Date.now() - start;

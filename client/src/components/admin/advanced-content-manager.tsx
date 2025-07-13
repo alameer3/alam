@@ -295,7 +295,7 @@ export default function AdvancedContentManager() {
               <LoadingSpinner />
             ) : (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                {contentCast?.map((cast: any) => (
+                {contentCast?.map((cast: ContentCast & { castMember: CastMember }) => (
                   <Card key={cast.id}>
                     <CardContent className="p-4">
                       <div className="flex items-center space-x-4 space-x-reverse">
@@ -437,7 +437,7 @@ export default function AdvancedContentManager() {
 }
 
 // مكون نموذج عضو فريق العمل
-function CastMemberForm({ onSubmit, isLoading }: { onSubmit: (data: any) => void; isLoading: boolean }) {
+function CastMemberForm({ onSubmit, isLoading }: { onSubmit: (data: InsertCastMember) => void; isLoading: boolean }) {
   const [formData, setFormData] = useState({
     name: '',
     nameArabic: '',
@@ -548,7 +548,7 @@ function CastMemberForm({ onSubmit, isLoading }: { onSubmit: (data: any) => void
 }
 
 // مكون نموذج صورة المحتوى
-function ContentImageForm({ onSubmit, isLoading }: { onSubmit: (data: any) => void; isLoading: boolean }) {
+function ContentImageForm({ onSubmit, isLoading }: { onSubmit: (data: InsertContentImage) => void; isLoading: boolean }) {
   const [formData, setFormData] = useState({
     imageUrl: '',
     type: '',
@@ -618,7 +618,7 @@ function ContentImageForm({ onSubmit, isLoading }: { onSubmit: (data: any) => vo
 }
 
 // مكون نموذج التقييم الخارجي
-function ExternalRatingForm({ onSubmit, isLoading }: { onSubmit: (data: any) => void; isLoading: boolean }) {
+function ExternalRatingForm({ onSubmit, isLoading }: { onSubmit: (data: InsertExternalRating) => void; isLoading: boolean }) {
   const [formData, setFormData] = useState({
     source: '',
     rating: '',

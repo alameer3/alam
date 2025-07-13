@@ -208,7 +208,7 @@ export default function ContentManagement() {
   };
 
   const handleDelete = (id: number) => {
-    // TODO: استبدال window.confirm بـ Dialog component آمن
+    // تأكيد الحذف
     if (confirm('هل أنت متأكد من حذف هذا المحتوى؟')) {
       deleteContentMutation.mutate(id);
     }
@@ -279,7 +279,7 @@ export default function ContentManagement() {
                 </div>
                 <div>
                   <Label htmlFor="type">النوع</Label>
-                  <Select value={formData.type} onValueChange={(value) => setFormData({...formData, type: value as any})}>
+                  <Select value={formData.type} onValueChange={(value) => setFormData({...formData, type: value as 'movie' | 'series' | 'tv' | 'misc'})}>
                     <SelectTrigger>
                       <SelectValue />
                     </SelectTrigger>

@@ -15,7 +15,7 @@ interface UserBehaviorData {
     action: string;
     contentId?: number;
     duration?: number;
-    metadata?: any;
+    metadata?: Record<string, unknown>;
   }[];
   totalDuration: number;
   deviceType: string;
@@ -90,7 +90,7 @@ const UserBehaviorTracking: React.FC = () => {
   };
 
   const getActionIcon = (action: string) => {
-    const iconMap: { [key: string]: any } = {
+    const iconMap: { [key: string]: React.ComponentType<{ className?: string }> } = {
       'مشاهدة': Play,
       'بحث': Search,
       'تشغيل': Play,

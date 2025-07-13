@@ -282,7 +282,7 @@ export default function ContentApprovalSystem({ adminId = 1 }: ContentApprovalSy
     }
   };
 
-  const ContentCard = ({ content, showActions = true }: { content: any; showActions?: boolean }) => (
+  const ContentCard = ({ content, showActions = true }: { content: Content; showActions?: boolean }) => (
     <Card className="hover:shadow-lg transition-shadow">
       <div className="relative">
         <img

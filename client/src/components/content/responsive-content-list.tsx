@@ -66,8 +66,8 @@ export function ResponsiveContentList({
 
   // ترتيب المحتوى
   const sortedContent = [...content].sort((a, b) => {
-    let valueA: any = a[sortBy];
-    let valueB: any = b[sortBy];
+    let valueA: unknown = a[sortBy];
+    let valueB: unknown = b[sortBy];
 
     // معالجة خاصة للتاريخ والتقييم
     if (sortBy === 'year') {

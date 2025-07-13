@@ -18,7 +18,7 @@ interface SearchSuggestion {
 }
 
 interface SmartSearchProps {
-  onSearch: (query: string, filters?: any) => void;
+  onSearch: (query: string, filters?: Record<string, unknown>) => void;
   suggestions?: SearchSuggestion[];
   placeholder?: string;
 }

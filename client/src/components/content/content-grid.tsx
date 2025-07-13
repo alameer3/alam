@@ -9,7 +9,7 @@ import { Content } from "@shared/schema";
 
 interface ContentGridProps {
   contentType: string;
-  filters?: any;
+  filters?: Record<string, string | number | boolean>;
   title: string;
   showViewAll?: boolean;
   onContentClick?: (content: Content) => void;

@@ -265,7 +265,7 @@ export default function AdvancedSearch({ isOpen, onClose, onContentClick }: Adva
                       className="w-full border border-gray-300 rounded-md px-3 py-2 bg-background"
                     >
                       <option value="">جميع الفئات</option>
-                      {categories?.map((category: any) => (
+                      {categories?.map((category: Category) => (
                         <option key={category.id} value={category.id}>
                           {category.name}
                         </option>
@@ -282,7 +282,7 @@ export default function AdvancedSearch({ isOpen, onClose, onContentClick }: Adva
                       className="w-full border border-gray-300 rounded-md px-3 py-2 bg-background"
                     >
                       <option value="">جميع الأنواع</option>
-                      {genres?.map((genre: any) => (
+                      {genres?.map((genre: Genre) => (
                         <option key={genre.id} value={genre.id}>
                           {genre.name}
                         </option>
