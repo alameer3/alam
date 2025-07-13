@@ -3,6 +3,7 @@ import { useQuery } from "@tanstack/react-query";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
+import { LoadingSpinner, InlineLoader } from "@/components/ui/loading-spinner";
 import ContentCard from "./content-card";
 import { Content } from "@shared/schema";
 

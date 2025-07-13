@@ -3,6 +3,7 @@ import { Film, Star, Clock, Eye, Heart, Play, Calendar } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { LazyImage } from "@/components/ui/lazy-image";
 import { useAdvancedTheme } from "@/components/theme/advanced-theme-provider";
 import { Content } from "@shared/schema";
 
@@ -61,13 +62,14 @@ export function EnhancedContentCard({
         
         {/* Image Section */}
         <div className="relative h-2/3 overflow-hidden">
-          <img
+          <LazyImage
             src={content.posterUrl || "/placeholder-movie.jpg"}
-            alt={content.title}
+            alt={`ملصق ${content.title}`}
             className={`w-full h-full object-cover transition-all duration-700 ${
               isHovered ? "scale-110" : "scale-100"
-            } ${imageLoaded ? "opacity-100" : "opacity-0"}`}
+            }`}
             onLoad={() => setImageLoaded(true)}
+            loading="lazy"
           />
           
           {/* Gradient overlay */}
