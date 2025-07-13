@@ -80,7 +80,7 @@ export default function AdminDashboard({ stats }: AdminDashboardProps) {
         <h3 className="text-lg font-semibold text-white mb-4">إحصائيات المحتوى</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {dashboardCards.map((card, index) => (
-            <Card key={index} className="bg-card border-gray-700">
+            <Card key={`dashboard-${card.title}-${index}`} className="bg-card border-gray-700">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
@@ -102,7 +102,7 @@ export default function AdminDashboard({ stats }: AdminDashboardProps) {
         <h3 className="text-lg font-semibold text-white mb-4">إحصائيات النشاط</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           {activityCards.map((card, index) => (
-            <Card key={index} className="bg-card border-gray-700">
+            <Card key={`activity-${card.title}-${index}`} className="bg-card border-gray-700">
               <CardContent className="p-6">
                 <div className="flex items-center justify-between">
                   <div>
