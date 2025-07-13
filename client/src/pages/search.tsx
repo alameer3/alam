@@ -132,7 +132,7 @@ export default function SearchPage() {
       
       setSearchResults(results);
     } catch (error) {
-      console.error('Search error:', error);
+      // معالجة خطأ البحث بصمت
       setSearchResults([]);
     }
   };

@@ -71,7 +71,7 @@ export function EnhancedSearchSystem({
       try {
         setSearchHistory(JSON.parse(history));
       } catch (error) {
-        console.warn('خطأ في تحميل تاريخ البحث:', error);
+        // خطأ في تحميل تاريخ البحث - معالجة صامتة
       }
     }
   }, []);
