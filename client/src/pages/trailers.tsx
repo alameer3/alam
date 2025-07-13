@@ -92,22 +92,25 @@ export default function TrailersPage() {
     }
   ];
 
-  const filteredTrailers = mockTrailersData.filter(trailer => {
+  const filteredTrailers = mockTrailersData?.filter(trailer => {
     const matchesSearch = trailer.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          trailer.description.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesType = filters.type === 'all' || trailer.type === filters.type;
-    const matchesGenre = filters.genre === 'all' || trailer.genre.includes(filters.genre);
+    const matchesGenre = filters.genre === 'all' || trailer.genre.some(g => g === filters.genre);
+    
+    // Parse duration more safely (format: "3:15" -> 3 minutes)
+    const durationMinutes = parseInt(trailer.duration.split(':')[0]) || 0;
     const matchesDuration = filters.duration === 'all' || 
-                           (filters.duration === 'short' && parseInt(trailer.duration) < 3) ||
-                           (filters.duration === 'medium' && parseInt(trailer.duration) >= 3 && parseInt(trailer.duration) < 6) ||
-                           (filters.duration === 'long' && parseInt(trailer.duration) >= 6);
+                           (filters.duration === 'short' && durationMinutes < 3) ||
+                           (filters.duration === 'medium' && durationMinutes >= 3 && durationMinutes < 6) ||
+                           (filters.duration === 'long' && durationMinutes >= 6);
     const matchesRating = filters.rating === 'all' || 
                          (filters.rating === 'high' && trailer.rating >= 8.5) ||
                          (filters.rating === 'medium' && trailer.rating >= 7 && trailer.rating < 8.5) ||
                          (filters.rating === 'low' && trailer.rating < 7);
 
     return matchesSearch && matchesType && matchesGenre && matchesDuration && matchesRating;
-  });
+  }) || [];
 
   if (trendingLoading || featuredLoading) return <LoadingSpinner />;
   if (trendingError || featuredError) return <ErrorMessage message="حدث خطأ في تحميل المقاطع الدعائية" />;
@@ -338,19 +341,22 @@ export default function TrailersPage() {
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold text-green-600">
-                  {filteredTrailers.reduce((sum, trailer) => sum + trailer.viewCount, 0).toLocaleString()}
+                  {filteredTrailers.length > 0 ? filteredTrailers.reduce((sum, trailer) => sum + (trailer.viewCount || 0), 0).toLocaleString() : '0'}
                 </div>
                 <div className="text-sm text-slate-600 dark:text-slate-300">إجمالي المشاهدات</div>
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold text-purple-600">
-                  {(filteredTrailers.reduce((sum, trailer) => sum + trailer.rating, 0) / filteredTrailers.length).toFixed(1)}
+                  {filteredTrailers.length > 0 ? (filteredTrailers.reduce((sum, trailer) => sum + (trailer.rating || 0), 0) / filteredTrailers.length).toFixed(1) : '0.0'}
                 </div>
                 <div className="text-sm text-slate-600 dark:text-slate-300">متوسط التقييم</div>
               </div>
               <div className="text-center">
                 <div className="text-2xl font-bold text-red-600">
-                  {Math.round(filteredTrailers.reduce((sum, trailer) => sum + parseInt(trailer.duration), 0) / filteredTrailers.length)} دقيقة
+                  {filteredTrailers.length > 0 ? Math.round(filteredTrailers.reduce((sum, trailer) => {
+                    const durationMinutes = parseInt(trailer.duration.split(':')[0]) || 0;
+                    return sum + durationMinutes;
+                  }, 0) / filteredTrailers.length) : 0} دقيقة
                 </div>
                 <div className="text-sm text-slate-600 dark:text-slate-300">متوسط المدة</div>
               </div>
