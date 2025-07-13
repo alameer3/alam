@@ -49,7 +49,21 @@ export default function ContentGrid({ contentType, filters, title, showViewAll =
       <div className="flex items-center justify-between mb-8">
         <h2 className="text-3xl font-bold">{title}</h2>
         {showViewAll && (
-          <Button variant="ghost" className="text-accent hover:text-orange-600">
+          <Button 
+            variant="ghost" 
+            className="text-accent hover:text-orange-600"
+            onClick={() => {
+              if (contentType === 'movie') {
+                window.location.href = '/movies';
+              } else if (contentType === 'series') {
+                window.location.href = '/series';
+              } else if (contentType === 'tv') {
+                window.location.href = '/tv';
+              } else {
+                window.location.href = '/misc';
+              }
+            }}
+          >
             عرض الكل
           </Button>
         )}

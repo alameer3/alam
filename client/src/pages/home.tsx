@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Content } from "@shared/schema";
 import { useQuery } from "@tanstack/react-query";
+import { Link } from "wouter";
 
 import Footer from "@/components/layout/footer";
 import { ResponsiveGrid, ResponsiveSpacing, useResponsive } from "@/components/layout/responsive-layout";
@@ -89,9 +90,11 @@ export default function Home() {
                 }`}>
                   أحدث الأفلام
                 </h2>
-                <Button variant="outline" size="sm">
-                  عرض الكل
-                </Button>
+                <Link href="/movies">
+                  <Button variant="outline" size="sm">
+                    عرض الكل
+                  </Button>
+                </Link>
               </div>
               
               <ResponsiveGrid
@@ -120,9 +123,11 @@ export default function Home() {
                 }`}>
                   أحدث المسلسلات
                 </h2>
-                <Button variant="outline" size="sm">
-                  عرض الكل
-                </Button>
+                <Link href="/series">
+                  <Button variant="outline" size="sm">
+                    عرض الكل
+                  </Button>
+                </Link>
               </div>
               
               <ResponsiveGrid

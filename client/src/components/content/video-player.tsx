@@ -63,7 +63,7 @@ export default function VideoPlayer({ content, onClose }: VideoPlayerProps) {
         <DialogHeader className="sr-only">
           <DialogTitle>مشغل الفيديو - {content.titleArabic || content.title}</DialogTitle>
           <DialogDescription>
-            مشاهدة {content.titleArabic || content.title} - {content.year}
+            مشاهدة {content.titleArabic || content.title} - {content.year} - تقييم: {content.rating}/10
           </DialogDescription>
         </DialogHeader>
         <div className="relative bg-black">
