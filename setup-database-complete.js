@@ -6,7 +6,7 @@
 import { neon } from '@neondatabase/serverless';
 import { drizzle } from 'drizzle-orm/neon-http';
 import { migrate } from 'drizzle-orm/neon-http/migrator';
-import * as schema from './shared/schema.js';
+import * as schema from './shared/schema.ts';
 
 // إعداد قاعدة البيانات
 const sql = neon(process.env.DATABASE_URL);

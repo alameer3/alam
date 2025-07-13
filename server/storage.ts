@@ -242,7 +242,7 @@ export class DatabaseStorage implements IStorage {
     const stats = await db.execute(sql`
       SELECT type, COUNT(*) as count 
       FROM content 
-      WHERE "is_active" = true 
+      WHERE status = 'active' 
       GROUP BY type
     `);
 

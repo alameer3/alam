@@ -10,11 +10,11 @@ export class DatabaseOptimizer {
       
       // Content table indexes
       await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_content_type ON content(type)`);
-      await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_content_year ON content(year)`);
+      await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_content_release_date ON content(release_date)`);
       await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_content_language ON content(language)`);
       await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_content_quality ON content(quality)`);
       await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_content_rating ON content(rating)`);
-      await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_content_active ON content(is_active)`);
+      await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_content_status ON content(status)`);
       await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_content_created_at ON content(created_at)`);
       
       // Content search index
@@ -23,7 +23,7 @@ export class DatabaseOptimizer {
       // User table indexes
       await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_users_username ON users(username)`);
       await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_users_email ON users(email)`);
-      await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_users_active ON users(is_active)`);
+      await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_users_role ON users(role)`);
       
       // Relationship table indexes
       await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_content_genres_content ON content_genres(content_id)`);
@@ -31,17 +31,18 @@ export class DatabaseOptimizer {
       await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_content_categories_content ON content_categories(content_id)`);
       await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_content_categories_category ON content_categories(category_id)`);
       
-      // User interaction indexes
-      await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_user_favorites_user ON user_favorites(user_id)`);
-      await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_user_favorites_content ON user_favorites(content_id)`);
-      await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_user_watch_history_user ON user_watch_history(user_id)`);
-      await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_user_watch_history_content ON user_watch_history(content_id)`);
+      // Cast and content cast indexes
+      await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_cast_members_name ON cast_members(name)`);
+      await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_content_cast_content ON content_cast(content_id)`);
+      await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_content_cast_member ON content_cast(cast_member_id)`);
       
-      // Comments and reviews indexes
-      await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_user_comments_content ON user_comments(content_id)`);
-      await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_user_comments_user ON user_comments(user_id)`);
-      await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_user_reviews_content ON user_reviews(content_id)`);
-      await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_user_reviews_user ON user_reviews(user_id)`);
+      // Content images indexes
+      await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_content_images_content ON content_images(content_id)`);
+      await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_content_images_type ON content_images(image_type)`);
+      
+      // External ratings indexes
+      await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_external_ratings_content ON external_ratings(content_id)`);
+      await db.execute(sql`CREATE INDEX IF NOT EXISTS idx_external_ratings_source ON external_ratings(source)`);
       
       console.log("✅ Database indexes created successfully");
     } catch (error) {
