@@ -190,7 +190,7 @@ export default function AdvancedSearch({ isOpen, onClose, onContentClick }: Adva
             البحث المتقدم
           </DialogTitle>
           <DialogDescription>
-            ابحث في جميع المحتوى باستخدام فلاتر متقدمة وخيارات متنوعة
+            ابحث في جميع المحتوى باستخدام فلاتر متقدمة وخيارات متنوعة للعثور على الأفلام والمسلسلات المطلوبة
           </DialogDescription>
         </DialogHeader>
 
