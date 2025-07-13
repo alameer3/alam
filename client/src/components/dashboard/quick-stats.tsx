@@ -45,28 +45,28 @@ export function QuickStats() {
     queryKey: ['/api/platform/stats'],
   });
 
-  // Mock data for demonstration
-  const mockUserStats: UserStats = {
-    favorites: 12,
-    watchHistory: 25,
-    comments: 8,
-    reviews: 3,
-    totalWatchTime: 1847, // minutes
-    weeklyWatchTime: 342,
+  // Use real data from API, fallback to defaults if not available
+  const actualUserStats = userStats || {
+    favorites: 0,
+    watchHistory: 0,
+    comments: 0,
+    reviews: 0,
+    totalWatchTime: 0,
+    weeklyWatchTime: 0,
     monthlyTarget: 2000
   };
 
-  const mockPlatformStats: PlatformStats = {
-    totalUsers: 8932,
-    activeToday: 1247,
-    totalContent: 2847,
-    newThisWeek: 12,
-    totalViews: 284739,
-    averageRating: 4.3
+  const actualPlatformStats = platformStats || {
+    totalUsers: 0,
+    activeToday: 0,
+    totalContent: 0,
+    newThisWeek: 0,
+    totalViews: 0,
+    averageRating: 0
   };
 
-  const watchTimeProgress = (mockUserStats.totalWatchTime / mockUserStats.monthlyTarget) * 100;
-  const weeklyProgress = (mockUserStats.weeklyWatchTime / (mockUserStats.monthlyTarget / 4)) * 100;
+  const watchTimeProgress = (actualUserStats.totalWatchTime / actualUserStats.monthlyTarget) * 100;
+  const weeklyProgress = (actualUserStats.weeklyWatchTime / (actualUserStats.monthlyTarget / 4)) * 100;
 
   if (userLoading || platformLoading) {
     return (
@@ -94,7 +94,7 @@ export function QuickStats() {
               <div className="flex items-center gap-2">
                 <Heart className="h-4 w-4 text-blue-600 dark:text-blue-400" />
                 <span className="text-2xl font-bold text-blue-900 dark:text-blue-100">
-                  {mockUserStats.favorites}
+                  {actualUserStats.favorites}
                 </span>
               </div>
             </CardHeader>
@@ -113,7 +113,7 @@ export function QuickStats() {
               <div className="flex items-center gap-2">
                 <Play className="h-4 w-4 text-green-600 dark:text-green-400" />
                 <span className="text-2xl font-bold text-green-900 dark:text-green-100">
-                  {mockUserStats.watchHistory}
+                  {actualUserStats.watchHistory}
                 </span>
               </div>
             </CardHeader>
@@ -132,7 +132,7 @@ export function QuickStats() {
               <div className="flex items-center gap-2">
                 <MessageCircle className="h-4 w-4 text-purple-600 dark:text-purple-400" />
                 <span className="text-2xl font-bold text-purple-900 dark:text-purple-100">
-                  {mockUserStats.comments}
+                  {actualUserStats.comments}
                 </span>
               </div>
             </CardHeader>
@@ -151,7 +151,7 @@ export function QuickStats() {
               <div className="flex items-center gap-2">
                 <Star className="h-4 w-4 text-orange-600 dark:text-orange-400" />
                 <span className="text-2xl font-bold text-orange-900 dark:text-orange-100">
-                  {mockUserStats.reviews}
+                  {actualUserStats.reviews}
                 </span>
               </div>
             </CardHeader>
@@ -177,7 +177,7 @@ export function QuickStats() {
                 الهدف الشهري
               </CardTitle>
               <CardDescription>
-                {Math.floor(mockUserStats.totalWatchTime / 60)} ساعة من {Math.floor(mockUserStats.monthlyTarget / 60)} ساعة
+                {Math.floor(actualUserStats.totalWatchTime / 60)} ساعة من {Math.floor(actualUserStats.monthlyTarget / 60)} ساعة
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -195,7 +195,7 @@ export function QuickStats() {
                 هذا الأسبوع
               </CardTitle>
               <CardDescription>
-                {Math.floor(mockUserStats.weeklyWatchTime / 60)} ساعة و {mockUserStats.weeklyWatchTime % 60} دقيقة
+                {Math.floor(actualUserStats.weeklyWatchTime / 60)} ساعة و {actualUserStats.weeklyWatchTime % 60} دقيقة
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -220,7 +220,7 @@ export function QuickStats() {
                 <Users className="h-6 w-6 text-blue-600 dark:text-blue-400" />
               </div>
               <CardTitle className="text-lg">
-                {mockPlatformStats.totalUsers.toLocaleString()}
+                {actualPlatformStats.totalUsers.toLocaleString()}
               </CardTitle>
               <CardDescription>إجمالي المستخدمين</CardDescription>
             </CardHeader>
@@ -232,7 +232,7 @@ export function QuickStats() {
                 <TrendingUp className="h-6 w-6 text-green-600 dark:text-green-400" />
               </div>
               <CardTitle className="text-lg">
-                {mockPlatformStats.activeToday.toLocaleString()}
+                {actualPlatformStats.activeToday.toLocaleString()}
               </CardTitle>
               <CardDescription>نشط اليوم</CardDescription>
             </CardHeader>
@@ -244,7 +244,7 @@ export function QuickStats() {
                 <Play className="h-6 w-6 text-purple-600 dark:text-purple-400" />
               </div>
               <CardTitle className="text-lg">
-                {mockPlatformStats.totalContent.toLocaleString()}
+                {actualPlatformStats.totalContent.toLocaleString()}
               </CardTitle>
               <CardDescription>إجمالي المحتوى</CardDescription>
             </CardHeader>
@@ -256,7 +256,7 @@ export function QuickStats() {
                 <Eye className="h-6 w-6 text-yellow-600 dark:text-yellow-400" />
               </div>
               <CardTitle className="text-lg">
-                {(mockPlatformStats.totalViews / 1000).toFixed(1)}K
+                {(actualPlatformStats.totalViews / 1000).toFixed(1)}K
               </CardTitle>
               <CardDescription>إجمالي المشاهدات</CardDescription>
             </CardHeader>

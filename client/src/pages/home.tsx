@@ -60,7 +60,7 @@ export default function Home() {
           genres={featuredTrailer.genres}
           duration={featuredTrailer.duration}
           onWatchNow={() => window.location.href = `/content/${featuredTrailer.contentId}`}
-          onAddToList={() => console.log('Add to list')}
+          onAddToList={() => {/* Add to list functionality */}}
           onMoreInfo={() => window.location.href = `/content/${featuredTrailer.contentId}`}
           className="mb-8"
         />

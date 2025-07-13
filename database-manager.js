@@ -26,10 +26,10 @@ class DatabaseManager {
   async healthCheck() {
     try {
       await db.execute('SELECT 1');
-      console.log('✅ Database connection is healthy');
+      // Database connection is healthy - silent logging for production
       return true;
     } catch (error) {
-      console.error('❌ Database health check failed:', error);
+      // Database health check failed - error handled silently
       return false;
     }
   }
@@ -51,14 +51,14 @@ class DatabaseManager {
       
       return stats.rows;
     } catch (error) {
-      console.error('❌ Error getting database stats:', error);
+      // Error getting database stats - handled silently
       return [];
     }
   }
 
   async optimizePerformance() {
     try {
-      console.log('🔧 Optimizing database performance...');
+      // Optimizing database performance - silent logging for production
       
       // تحديث الإحصائيات
       await db.execute('ANALYZE');
@@ -66,9 +66,9 @@ class DatabaseManager {
       // تنظيف الجداول
       await db.execute('VACUUM ANALYZE');
       
-      console.log('✅ Database performance optimized');
+      // Database performance optimized - silent logging for production
     } catch (error) {
-      console.error('❌ Error optimizing performance:', error);
+      // Error optimizing performance - handled silently
     }
   }
 

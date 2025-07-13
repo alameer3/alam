@@ -36,41 +36,22 @@ export default function SecurityAlert() {
     updates: 'current'
   });
 
-  // Simulate security alerts (in real app, these would come from your security API)
+  // Fetch real security alerts from API
   useEffect(() => {
-    const mockAlerts: SecurityAlert[] = [
-      {
-        id: '1',
-        type: 'success',
-        title: 'نظام الأمان محدث',
-        message: 'تم تحديث جميع أنظمة الأمان بنجاح إلى آخر إصدار',
-        timestamp: new Date(Date.now() - 1000 * 60 * 15), // 15 minutes ago
-        severity: 'low',
-        source: 'Security System',
-        resolved: true
-      },
-      {
-        id: '2',
-        type: 'warning',
-        title: 'محاولة دخول مشبوهة',
-        message: 'تم اكتشاف محاولة دخول مشبوهة من عنوان IP غير معروف',
-        timestamp: new Date(Date.now() - 1000 * 60 * 30), // 30 minutes ago
-        severity: 'medium',
-        source: 'Login Monitor',
-        resolved: false
-      },
-      {
-        id: '3',
-        type: 'info',
-        title: 'نسخة احتياطية مجدولة',
-        message: 'ستبدأ النسخة الاحتياطية المجدولة خلال 30 دقيقة',
-        timestamp: new Date(Date.now() - 1000 * 60 * 60), // 1 hour ago
-        severity: 'low',
-        source: 'Backup System',
-        resolved: true
+    const fetchSecurityAlerts = async () => {
+      try {
+        const response = await fetch('/api/security/alerts');
+        if (response.ok) {
+          const data = await response.json();
+          setAlerts(data);
+        }
+      } catch (error) {
+        // Silently handle error - no console.log for production
+        setAlerts([]);
       }
-    ];
-    setAlerts(mockAlerts);
+    };
+
+    fetchSecurityAlerts();
   }, []);
 
   const getAlertIcon = (type: SecurityAlert['type']) => {
