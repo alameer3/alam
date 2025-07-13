@@ -48,7 +48,9 @@ class AuditLogger {
         timestamp: new Date()
       });
       
-      console.log(`📝 Audit Log: ${entry.action} on ${entry.resource} by ${entry.userId || 'anonymous'} - ${entry.success ? 'SUCCESS' : 'FAILED'}`);
+      if (process.env.NODE_ENV === 'development') {
+        console.log(`📝 Audit Log: ${entry.action} on ${entry.resource} by ${entry.userId || 'anonymous'} - ${entry.success ? 'SUCCESS' : 'FAILED'}`);
+      }
     } catch (error) {
       console.error('Failed to log audit entry:', error);
     }
@@ -73,7 +75,9 @@ class AuditLogger {
         critical: '🚨'
       };
 
-      console.log(`${severityEmoji[entry.severity]} Security Log: ${entry.eventType} from ${entry.ipAddress} - ${entry.severity.toUpperCase()}`);
+      if (process.env.NODE_ENV === 'development') {
+        console.log(`${severityEmoji[entry.severity]} Security Log: ${entry.eventType} from ${entry.ipAddress} - ${entry.severity.toUpperCase()}`);
+      }
     } catch (error) {
       console.error('Failed to log security entry:', error);
     }

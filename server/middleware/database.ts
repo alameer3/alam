@@ -95,11 +95,13 @@ export class DatabaseOptimizer {
         ORDER BY mean_time DESC
         LIMIT 10
       `).catch(() => {
-        console.log("  pg_stat_statements not available");
+        if (process.env.NODE_ENV === 'development') {
+          console.log("  pg_stat_statements not available");
+        }
         return [];
       });
       
-      if (slowQueries.length > 0) {
+      if (slowQueries.length > 0 && process.env.NODE_ENV === 'development') {
         console.log("🐌 Slow queries detected:");
         slowQueries.forEach((row: any) => {
           console.log(`  Query: ${row.query.substring(0, 50)}... - Average: ${row.mean_time}ms`);
@@ -114,10 +116,14 @@ export class DatabaseOptimizer {
   // Optimize database settings
   static async optimizeSettings() {
     try {
-      console.log("Optimizing database settings...");
+      if (process.env.NODE_ENV === 'development') {
+        console.log("Optimizing database settings...");
+      }
       
       if (!db) {
-        console.log("⚠️  Database connection not available, skipping optimization");
+        if (process.env.NODE_ENV === 'development') {
+          console.log("⚠️  Database connection not available, skipping optimization");
+        }
         return;
       }
       
@@ -126,7 +132,9 @@ export class DatabaseOptimizer {
       await db.execute(sql`SET lock_timeout = '10s'`);
       await db.execute(sql`SET idle_in_transaction_session_timeout = '60s'`);
       
-      console.log("✅ Database settings optimized");
+      if (process.env.NODE_ENV === 'development') {
+        console.log("✅ Database settings optimized");
+      }
     } catch (error) {
       console.error("❌ Error optimizing database settings:", error);
     }
@@ -136,7 +144,9 @@ export class DatabaseOptimizer {
   static async healthCheck() {
     try {
       if (!db) {
-        console.log("⚠️  Database connection not available");
+        if (process.env.NODE_ENV === 'development') {
+          console.log("⚠️  Database connection not available");
+        }
         return { healthy: false, error: "Database connection not available" };
       }
       
