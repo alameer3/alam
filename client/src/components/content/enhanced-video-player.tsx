@@ -29,6 +29,7 @@ import {
 } from "lucide-react";
 import { Content } from "@shared/schema";
 import { cn } from "@/lib/utils";
+import LoadingSpinner from "@/components/ui/loading-spinner";
 
 interface EnhancedVideoPlayerProps {
   content: Content;
@@ -74,8 +75,10 @@ export default function EnhancedVideoPlayer({
   const [hasStartedPlaying, setHasStartedPlaying] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   
-  // Enhanced features
+  // Settings state
   const [selectedQuality, setSelectedQuality] = useState('720p');
+  const [selectedSpeed, setSelectedSpeed] = useState(1);
+  const [selectedSubtitles, setSelectedSubtitles] = useState('off');
   const [playbackSpeed, setPlaybackSpeed] = useState(1);
   const [subtitlesEnabled, setSubtitlesEnabled] = useState(false);
   const [pip, setPip] = useState(false);

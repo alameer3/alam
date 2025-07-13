@@ -4,6 +4,8 @@ import { setupVite, serveStatic, log } from "./vite";
 import { securityHeaders, validateInput, checkSecurityStatus } from "./middleware/security";
 import { performanceMiddleware } from "./middleware/performance";
 import { initializeDatabaseOptimizations } from "./middleware/database";
+import { errorHandler, notFoundHandler } from "./middleware/error-handler";
+import { performanceMonitor } from "./middleware/performance-monitor";
 
 const app = express();
 
@@ -13,6 +15,7 @@ app.use(checkSecurityStatus);
 
 // Performance monitoring
 app.use(performanceMiddleware);
+// app.use(performanceMonitor.middleware()); // Temporarily disabled to fix conflict
 
 // Input sanitization and validation
 app.use(validateInput);
@@ -56,22 +59,20 @@ app.use((req, res, next) => {
   
   const server = await registerRoutes(app);
 
-  app.use((err: any, _req: Request, res: Response, _next: NextFunction) => {
-    const status = err.status || err.statusCode || 500;
-    const message = err.message || "Internal Server Error";
-
-    res.status(status).json({ message });
-    throw err;
-  });
+  // Add error handler only (404 handler should be after vite setup)
+  app.use(errorHandler);
 
   // importantly only setup vite in development and after
   // setting up all the other routes so the catch-all route
   // doesn't interfere with the other routes
-  if (app.get("env") === "development") {
+  if (process.env.NODE_ENV === "development") {
     await setupVite(app, server);
   } else {
     serveStatic(app);
   }
+  
+  // Add 404 handler after vite setup (only for API routes)
+  app.use('/api', notFoundHandler);
 
   // ALWAYS serve the app on port 5000
   // this serves both the API and the client.

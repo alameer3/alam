@@ -67,7 +67,7 @@ export function EnhancedSearchSystem({
       try {
         setSearchHistory(JSON.parse(history));
       } catch (error) {
-        // Handle error silently or show user-friendly message
+        console.warn('خطأ في تحميل تاريخ البحث:', error);
       }
     }
   }, []);

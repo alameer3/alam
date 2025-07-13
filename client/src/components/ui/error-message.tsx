@@ -1,33 +1,43 @@
 import { AlertTriangle, RefreshCw } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { Button } from "./button";
+import { Card, CardContent, CardHeader, CardTitle } from "./card";
 
 interface ErrorMessageProps {
   title?: string;
-  message?: string;
+  message: string;
   onRetry?: () => void;
   className?: string;
-  showRetry?: boolean;
 }
 
 export function ErrorMessage({ 
   title = "حدث خطأ", 
-  message = "حدث خطأ أثناء تحميل البيانات. يرجى المحاولة مرة أخرى.", 
+  message, 
   onRetry, 
-  className,
-  showRetry = true 
+  className 
 }: ErrorMessageProps) {
   return (
-    <div className={cn("flex flex-col items-center justify-center p-8 text-center", className)}>
-      <AlertTriangle className="h-12 w-12 text-red-500 mb-4" />
-      <h3 className="text-lg font-semibold mb-2">{title}</h3>
-      <p className="text-muted-foreground mb-4 max-w-md">{message}</p>
-      {showRetry && onRetry && (
-        <Button onClick={onRetry} className="flex items-center gap-2">
-          <RefreshCw className="h-4 w-4" />
-          إعادة المحاولة
-        </Button>
-      )}
-    </div>
+    <Card className={`w-full max-w-md mx-auto ${className}`}>
+      <CardHeader className="text-center">
+        <div className="flex justify-center mb-2">
+          <AlertTriangle className="h-8 w-8 text-red-500" />
+        </div>
+        <CardTitle className="text-red-600">{title}</CardTitle>
+      </CardHeader>
+      <CardContent className="text-center space-y-4">
+        <p className="text-muted-foreground">{message}</p>
+        {onRetry && (
+          <Button 
+            onClick={onRetry}
+            variant="outline"
+            className="w-full"
+          >
+            <RefreshCw className="h-4 w-4 mr-2" />
+            إعادة المحاولة
+          </Button>
+        )}
+      </CardContent>
+    </Card>
   );
 }
+
+export default ErrorMessage;
