@@ -8,7 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Slider } from './slider';
 import { Checkbox } from './checkbox';
 import { Label } from './label';
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from './dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from './dialog';
 import { useQuery } from '@tanstack/react-query';
 import { cn } from '@/lib/utils';
 
@@ -230,6 +230,9 @@ export function AdvancedSearch({ onSearch, className }: AdvancedSearchProps) {
             <DialogContent className="max-w-2xl">
               <DialogHeader>
                 <DialogTitle>فلاتر البحث المتقدمة</DialogTitle>
+                <DialogDescription>
+                  استخدم هذه الفلاتر لتخصيص نتائج البحث وفقاً لتفضيلاتك
+                </DialogDescription>
               </DialogHeader>
               <div className="space-y-6">
                 {/* Year Range */}

@@ -237,7 +237,16 @@ export default function TrailersPage() {
               </h2>
             </div>
             
-            {trendingTrailers && (
+            {trendingLoading ? (
+              <div className="flex justify-center py-8">
+                <LoadingSpinner size="lg" />
+              </div>
+            ) : trendingError ? (
+              <ErrorMessage 
+                message="فشل في تحميل المقاطع الأكثر رواجاً" 
+                description="حدث خطأ أثناء تحميل البيانات. يرجى المحاولة مرة أخرى."
+              />
+            ) : trendingTrailers && Array.isArray(trendingTrailers) ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 {trendingTrailers.map((trailer, index) => (
                   <MiniTrailerPlayer
@@ -248,6 +257,10 @@ export default function TrailersPage() {
                     duration={trailer.duration}
                   />
                 ))}
+              </div>
+            ) : (
+              <div className="text-center py-8 text-slate-600 dark:text-slate-300">
+                لا توجد مقاطع دعائية متاحة حالياً
               </div>
             )}
           </TabsContent>

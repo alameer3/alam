@@ -4,7 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
 import { Plus, UserPlus, Users, Shield, Star, Heart } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
 
@@ -159,6 +159,9 @@ export default function UsersManagement() {
               <DialogContent>
                 <DialogHeader>
                   <DialogTitle>إضافة مستخدم جديد</DialogTitle>
+                  <DialogDescription>
+                    أضف مستخدم جديد للمنصة مع تحديد الصلاحيات المناسبة
+                  </DialogDescription>
                 </DialogHeader>
                 <form onSubmit={handleUserSubmit} className="space-y-4">
                   <div>
