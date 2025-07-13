@@ -35,7 +35,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       
       res.json(transformedStats);
     } catch (error) {
-      console.error('Stats fetch error:', error);
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Stats fetch error:', error);
+      }
       res.status(500).json({ error: "Failed to fetch content stats", details: error.message });
     }
   });
@@ -57,7 +59,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const result = await storage.getContentByType(type, page, limit, filters);
       res.json(result);
     } catch (error) {
-      console.error('Content fetch error:', error);
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Content fetch error:', error);
+      }
       res.status(500).json({ error: "Failed to fetch content" });
     }
   });
@@ -79,7 +83,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const result = await storage.getContentByType(type, page, limit, filters);
       res.json(result);
     } catch (error) {
-      console.error('Content fetch error:', error);
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Content fetch error:', error);
+      }
       res.status(500).json({ error: "Failed to fetch content" });
     }
   });
@@ -95,7 +101,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       res.json(content);
     } catch (error) {
-      console.error('Content item fetch error:', error);
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Content item fetch error:', error);
+      }
       res.status(500).json({ error: "Failed to fetch content" });
     }
   });
@@ -110,7 +118,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (error instanceof z.ZodError) {
         res.status(400).json({ error: error.errors });
       } else {
-        console.error('Create content error:', error);
+        if (process.env.NODE_ENV === 'development') {
+          console.error('Create content error:', error);
+        }
         res.status(500).json({ error: "Failed to create content" });
       }
     }
@@ -220,7 +230,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const categories = await storage.getAllCategories();
       res.json(categories);
     } catch (error) {
-      console.error('Categories fetch error:', error);
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Categories fetch error:', error);
+      }
       res.status(500).json({ error: "Failed to fetch categories", details: error.message });
     }
   });
@@ -557,7 +569,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
         total: allContent.length
       });
     } catch (error) {
-      console.error('Error fetching all content:', error);
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Error fetching all content:', error);
+      }
       res.status(500).json({ error: 'Failed to fetch content' });
     }
   });

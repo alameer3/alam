@@ -1,66 +1,67 @@
 import React from 'react';
 import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from './dialog';
-import { Button } from './button';
-import { AlertTriangle } from 'lucide-react';
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/ui/alert-dialog";
 
 interface ConfirmationDialogProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onConfirm: () => void;
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
   title: string;
-  message: string;
+  description: string;
+  onConfirm: () => void;
+  onCancel?: () => void;
   confirmText?: string;
   cancelText?: string;
-  destructive?: boolean;
+  variant?: 'default' | 'destructive';
 }
 
 export function ConfirmationDialog({
-  isOpen,
-  onClose,
-  onConfirm,
+  open,
+  onOpenChange,
   title,
-  message,
+  description,
+  onConfirm,
+  onCancel,
   confirmText = "تأكيد",
   cancelText = "إلغاء",
-  destructive = false
+  variant = 'default'
 }: ConfirmationDialogProps) {
   const handleConfirm = () => {
     onConfirm();
-    onClose();
+    onOpenChange(false);
+  };
+
+  const handleCancel = () => {
+    if (onCancel) onCancel();
+    onOpenChange(false);
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2 text-right">
-            {destructive && <AlertTriangle className="w-5 h-5 text-destructive" />}
-            {title}
-          </DialogTitle>
-          <DialogDescription className="text-right">
-            {message}
-          </DialogDescription>
-        </DialogHeader>
-        
-        <DialogFooter className="flex gap-2 justify-end">
-          <Button variant="outline" onClick={onClose}>
+    <AlertDialog open={open} onOpenChange={onOpenChange}>
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>{title}</AlertDialogTitle>
+          <AlertDialogDescription>{description}</AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel onClick={handleCancel}>
             {cancelText}
-          </Button>
-          <Button 
-            onClick={handleConfirm} 
-            variant={destructive ? "destructive" : "default"}
+          </AlertDialogCancel>
+          <AlertDialogAction 
+            onClick={handleConfirm}
+            className={variant === 'destructive' ? 'bg-red-600 hover:bg-red-700' : ''}
           >
             {confirmText}
-          </Button>
-        </DialogFooter>
-      </DialogContent>
-    </Dialog>
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   );
 }

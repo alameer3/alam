@@ -16,6 +16,7 @@ import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigge
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useToast } from '@/hooks/use-toast';
 import { apiRequest } from '@/lib/queryClient';
+import { ConfirmationDialog } from '@/components/ui/confirmation-dialog';
 import type { User, InsertUser } from '@shared/schema';
 
 interface UserFormData {
@@ -190,11 +191,18 @@ export default function UserManagement() {
     setShowAddDialog(true);
   };
 
+  const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
+  const [userToDelete, setUserToDelete] = useState<number | null>(null);
+
   const handleDelete = (id: number) => {
-    // تأكيد الحذف عبر Dialog آمن
-    const confirmed = window.confirm('هل أنت متأكد من حذف هذا المستخدم؟');
-    if (confirmed) {
-      deleteUserMutation.mutate(id);
+    setUserToDelete(id);
+    setDeleteDialogOpen(true);
+  };
+
+  const confirmDelete = () => {
+    if (userToDelete) {
+      deleteUserMutation.mutate(userToDelete);
+      setUserToDelete(null);
     }
   };
 
@@ -526,6 +534,18 @@ export default function UserManagement() {
           <p className="text-muted-foreground">لا توجد نتائج مطابقة للبحث</p>
         </div>
       )}
+
+      {/* Confirmation Dialog */}
+      <ConfirmationDialog
+        open={deleteDialogOpen}
+        onOpenChange={setDeleteDialogOpen}
+        title="تأكيد الحذف"
+        description="هل أنت متأكد من حذف هذا المستخدم؟ لا يمكن التراجع عن هذا الإجراء."
+        onConfirm={confirmDelete}
+        confirmText="حذف"
+        cancelText="إلغاء"
+        variant="destructive"
+      />
     </div>
   );
 }

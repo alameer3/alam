@@ -6,7 +6,9 @@ export class DatabaseOptimizer {
   // Create database indexes for better performance
   static async createIndexes() {
     try {
-      console.log("Creating database indexes...");
+      if (process.env.NODE_ENV === 'development') {
+        console.log("Creating database indexes...");
+      }
       
       // Only create indexes for existing tables
       const essentialIndexes = [
@@ -35,7 +37,9 @@ export class DatabaseOptimizer {
         }
       }
       
-      console.log("✅ Database indexes created successfully");
+      if (process.env.NODE_ENV === 'development') {
+        console.log("✅ Database indexes created successfully");
+      }
     } catch (error) {
       console.error("❌ Error creating database indexes:", error);
     }
@@ -44,10 +48,14 @@ export class DatabaseOptimizer {
   // Analyze database performance
   static async analyzePerformance() {
     try {
-      console.log("Analyzing database performance...");
+      if (process.env.NODE_ENV === 'development') {
+        console.log("Analyzing database performance...");
+      }
       
       if (!db) {
-        console.log("⚠️  Database connection not available, skipping performance analysis");
+        if (process.env.NODE_ENV === 'development') {
+          console.log("⚠️  Database connection not available, skipping performance analysis");
+        }
         return;
       }
       
@@ -63,13 +71,15 @@ export class DatabaseOptimizer {
         ORDER BY size_bytes DESC
       `);
       
-      console.log("📊 Database table sizes:");
-      if (Array.isArray(tableSizes)) {
-        tableSizes.forEach((row: any) => {
-          console.log(`  ${row.tablename}: ${row.size}`);
-        });
-      } else {
-        console.log("  No table size data available");
+      if (process.env.NODE_ENV === 'development') {
+        console.log("📊 Database table sizes:");
+        if (Array.isArray(tableSizes)) {
+          tableSizes.forEach((row: any) => {
+            console.log(`  ${row.tablename}: ${row.size}`);
+          });
+        } else {
+          console.log("  No table size data available");
+        }
       }
       
       // Get slow queries (if available)
