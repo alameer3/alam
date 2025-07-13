@@ -6,6 +6,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { LoadingSpinner, InlineLoader } from "@/components/ui/loading-spinner";
 import ContentCard from "./content-card";
 import { Content } from "@shared/schema";
+import { useLocation } from "wouter";
 
 interface ContentGridProps {
   contentType: string;
@@ -17,6 +18,7 @@ interface ContentGridProps {
 
 export default function ContentGrid({ contentType, filters, title, showViewAll = true, onContentClick }: ContentGridProps) {
   const [currentPage, setCurrentPage] = useState(1);
+  const [, setLocation] = useLocation();
   const limit = 24;
 
   const { data, isLoading, error } = useQuery({
@@ -54,13 +56,13 @@ export default function ContentGrid({ contentType, filters, title, showViewAll =
             className="text-accent hover:text-orange-600"
             onClick={() => {
               if (contentType === 'movie') {
-                window.location.href = '/movies';
+                setLocation('/movies');
               } else if (contentType === 'series') {
-                window.location.href = '/series';
+                setLocation('/series');
               } else if (contentType === 'tv') {
-                window.location.href = '/tv';
+                setLocation('/television');
               } else {
-                window.location.href = '/misc';
+                setLocation('/miscellaneous');
               }
             }}
           >

@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Content } from "@shared/schema";
 import { useQuery } from "@tanstack/react-query";
-import { Link } from "wouter";
+import { Link, useLocation } from "wouter";
 
 import Footer from "@/components/layout/footer";
 import { ResponsiveGrid, ResponsiveSpacing, useResponsive } from "@/components/layout/responsive-layout";
@@ -16,6 +16,7 @@ import { ImprovedResponsiveContentGrid } from "@/components/content/improved-res
 export default function Home() {
   const { isMobile } = useResponsive();
   const [selectedContent, setSelectedContent] = useState<Content | null>(null);
+  const [, setLocation] = useLocation();
 
   // Fetch recent content
   const { data: recentMovies } = useQuery({
@@ -61,9 +62,9 @@ export default function Home() {
           year={featuredTrailer.year}
           genres={featuredTrailer.genres}
           duration={featuredTrailer.duration}
-          onWatchNow={() => window.location.href = `/content/${featuredTrailer.contentId}`}
+          onWatchNow={() => setLocation(`/content/${featuredTrailer.contentId}`)}
           onAddToList={() => {/* Add to list functionality */}}
-          onMoreInfo={() => window.location.href = `/content/${featuredTrailer.contentId}`}
+          onMoreInfo={() => setLocation(`/content/${featuredTrailer.contentId}`)}
           className="mb-8"
         />
       )}

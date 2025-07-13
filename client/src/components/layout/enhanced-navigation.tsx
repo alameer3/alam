@@ -59,14 +59,14 @@ const navigationItems = [
 
 const featuredItems = [
   {
-    path: "/trending",
-    label: "الأكثر مشاهدة",
+    path: "/search",
+    label: "البحث المتقدم",
     icon: TrendingUp,
     badge: "جديد"
   },
   {
-    path: "/featured",
-    label: "مختارات خاصة",
+    path: "/trailers",
+    label: "مقاطع دعائية",
     icon: Crown,
     badge: "مميز"
   }
