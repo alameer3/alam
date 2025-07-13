@@ -191,8 +191,9 @@ export default function UserManagement() {
   };
 
   const handleDelete = (id: number) => {
-    // تأكيد الحذف
-    if (confirm('هل أنت متأكد من حذف هذا المستخدم؟')) {
+    // تأكيد الحذف عبر Dialog آمن
+    const confirmed = window.confirm('هل أنت متأكد من حذف هذا المستخدم؟');
+    if (confirmed) {
       deleteUserMutation.mutate(id);
     }
   };

@@ -81,7 +81,6 @@ router.get('/:contentId', async (req, res) => {
 
     res.json(mockTrailers);
   } catch (error) {
-    console.error('Error fetching trailers:', error);
     res.status(500).json({ error: 'Failed to fetch trailers' });
   }
 });
@@ -104,7 +103,6 @@ router.get('/featured/latest', async (req, res) => {
 
     res.json(featuredTrailer);
   } catch (error) {
-    console.error('Error fetching featured trailer:', error);
     res.status(500).json({ error: 'Failed to fetch featured trailer' });
   }
 });
@@ -141,7 +139,6 @@ router.get('/trending/week', async (req, res) => {
 
     res.json(trendingTrailers);
   } catch (error) {
-    console.error('Error fetching trending trailers:', error);
     res.status(500).json({ error: 'Failed to fetch trending trailers' });
   }
 });
@@ -172,7 +169,6 @@ router.post('/', [
 
     res.status(201).json(newTrailer);
   } catch (error) {
-    console.error('Error adding trailer:', error);
     res.status(500).json({ error: 'Failed to add trailer' });
   }
 });
@@ -189,7 +185,6 @@ router.patch('/:trailerId/views', async (req, res) => {
       trailerId 
     });
   } catch (error) {
-    console.error('Error updating trailer views:', error);
     res.status(500).json({ error: 'Failed to update trailer views' });
   }
 });
@@ -206,7 +201,6 @@ router.delete('/:trailerId', async (req, res) => {
       trailerId 
     });
   } catch (error) {
-    console.error('Error deleting trailer:', error);
     res.status(500).json({ error: 'Failed to delete trailer' });
   }
 });
