@@ -14,11 +14,7 @@ import {
   User, 
   Heart, 
   Film, 
-  Crown,
-  Shield,
-  Settings,
   SlidersHorizontal,
-
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -28,9 +24,8 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-export function EnhancedResponsiveHeader() {
+export function ImprovedResponsiveHeader() {
   const [location, navigate] = useLocation();
   const { user, isAuthenticated, logout } = useAuthData();
   const { isMobile, isTablet } = useResponsive();
@@ -50,21 +45,21 @@ export function EnhancedResponsiveHeader() {
   };
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60">
+    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto px-4">
-        <div className="flex h-16 items-center justify-between gap-4">
+        <div className="flex h-16 items-center justify-between gap-2">
           
-          {/* Mobile Navigation & Logo */}
-          <div className="flex items-center gap-3">
-            <MobileNavigation />
+          {/* النافذة اليسرى: التنقل المحمول والشعار */}
+          <div className="flex items-center gap-2">
+            {(isMobile || isTablet) && <MobileNavigation />}
             
-            <Link href="/" className="flex items-center gap-3 transition-transform hover:scale-105">
-              <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-primary to-primary/70 rounded-lg shadow-lg">
-                <Film className="h-6 w-6 text-primary-foreground" />
+            <Link href="/" className="flex items-center gap-2 transition-transform hover:scale-105">
+              <div className="flex items-center justify-center w-8 h-8 bg-gradient-to-br from-primary to-primary/70 rounded-lg shadow-lg">
+                <Film className="h-5 w-5 text-primary-foreground" />
               </div>
               {!isMobile && (
-                <div>
-                  <h1 className="text-xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+                <div className="hidden sm:block">
+                  <h1 className="text-lg font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
                     𝐘𝐄𝐌𝐄𝐍 🇾🇪 𝐅𝐋𝐈𝐗
                   </h1>
                   <p className="text-xs text-muted-foreground">
@@ -72,12 +67,15 @@ export function EnhancedResponsiveHeader() {
                   </p>
                 </div>
               )}
+              {isMobile && (
+                <span className="text-sm font-bold text-primary">YEMEN FLIX</span>
+              )}
             </Link>
           </div>
 
-          {/* Desktop Navigation Links */}
+          {/* التنقل المكتبي */}
           {!isMobile && !isTablet && (
-            <nav className="hidden lg:flex items-center space-x-6 space-x-reverse">
+            <nav className="hidden lg:flex items-center space-x-4 space-x-reverse">
               {[
                 { path: "/", label: "الرئيسية" },
                 { path: "/movies", label: "أفلام" },
@@ -88,7 +86,8 @@ export function EnhancedResponsiveHeader() {
                 <Link key={item.path} href={item.path}>
                   <Button 
                     variant={location === item.path ? "secondary" : "ghost"}
-                    className={`relative transition-all duration-300 ${
+                    size="sm"
+                    className={`relative transition-all duration-200 ${
                       location === item.path 
                         ? "text-primary font-semibold" 
                         : "hover:text-primary"
@@ -104,10 +103,10 @@ export function EnhancedResponsiveHeader() {
             </nav>
           )}
 
-          {/* Search Bar */}
-          <div className={`flex-1 mx-2 ${isMobile ? "max-w-xs" : "max-w-md"}`}>
+          {/* شريط البحث */}
+          <div className={`flex-1 mx-2 ${isMobile ? "max-w-40" : "max-w-md"}`}>
             <form onSubmit={handleSearch} className="relative">
-              <div className={`relative transition-all duration-300 ${
+              <div className={`relative transition-all duration-200 ${
                 isSearchFocused ? "scale-105" : ""
               }`}>
                 <Input
@@ -117,27 +116,27 @@ export function EnhancedResponsiveHeader() {
                   onChange={(e) => setSearchQuery(e.target.value)}
                   onFocus={() => setIsSearchFocused(true)}
                   onBlur={() => setIsSearchFocused(false)}
-                  className={`w-full bg-muted/50 border-2 rounded-full transition-all duration-300 focus:border-primary focus:bg-background ${
-                    isMobile ? "py-1.5 px-3 pr-10 pl-3 text-sm" : "py-2 px-4 pr-12 pl-4"
+                  className={`w-full bg-muted/50 border-2 rounded-full transition-all duration-200 focus:border-primary focus:bg-background ${
+                    isMobile ? "py-1 px-2 pr-8 pl-2 text-sm" : "py-2 px-4 pr-10 pl-4"
                   } ${isSearchFocused ? "shadow-lg shadow-primary/20" : ""}`}
                 />
                 <Button
                   type="submit"
-                  size={isMobile ? "sm" : "icon"}
+                  size="sm"
                   variant="ghost"
-                  className={`absolute ${isMobile ? "right-1 top-1" : "right-2 top-2"} h-8 w-8 p-0 hover:bg-primary/10`}
+                  className={`absolute ${isMobile ? "right-1 top-1" : "right-2 top-2"} h-6 w-6 p-0 hover:bg-primary/10`}
                 >
                   <Search className={`${isMobile ? "h-3 w-3" : "h-4 w-4"}`} />
                 </Button>
                 
-                {/* Advanced Search Button */}
+                {/* زر البحث المتقدم */}
                 {!isMobile && (
                   <Button
                     type="button"
                     variant="ghost"
                     size="sm"
                     onClick={handleAdvancedSearch}
-                    className="absolute left-2 top-2 h-8 px-2 text-xs text-muted-foreground hover:text-primary"
+                    className="absolute left-2 top-2 h-6 px-2 text-xs text-muted-foreground hover:text-primary"
                   >
                     <SlidersHorizontal className="h-3 w-3 mr-1" />
                     متقدم
@@ -147,32 +146,31 @@ export function EnhancedResponsiveHeader() {
             </form>
           </div>
 
-          {/* Right Actions */}
-          <div className="flex items-center gap-2">
+          {/* الأيقونات والإجراءات */}
+          <div className="flex items-center gap-1">
             
-            {/* Notifications */}
+            {/* الإشعارات */}
             <Button
               variant="ghost"
               size={isMobile ? "sm" : "icon"}
               className="relative"
+              onClick={() => navigate("/notifications")}
             >
               <Bell className={`${isMobile ? "h-4 w-4" : "h-5 w-5"}`} />
               {notifications > 0 && (
                 <Badge 
                   variant="destructive" 
-                  className={`absolute -top-1 -right-1 h-4 w-4 p-0 flex items-center justify-center text-xs ${
-                    isMobile ? "text-xs" : "text-xs"
-                  }`}
+                  className="absolute -top-1 -right-1 h-4 w-4 p-0 flex items-center justify-center text-xs"
                 >
                   {notifications}
                 </Badge>
               )}
             </Button>
 
-            {/* Theme Switcher */}
+            {/* مبدل الثيم - مخفي في الهاتف */}
             {!isMobile && <AdvancedThemeSwitcher />}
 
-            {/* User Menu */}
+            {/* قائمة المستخدم */}
             {isAuthenticated && user ? (
               <UserMenu user={user} onLogout={logout} />
             ) : (

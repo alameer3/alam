@@ -3,7 +3,6 @@ import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { AdvancedThemeProvider } from "@/components/theme/advanced-theme-provider";
-import { ResponsiveLayout } from "@/components/layout/responsive-layout";
 import { EnhancedResponsiveHeader } from "@/components/layout/enhanced-responsive-header";
 import { EnhancedNavigation } from "@/components/layout/enhanced-navigation";
 import { ErrorBoundary } from "@/components/ui/error-boundary";
@@ -59,14 +58,14 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <AdvancedThemeProvider defaultTheme="yemen">
         <ErrorBoundary>
-          <ResponsiveLayout className="arabic-font">
+          <div className="arabic-font">
             <EnhancedResponsiveHeader />
             <EnhancedNavigation />
             <main className="pt-20 lg:pt-24 transition-all duration-300">
               <Router />
             </main>
             <Toaster />
-          </ResponsiveLayout>
+          </div>
         </ErrorBoundary>
       </AdvancedThemeProvider>
     </QueryClientProvider>

@@ -21,7 +21,7 @@ import {
   X
 } from "lucide-react";
 
-export function MobileNavigation() {
+export function MobileOptimizedNavigation() {
   const [location] = useLocation();
   const [isOpen, setIsOpen] = useState(false);
 

@@ -1,147 +1,107 @@
 import { useState, useEffect } from "react";
-import { cn } from "@/lib/utils";
 
-interface ResponsiveLayoutProps {
-  children: React.ReactNode;
-  className?: string;
+export interface ResponsiveBreakpoints {
+  isMobile: boolean;
+  isTablet: boolean;
+  isDesktop: boolean;
+  isLargeDesktop: boolean;
+  screenSize: 'mobile' | 'tablet' | 'desktop' | 'large-desktop';
 }
 
-export function ResponsiveLayout({ children, className }: ResponsiveLayoutProps) {
-  const [isMobile, setIsMobile] = useState(false);
-  const [isTablet, setIsTablet] = useState(false);
-  
-  useEffect(() => {
-    const checkScreenSize = () => {
-      const width = window.innerWidth;
-      setIsMobile(width < 768);
-      setIsTablet(width >= 768 && width < 1024);
-    };
+export function useResponsive(): ResponsiveBreakpoints {
+  const [breakpoints, setBreakpoints] = useState<ResponsiveBreakpoints>({
+    isMobile: false,
+    isTablet: false,
+    isDesktop: false,
+    isLargeDesktop: false,
+    screenSize: 'desktop'
+  });
 
-    checkScreenSize();
-    window.addEventListener('resize', checkScreenSize);
-    
-    return () => window.removeEventListener('resize', checkScreenSize);
+  useEffect(() => {
+    function updateBreakpoints() {
+      const width = window.innerWidth;
+      
+      const newBreakpoints: ResponsiveBreakpoints = {
+        isMobile: width < 768,
+        isTablet: width >= 768 && width < 1024,
+        isDesktop: width >= 1024 && width < 1280,
+        isLargeDesktop: width >= 1280,
+        screenSize: width < 768 ? 'mobile' : 
+                   width < 1024 ? 'tablet' : 
+                   width < 1280 ? 'desktop' : 'large-desktop'
+      };
+
+      setBreakpoints(newBreakpoints);
+    }
+
+    updateBreakpoints();
+    window.addEventListener('resize', updateBreakpoints);
+
+    return () => window.removeEventListener('resize', updateBreakpoints);
   }, []);
+
+  return breakpoints;
+}
+
+export function ResponsiveWrapper({ 
+  children, 
+  className = "" 
+}: { 
+  children: React.ReactNode;
+  className?: string;
+}) {
+  const { isMobile, isTablet } = useResponsive();
 
   return (
     <div 
-      className={cn(
-        "min-h-screen bg-background transition-all duration-300",
-        {
-          "mobile-layout": isMobile,
-          "tablet-layout": isTablet,
-          "desktop-layout": !isMobile && !isTablet,
-        },
-        className
-      )}
+      className={`
+        ${className}
+        ${isMobile ? 'px-2 py-1' : isTablet ? 'px-4 py-2' : 'px-6 py-3'}
+        transition-all duration-200
+      `}
     >
       {children}
     </div>
   );
-}
-
-// Hook لاستخدام حالة الشاشة
-export function useResponsive() {
-  const [screenSize, setScreenSize] = useState({
-    isMobile: false,
-    isTablet: false,
-    isDesktop: true,
-    width: 0,
-    height: 0
-  });
-
-  useEffect(() => {
-    const updateScreenSize = () => {
-      const width = window.innerWidth;
-      const height = window.innerHeight;
-      
-      setScreenSize({
-        isMobile: width < 768,
-        isTablet: width >= 768 && width < 1024,
-        isDesktop: width >= 1024,
-        width,
-        height
-      });
-    };
-
-    updateScreenSize();
-    window.addEventListener('resize', updateScreenSize);
-    
-    return () => window.removeEventListener('resize', updateScreenSize);
-  }, []);
-
-  return screenSize;
-}
-
-// مكون للشبكة المتجاوبة
-interface ResponsiveGridProps {
-  children: React.ReactNode;
-  cols?: {
-    mobile?: number;
-    tablet?: number;
-    desktop?: number;
-  };
-  gap?: string;
-  className?: string;
 }
 
 export function ResponsiveGrid({ 
   children, 
-  cols = { mobile: 1, tablet: 2, desktop: 3 },
-  gap = "gap-4",
-  className 
-}: ResponsiveGridProps) {
+  className = "" 
+}: { 
+  children: React.ReactNode;
+  className?: string;
+}) {
+  const { isMobile, isTablet } = useResponsive();
+
   return (
     <div 
-      className={cn(
-        "grid",
-        gap,
-        {
-          [`grid-cols-${cols.mobile}`]: cols.mobile,
-          [`md:grid-cols-${cols.tablet}`]: cols.tablet,
-          [`lg:grid-cols-${cols.desktop}`]: cols.desktop,
-        },
-        className
-      )}
+      className={`
+        grid gap-4 
+        ${isMobile ? 'grid-cols-2' : isTablet ? 'grid-cols-3' : 'grid-cols-4 lg:grid-cols-6'}
+        ${className}
+      `}
     >
       {children}
     </div>
   );
 }
 
-// مكون للتحكم في المساحات المتجاوبة
-interface ResponsiveSpacingProps {
-  children: React.ReactNode;
-  padding?: {
-    mobile?: string;
-    tablet?: string;
-    desktop?: string;
-  };
-  margin?: {
-    mobile?: string;
-    tablet?: string;  
-    desktop?: string;
-  };
-  className?: string;
-}
-
 export function ResponsiveSpacing({ 
   children, 
-  padding = { mobile: "p-4", tablet: "p-6", desktop: "p-8" },
-  margin,
-  className 
-}: ResponsiveSpacingProps) {
+  className = "" 
+}: { 
+  children: React.ReactNode;
+  className?: string;
+}) {
+  const { isMobile, isTablet } = useResponsive();
+
   return (
     <div 
-      className={cn(
-        padding.mobile,
-        padding.tablet && `md:${padding.tablet}`,
-        padding.desktop && `lg:${padding.desktop}`,
-        margin?.mobile,
-        margin?.tablet && `md:${margin.tablet}`,
-        margin?.desktop && `lg:${margin.desktop}`,
-        className
-      )}
+      className={`
+        ${className}
+        ${isMobile ? 'mb-4' : isTablet ? 'mb-6' : 'mb-8'}
+      `}
     >
       {children}
     </div>

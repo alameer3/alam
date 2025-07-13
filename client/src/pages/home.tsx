@@ -10,6 +10,7 @@ import { VideoPlayerDemo } from "@/components/ui/video-player-demo";
 import { EnhancedHeroSection } from "@/components/ui/enhanced-hero-section";
 import { AutoTrailerHero } from "@/components/content/auto-trailer-hero";
 import { useFeaturedTrailer } from "@/hooks/useTrailers";
+import { ImprovedResponsiveContentGrid } from "@/components/content/improved-responsive-content-grid";
 
 export default function Home() {
   const { isMobile } = useResponsive();
