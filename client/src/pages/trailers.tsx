@@ -246,7 +246,7 @@ export default function TrailersPage() {
                 message="فشل في تحميل المقاطع الأكثر رواجاً" 
                 description="حدث خطأ أثناء تحميل البيانات. يرجى المحاولة مرة أخرى."
               />
-            ) : trendingTrailers && Array.isArray(trendingTrailers) ? (
+            ) : trendingTrailers && Array.isArray(trendingTrailers) && trendingTrailers.length > 0 ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                 {trendingTrailers.map((trailer, index) => (
                   <MiniTrailerPlayer
