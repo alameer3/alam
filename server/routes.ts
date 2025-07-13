@@ -62,6 +62,28 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // General content route for ?type=movie queries
+  app.get("/api/content", async (req, res) => {
+    try {
+      const type = req.query.type as string || 'movie';
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 20;
+      const filters = {
+        year: req.query.year,
+        language: req.query.language,
+        quality: req.query.quality,
+        resolution: req.query.resolution,
+        rating: req.query.rating
+      };
+
+      const result = await storage.getContentByType(type, page, limit, filters);
+      res.json(result);
+    } catch (error) {
+      console.error('Content fetch error:', error);
+      res.status(500).json({ error: "Failed to fetch content" });
+    }
+  });
+
   app.get("/api/content/item/:id", async (req, res) => {
     try {
       const id = parseInt(req.params.id);
