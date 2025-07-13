@@ -958,16 +958,16 @@ class TemporaryMemoryStorage implements IStorage {
 }
 
 // Check if DATABASE_URL is available, use appropriate storage
-console.log("🔧 Checking database availability...");
+// تحقق من توفر قاعدة البيانات
 const isDatabaseAvailable = Boolean(process.env.DATABASE_URL);
 
 let storage: IStorage;
 
 if (isDatabaseAvailable) {
-  console.log("✅ Using DatabaseStorage with PostgreSQL");
+  // استخدام قاعدة بيانات PostgreSQL
   storage = new DatabaseStorage();
 } else {
-  console.log("⚠️ Using TemporaryMemoryStorage (no database available)");
+  // استخدام التخزين المؤقت (لا توجد قاعدة بيانات)
   storage = new TemporaryMemoryStorage();
 }
 

@@ -15,7 +15,7 @@ export class BackupManager {
     try {
       await mkdir(this.backupDir, { recursive: true });
     } catch (error) {
-      console.error('Error creating backup directory:', error);
+      // خطأ في إنشاء مجلد النسخ الاحتياطية
     }
   }
   
@@ -48,10 +48,10 @@ export class BackupManager {
       }
       
       await writeFile(backupFile, backupData);
-      console.log(`✅ Database backup created: ${backupFile}`);
+      // تم إنشاء نسخة احتياطية من قاعدة البيانات
       return backupFile;
     } catch (error) {
-      console.error('❌ Error creating database backup:', error);
+      // خطأ في إنشاء نسخة احتياطية من قاعدة البيانات
       throw error;
     }
   }
@@ -78,10 +78,10 @@ export class BackupManager {
       };
       
       await writeFile(backupFile, JSON.stringify(config, null, 2));
-      console.log(`✅ Configuration backup created: ${backupFile}`);
+      // تم إنشاء نسخة احتياطية من التكوين
       return backupFile;
     } catch (error) {
-      console.error('❌ Error creating configuration backup:', error);
+      // خطأ في إنشاء نسخة احتياطية من التكوين
       throw error;
     }
   }
@@ -104,16 +104,16 @@ export class BackupManager {
         try {
           await this.createDatabaseBackup();
           await this.createConfigBackup();
-          console.log('📋 Scheduled backup completed');
+          // تم اكتمال النسخ الاحتياطي المجدول
         } catch (error) {
-          console.error('❌ Scheduled backup failed:', error);
+          // فشل النسخ الاحتياطي المجدول
         }
         
         // Schedule next backup
         scheduleDaily();
       }, timeUntilBackup);
       
-      console.log(`📅 Next backup scheduled for: ${nextBackup.toLocaleString()}`);
+      // جدولة النسخ الاحتياطي التالي
     };
     
     scheduleDaily();
@@ -140,6 +140,6 @@ export class BackupManager {
 
 // Initialize backup system
 export function initializeBackupSystem() {
-  console.log('🔄 Initializing backup system...');
+  // تهيئة نظام النسخ الاحتياطي
   BackupManager.scheduleBackups();
 }

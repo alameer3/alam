@@ -67,7 +67,7 @@ export async function authenticateToken(req: AuthRequest, res: Response, next: N
     req.user = user;
     next();
   } catch (error) {
-    console.error('Authentication error:', error);
+    // خطأ في المصادقة - معالجة صامتة
     return res.status(500).json({ message: 'Authentication error' });
   }
 }
@@ -94,7 +94,7 @@ export async function optionalAuth(req: AuthRequest, res: Response, next: NextFu
           req.user = user;
         }
       } catch (error) {
-        console.error('Optional auth error:', error);
+        // خطأ في المصادقة الاختيارية - معالجة صامتة
       }
     }
   }

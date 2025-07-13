@@ -307,7 +307,7 @@ const AdvancedAnalyticsDashboard: React.FC = () => {
             <CardContent>
               <div className="space-y-4">
                 {analyticsData.subscriptionAnalytics.plans.map((plan, index) => (
-                  <div key={index} className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-800 rounded-lg">
+                  <div key={`plan-${plan.name}-${index}`} className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-800 rounded-lg">
                     <div className="flex items-center gap-3">
                       <Award className="w-5 h-5 text-yellow-500" />
                       <div>

@@ -11,7 +11,7 @@ let pool: Pool | null = null;
 let db: any = null;
 
 if (!process.env.DATABASE_URL) {
-  console.warn("⚠️ DATABASE_URL not found - database features will be limited");
+  // تحذير: DATABASE_URL غير موجود - الميزات ستكون محدودة
   // pool and db remain null
 } else {
   // Extract the actual connection string from psql format
@@ -39,10 +39,10 @@ if (!process.env.DATABASE_URL) {
     databaseUrl = decodeURIComponent(databaseUrl);
   } catch (e) {
     // If decoding fails, use original
-    console.warn("Failed to decode DATABASE_URL, using original");
+    // فشل في فك تشفير DATABASE_URL، استخدام الأصلي
   }
 
-  console.log('✅ Database URL configured successfully');
+  // إعداد رابط قاعدة البيانات بنجاح
 
   // Optimized connection pool configuration
   pool = new Pool({ 

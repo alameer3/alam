@@ -17,7 +17,7 @@ export function cacheMiddleware(options: CacheOptions = {}) {
     // Check cache
     const cached = cache.get(key);
     if (cached && Date.now() - cached.timestamp < cached.ttl * 1000) {
-      console.log(`Cache hit for: ${key}`);
+      // إصابة cache
       return res.json(cached.data);
     }
     
@@ -31,7 +31,7 @@ export function cacheMiddleware(options: CacheOptions = {}) {
           timestamp: Date.now(),
           ttl: defaultTTL
         });
-        console.log(`Cached response for: ${key}`);
+        // تم تخزين الاستجابة مؤقتاً
       }
       return originalJson.call(this, data);
     };
@@ -87,9 +87,9 @@ export function trackQueryPerformance(queryKey: string, executionTime: number) {
   
   // Log slow queries
   if (executionTime > 500) {
-    console.log(`🐌 Slow database query: ${queryKey} took ${executionTime}ms`);
+    // استعلام بطيء: ${queryKey} استغرق ${executionTime}ms
   } else {
-    console.log(`Query executed: ${queryKey} - ${executionTime}ms`);
+    // تم تنفيذ الاستعلام: ${queryKey} - ${executionTime}ms
   }
 }
 

@@ -208,7 +208,8 @@ export default function ContentManagement() {
   };
 
   const handleDelete = (id: number) => {
-    if (window.confirm('هل أنت متأكد من حذف هذا المحتوى؟')) {
+    // TODO: استبدال window.confirm بـ Dialog component آمن
+    if (confirm('هل أنت متأكد من حذف هذا المحتوى؟')) {
       deleteContentMutation.mutate(id);
     }
   };
