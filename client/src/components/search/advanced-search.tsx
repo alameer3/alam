@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -189,6 +189,9 @@ export default function AdvancedSearch({ isOpen, onClose, onContentClick }: Adva
             <Search className="w-5 h-5" />
             البحث المتقدم
           </DialogTitle>
+          <DialogDescription>
+            ابحث في جميع المحتوى باستخدام فلاتر متقدمة وخيارات متنوعة
+          </DialogDescription>
         </DialogHeader>
 
         <div className="flex flex-col h-full">
