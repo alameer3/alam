@@ -3,37 +3,35 @@ node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-pnpm-debug.log*
 
-# Environment variables
+# Environment files
 .env
 .env.local
-.env.production
-.env.test
+.env.development.local
+.env.test.local
+.env.production.local
 
 # Build outputs
 dist/
 build/
-.output/
-.vite/
+*.tsbuildinfo
 
-# Database
-*.sqlite
-*.db
-*.db-shm
-*.db-wal
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
 
 # Logs
 logs/
 *.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-pnpm-debug.log*
-lerna-debug.log*
 
 # Runtime data
-pids
+pids/
 *.pid
 *.seed
 *.pid.lock
@@ -42,26 +40,41 @@ pids
 coverage/
 *.lcov
 
-# nyc test coverage
-.nyc_output
-
 # Dependency directories
 jspm_packages/
 
 # Optional npm cache directory
 .npm
 
-# Optional eslint cache
-.eslintcache
+# Replit specific
+.replit
+replit.nix
+.breakpoints
+.local/
+.upm/
 
-# Optional stylelint cache
-.stylelintcache
+# Database
+*.db
+*.sqlite
 
-# Microbundle cache
-.rpt2_cache/
-.rts2_cache_cjs/
-.rts2_cache_es/
-.rts2_cache_umd/
+# Temporary files
+tmp/
+temp/
+
+# Uploads
+uploads/
+public/uploads/
+
+# Backup files
+backups/
+*.backup
+
+# Cache files
+.cache/
+.parcel-cache/
+
+# TypeScript
+*.tsbuildinfo
 
 # Optional REPL history
 .node_repl_history
@@ -72,13 +85,10 @@ jspm_packages/
 # Yarn Integrity file
 .yarn-integrity
 
-# dotenv environment variable files
-.env.development.local
-.env.test.local
-.env.production.local
-.env.local
+# dotenv environment variables file
+.env.test
 
-# Parcel-bundler cache (https://parceljs.org/)
+# parcel-bundler cache (https://parceljs.org/)
 .cache
 .parcel-cache
 
@@ -94,96 +104,27 @@ dist
 .cache/
 public
 
-# Storybook build outputs
-.out
-.storybook-out
+# Vuepress build output
+.vuepress/dist
 
-# Temporary folders
-tmp/
-temp/
-
-# Editor directories and files
-.vscode/
-.idea/
-*.swp
-*.swo
-*~
-
-# OS generated files
-.DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
-Thumbs.db
-
-# Backup files
-*.backup
-*.bak
-*.tmp
-
-# Uploaded files
-uploads/
-public/uploads/
-
-# Session files
-sessions/
-
-# Cache files
-.cache/
-*.cache
-
-# TypeScript
-*.tsbuildinfo
-
-# Testing
-coverage/
-.nyc_output/
-
-# Deployment
+# Serverless directories
 .serverless/
-.vercel/
-.netlify/
 
-# Local development
-.local/
+# FuseBox cache
+.fusebox/
 
-# Replit specific
-.replit
-replit.nix
+# DynamoDB Local files
+.dynamodb/
 
-# Package manager lockfiles (keep only one)
-# yarn.lock
-# pnpm-lock.yaml
+# TernJS port file
+.tern-port
 
-# IDE and editor files
-*.sublime-project
-*.sublime-workspace
-.vscode/settings.json
-.vscode/tasks.json
-.vscode/launch.json
-.vscode/extensions.json
+# Stores VSCode versions used for testing VSCode extensions
+.vscode-test
 
-# Database backups
-*.sql
-*.dump
-backup/
-
-# SSL certificates
-*.pem
-*.key
-*.crt
-*.csr
-
-# Media files (if not meant to be tracked)
-/public/media/
-/public/videos/
-/public/images/uploads/
-
-# Generated documentation
-docs/build/
-docs/dist/
-
-# Sentry
-.sentryclirc
+# yarn v2
+.yarn/cache
+.yarn/unplugged
+.yarn/build-state.yml
+.yarn/install-state.gz
+.pnp.*
