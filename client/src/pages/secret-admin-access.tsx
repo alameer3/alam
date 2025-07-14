@@ -41,14 +41,22 @@ export default function SecretAdminAccess() {
         {/* Logo that reveals secret */}
         <div className="text-center">
           <div 
-            className="w-24 h-24 mx-auto bg-gradient-to-br from-orange-500 to-red-600 rounded-full flex items-center justify-center cursor-pointer hover:scale-105 transition-transform"
+            className="w-24 h-24 mx-auto rounded-xl overflow-hidden cursor-pointer hover:scale-105 transition-transform shadow-2xl"
             onClick={handleLogoClick}
           >
-            <svg className="w-12 h-12 text-white" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M8 5v14l11-7z"/>
-            </svg>
+            <img 
+              src="/assets/logo_1.png" 
+              alt="Yemen Flix Logo" 
+              className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+            />
           </div>
-          <h1 className="text-3xl font-bold mt-4">YEMEN 🇾🇪 FLIX</h1>
+          <div className="mt-4">
+            <img 
+              src="/assets/logo_2.png" 
+              alt="YEMEN FLIX" 
+              className="h-10 mx-auto hover:scale-105 transition-transform duration-300"
+            />
+          </div>
           <p className="text-muted-foreground mt-2">منصة الأفلام والمسلسلات اليمنية</p>
           
           {clickCount > 0 && clickCount < 5 && (
@@ -61,8 +69,12 @@ export default function SecretAdminAccess() {
         {showSecret && (
           <Card className="border-2 border-primary shadow-2xl">
             <CardHeader className="text-center">
-              <div className="w-16 h-16 mx-auto bg-gradient-to-br from-orange-500 to-red-600 rounded-full flex items-center justify-center">
-                <Crown className="w-8 h-8 text-white" />
+              <div className="w-16 h-16 mx-auto rounded-xl overflow-hidden">
+                <img 
+                  src="/assets/logo_1.png" 
+                  alt="Yemen Flix Admin" 
+                  className="w-full h-full object-cover"
+                />
               </div>
               <CardTitle className="text-xl">وصول إداري سري</CardTitle>
               <CardDescription>

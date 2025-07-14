@@ -47,13 +47,19 @@ export function EnhancedHeader() {
         <div className="flex h-16 items-center justify-between gap-4">
           {/* الشعار */}
           <Link href="/" className="flex items-center gap-3 transition-transform hover:scale-105">
-            <div className="flex items-center justify-center w-10 h-10 bg-gradient-to-br from-primary to-primary/70 rounded-lg">
-              <Film className="h-6 w-6 text-primary-foreground" />
+            <div className="w-10 h-10 rounded-lg overflow-hidden">
+              <img 
+                src="/assets/logo_1.png" 
+                alt="Yemen Flix Logo" 
+                className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+              />
             </div>
             <div className="hidden sm:block">
-              <h1 className="text-xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-                𝐘𝐄𝐌𝐄𝐍 🇾🇪 𝐅𝐋𝐈𝐗
-              </h1>
+              <img 
+                src="/assets/logo_2.png" 
+                alt="YEMEN FLIX" 
+                className="h-6 hover:scale-105 transition-transform duration-300"
+              />
               <p className="text-xs text-muted-foreground">منصة الأفلام اليمنية</p>
             </div>
           </Link>

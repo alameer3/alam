@@ -59,16 +59,20 @@ export function EnhancedResponsiveHeader() {
             <MobileNavigation />
             
             <Link href="/" className="flex items-center gap-3 transition-transform hover:scale-105">
-              <img 
-                src="/assets/logo_1.png" 
-                alt="شعار يمن فليكس" 
-                className="h-12 w-auto"
-              />
+              <div className="w-10 h-10 rounded-lg overflow-hidden">
+                <img 
+                  src="/assets/logo_1.png" 
+                  alt="شعار يمن فليكس" 
+                  className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+                />
+              </div>
               {!isMobile && (
                 <div>
-                  <h1 className="text-xl font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-                    𝐘𝐄𝐌𝐄𝐍 🇾🇪 𝐅𝐋𝐈𝐗
-                  </h1>
+                  <img 
+                    src="/assets/logo_2.png" 
+                    alt="YEMEN FLIX" 
+                    className="h-6 hover:scale-105 transition-transform duration-300"
+                  />
                   <p className="text-xs text-muted-foreground">
                     منصة السينما اليمنية
                   </p>

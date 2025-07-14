@@ -32,12 +32,18 @@ export default function Header() {
         <div className="flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center space-x-4 space-x-reverse">
-            <div className="w-12 h-12 rounded-full bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center">
-              <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                <path d="M8 5v14l11-7z"/>
-              </svg>
+            <div className="w-12 h-12 rounded-lg overflow-hidden">
+              <img 
+                src="/assets/logo_1.png" 
+                alt="Yemen Flix Logo" 
+                className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+              />
             </div>
-            <span className="text-2xl font-bold hidden md:block">YEMEN 🇾🇪 FLIX</span>
+            <img 
+              src="/assets/logo_2.png" 
+              alt="YEMEN FLIX" 
+              className="hidden md:block h-8 hover:scale-105 transition-transform duration-300"
+            />
           </Link>
 
           {/* Search Bar */}
