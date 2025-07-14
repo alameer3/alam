@@ -1,4 +1,4 @@
-import { Switch, Route } from "wouter";
+import { Switch, Route, useLocation } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
@@ -53,19 +53,33 @@ function Router() {
   );
 }
 
+function AppContent() {
+  const [location] = useLocation();
+  const isHomePage = location === "/";
+
+  return (
+    <div className="arabic-font">
+      {/* Only show header and navigation on non-home pages */}
+      {!isHomePage && (
+        <>
+          <EnhancedResponsiveHeader />
+          <EnhancedNavigation />
+        </>
+      )}
+      <main className={isHomePage ? "" : "pt-20 lg:pt-24 transition-all duration-300"}>
+        <Router />
+      </main>
+      <Toaster />
+    </div>
+  );
+}
+
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <AdvancedThemeProvider defaultTheme="yemen">
         <ErrorBoundary>
-          <div className="arabic-font">
-            <EnhancedResponsiveHeader />
-            <EnhancedNavigation />
-            <main className="pt-20 lg:pt-24 transition-all duration-300">
-              <Router />
-            </main>
-            <Toaster />
-          </div>
+          <AppContent />
         </ErrorBoundary>
       </AdvancedThemeProvider>
     </QueryClientProvider>
