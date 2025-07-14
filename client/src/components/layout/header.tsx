@@ -30,47 +30,20 @@ export default function Header() {
     <header className="bg-background/80 backdrop-blur-sm border-b border-border fixed w-full top-0 z-50">
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
-          {/* Logo - تصميم مميز يجمع الشعارين */}
-          <Link href="/" className="flex items-center space-x-4 space-x-reverse group">
-            {/* الشعار الرئيسي مع تأثيرات متقدمة */}
-            <div className="relative">
-              {/* خلفية متوهجة */}
-              <div className="absolute inset-0 w-12 h-12 rounded-xl bg-gradient-to-br from-red-500/20 to-orange-500/20 blur-sm group-hover:blur-md transition-all duration-500"></div>
-              
-              {/* الشعار مع إطار ذهبي */}
-              <div className="relative w-12 h-12 rounded-xl overflow-hidden border-2 border-gradient-to-br from-yellow-400 to-red-500 shadow-2xl transform group-hover:rotate-3 group-hover:scale-110 transition-all duration-500">
-                <img 
-                  src="/assets/logo_1.png" 
-                  alt="Yemen Flix Logo" 
-                  className="w-full h-full object-cover"
-                />
-                {/* تأثير اللمعان */}
-                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1000"></div>
-              </div>
+          {/* Logo */}
+          <Link href="/" className="flex items-center space-x-4 space-x-reverse">
+            <div className="w-12 h-12 rounded-full overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <img 
+                src="/assets/logo_1.png" 
+                alt="Yemen Flix Logo" 
+                className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+              />
             </div>
-
-            {/* النص مع تأثيرات متقدمة */}
-            <div className="hidden md:flex items-center relative">
-              {/* خلفية متوهجة للنص */}
-              <div className="absolute inset-0 bg-gradient-to-r from-red-500/10 to-transparent rounded-lg blur-sm group-hover:blur-md transition-all duration-500"></div>
-              
-              {/* النص الرئيسي */}
-              <div className="relative">
-                <img 
-                  src="/assets/logo_2.png" 
-                  alt="YEMEN FLIX" 
-                  className="h-8 filter drop-shadow-lg transform group-hover:scale-105 transition-all duration-500"
-                />
-                
-                {/* خط تحت النص يظهر عند التمرير */}
-                <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-red-500 to-orange-500 group-hover:w-full transition-all duration-700"></div>
-              </div>
-              
-              {/* شارة "PREMIUM" صغيرة */}
-              <div className="ml-2 px-2 py-0.5 bg-gradient-to-r from-yellow-400 to-orange-500 text-black text-xs font-bold rounded-full opacity-80 group-hover:opacity-100 transform scale-90 group-hover:scale-100 transition-all duration-300">
-                HD
-              </div>
-            </div>
+            <img 
+              src="/assets/logo_2.png" 
+              alt="YEMEN FLIX" 
+              className="hidden md:block h-8 hover:scale-105 transition-transform duration-300"
+            />
           </Link>
 
           {/* Search Bar */}

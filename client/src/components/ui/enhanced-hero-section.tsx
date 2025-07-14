@@ -1,4 +1,5 @@
 import { useState } from "react";
+import * as React from "react";
 import { Film, Crown, Star, Sparkles, Flag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -7,7 +8,7 @@ import { useAdvancedTheme } from "@/components/theme/advanced-theme-provider";
 import { useResponsive } from "@/components/layout/responsive-layout";
 
 interface EnhancedHeroSectionProps {
-  title: string;
+  title: string | React.ReactNode;
   subtitle: string;
   description: string;
   stats?: {
@@ -76,33 +77,35 @@ export function EnhancedHeroSection({ title, subtitle, description, stats }: Enh
       <div className="relative z-10 container mx-auto px-4">
         <div className="text-center max-w-4xl mx-auto">
           
-          {/* Logo with theme-based styling */}
+          {/* شعار Y في الدائرة المركزية */}
           <div 
             className="hero-logo mb-6"
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
           >
-            <div className={`w-20 h-20 mx-auto rounded-2xl flex items-center justify-center shadow-2xl transition-all duration-500 ${
+            <div className={`w-20 h-20 mx-auto rounded-full overflow-hidden shadow-2xl transition-all duration-500 ${
               isHovered ? 'transform scale-110 pulse-glow' : ''
-            } ${
-              theme === 'yemen' ? 'bg-gradient-to-br from-yemen-red to-accent' :
-              theme === 'cinema' ? 'bg-gradient-to-br from-cinema-gold to-cinema-dark' :
-              theme === 'royal' ? 'bg-gradient-to-br from-royal-purple to-royal-gold' :
-              theme === 'heritage' ? 'bg-gradient-to-br from-heritage-gold to-heritage-copper' :
-              'bg-gradient-to-br from-primary to-primary/70'
             }`}>
-              {getThemeIcon()}
+              <img 
+                src="/assets/logo_1.png" 
+                alt="Yemen Flix Logo" 
+                className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+              />
             </div>
           </div>
           
           {/* Main title with gradient text */}
-          <h1 className={`font-bold mb-6 ${
+          <div className={`font-bold mb-6 ${
             isMobile ? "text-3xl" : "text-4xl md:text-6xl"
           }`}>
-            <span className={`gradient-text bg-gradient-to-r ${getThemeGradient()} bg-clip-text text-transparent`}>
-              {title}
-            </span>
-          </h1>
+            {typeof title === 'string' ? (
+              <span className={`gradient-text bg-gradient-to-r ${getThemeGradient()} bg-clip-text text-transparent`}>
+                {title}
+              </span>
+            ) : (
+              title
+            )}
+          </div>
           
           {/* Subtitle */}
           <h2 className={`text-muted-foreground mb-6 font-medium ${

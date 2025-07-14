@@ -38,69 +38,26 @@ export default function SecretAdminAccess() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-background via-background to-muted flex items-center justify-center p-4">
       <div className="w-full max-w-md space-y-8">
-        {/* شعار سري متطور */}
+        {/* Logo that reveals secret */}
         <div className="text-center">
-          {/* الشعار الرئيسي السري */}
-          <div className="relative group">
-            {/* دوائر متوهجة متحركة */}
-            <div className="absolute inset-0 w-24 h-24 mx-auto">
-              <div className="absolute inset-0 border-2 border-red-500/30 rounded-full animate-spin-slow"></div>
-              <div className="absolute inset-2 border-2 border-orange-500/50 rounded-full animate-spin-reverse"></div>
-              <div className="absolute inset-4 border-2 border-yellow-500/70 rounded-full animate-pulse"></div>
-            </div>
-            
-            {/* الشعار المركزي */}
-            <div 
-              className="relative w-24 h-24 mx-auto rounded-xl overflow-hidden cursor-pointer shadow-2xl border-4 border-gradient-to-br from-red-500 to-orange-500 transform transition-all duration-700 hover:scale-110 hover:rotate-12 hover:shadow-red-500/50"
-              onClick={handleLogoClick}
-            >
-              <img 
-                src="/assets/logo_1.png" 
-                alt="Yemen Flix Logo" 
-                className="w-full h-full object-cover"
-              />
-              
-              {/* تأثير الماسح الضوئي */}
-              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent transform -skew-x-12 translate-x-[-200%] group-hover:translate-x-[200%] transition-transform duration-1500"></div>
-              
-              {/* نبضات ضوئية */}
-              <div className="absolute inset-0 border-4 border-red-400/0 rounded-xl group-hover:border-red-400/100 transition-all duration-500"></div>
-            </div>
-            
-            {/* نقاط الوصول السري */}
-            <div className="absolute -top-2 -right-2 flex space-x-1">
-              {[...Array(clickCount)].map((_, i) => (
-                <div key={i} className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-              ))}
-            </div>
+          <div 
+            className="w-24 h-24 mx-auto rounded-full overflow-hidden cursor-pointer hover:scale-105 transition-transform shadow-2xl"
+            onClick={handleLogoClick}
+          >
+            <img 
+              src="/assets/logo_1.png" 
+              alt="Yemen Flix Logo" 
+              className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+            />
           </div>
-
-          {/* النص المتطور */}
-          <div className="mt-6 relative">
-            <div className="relative">
-              <img 
-                src="/assets/logo_2.png" 
-                alt="YEMEN FLIX" 
-                className="h-12 mx-auto filter drop-shadow-2xl transform hover:scale-105 transition-all duration-500"
-              />
-              
-              {/* تأثير الهولوجرام */}
-              <div className="absolute inset-0 bg-gradient-to-r from-cyan-500/10 via-transparent to-purple-500/10 opacity-0 hover:opacity-100 transition-opacity duration-700"></div>
-            </div>
-            
-            {/* النص التفاعلي */}
-            <div className="mt-3 relative">
-              <p className="text-muted-foreground transition-all duration-500 hover:text-primary">
-                منصة الأفلام والمسلسلات اليمنية
-              </p>
-              
-              {/* مؤشر الأمان */}
-              <div className="flex items-center justify-center mt-2 space-x-2 space-x-reverse">
-                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-                <span className="text-xs text-green-500">نظام آمن</span>
-              </div>
-            </div>
+          <div className="mt-4">
+            <img 
+              src="/assets/logo_2.png" 
+              alt="YEMEN FLIX" 
+              className="h-10 mx-auto hover:scale-105 transition-transform duration-300"
+            />
           </div>
+          <p className="text-muted-foreground mt-2">منصة الأفلام والمسلسلات اليمنية</p>
           
           {clickCount > 0 && clickCount < 5 && (
             <p className="text-xs text-muted-foreground mt-2">
@@ -112,7 +69,7 @@ export default function SecretAdminAccess() {
         {showSecret && (
           <Card className="border-2 border-primary shadow-2xl">
             <CardHeader className="text-center">
-              <div className="w-16 h-16 mx-auto rounded-xl overflow-hidden">
+              <div className="w-16 h-16 mx-auto rounded-full overflow-hidden shadow-lg">
                 <img 
                   src="/assets/logo_1.png" 
                   alt="Yemen Flix Admin" 

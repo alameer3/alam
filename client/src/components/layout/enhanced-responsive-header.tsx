@@ -58,47 +58,23 @@ export function EnhancedResponsiveHeader() {
           <div className="flex items-center gap-3">
             <MobileNavigation />
             
-            <Link href="/" className="flex items-center gap-3 group">
-              {/* شعار متحرك ومتطور */}
-              <div className="relative">
-                {/* هالة متوهجة */}
-                <div className="absolute inset-0 w-10 h-10 rounded-xl bg-red-500/20 blur-md group-hover:bg-red-500/40 group-hover:scale-125 transition-all duration-700"></div>
-                
-                {/* إطار الشعار */}
-                <div className="relative w-10 h-10 rounded-xl overflow-hidden border-2 border-gradient-to-br from-red-400 to-orange-600 shadow-2xl backdrop-blur-sm">
-                  <img 
-                    src="/assets/logo_1.png" 
-                    alt="شعار يمن فليكس" 
-                    className="w-full h-full object-cover transform group-hover:scale-110 group-hover:rotate-3 transition-all duration-500"
-                  />
-                  
-                  {/* شريط لامع يتحرك */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent transform -rotate-45 translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1200"></div>
-                </div>
-                
-                {/* نبضة ضوئية */}
-                <div className="absolute inset-0 w-10 h-10 rounded-xl border-2 border-red-400/50 scale-100 group-hover:scale-150 opacity-100 group-hover:opacity-0 transition-all duration-1000"></div>
+            <Link href="/" className="flex items-center gap-3 transition-transform hover:scale-105">
+              <div className="w-10 h-10 rounded-full overflow-hidden shadow-lg">
+                <img 
+                  src="/assets/logo_1.png" 
+                  alt="شعار يمن فليكس" 
+                  className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
+                />
               </div>
-
               {!isMobile && (
-                <div className="relative">
-                  {/* خلفية النص */}
-                  <div className="absolute inset-0 bg-gradient-to-r from-red-500/5 to-transparent rounded-lg group-hover:from-red-500/10 transition-all duration-500"></div>
-                  
-                  <div className="relative">
-                    <img 
-                      src="/assets/logo_2.png" 
-                      alt="YEMEN FLIX" 
-                      className="h-6 filter contrast-125 group-hover:contrast-150 transform group-hover:scale-105 transition-all duration-300"
-                    />
-                    
-                    {/* خط تحتي متحرك */}
-                    <div className="absolute bottom-0 left-0 w-0 h-0.5 bg-gradient-to-r from-red-500 to-orange-500 group-hover:w-full transition-all duration-500"></div>
-                  </div>
-                  
-                  <p className="text-xs text-muted-foreground group-hover:text-red-400 transition-colors duration-300">
+                <div>
+                  <img 
+                    src="/assets/logo_2.png" 
+                    alt="YEMEN FLIX" 
+                    className="h-6 hover:scale-105 transition-transform duration-300"
+                  />
+                  <p className="text-xs text-muted-foreground">
                     منصة السينما اليمنية
-                    <span className="inline-block ml-1 text-red-500 opacity-0 group-hover:opacity-100 transition-opacity duration-500">⭐</span>
                   </p>
                 </div>
               )}
