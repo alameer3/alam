@@ -7,10 +7,21 @@ import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, Grid3X3, List } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 
+interface FilterOptions {
+  section?: string;
+  category?: string;
+  rating?: string;
+  year?: string;
+  language?: string;
+  quality?: string;
+  resolution?: string;
+}
+
 interface AkStyleContentGridProps {
   contentType: string;
   title: string;
   onContentClick?: (content: Content) => void;
+  filters?: FilterOptions;
 }
 
 function ContentSkeleton({ variant = "grid" }: { variant?: "grid" | "list" }) {
@@ -47,11 +58,19 @@ function ContentSkeleton({ variant = "grid" }: { variant?: "grid" | "list" }) {
   );
 }
 
-export function AkStyleContentGrid({ contentType, title, onContentClick }: AkStyleContentGridProps) {
+export function AkStyleContentGrid({ contentType, title, onContentClick, filters: propFilters }: AkStyleContentGridProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const [filters, setFilters] = useState({});
   const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
   const itemsPerPage = 24;
+
+  // تحديث الفلاتر عند تغييرها من الخارج
+  useEffect(() => {
+    if (propFilters) {
+      setFilters(propFilters);
+      setCurrentPage(1); // إعادة تعيين الصفحة عند تغيير الفلاتر
+    }
+  }, [propFilters]);
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['/api/content', contentType, currentPage, filters],

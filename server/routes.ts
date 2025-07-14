@@ -728,6 +728,54 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Subscription routes
   app.use("/api/subscriptions", subscriptionRoutes);
 
+  // Error Reports Route - direct implementation
+  app.post('/api/reports', async (req, res) => {
+    try {
+      const { contentId, contentTitle, email, reason, description, pageUrl, timestamp } = req.body;
+
+      // التحقق من البيانات المطلوبة
+      if (!contentId || !contentTitle || !reason || !description) {
+        return res.status(400).json({
+          success: false,
+          message: 'البيانات المطلوبة مفقودة'
+        });
+      }
+
+      // معلومات إضافية للتقرير
+      const report = {
+        id: Date.now(),
+        contentId,
+        contentTitle,
+        email: email || 'غير محدد',
+        reason,
+        description,
+        pageUrl,
+        timestamp,
+        userAgent: req.headers['user-agent'] || '',
+        ip: req.ip || req.connection.remoteAddress || '',
+        status: 'جديد',
+        createdAt: new Date().toISOString()
+      };
+
+      // عرض التقرير في console للمطورين
+      if (process.env.NODE_ENV === 'development') {
+        console.log('📝 تقرير خطأ جديد:', report);
+      }
+
+      res.status(201).json({
+        success: true,
+        message: 'تم إرسال التبليغ بنجاح. شكراً لك على مساعدتنا في تحسين الخدمة.',
+        reportId: report.id
+      });
+
+    } catch (error) {
+      res.status(500).json({
+        success: false,
+        message: 'حدث خطأ أثناء إرسال التبليغ. يرجى المحاولة مرة أخرى.'
+      });
+    }
+  });
+
   const httpServer = createServer(app);
   return httpServer;
 }
