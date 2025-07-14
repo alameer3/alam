@@ -221,14 +221,14 @@ export default function TrailersPage() {
                 جميع المقاطع الدعائية
               </h2>
               <div className="text-sm text-slate-600 dark:text-slate-300">
-                {filteredTrailers.length} مقطع
+                {mockTrailersData.length} مقطع
               </div>
             </div>
             
             <TrailerShowcase
               contentId={1}
               contentTitle="مجموعة مقاطع متنوعة"
-              trailers={filteredTrailers}
+              trailers={mockTrailersData}
             />
           </TabsContent>
           
