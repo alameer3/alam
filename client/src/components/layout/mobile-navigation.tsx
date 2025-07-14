@@ -118,7 +118,7 @@ export function MobileNavigation() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-2">
               <img 
-                src="/assets/yemen-flix-logo.svg" 
+                src="/assets/logo_1.png" 
                 alt="شعار يمن فليكس" 
                 className="h-8 w-auto"
               />

@@ -10,7 +10,7 @@ export default function Footer() {
           <div className="md:col-span-2">
             <div className="flex items-center space-x-4 space-x-reverse mb-4">
               <img 
-                src="/assets/yemen-flix-logo.svg" 
+                src="/assets/logo_1.png" 
                 alt="شعار يمن فليكس" 
                 className="h-16 w-auto"
               />

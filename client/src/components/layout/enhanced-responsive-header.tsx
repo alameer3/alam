@@ -60,7 +60,7 @@ export function EnhancedResponsiveHeader() {
             
             <Link href="/" className="flex items-center gap-3 transition-transform hover:scale-105">
               <img 
-                src="/assets/yemen-flix-logo.svg" 
+                src="/assets/logo_1.png" 
                 alt="شعار يمن فليكس" 
                 className="h-12 w-auto"
               />
