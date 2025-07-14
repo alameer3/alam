@@ -9,11 +9,11 @@ export default function Footer() {
           {/* Logo and Description */}
           <div className="md:col-span-2">
             <div className="flex items-center space-x-4 space-x-reverse mb-4">
-              <div className="w-12 h-12 rounded-full bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center">
-                <svg className="w-6 h-6 text-white" fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M8 5v14l11-7z"/>
-                </svg>
-              </div>
+              <img 
+                src="/assets/yemen-flix-logo.svg" 
+                alt="شعار يمن فليكس" 
+                className="h-16 w-auto"
+              />
               <span className="text-2xl font-bold">YEMEN 🇾🇪 FLIX</span>
             </div>
             <p className="text-muted mb-4">

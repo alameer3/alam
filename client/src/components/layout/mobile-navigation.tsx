@@ -116,11 +116,18 @@ export function MobileNavigation() {
       >
         <SheetHeader className="p-4 pb-2">
           <div className="flex items-center justify-between">
-            <SheetTitle className="text-right">
-              <span className="text-lg font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
-                𝐘𝐄𝐌𝐄𝐍 🇾🇪 𝐅𝐋𝐈𝐗
-              </span>
-            </SheetTitle>
+            <div className="flex items-center gap-2">
+              <img 
+                src="/assets/yemen-flix-logo.svg" 
+                alt="شعار يمن فليكس" 
+                className="h-8 w-auto"
+              />
+              <SheetTitle className="text-right">
+                <span className="text-lg font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
+                  𝐘𝐄𝐌𝐄𝐍 🇾🇪 𝐅𝐋𝐈𝐗
+                </span>
+              </SheetTitle>
+            </div>
             <Button
               variant="ghost"
               size="icon"
