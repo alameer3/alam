@@ -10,8 +10,9 @@ import { EnhancedContentCard } from "@/components/ui/enhanced-content-card";
 import { VideoPlayerDemo } from "@/components/ui/video-player-demo";
 import { EnhancedHeroSection } from "@/components/ui/enhanced-hero-section";
 import { AutoTrailerHero } from "@/components/content/auto-trailer-hero";
+import { ContentSection } from "@/components/ui/content-section";
 import { useFeaturedTrailer } from "@/hooks/useTrailers";
-import { ImprovedResponsiveContentGrid } from "@/components/content/improved-responsive-content-grid";
+import { Film, Tv, Star, TrendingUp } from "lucide-react";
 
 export default function Home() {
   const { isMobile } = useResponsive();
@@ -77,78 +78,57 @@ export default function Home() {
         stats={statsData}
       />
 
-      {/* Content Sections */}
-      <section className="py-16">
-        <ResponsiveSpacing 
-          padding={{ mobile: "px-4", tablet: "px-6", desktop: "px-8" }}
+      {/* Featured Movies Section */}
+      {recentMovies?.content?.length > 0 && (
+        <ContentSection
+          title="أحدث الأفلام"
+          subtitle="أفضل الأفلام المضافة حديثاً"
+          viewAllLink="/movies"
+          icon={Film}
+          color="text-red-500"
+          gradient="from-red-500/20 to-transparent"
         >
-          {/* Featured Movies Section */}
-          {recentMovies?.content?.length > 0 && (
-            <div className="mb-16">
-              <div className="flex items-center justify-between mb-8">
-                <h2 className={`font-bold gradient-text ${
-                  isMobile ? "text-2xl" : "text-3xl"
-                }`}>
-                  أحدث الأفلام
-                </h2>
-                <Link href="/movies">
-                  <Button variant="outline" size="sm">
-                    عرض الكل
-                  </Button>
-                </Link>
-              </div>
-              
-              <ResponsiveGrid
-                columns={{ mobile: 1, tablet: 2, desktop: 4 }}
-                gap={{ mobile: "gap-4", tablet: "gap-6", desktop: "gap-6" }}
-                className="mb-8"
-              >
-                {recentMovies.content.slice(0, 8).map((movie) => (
-                  <EnhancedContentCard
-                    key={movie.id}
-                    content={movie}
-                    onClick={handleContentClick}
-                    variant="standard"
-                  />
-                ))}
-              </ResponsiveGrid>
-            </div>
-          )}
+          <ResponsiveGrid
+            columns={{ mobile: 1, tablet: 2, desktop: 4 }}
+            gap={{ mobile: "gap-4", tablet: "gap-6", desktop: "gap-6" }}
+          >
+            {recentMovies.content.slice(0, 8).map((movie) => (
+              <EnhancedContentCard
+                key={movie.id}
+                content={movie}
+                onClick={handleContentClick}
+                variant="standard"
+              />
+            ))}
+          </ResponsiveGrid>
+        </ContentSection>
+      )}
 
-          {/* Featured Series Section */}
-          {recentSeries?.content?.length > 0 && (
-            <div className="mb-16">
-              <div className="flex items-center justify-between mb-8">
-                <h2 className={`font-bold gradient-text ${
-                  isMobile ? "text-2xl" : "text-3xl"
-                }`}>
-                  أحدث المسلسلات
-                </h2>
-                <Link href="/series">
-                  <Button variant="outline" size="sm">
-                    عرض الكل
-                  </Button>
-                </Link>
-              </div>
-              
-              <ResponsiveGrid
-                columns={{ mobile: 1, tablet: 2, desktop: 4 }}
-                gap={{ mobile: "gap-4", tablet: "gap-6", desktop: "gap-6" }}
-                className="mb-8"
-              >
-                {recentSeries.content.slice(0, 8).map((series) => (
-                  <EnhancedContentCard
-                    key={series.id}
-                    content={series}
-                    onClick={handleContentClick}
-                    variant="standard"
-                  />
-                ))}
-              </ResponsiveGrid>
-            </div>
-          )}
-        </ResponsiveSpacing>
-      </section>
+      {/* Featured Series Section */}
+      {recentSeries?.content?.length > 0 && (
+        <ContentSection
+          title="أحدث المسلسلات"
+          subtitle="المسلسلات الأكثر مشاهدة"
+          viewAllLink="/series"
+          icon={Tv}
+          color="text-green-500"
+          gradient="from-green-500/20 to-transparent"
+        >
+          <ResponsiveGrid
+            columns={{ mobile: 1, tablet: 2, desktop: 4 }}
+            gap={{ mobile: "gap-4", tablet: "gap-6", desktop: "gap-6" }}
+          >
+            {recentSeries.content.slice(0, 8).map((series) => (
+              <EnhancedContentCard
+                key={series.id}
+                content={series}
+                onClick={handleContentClick}
+                variant="standard"
+              />
+            ))}
+          </ResponsiveGrid>
+        </ContentSection>
+      )}
 
       {/* Video Player Demo */}
       {selectedContent && (

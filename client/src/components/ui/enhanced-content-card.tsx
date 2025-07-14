@@ -1,9 +1,10 @@
 import { useState } from "react";
-import { Film, Star, Clock, Eye, Heart, Play, Calendar } from "lucide-react";
+import { Film, Star, Clock, Eye, Heart, Play, Calendar, Tv } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { LazyImage } from "@/components/ui/lazy-image";
+import { QualityBadge } from "@/components/ui/quality-badge";
 import { useAdvancedTheme } from "@/components/theme/advanced-theme-provider";
 import { Content } from "@shared/schema";
 
@@ -77,17 +78,10 @@ export function EnhancedContentCard({
           
           {/* Quality badge */}
           {content.quality && (
-            <Badge 
-              className={`absolute top-3 right-3 ${
-                theme === 'yemen' ? 'bg-yemen-red' :
-                theme === 'cinema' ? 'bg-cinema-gold text-cinema-dark' :
-                theme === 'royal' ? 'bg-royal-purple' :
-                theme === 'heritage' ? 'bg-heritage-gold text-heritage-copper' :
-                'bg-primary'
-              }`}
-            >
-              {content.quality}
-            </Badge>
+            <QualityBadge 
+              quality={content.quality}
+              className="absolute top-3 right-3 shadow-lg"
+            />
           )}
 
           {/* Resolution badge */}
