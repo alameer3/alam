@@ -1,72 +1,27 @@
-import { useState } from "react";
-import { useLocation } from "wouter";
-import { useQuery } from "@tanstack/react-query";
-import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
-import { Card, CardContent } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Textarea } from "@/components/ui/textarea";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { 
-  Play, 
-  Heart, 
-  Share2, 
-  Star, 
-  Calendar, 
-  Clock, 
-  Globe,
-  MapPin,
-  AlertTriangle,
-  Film,
-  BarChart3
-} from "lucide-react";
-import { Content } from "@shared/schema";
-import { useToast } from "@/hooks/use-toast";
+import React, { useState } from 'react';
+import { Card, CardContent } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Badge } from '@/components/ui/badge';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '@/components/ui/dialog';
+import { Textarea } from '@/components/ui/textarea';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Play, Share2, Heart, AlertTriangle, Star, Clock, Calendar, MapPin, Globe, Film } from 'lucide-react';
+import { useToast } from '@/hooks/use-toast';
+import type { Content } from '@/lib/types';
 
-interface AkStyleContentDetailProps {
-  contentId: string;
+interface AkStyleSeriesDetailProps {
+  content: Content;
 }
 
-export function AkStyleContentDetail({ contentId }: AkStyleContentDetailProps) {
-  const [, setLocation] = useLocation();
+export function AkStyleSeriesDetail({ content }: AkStyleSeriesDetailProps) {
   const [isReportModalOpen, setIsReportModalOpen] = useState(false);
   const [reportReason, setReportReason] = useState('');
   const [reportEmail, setReportEmail] = useState('');
   const [reportDetails, setReportDetails] = useState('');
   const [isInWatchlist, setIsInWatchlist] = useState(false);
-  const [userRating, setUserRating] = useState(0);
   const { toast } = useToast();
-
-  const { data: content, isLoading } = useQuery({
-    queryKey: ["/api/content", contentId],
-    enabled: !!contentId,
-  });
-
-  if (isLoading) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-black flex items-center justify-center">
-        <div className="text-center">
-          <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-orange-500 mx-auto mb-4"></div>
-          <p className="text-white text-lg">جاري التحميل...</p>
-        </div>
-      </div>
-    );
-  }
-
-  if (!content) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-black flex items-center justify-center">
-        <div className="text-center">
-          <h1 className="text-white text-2xl mb-4">المحتوى غير موجود</h1>
-          <Button onClick={() => setLocation("/")} className="bg-orange-500 hover:bg-orange-600">
-            العودة للرئيسية
-          </Button>
-        </div>
-      </div>
-    );
-  }
 
   const handleShare = () => {
     if (navigator.share) {
@@ -79,7 +34,7 @@ export function AkStyleContentDetail({ contentId }: AkStyleContentDetailProps) {
       navigator.clipboard.writeText(window.location.href);
       toast({
         title: "تم نسخ الرابط",
-        description: "تم نسخ رابط المحتوى إلى الحافظة"
+        description: "تم نسخ رابط المسلسل إلى الحافظة"
       });
     }
   };
@@ -87,8 +42,8 @@ export function AkStyleContentDetail({ contentId }: AkStyleContentDetailProps) {
   const handleAddToWatchlist = () => {
     setIsInWatchlist(!isInWatchlist);
     toast({
-      title: isInWatchlist ? "تم إزالة من قائمتي" : "تم إضافة إلى قائمتي",
-      description: isInWatchlist ? "تم إزالة المحتوى من قائمة المشاهدة" : "تم إضافة المحتوى إلى قائمة المشاهدة"
+      title: isInWatchlist ? "تم إزالة المسلسل من قائمتي" : "تم إضافة المسلسل إلى قائمتي",
+      description: isInWatchlist ? "تم إزالة المسلسل من قائمة المشاهدة" : "تم إضافة المسلسل إلى قائمة المشاهدة"
     });
   };
 
@@ -151,7 +106,7 @@ export function AkStyleContentDetail({ contentId }: AkStyleContentDetailProps) {
               <h1 className="text-3xl font-bold text-foreground mb-4">{content.title}</h1>
               <div className="flex items-center gap-4 mb-4">
                 <div className="flex items-center gap-1">
-                  <BarChart3 className="w-4 h-4 text-blue-500" />
+                  <img src="/assets/tmdb-logo.png" alt="TMDB" className="w-6 h-6" />
                   <span className="text-sm text-muted-foreground">
                     {content.rating || "8.5"} / 10
                   </span>
@@ -253,10 +208,7 @@ export function AkStyleContentDetail({ contentId }: AkStyleContentDetailProps) {
                 {[1, 2, 3, 4, 5].map((star) => (
                   <Star 
                     key={star} 
-                    className={`w-4 h-4 cursor-pointer hover:scale-110 transition-transform ${
-                      star <= userRating ? 'text-yellow-500 fill-current' : 'text-gray-300'
-                    }`}
-                    onClick={() => setUserRating(star)}
+                    className="w-4 h-4 text-yellow-500 fill-current cursor-pointer hover:scale-110 transition-transform" 
                   />
                 ))}
               </div>
