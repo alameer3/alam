@@ -644,6 +644,79 @@ html {
     color: var(--text-muted);
   }
 
+  /* تأثيرات الشعار المتطورة */
+  .animate-spin-slow {
+    animation: spin 3s linear infinite;
+  }
+
+  .animate-spin-reverse {
+    animation: spin 2s linear infinite reverse;
+  }
+
+  .pulse-glow {
+    animation: pulse-glow 2s ease-in-out infinite;
+  }
+
+  @keyframes pulse-glow {
+    0%, 100% {
+      box-shadow: 0 0 5px rgba(239, 68, 68, 0.5);
+    }
+    50% {
+      box-shadow: 0 0 20px rgba(239, 68, 68, 0.8), 0 0 30px rgba(251, 146, 60, 0.6);
+    }
+  }
+
+  /* تدرجات ملونة للحدود */
+  .border-gradient-to-br {
+    border-image: linear-gradient(to bottom right, var(--tw-gradient-stops)) 1;
+  }
+
+  /* تأثيرات التحريك المتقدمة */
+  .animate-float {
+    animation: float 3s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  /* تأثير الهولوجرام */
+  .hologram-effect {
+    background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+    background-size: 200% 200%;
+    animation: hologram 2s linear infinite;
+  }
+
+  @keyframes hologram {
+    0% {
+      background-position: -200% -200%;
+    }
+    100% {
+      background-position: 200% 200%;
+    }
+  }
+
+  /* نبضات ضوئية */
+  .pulse-ring {
+    animation: pulse-ring 2s ease-out infinite;
+  }
+
+  @keyframes pulse-ring {
+    0% {
+      transform: scale(1);
+      opacity: 1;
+    }
+    100% {
+      transform: scale(1.5);
+      opacity: 0;
+    }
+  }
+
   .bg-dark {
     background: var(--dark-bg);
   }

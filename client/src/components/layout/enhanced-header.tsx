@@ -45,22 +45,42 @@ export function EnhancedHeader() {
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between gap-4">
-          {/* الشعار */}
-          <Link href="/" className="flex items-center gap-3 transition-transform hover:scale-105">
-            <div className="w-10 h-10 rounded-lg overflow-hidden">
-              <img 
-                src="/assets/logo_1.png" 
-                alt="Yemen Flix Logo" 
-                className="w-full h-full object-cover hover:scale-110 transition-transform duration-300"
-              />
+          {/* الشعار المطور */}
+          <Link href="/" className="flex items-center gap-3 group">
+            {/* أيقونة الشعار المتطورة */}
+            <div className="relative">
+              {/* حلقة متوهجة */}
+              <div className="absolute inset-0 w-10 h-10 rounded-full bg-gradient-to-r from-red-500 to-orange-500 opacity-20 group-hover:opacity-40 blur-sm animate-pulse"></div>
+              
+              {/* الشعار الرئيسي */}
+              <div className="relative w-10 h-10 rounded-lg overflow-hidden border border-red-500/30 shadow-xl transform group-hover:rotate-6 group-hover:scale-110 transition-all duration-700">
+                <img 
+                  src="/assets/logo_1.png" 
+                  alt="Yemen Flix Logo" 
+                  className="w-full h-full object-cover"
+                />
+                {/* طبقة تأثير */}
+                <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
+              </div>
+              
+              {/* نقطة إشعار صغيرة */}
+              <div className="absolute -top-1 -right-1 w-3 h-3 bg-gradient-to-r from-green-400 to-emerald-500 rounded-full border-2 border-background animate-bounce"></div>
             </div>
+
+            {/* النص والوصف */}
             <div className="hidden sm:block">
-              <img 
-                src="/assets/logo_2.png" 
-                alt="YEMEN FLIX" 
-                className="h-6 hover:scale-105 transition-transform duration-300"
-              />
-              <p className="text-xs text-muted-foreground">منصة الأفلام اليمنية</p>
+              <div className="relative">
+                <img 
+                  src="/assets/logo_2.png" 
+                  alt="YEMEN FLIX" 
+                  className="h-6 filter brightness-110 group-hover:brightness-125 transition-all duration-300"
+                />
+                {/* خط لامع متحرك */}
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent -skew-x-12 transform translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+              </div>
+              <p className="text-xs text-muted-foreground group-hover:text-primary transition-colors duration-300">
+                منصة الأفلام اليمنية
+              </p>
             </div>
           </Link>
 
