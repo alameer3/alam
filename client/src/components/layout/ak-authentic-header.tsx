@@ -52,45 +52,45 @@ export default function AkAuthenticHeader() {
   };
 
   return (
-    <header className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 shadow-2xl sticky top-0 z-50 border-b border-red-500/20">
+    <header className="bg-white shadow-sm sticky top-0 z-50 border-b border-gray-200">
       <div className="container mx-auto px-4">
-        {/* Top Bar - enhanced ak.sv layout */}
-        <div className="flex items-center justify-between py-4">
+        {/* Top Bar - ak.sv exact layout */}
+        <div className="flex items-center justify-between py-3">
           {/* Logo Section */}
-          <Link to="/" className="flex items-center space-x-reverse space-x-4 hover:scale-105 transition-transform duration-300">
-            <div className="bg-gradient-to-r from-red-600 via-white to-black p-3 rounded-xl shadow-2xl">
-              <span className="text-2xl font-bold">🇾🇪</span>
+          <Link to="/" className="flex items-center space-x-reverse space-x-3 hover:opacity-80 transition-opacity duration-200">
+            <div className="bg-blue-600 text-white p-2 rounded-lg shadow-sm">
+              <span className="text-lg font-bold">AK</span>
             </div>
             <div className="text-right">
-              <h1 className="text-2xl font-bold text-white bg-gradient-to-r from-red-400 to-red-600 bg-clip-text text-transparent">
+              <h1 className="text-xl font-bold text-gray-800">
                 اكوام
               </h1>
-              <p className="text-sm text-gray-300 font-semibold">ak.sv</p>
+              <p className="text-xs text-gray-500">ak.sv</p>
             </div>
           </Link>
 
-          {/* Search Bar - enhanced centered design */}
-          <div className="flex-1 max-w-3xl mx-8">
+          {/* Search Bar - ak.sv style */}
+          <div className="flex-1 max-w-lg mx-6">
             <form onSubmit={handleSearch} className="relative">
               <Input
                 type="text"
                 placeholder="ابحث عن الأفلام والمسلسلات..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-6 py-4 text-right border-2 border-slate-600 focus:border-red-500 rounded-xl bg-slate-800/80 backdrop-blur-sm text-white placeholder-gray-400 text-lg font-medium shadow-inner"
+                className="w-full pl-10 pr-4 py-2 text-right border border-gray-300 focus:border-blue-500 rounded-lg bg-white text-gray-900 placeholder-gray-500 text-sm"
               />
-              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-6 w-6 text-gray-400" />
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-gray-400" />
             </form>
           </div>
 
           {/* User Section */}
-          <div className="flex items-center space-x-reverse space-x-6">
-            <Button variant="ghost" size="lg" className="text-white hover:bg-red-600/20 px-6 py-3 rounded-xl font-semibold">
-              <User className="h-5 w-5 ml-2" />
+          <div className="flex items-center space-x-reverse space-x-4">
+            <Button variant="ghost" size="sm" className="text-gray-700 hover:bg-gray-100 px-4 py-2 rounded-lg text-sm">
+              <User className="h-4 w-4 ml-1" />
               تسجيل الدخول
             </Button>
-            <Button variant="ghost" size="lg" className="text-white hover:bg-red-600/20 px-6 py-3 rounded-xl font-semibold">
-              <Heart className="h-5 w-5 ml-2" />
+            <Button variant="ghost" size="sm" className="text-gray-700 hover:bg-gray-100 px-4 py-2 rounded-lg text-sm">
+              <Heart className="h-4 w-4 ml-1" />
               المفضلة
             </Button>
           </div>
@@ -99,27 +99,27 @@ export default function AkAuthenticHeader() {
           <Button
             variant="ghost"
             size="sm"
-            className="md:hidden text-white"
+            className="md:hidden text-gray-700"
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
           >
-            {isMobileMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            {isMobileMenuOpen ? <X className="h-4 w-4" /> : <Menu className="h-4 w-4" />}
           </Button>
         </div>
 
-        {/* Navigation Bar - enhanced ak.sv structure */}
-        <nav className="hidden md:flex items-center justify-center space-x-reverse space-x-8 py-4 border-t border-slate-700/50">
+        {/* Navigation Bar - ak.sv exact structure */}
+        <nav className="hidden md:flex items-center justify-center space-x-reverse space-x-6 py-2 border-t border-gray-200">
           {navigation.map((item) => (
             <Link
               key={item.href}
               to={item.href}
-              className={`flex items-center space-x-reverse space-x-3 px-6 py-3 rounded-xl transition-all duration-300 font-semibold ${
+              className={`flex items-center space-x-reverse space-x-2 px-4 py-2 rounded-lg transition-all duration-200 text-sm font-medium ${
                 isActive(item.href)
-                  ? "bg-red-600 text-white shadow-lg shadow-red-500/25 transform scale-105"
-                  : "text-gray-300 hover:text-white hover:bg-slate-800/50 hover:scale-105"
+                  ? "bg-blue-600 text-white shadow-sm"
+                  : "text-gray-700 hover:text-blue-600 hover:bg-gray-50"
               }`}
             >
-              <item.icon className="h-5 w-5" />
-              <span className="text-sm">{item.name}</span>
+              <item.icon className="h-4 w-4" />
+              <span>{item.name}</span>
             </Link>
           ))}
         </nav>

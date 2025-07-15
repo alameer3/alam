@@ -59,7 +59,7 @@ export default function AkAuthenticHomepage() {
   ];
 
   return (
-    <div className="min-h-screen bg-slate-900">
+    <div className="min-h-screen bg-gray-50">
       {/* Enhanced Hero Section */}
       <AkStyleHeroNew />
 
@@ -67,44 +67,44 @@ export default function AkAuthenticHomepage() {
       <AkEnhancedContentSections sections={contentSections} />
 
       {/* Enhanced Statistics Section */}
-      <div className="py-16 bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900">
+      <div className="py-12 bg-white">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-white mb-4 bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold text-gray-800 mb-2">
               إحصائيات الموقع
             </h2>
-            <p className="text-gray-400 text-lg">
+            <p className="text-gray-600 text-lg">
               اكتشف كمية المحتوى المتاح في منصتنا
             </p>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {stats?.content?.map((stat: any) => (
-              <Card key={stat.type} className="bg-slate-800 border-slate-700 hover:border-red-500/50 transition-all duration-300 shadow-xl hover:shadow-2xl">
-                <CardContent className="p-8 text-center">
-                  <div className="mb-6">
+              <Card key={stat.type} className="bg-white border border-gray-200 hover:border-blue-300 transition-all duration-200 shadow-sm hover:shadow-md">
+                <CardContent className="p-6 text-center">
+                  <div className="mb-4">
                     {stat.type === "movies" && (
-                      <div className="bg-gradient-to-r from-red-500 to-red-600 p-4 rounded-2xl mx-auto w-20 h-20 flex items-center justify-center">
-                        <Film className="h-10 w-10 text-white" />
+                      <div className="bg-blue-500 text-white p-3 rounded-xl mx-auto w-16 h-16 flex items-center justify-center">
+                        <Film className="h-8 w-8" />
                       </div>
                     )}
                     {stat.type === "series" && (
-                      <div className="bg-gradient-to-r from-green-500 to-green-600 p-4 rounded-2xl mx-auto w-20 h-20 flex items-center justify-center">
-                        <Video className="h-10 w-10 text-white" />
+                      <div className="bg-green-500 text-white p-3 rounded-xl mx-auto w-16 h-16 flex items-center justify-center">
+                        <Video className="h-8 w-8" />
                       </div>
                     )}
                     {stat.type === "shows" && (
-                      <div className="bg-gradient-to-r from-purple-500 to-purple-600 p-4 rounded-2xl mx-auto w-20 h-20 flex items-center justify-center">
-                        <Tv className="h-10 w-10 text-white" />
+                      <div className="bg-purple-500 text-white p-3 rounded-xl mx-auto w-16 h-16 flex items-center justify-center">
+                        <Tv className="h-8 w-8" />
                       </div>
                     )}
                     {stat.type === "mix" && (
-                      <div className="bg-gradient-to-r from-orange-500 to-orange-600 p-4 rounded-2xl mx-auto w-20 h-20 flex items-center justify-center">
-                        <Globe className="h-10 w-10 text-white" />
+                      <div className="bg-orange-500 text-white p-3 rounded-xl mx-auto w-16 h-16 flex items-center justify-center">
+                        <Globe className="h-8 w-8" />
                       </div>
                     )}
                   </div>
-                  <div className="text-4xl font-bold text-white mb-2">{stat.count}</div>
-                  <div className="text-lg text-gray-400 font-semibold">
+                  <div className="text-3xl font-bold text-gray-800 mb-1">{stat.count}</div>
+                  <div className="text-sm text-gray-600 font-medium">
                     {stat.type === "movies" && "فيلم"}
                     {stat.type === "series" && "مسلسل"}
                     {stat.type === "shows" && "برنامج"}
@@ -118,11 +118,11 @@ export default function AkAuthenticHomepage() {
       </div>
 
       {/* Footer */}
-      <footer className="bg-slate-900 border-t border-slate-700 py-8">
+      <footer className="bg-gray-100 border-t border-gray-200 py-6">
         <div className="container mx-auto px-4">
           <div className="text-center">
-            <h3 className="text-2xl font-bold text-white mb-2">اكوام</h3>
-            <p className="text-gray-400 mb-4">الموقع العربي الأول للمشاهدة والتحميل</p>
+            <h3 className="text-xl font-bold text-gray-800 mb-1">اكوام</h3>
+            <p className="text-gray-600 text-sm mb-2">الموقع العربي الأول للمشاهدة والتحميل</p>
             <div className="flex items-center justify-center space-x-reverse space-x-4 text-gray-400">
               <span>© 2024 اكوام</span>
               <span>•</span>

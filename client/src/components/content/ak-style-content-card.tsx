@@ -44,13 +44,13 @@ export function AkStyleContentCard({ content, href }: AkStyleContentCardProps) {
   const finalHref = href || getDefaultHref();
 
   return (
-    <Card className="group relative overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-xl bg-white">
+    <Card className="group relative overflow-hidden transition-all duration-200 hover:shadow-lg bg-white border border-gray-200">
       <Link to={finalHref}>
         <div className="aspect-[2/3] relative">
           <img 
             src={content.poster_url || '/api/placeholder/300/450'} 
             alt={content.titleArabic || content.title}
-            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+            className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105"
             onError={(e) => {
               e.currentTarget.src = '/api/placeholder/300/450';
             }}
@@ -60,7 +60,7 @@ export function AkStyleContentCard({ content, href }: AkStyleContentCardProps) {
           {content.quality && (
             <Badge 
               variant="secondary" 
-              className="absolute top-2 right-2 bg-black/80 text-white border-0"
+              className="absolute top-2 right-2 bg-blue-600 text-white border-0 text-xs"
             >
               {content.quality}
             </Badge>
@@ -68,29 +68,29 @@ export function AkStyleContentCard({ content, href }: AkStyleContentCardProps) {
 
           {/* Rating */}
           {content.rating && (
-            <div className="absolute top-2 left-2 flex items-center gap-1 bg-black/80 text-white px-2 py-1 rounded-full text-sm">
-              <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+            <div className="absolute top-2 left-2 flex items-center gap-1 bg-yellow-500 text-white px-2 py-1 rounded text-xs">
+              <Star className="w-3 h-3 fill-white text-white" />
               <span>{content.rating}</span>
             </div>
           )}
 
           {/* Overlay on hover */}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <div className="absolute bottom-0 left-0 right-0 p-4">
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+            <div className="absolute bottom-0 left-0 right-0 p-3">
               <div className="flex items-center justify-between mb-2">
-                <div className="flex items-center gap-2 text-white text-sm">
-                  <Calendar className="w-4 h-4" />
+                <div className="flex items-center gap-2 text-white text-xs">
+                  <Calendar className="w-3 h-3" />
                   <span>{content.release_year}</span>
                 </div>
                 {content.view_count && (
-                  <div className="flex items-center gap-1 text-white text-sm">
-                    <Eye className="w-4 h-4" />
+                  <div className="flex items-center gap-1 text-white text-xs">
+                    <Eye className="w-3 h-3" />
                     <span>{content.view_count.toLocaleString()}</span>
                   </div>
                 )}
               </div>
-              <Button size="sm" className="w-full bg-red-600 hover:bg-red-700 text-white">
-                <Play className="w-4 h-4 mr-2" />
+              <Button size="sm" className="w-full bg-blue-600 hover:bg-blue-700 text-white text-xs">
+                <Play className="w-3 h-3 mr-1" />
                 مشاهدة الآن
               </Button>
             </div>
@@ -98,12 +98,12 @@ export function AkStyleContentCard({ content, href }: AkStyleContentCardProps) {
         </div>
       </Link>
 
-      <CardContent className="p-4">
-        <h3 className="font-bold text-lg mb-2 line-clamp-2 text-right text-gray-800">
+      <CardContent className="p-3">
+        <h3 className="font-semibold text-sm mb-2 line-clamp-2 text-right text-gray-800">
           {content.titleArabic || content.title}
         </h3>
         
-        <div className="flex items-center justify-between text-sm text-gray-600 mb-2">
+        <div className="flex items-center justify-between text-xs text-gray-500 mb-2">
           <span>{content.release_year}</span>
           <span className="capitalize">{content.type}</span>
         </div>
@@ -114,7 +114,7 @@ export function AkStyleContentCard({ content, href }: AkStyleContentCardProps) {
               <Badge 
                 key={index} 
                 variant="outline" 
-                className="text-xs border-red-200 text-red-600"
+                className="text-xs border-blue-200 text-blue-600 px-2 py-1"
               >
                 {genre}
               </Badge>
@@ -123,19 +123,19 @@ export function AkStyleContentCard({ content, href }: AkStyleContentCardProps) {
         )}
 
         {/* Action buttons */}
-        <div className="flex items-center justify-between mt-3">
+        <div className="flex items-center justify-between mt-2">
           <Button 
             variant="ghost" 
             size="sm"
-            className="text-red-600 hover:text-red-700 hover:bg-red-50"
+            className="text-blue-600 hover:text-blue-700 hover:bg-blue-50 p-1"
           >
-            <Heart className="w-4 h-4" />
+            <Heart className="w-3 h-3" />
           </Button>
           <Link to={finalHref}>
             <Button 
               variant="outline" 
               size="sm"
-              className="border-red-200 text-red-600 hover:bg-red-50"
+              className="border-blue-200 text-blue-600 hover:bg-blue-50 text-xs px-3 py-1"
             >
               المزيد
             </Button>

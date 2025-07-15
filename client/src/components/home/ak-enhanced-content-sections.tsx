@@ -35,7 +35,7 @@ interface ContentSectionsProps {
 
 export default function AkEnhancedContentSections({ sections }: ContentSectionsProps) {
   return (
-    <div className="bg-gradient-to-b from-slate-900 via-slate-800 to-slate-900">
+    <div className="bg-gray-50">
       {sections.map((section, index) => (
         <ContentSection 
           key={section.endpoint}
@@ -81,18 +81,18 @@ function ContentSection({ title, endpoint, viewAllLink, type, icon: IconComponen
 
   if (isLoading) {
     return (
-      <div className={`py-16 ${isEven ? 'bg-slate-900' : 'bg-slate-800'}`}>
+      <div className={`py-8 ${isEven ? 'bg-white' : 'bg-gray-50'}`}>
         <div className="container mx-auto px-4">
-          <div className="flex items-center justify-between mb-10">
-            <div className="h-8 bg-slate-700 rounded w-48 animate-pulse"></div>
-            <div className="h-10 bg-slate-700 rounded w-32 animate-pulse"></div>
+          <div className="flex items-center justify-between mb-6">
+            <div className="h-6 bg-gray-200 rounded w-48 animate-pulse"></div>
+            <div className="h-8 bg-gray-200 rounded w-24 animate-pulse"></div>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4">
             {[...Array(8)].map((_, i) => (
               <div key={i} className="animate-pulse">
-                <div className="bg-slate-700 aspect-[2/3] rounded-xl mb-4"></div>
-                <div className="h-4 bg-slate-700 rounded mb-2"></div>
-                <div className="h-3 bg-slate-700 rounded w-3/4"></div>
+                <div className="bg-gray-200 aspect-[2/3] rounded-lg mb-3"></div>
+                <div className="h-3 bg-gray-200 rounded mb-2"></div>
+                <div className="h-2 bg-gray-200 rounded w-3/4"></div>
               </div>
             ))}
           </div>
@@ -104,19 +104,19 @@ function ContentSection({ title, endpoint, viewAllLink, type, icon: IconComponen
   const displayContent = Array.isArray(content) ? content.slice(0, 16) : [];
 
   return (
-    <div className={`py-16 ${isEven ? 'bg-slate-900' : 'bg-slate-800'}`}>
+    <div className={`py-8 ${isEven ? 'bg-white' : 'bg-gray-50'}`}>
       <div className="container mx-auto px-4">
-        {/* Enhanced Section Header */}
-        <div className="flex items-center justify-between mb-12">
-          <div className="flex items-center space-x-reverse space-x-4">
-            <div className={`p-4 rounded-2xl ${gradient} shadow-2xl`}>
-              <IconComponent className="h-8 w-8 text-white" />
+        {/* ak.sv Section Header */}
+        <div className="flex items-center justify-between mb-6">
+          <div className="flex items-center space-x-reverse space-x-3">
+            <div className={`p-2 rounded-lg bg-blue-600 shadow-sm`}>
+              <IconComponent className="h-5 w-5 text-white" />
             </div>
             <div>
-              <h2 className="text-4xl font-bold text-white mb-2">
+              <h2 className="text-2xl font-bold text-gray-800">
                 {title}
               </h2>
-              <p className="text-gray-400 text-lg">
+              <p className="text-gray-600 text-sm">
                 اكتشف أفضل المحتوى المتاح
               </p>
             </div>
@@ -124,23 +124,23 @@ function ContentSection({ title, endpoint, viewAllLink, type, icon: IconComponen
           {viewAllLink && (
             <Link to={viewAllLink}>
               <Button 
-                size="lg" 
+                size="sm" 
                 variant="outline" 
-                className={`border-2 ${color} hover:bg-opacity-10 px-8 py-4 text-lg font-bold transition-all duration-300 rounded-xl`}
+                className="border-blue-200 text-blue-600 hover:bg-blue-50 px-4 py-2 text-sm font-medium transition-all duration-200 rounded-lg"
               >
                 عرض الكل
-                <MoreHorizontal className="h-6 w-6 mr-3" />
+                <MoreHorizontal className="h-4 w-4 mr-2" />
               </Button>
             </Link>
           )}
         </div>
 
-        {/* Enhanced Content Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-6">
+        {/* ak.sv Content Grid */}
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4">
           {displayContent.map((item: any) => (
             <Card 
               key={item.id} 
-              className={`bg-slate-800 border-slate-700 hover:border-opacity-50 transition-all duration-300 group shadow-xl hover:shadow-2xl rounded-2xl overflow-hidden ${color.replace('text-', 'hover:border-')}`}
+              className="bg-white border border-gray-200 hover:border-blue-300 transition-all duration-200 group shadow-sm hover:shadow-md rounded-lg overflow-hidden"
             >
               <CardContent className="p-0">
                 <Link to={getDetailLink(item)}>
@@ -154,45 +154,45 @@ function ContentSection({ title, endpoint, viewAllLink, type, icon: IconComponen
 
                     {/* Quality Badge */}
                     {item.quality && (
-                      <Badge className="absolute top-3 right-3 bg-red-600 text-white text-xs font-bold px-3 py-1 shadow-lg rounded-full">
+                      <Badge className="absolute top-2 right-2 bg-blue-600 text-white text-xs font-medium px-2 py-1 shadow-sm rounded">
                         {item.quality}
                       </Badge>
                     )}
 
                     {/* Rating */}
                     {item.rating && (
-                      <div className="absolute top-3 left-3 bg-black/80 text-white text-xs px-3 py-1 rounded-full flex items-center space-x-reverse space-x-1 shadow-lg backdrop-blur-sm">
-                        <Star className="h-3 w-3 text-yellow-400 fill-current" />
-                        <span className="font-bold">{item.rating}</span>
+                      <div className="absolute top-2 left-2 bg-yellow-500 text-white text-xs px-2 py-1 rounded flex items-center space-x-reverse space-x-1 shadow-sm">
+                        <Star className="h-3 w-3 text-white fill-current" />
+                        <span className="font-medium">{item.rating}</span>
                       </div>
                     )}
 
                     {/* Play Button Overlay */}
-                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center">
-                      <div className={`p-6 rounded-full shadow-2xl transform scale-75 group-hover:scale-100 transition-transform duration-300 ${gradient}`}>
-                        <Play className="h-12 w-12 text-white" />
+                    <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-all duration-200 flex items-center justify-center">
+                      <div className="p-3 rounded-full bg-blue-600 shadow-lg transform scale-75 group-hover:scale-100 transition-transform duration-200">
+                        <Play className="h-6 w-6 text-white" />
                       </div>
                     </div>
 
                     {/* Gradient Overlay */}
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-200"></div>
                   </div>
                 </Link>
 
                 {/* Content Info */}
-                <div className="p-5">
+                <div className="p-3">
                   <Link to={getDetailLink(item)}>
-                    <h3 className="text-white font-bold text-sm mb-3 line-clamp-2 hover:text-opacity-80 transition-colors leading-relaxed">
+                    <h3 className="text-gray-800 font-medium text-sm mb-2 line-clamp-2 hover:text-blue-600 transition-colors leading-relaxed">
                       {item.titleAr || item.title}
                     </h3>
                   </Link>
                   
-                  <div className="flex items-center justify-between text-gray-400 text-xs">
-                    <div className="flex items-center space-x-reverse space-x-2">
+                  <div className="flex items-center justify-between text-gray-500 text-xs">
+                    <div className="flex items-center space-x-reverse space-x-1">
                       <Calendar className="h-3 w-3" />
                       <span>{item.year || "2024"}</span>
                     </div>
-                    <div className="flex items-center space-x-reverse space-x-2">
+                    <div className="flex items-center space-x-reverse space-x-1">
                       <Eye className="h-3 w-3" />
                       <span>{item.views || "0"}</span>
                     </div>
