@@ -3,10 +3,11 @@ import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { YemenThemeProvider } from "@/components/theme/yemen-theme-provider";
-import AkAuthenticHeader from "@/components/layout/ak-authentic-header";
+import AkOriginalHeader from "@/components/layout/ak-original-header";
 import { ErrorBoundary } from "@/components/ui/error-boundary";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
+import AkOriginalHomepage from "@/components/home/ak-original-homepage";
 import Ones from "@/pages/ones";
 import Movies from "@/pages/movies";
 import Series from "@/pages/series";
@@ -35,7 +36,7 @@ import Trailers from "@/pages/trailers";
 function Router() {
   return (
     <Switch>
-      <Route path="/" component={Home} />
+      <Route path="/" component={AkOriginalHomepage} />
       <Route path="/ones" component={Ones} />
       <Route path="/movies" component={Movies} />
       <Route path="/series" component={Series} />
@@ -73,7 +74,7 @@ function AppContent() {
 
   return (
     <div className="min-h-screen bg-background">
-      <AkAuthenticHeader />
+      <AkOriginalHeader />
       <main>
         <Router />
       </main>
