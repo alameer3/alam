@@ -133,7 +133,7 @@ const UserBehaviorTracking: React.FC = () => {
             {behaviorData.topActions.slice(0, 4).map((action, index) => {
               const IconComponent = action.icon;
               return (
-                <Card key={index} className="border-l-4" style={{ borderLeftColor: action.color }}>
+                <Card key={`action-${index}`} className="border-l-4" style={{ borderLeftColor: action.color }}>
                   <CardContent className="p-4">
                     <div className="flex items-center justify-between">
                       <div>
@@ -163,7 +163,7 @@ const UserBehaviorTracking: React.FC = () => {
                     const percentage = (action.count / maxCount) * 100;
                     
                     return (
-                      <div key={index} className="flex items-center justify-between">
+                      <div key={`interaction-${index}`} className="flex items-center justify-between">
                         <div className="flex items-center gap-3">
                           <IconComponent className="w-5 h-5" style={{ color: action.color }} />
                           <span className="text-sm font-medium">{action.action}</span>
@@ -212,7 +212,7 @@ const UserBehaviorTracking: React.FC = () => {
                     <h4 className="font-medium">الكلمات الأكثر بحثاً:</h4>
                     <div className="flex flex-wrap gap-2">
                       {behaviorData.searchBehavior.popularQueries.map((query, index) => (
-                        <Badge key={index} variant="secondary" className="text-xs">
+                        <Badge key={`badge-${index}`} variant="secondary" className="text-xs">
                           {query.query} ({query.count})
                         </Badge>
                       ))}
@@ -252,7 +252,7 @@ const UserBehaviorTracking: React.FC = () => {
             <CardContent>
               <div className="space-y-4">
                 {behaviorData.contentInteraction.map((content, index) => (
-                  <div key={index} className="p-4 bg-slate-50 dark:bg-slate-800 rounded-lg">
+                  <div key={`device-${index}`} className="p-4 bg-slate-50 dark:bg-slate-800 rounded-lg">
                     <div className="flex justify-between items-start mb-3">
                       <h4 className="font-medium text-lg">{content.contentType}</h4>
                       <Badge variant="outline" className="text-xs">
@@ -297,7 +297,7 @@ const UserBehaviorTracking: React.FC = () => {
             <CardContent>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 {behaviorData.deviceAnalytics.map((device, index) => (
-                  <div key={index} className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg">
+                  <div key={`journey-${index}`} className="p-4 border border-slate-200 dark:border-slate-700 rounded-lg">
                     <div className="flex justify-between items-start mb-3">
                       <h4 className="font-medium">{device.device}</h4>
                       <Badge variant="secondary">{device.users} مستخدم</Badge>
