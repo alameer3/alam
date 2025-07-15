@@ -7,7 +7,7 @@ import AkOriginalHeader from "@/components/layout/ak-original-header";
 import { ErrorBoundary } from "@/components/ui/error-boundary";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
-import AkOriginalHomepage from "@/components/home/ak-original-homepage";
+import AkSvHomepage from "@/components/home/ak-sv-homepage";
 import Ones from "@/pages/ones";
 import Movies from "@/pages/movies";
 import Series from "@/pages/series";
@@ -36,7 +36,7 @@ import Trailers from "@/pages/trailers";
 function Router() {
   return (
     <Switch>
-      <Route path="/" component={AkOriginalHomepage} />
+      <Route path="/" component={AkSvHomepage} />
       <Route path="/ones" component={Ones} />
       <Route path="/movies" component={Movies} />
       <Route path="/series" component={Series} />
@@ -74,7 +74,7 @@ function AppContent() {
 
   return (
     <div className="min-h-screen bg-background">
-      <AkOriginalHeader />
+      {!isHomePage && <AkOriginalHeader />}
       <main>
         <Router />
       </main>
