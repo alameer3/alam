@@ -36,7 +36,9 @@ export function AdvancedFilters({ onFilterChange, contentType }: AdvancedFilters
   });
 
   const handleFilterChange = (key: string, value: string) => {
-    const newFilters = { ...filters, [key]: value };
+    // تحويل "all" إلى قيمة فارغة للفلترة
+    const filterValue = value === 'all' ? '' : value;
+    const newFilters = { ...filters, [key]: filterValue };
     setFilters(newFilters);
     onFilterChange(newFilters);
   };
@@ -134,12 +136,12 @@ export function AdvancedFilters({ onFilterChange, contentType }: AdvancedFilters
           {/* القسم */}
           <div className="space-y-2">
             <Label className="text-white text-sm font-medium">القسم</Label>
-            <Select onValueChange={(value) => handleFilterChange('category', value)} value={filters.category}>
+            <Select onValueChange={(value) => handleFilterChange('category', value)} value={filters.category || 'all'}>
               <SelectTrigger className="bg-slate-700 border-slate-600 text-white">
                 <SelectValue placeholder="اختر القسم" />
               </SelectTrigger>
               <SelectContent className="bg-slate-800 border-slate-600">
-                <SelectItem value="">جميع الأقسام</SelectItem>
+                <SelectItem value="all">جميع الأقسام</SelectItem>
                 {categories_list.map((category) => (
                   <SelectItem key={category.id} value={category.id.toString()}>
                     {category.nameArabic}
@@ -152,12 +154,12 @@ export function AdvancedFilters({ onFilterChange, contentType }: AdvancedFilters
           {/* التصنيف */}
           <div className="space-y-2">
             <Label className="text-white text-sm font-medium">التصنيف</Label>
-            <Select onValueChange={(value) => handleFilterChange('genre', value)} value={filters.genre}>
+            <Select onValueChange={(value) => handleFilterChange('genre', value)} value={filters.genre || 'all'}>
               <SelectTrigger className="bg-slate-700 border-slate-600 text-white">
                 <SelectValue placeholder="اختر التصنيف" />
               </SelectTrigger>
               <SelectContent className="bg-slate-800 border-slate-600">
-                <SelectItem value="">جميع التصنيفات</SelectItem>
+                <SelectItem value="all">جميع التصنيفات</SelectItem>
                 {genres_list.map((genre) => (
                   <SelectItem key={genre.id} value={genre.id.toString()}>
                     {genre.nameArabic}
@@ -170,12 +172,12 @@ export function AdvancedFilters({ onFilterChange, contentType }: AdvancedFilters
           {/* التقييم */}
           <div className="space-y-2">
             <Label className="text-white text-sm font-medium">التقييم</Label>
-            <Select onValueChange={(value) => handleFilterChange('rating', value)} value={filters.rating}>
+            <Select onValueChange={(value) => handleFilterChange('rating', value)} value={filters.rating || 'all'}>
               <SelectTrigger className="bg-slate-700 border-slate-600 text-white">
                 <SelectValue placeholder="اختر التقييم" />
               </SelectTrigger>
               <SelectContent className="bg-slate-800 border-slate-600">
-                <SelectItem value="">جميع التقييمات</SelectItem>
+                <SelectItem value="all">جميع التقييمات</SelectItem>
                 {[1,2,3,4,5,6,7,8,9].map((rating) => (
                   <SelectItem key={rating} value={`${rating}`}>
                     +{rating}
@@ -188,12 +190,12 @@ export function AdvancedFilters({ onFilterChange, contentType }: AdvancedFilters
           {/* سنة الإنتاج */}
           <div className="space-y-2">
             <Label className="text-white text-sm font-medium">سنة الإنتاج</Label>
-            <Select onValueChange={(value) => handleFilterChange('year', value)} value={filters.year}>
+            <Select onValueChange={(value) => handleFilterChange('year', value)} value={filters.year || 'all'}>
               <SelectTrigger className="bg-slate-700 border-slate-600 text-white">
                 <SelectValue placeholder="اختر السنة" />
               </SelectTrigger>
               <SelectContent className="bg-slate-800 border-slate-600">
-                <SelectItem value="">جميع السنوات</SelectItem>
+                <SelectItem value="all">جميع السنوات</SelectItem>
                 <ScrollArea className="h-32">
                   {years.map((year) => (
                     <SelectItem key={year} value={year.toString()}>
@@ -208,12 +210,12 @@ export function AdvancedFilters({ onFilterChange, contentType }: AdvancedFilters
           {/* اللغة */}
           <div className="space-y-2">
             <Label className="text-white text-sm font-medium">اللغة</Label>
-            <Select onValueChange={(value) => handleFilterChange('language', value)} value={filters.language}>
+            <Select onValueChange={(value) => handleFilterChange('language', value)} value={filters.language || 'all'}>
               <SelectTrigger className="bg-slate-700 border-slate-600 text-white">
                 <SelectValue placeholder="اختر اللغة" />
               </SelectTrigger>
               <SelectContent className="bg-slate-800 border-slate-600">
-                <SelectItem value="">جميع اللغات</SelectItem>
+                <SelectItem value="all">جميع اللغات</SelectItem>
                 {languages.map((language) => (
                   <SelectItem key={language} value={language}>
                     {language}
@@ -226,12 +228,12 @@ export function AdvancedFilters({ onFilterChange, contentType }: AdvancedFilters
           {/* الجودة */}
           <div className="space-y-2">
             <Label className="text-white text-sm font-medium">الجودة</Label>
-            <Select onValueChange={(value) => handleFilterChange('quality', value)} value={filters.quality}>
+            <Select onValueChange={(value) => handleFilterChange('quality', value)} value={filters.quality || 'all'}>
               <SelectTrigger className="bg-slate-700 border-slate-600 text-white">
                 <SelectValue placeholder="اختر الجودة" />
               </SelectTrigger>
               <SelectContent className="bg-slate-800 border-slate-600">
-                <SelectItem value="">جميع الجودات</SelectItem>
+                <SelectItem value="all">جميع الجودات</SelectItem>
                 {qualities.map((quality) => (
                   <SelectItem key={quality} value={quality}>
                     {quality}
@@ -244,12 +246,12 @@ export function AdvancedFilters({ onFilterChange, contentType }: AdvancedFilters
           {/* الدقة */}
           <div className="space-y-2">
             <Label className="text-white text-sm font-medium">الدقة</Label>
-            <Select onValueChange={(value) => handleFilterChange('resolution', value)} value={filters.resolution}>
+            <Select onValueChange={(value) => handleFilterChange('resolution', value)} value={filters.resolution || 'all'}>
               <SelectTrigger className="bg-slate-700 border-slate-600 text-white">
                 <SelectValue placeholder="اختر الدقة" />
               </SelectTrigger>
               <SelectContent className="bg-slate-800 border-slate-600">
-                <SelectItem value="">جميع الدقات</SelectItem>
+                <SelectItem value="all">جميع الدقات</SelectItem>
                 {resolutions.map((resolution) => (
                   <SelectItem key={resolution} value={resolution}>
                     {resolution}
