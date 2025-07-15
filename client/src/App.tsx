@@ -17,7 +17,7 @@ import MiscContent from "@/pages/misc-content";
 import Mix from "@/pages/mix";
 import Search from "@/pages/search";
 import ContentDetail from "@/pages/content-detail";
-import MovieDetail from "@/pages/movie-detail";
+import AkSvMovieDetail from "@/pages/ak-sv-movie-detail";
 import SeriesDetail from "@/pages/series-detail";
 import ShowDetail from "@/pages/show-detail";
 import MixDetail from "@/pages/mix-detail";
@@ -47,7 +47,7 @@ function Router() {
       <Route path="/mix" component={Mix} />
       <Route path="/search" component={Search} />
       <Route path="/content/:id" component={ContentDetail} />
-      <Route path="/movie/:id/:title?" component={MovieDetail} />
+      <Route path="/movie/:id/:title?" component={AkSvMovieDetail} />
       <Route path="/series/:id/:title?" component={SeriesDetail} />
       <Route path="/shows/:id/:title?" component={ShowDetail} />
       <Route path="/mix/:id/:title?" component={MixDetail} />

@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useLocation } from "wouter";
 import { Star, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
@@ -17,6 +18,7 @@ interface Movie {
 }
 
 export default function AkSvMovies() {
+  const [, setLocation] = useLocation();
   const [currentPage, setCurrentPage] = useState(1);
   const [filters, setFilters] = useState({
     category: "",
@@ -210,7 +212,11 @@ export default function AkSvMovies() {
               <>
                 <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
                   {moviesData?.content?.map((movie: Movie) => (
-                    <div key={movie.id} className="group cursor-pointer">
+                    <div 
+                      key={movie.id} 
+                      className="group cursor-pointer"
+                      onClick={() => setLocation(`/movie/${movie.id}/${encodeURIComponent(movie.title)}`)}
+                    >
                       <div className="bg-black/60 backdrop-blur-sm rounded-xl overflow-hidden border border-white/10 hover:border-orange-500/50 transition-all duration-300 hover:scale-105">
                         <div className="aspect-[2/3] relative overflow-hidden">
                           <img
