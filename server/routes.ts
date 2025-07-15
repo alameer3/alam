@@ -173,13 +173,93 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/search", async (req, res) => {
     try {
       const query = req.query.query as string || req.query.q as string;
-      const type = req.query.type as string;
-      const category = req.query.category as string;
-      const genre = req.query.genre as string;
-      const language = req.query.language as string;
-      const quality = req.query.quality as string;
-      const yearFrom = req.query.yearFrom as string;
-      const yearTo = req.query.yearTo as string;
+      if (!query) {
+        return res.status(400).json({ error: "Query parameter is required" });
+      }
+      
+      const result = await serverDBStorage.searchContent(query);
+      res.json(result);
+    } catch (error) {
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Search error:', error);
+      }
+      res.status(500).json({ error: "Failed to search content" });
+    }
+  });
+
+  // Fixed content search route
+  app.get("/api/content/search", async (req, res) => {
+    try {
+      const query = req.query.q as string || req.query.query as string;
+      if (!query) {
+        return res.json({ content: [], total: 0, page: 1, limit: 20, totalPages: 0 });
+      }
+      
+      const result = await serverDBStorage.searchContent(query);
+      res.json(result);
+    } catch (error) {
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Content search error:', error);
+      }
+      res.status(500).json({ error: "Failed to search content" });
+    }
+  });
+
+  // Featured content route
+  app.get("/api/content/featured", async (req, res) => {
+    try {
+      const featured = await serverDBStorage.getFeaturedContent();
+      res.json({ content: featured, total: featured.length, page: 1, limit: 20, totalPages: 1 });
+    } catch (error) {
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Featured content error:', error);
+      }
+      res.status(500).json({ error: "Failed to fetch featured content" });
+    }
+  });
+
+  // Trending content route
+  app.get("/api/content/trending", async (req, res) => {
+    try {
+      const trending = await serverDBStorage.getTrendingContent();
+      res.json({ content: trending, total: trending.length, page: 1, limit: 20, totalPages: 1 });
+    } catch (error) {
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Trending content error:', error);
+      }
+      res.status(500).json({ error: "Failed to fetch trending content" });
+    }
+  });
+
+  // Genres routes
+  app.get("/api/genres", async (req, res) => {
+    try {
+      const genres = await serverDBStorage.getGenres();
+      res.json(genres);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch genres" });
+    }
+  });
+
+  // Categories routes
+  app.get("/api/categories", async (req, res) => {
+    try {
+      const categories = await serverDBStorage.getCategories();
+      res.json(categories);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch categories" });
+    }
+  });
+
+  // Stats route
+  app.get("/api/content/stats", async (req, res) => {
+    try {
+      const stats = await serverDBStorage.getStats();
+      res.json(stats);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch stats" });
+    }
+  });
       const ratingMin = req.query.ratingMin as string;
       const sortBy = req.query.sortBy as string || 'title';
       const sortOrder = req.query.sortOrder as string || 'asc';

@@ -29,7 +29,7 @@ export default function TrailersPage() {
     rating: 'all'
   });
 
-  const { data: trendingTrailers = [], isLoading: trendingLoading, error: trendingError } = useTrendingTrailers();
+  const { data: trendingTrailers, isLoading: trendingLoading, error: trendingError } = useTrendingTrailers();
   const { data: featuredTrailer, isLoading: featuredLoading, error: featuredError } = useFeaturedTrailer();
 
   // Mock data for comprehensive trailer showcase
