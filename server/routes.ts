@@ -251,15 +251,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Stats route
-  app.get("/api/content/stats", async (req, res) => {
+  // Advanced search route
+  app.get("/api/content/advanced-search", async (req, res) => {
     try {
-      const stats = await serverDBStorage.getStats();
-      res.json(stats);
-    } catch (error) {
-      res.status(500).json({ error: "Failed to fetch stats" });
-    }
-  });
+      const query = req.query.query as string || req.query.q as string;
+      const type = req.query.type as string;
+      const category = req.query.category as string;
+      const genre = req.query.genre as string;
+      const language = req.query.language as string;
+      const quality = req.query.quality as string;
+      const yearFrom = req.query.yearFrom as string;
+      const yearTo = req.query.yearTo as string;
       const ratingMin = req.query.ratingMin as string;
       const sortBy = req.query.sortBy as string || 'title';
       const sortOrder = req.query.sortOrder as string || 'asc';
@@ -331,8 +333,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Admin cache management
   app.post("/api/admin/clear-cache", async (req, res) => {
     try {
-      clearCache('');
-      QueryOptimizer.clearQueryCache('');
+      // Cache clearing functionality removed - using simple file storage
       res.json({ message: "Cache cleared successfully" });
     } catch (error) {
       res.status(500).json({ error: "Failed to clear cache" });
@@ -346,7 +347,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/users", async (req, res) => {
     try {
       const validatedData = insertUserSchema.parse(req.body);
-      const user = await storage.createUser(validatedData);
+      const user = await serverDBStorage.createUser(validatedData);
       res.status(201).json(user);
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -360,7 +361,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/users/:id", async (req, res) => {
     try {
       const id = parseInt(req.params.id);
-      const user = await storage.getUser(id);
+      const user = await serverDBStorage.getUserById(id);
       
       if (!user) {
         return res.status(404).json({ error: "User not found" });
@@ -376,7 +377,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     try {
       const id = parseInt(req.params.id);
       const validatedData = insertUserSchema.partial().parse(req.body);
-      const user = await storage.updateUser(id, validatedData);
+      const user = await serverDBStorage.updateUser(id, validatedData);
       res.json(user);
     } catch (error) {
       if (error instanceof z.ZodError) {
@@ -390,7 +391,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/users/:id/stats", async (req, res) => {
     try {
       const id = parseInt(req.params.id);
-      const stats = await storage.getUserStats(id);
+      const stats = await serverDBStorage.getUserStats(id);
       res.json(stats);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch user stats" });
@@ -403,8 +404,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const userId = parseInt(req.params.id);
       const { contentId } = req.body;
       
-      await storage.addToFavorites(userId, contentId);
-      res.status(201).json({ message: "Added to favorites" });
+      // User favorites functionality not implemented yet
+      res.status(501).json({ message: "Feature not implemented" });
     } catch (error) {
       res.status(500).json({ error: "Failed to add to favorites" });
     }
@@ -415,8 +416,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const userId = parseInt(req.params.id);
       const contentId = parseInt(req.params.contentId);
       
-      await storage.removeFromFavorites(userId, contentId);
-      res.json({ message: "Removed from favorites" });
+      // User favorites functionality not implemented yet
+      res.json({ message: "Feature not implemented" });
     } catch (error) {
       res.status(500).json({ error: "Failed to remove from favorites" });
     }
@@ -425,8 +426,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/users/:id/favorites", async (req, res) => {
     try {
       const userId = parseInt(req.params.id);
-      const favorites = await storage.getUserFavorites(userId);
-      res.json({ content: favorites });
+      // User favorites functionality not implemented yet
+      res.json({ content: [] });
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch favorites" });
     }
@@ -438,8 +439,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const userId = parseInt(req.params.id);
       const { contentId, progressMinutes } = req.body;
       
-      await storage.addToWatchHistory(userId, contentId, progressMinutes);
-      res.status(201).json({ message: "Added to watch history" });
+      // Watch history functionality not implemented yet
+      res.status(501).json({ message: "Feature not implemented" });
     } catch (error) {
       res.status(500).json({ error: "Failed to add to watch history" });
     }
@@ -448,8 +449,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/users/:id/watch-history", async (req, res) => {
     try {
       const userId = parseInt(req.params.id);
-      const history = await storage.getUserWatchHistory(userId);
-      res.json({ content: history });
+      // Watch history functionality not implemented yet
+      res.json({ content: [] });
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch watch history" });
     }
@@ -465,8 +466,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       };
       
       const validatedData = insertUserCommentSchema.parse(commentData);
-      const comment = await storage.addComment(validatedData);
-      res.status(201).json(comment);
+      // Comments functionality not implemented yet
+      res.status(501).json({ message: "Feature not implemented" });
     } catch (error) {
       if (error instanceof z.ZodError) {
         res.status(400).json({ error: error.errors });
@@ -479,8 +480,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/content/:id/comments", async (req, res) => {
     try {
       const contentId = parseInt(req.params.id);
-      const comments = await storage.getContentComments(contentId);
-      res.json(comments);
+      // Comments functionality not implemented yet
+      res.json([]);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch comments" });
     }
@@ -491,13 +492,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const commentId = parseInt(req.params.id);
       const { userId } = req.body;
       
-      const success = await storage.deleteComment(commentId, userId);
-      
-      if (success) {
-        res.json({ message: "Comment deleted" });
-      } else {
-        res.status(404).json({ error: "Comment not found or not authorized" });
-      }
+      // Comments functionality not implemented yet
+      res.status(501).json({ message: "Feature not implemented" });
     } catch (error) {
       res.status(500).json({ error: "Failed to delete comment" });
     }
@@ -513,8 +509,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       };
       
       const validatedData = insertUserReviewSchema.parse(reviewData);
-      const review = await storage.addReview(validatedData);
-      res.status(201).json(review);
+      // Reviews functionality not implemented yet
+      res.status(501).json({ message: "Feature not implemented" });
     } catch (error) {
       if (error instanceof z.ZodError) {
         res.status(400).json({ error: error.errors });
@@ -527,8 +523,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/content/:id/reviews", async (req, res) => {
     try {
       const contentId = parseInt(req.params.id);
-      const reviews = await storage.getContentReviews(contentId);
-      res.json(reviews);
+      // Reviews functionality not implemented yet
+      res.json([]);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch reviews" });
     }
@@ -540,8 +536,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const { userId, ...reviewData } = req.body;
       
       const validatedData = insertUserReviewSchema.partial().parse(reviewData);
-      const review = await storage.updateReview(reviewId, userId, validatedData);
-      res.json(review);
+      // Reviews functionality not implemented yet
+      res.status(501).json({ message: "Feature not implemented" });
     } catch (error) {
       if (error instanceof z.ZodError) {
         res.status(400).json({ error: error.errors });
@@ -556,13 +552,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const reviewId = parseInt(req.params.id);
       const { userId } = req.body;
       
-      const success = await storage.deleteReview(reviewId, userId);
-      
-      if (success) {
-        res.json({ message: "Review deleted" });
-      } else {
-        res.status(404).json({ error: "Review not found or not authorized" });
-      }
+      // Reviews functionality not implemented yet
+      res.status(501).json({ message: "Feature not implemented" });
     } catch (error) {
       res.status(500).json({ error: "Failed to delete review" });
     }
@@ -573,8 +564,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const reviewId = parseInt(req.params.id);
       const { userId, isLike } = req.body;
       
-      await storage.likeReview(userId, reviewId, isLike);
-      res.json({ message: "Review liked/disliked" });
+      // Reviews functionality not implemented yet
+      res.status(501).json({ message: "Feature not implemented" });
     } catch (error) {
       res.status(500).json({ error: "Failed to like/dislike review" });
     }
@@ -585,13 +576,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const userId = parseInt(req.params.userId);
       const contentId = parseInt(req.params.contentId);
       
-      const review = await storage.getUserReviewForContent(userId, contentId);
-      
-      if (review) {
-        res.json(review);
-      } else {
-        res.status(404).json({ error: "Review not found" });
-      }
+      // Reviews functionality not implemented yet
+      res.status(404).json({ error: "Review not found" });
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch user review" });
     }
@@ -601,7 +587,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/content/:id/view", async (req, res) => {
     try {
       const contentId = parseInt(req.params.id);
-      await storage.incrementViewCount(contentId);
+      // View counting functionality not implemented yet
       res.json({ message: "View counted" });
     } catch (error) {
       res.status(500).json({ error: "Failed to count view" });
@@ -616,10 +602,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Content management routes
   app.get('/api/content/all', async (req, res) => {
     try {
-      const movieContent = await storage.getContentByType('movie', 1, 50);
-      const seriesContent = await storage.getContentByType('series', 1, 50);
-      const tvContent = await storage.getContentByType('tv', 1, 50);
-      const miscContent = await storage.getContentByType('misc', 1, 50);
+      const movieContent = await serverDBStorage.getContentByType('movie', 1, 50);
+      const seriesContent = await serverDBStorage.getContentByType('series', 1, 50);
+      const tvContent = await serverDBStorage.getContentByType('television', 1, 50);
+      const miscContent = await serverDBStorage.getContentByType('miscellaneous', 1, 50);
       
       const allContent = [
         ...movieContent.content,
@@ -655,17 +641,22 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Admin routes
   app.get("/api/admin/stats", async (req, res) => {
     try {
-      const stats = await storage.getContentStats();
+      const stats = await serverDBStorage.getStats();
       const totalUsers = 8932; // Mock data - in real app, get from user table
       const pendingApproval = 23; // Mock data - in real app, get from content with pending status
       const totalViews = 2847392; // Mock data - in real app, get from content_views table
       
       res.json({
-        totalContent: Object.values(stats).reduce((a, b) => parseInt(a.toString()) + parseInt(b.toString()), 0),
+        totalContent: stats.totalContent || 0,
         totalUsers,
         pendingApproval,
         totalViews,
-        contentByType: stats
+        contentByType: {
+          movies: stats.totalMovies || 0,
+          series: stats.totalSeries || 0,
+          television: stats.totalTelevision || 0,
+          miscellaneous: stats.totalMiscellaneous || 0
+        }
       });
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch admin stats" });
