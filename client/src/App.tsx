@@ -41,8 +41,8 @@ function Router() {
       <Route path="/ones" component={Ones} />
       <Route path="/movies" component={Movies} />
       <Route path="/series" component={Series} />
-      <Route path="/television" component={Television} />
       <Route path="/shows" component={Shows} />
+      <Route path="/television" component={Television} />
       <Route path="/miscellaneous" component={Miscellaneous} />
       <Route path="/misc-content" component={MiscContent} />
       <Route path="/mix" component={Mix} />

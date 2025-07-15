@@ -44,9 +44,9 @@ const navigationItems = [
   },
   { 
     path: "/shows", 
-    label: "برامج تلفزيونية", 
+    label: "تلفزيون", 
     icon: Monitor,
-    description: "البرامج التلفزيونية"
+    description: "البرامج التلفزيونية والعروض"
   },
   { 
     path: "/mix", 

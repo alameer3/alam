@@ -24,10 +24,7 @@ import {
 } from "lucide-react";
 import { Content } from "@shared/schema";
 import { useToast } from "@/hooks/use-toast";
-import ContentRating from "@/components/content/content-rating";
-import ContentTags from "@/components/content/content-tags";
-import ExternalLinks from "@/components/content/external-links";
-import { EpisodesSection } from "@/components/content/episodes-section";
+import { RatingSection } from "@/components/content/rating-section";
 
 interface AkStyleContentDetailProps {
   contentId: string;
@@ -281,53 +278,97 @@ export function AkStyleContentDetail({ contentId }: AkStyleContentDetailProps) {
         </div>
       </div>
 
-      {/* Episodes Section for Series */}
-      {(content.type === 'series' || content.type === 'tv') && (
-        <div className="mt-8">
-          <EpisodesSection 
-            contentId={parseInt(contentId)}
-            contentTitle={content.titleArabic || content.title}
-          />
-        </div>
-      )}
+      {/* نظام التقييمات والمراجعات */}
+      <div className="mt-8">
+        <RatingSection 
+          contentId={contentId}
+          contentTitle={content.title}
+        />
+      </div>
 
-      {/* External Links */}
-      <Card className="mt-8">
+      {/* نظام التبليغ عن الأخطاء */}
+      <Card className="mt-8 border-red-200 bg-red-50/50">
         <CardContent className="p-6">
-          <ExternalLinks 
-            imdbId={content.imdbId}
-            tmdbId={content.tmdbId}
-            rottenTomatoesId={content.rottenTomatoesId}
-            imdbRating={content.imdbRating}
-            tmdbRating={content.tmdbRating}
-            rottenTomatoesRating={content.rottenTomatoesRating}
-          />
-        </CardContent>
-      </Card>
-
-      {/* Content Tags */}
-      <Card className="mt-8">
-        <CardContent className="p-6">
-          <ContentTags 
-            tags={content.tags || [`#${content.title}`, `#مشاهدة و تحميل ${content.type} ${content.title}`, `#${content.titleArabic || content.title}`]}
-            onTagClick={(tag) => {
-              // Navigate to search results for this tag
-              setLocation(`/search?q=${encodeURIComponent(tag)}`);
-            }}
-          />
-        </CardContent>
-      </Card>
-
-      {/* Content Rating and Report */}
-      <Card className="mt-8">
-        <CardContent className="p-6">
-          <ContentRating 
-            contentId={parseInt(contentId)}
-            currentRating={content.rating || 0}
-            totalRatings={content.ratingsCount || 0}
-            userRating={userRating}
-            onRatingChange={(rating) => setUserRating(rating)}
-          />
+          <div className="flex items-center gap-3 mb-4">
+            <AlertTriangle className="w-5 h-5 text-red-500" />
+            <h3 className="text-lg font-semibold text-red-700">التبليغ عن خطأ</h3>
+          </div>
+          
+          <Dialog open={isReportModalOpen} onOpenChange={setIsReportModalOpen}>
+            <DialogTrigger asChild>
+              <Button variant="outline" className="border-red-300 text-red-600 hover:bg-red-50">
+                <AlertTriangle className="w-4 h-4 mr-2" />
+                التبليغ عن خطأ
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="bg-white">
+              <DialogHeader>
+                <DialogTitle className="text-red-600">التبليغ عن خطأ</DialogTitle>
+                <DialogDescription>
+                  برجاء توضيح المشكلة بالضبط ليتم التعامل معها باسرع وقت
+                </DialogDescription>
+              </DialogHeader>
+              
+              <div className="space-y-4">
+                <div>
+                  <Label htmlFor="report-url" className="text-sm font-medium">رابط الصفحة</Label>
+                  <Input 
+                    id="report-url"
+                    value={window.location.href}
+                    readOnly
+                    className="bg-gray-100"
+                  />
+                </div>
+                
+                <div>
+                  <Label htmlFor="report-email" className="text-sm font-medium">البريد الإلكتروني (اختياري)</Label>
+                  <Input 
+                    id="report-email"
+                    type="email"
+                    value={reportEmail}
+                    onChange={(e) => setReportEmail(e.target.value)}
+                    placeholder="البريد الإلكتروني للتواصل معك"
+                  />
+                </div>
+                
+                <div>
+                  <Label htmlFor="report-reason" className="text-sm font-medium">السبب</Label>
+                  <Select onValueChange={setReportReason} value={reportReason}>
+                    <SelectTrigger>
+                      <SelectValue placeholder="اختر سبب التبليغ" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      {reportReasons.map((reason) => (
+                        <SelectItem key={reason} value={reason}>
+                          {reason}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+                
+                <div>
+                  <Label htmlFor="report-details" className="text-sm font-medium">
+                    بيانات إضافية / برجاء توضيح المشكلة بالضبط
+                  </Label>
+                  <Textarea 
+                    id="report-details"
+                    value={reportDetails}
+                    onChange={(e) => setReportDetails(e.target.value)}
+                    placeholder="اكتب تفاصيل المشكلة هنا..."
+                    rows={4}
+                  />
+                </div>
+                
+                <Button 
+                  onClick={handleReportSubmit}
+                  className="w-full bg-red-600 hover:bg-red-700 text-white"
+                >
+                  ارسال التبليغ
+                </Button>
+              </div>
+            </DialogContent>
+          </Dialog>
         </CardContent>
       </Card>
     </div>

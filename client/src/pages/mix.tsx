@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { AkStyleContentCard } from "@/components/content/ak-style-content-card";
-import { AkStyleFilters } from "@/components/filters/ak-style-filters";
+import { AdvancedFilters } from "@/components/filters/advanced-filters";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useState } from "react";
 
@@ -24,10 +24,10 @@ export default function Mix() {
   const [activeFilters, setActiveFilters] = useState({});
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ['/api/content', { type: 'misc', page: currentPage, limit: 24, ...activeFilters }],
+    queryKey: ['/api/content', { type: 'miscellaneous', page: currentPage, limit: 24, ...activeFilters }],
     queryFn: () => {
       const searchParams = new URLSearchParams({ 
-        type: 'misc',
+        type: 'miscellaneous',
         page: currentPage.toString(),
         limit: '24',
         ...Object.fromEntries(Object.entries(activeFilters).filter(([_, value]) => value))
@@ -44,7 +44,7 @@ export default function Mix() {
   if (error) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-gray-900 to-black">
-        <p className="text-white text-xl">حدث خطأ في تحميل المنوعات</p>
+        <p className="text-white text-xl">حدث خطأ في تحميل المحتوى المنوع</p>
       </div>
     );
   }
@@ -52,13 +52,13 @@ export default function Mix() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-black text-white">
       <div className="container mx-auto px-4 py-6">
-        <h1 className="text-3xl font-bold mb-6 text-center bg-gradient-to-r from-orange-400 to-orange-600 bg-clip-text text-transparent">
-          المنوعات
+        <h1 className="text-3xl font-bold mb-6 text-center bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">
+          المحتوى المنوع
         </h1>
         
-        <AkStyleFilters 
+        <AdvancedFilters 
           onFilterChange={handleFilterChange}
-          contentType="misc"
+          contentType="miscellaneous"
         />
 
         {isLoading ? (
@@ -74,14 +74,13 @@ export default function Mix() {
                 <AkStyleContentCard 
                   key={item.id} 
                   content={item}
-                  linkPath={`/mix/${item.id}/${encodeURIComponent(item.title)}`}
                 />
               ))}
             </div>
-            
+
             {data?.content?.length === 0 && (
               <div className="text-center py-12">
-                <p className="text-gray-400 text-lg">لا توجد منوعات متاحة</p>
+                <p className="text-gray-400 text-lg">لا يوجد محتوى متاح حالياً</p>
               </div>
             )}
           </>

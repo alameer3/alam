@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { AkStyleContentCard } from "@/components/content/ak-style-content-card";
-import { AkStyleFilters } from "@/components/filters/ak-style-filters";
+import { AdvancedFilters } from "@/components/filters/advanced-filters";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useState } from "react";
 
@@ -24,10 +24,10 @@ export default function Shows() {
   const [activeFilters, setActiveFilters] = useState({});
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ['/api/content', { type: 'tv', page: currentPage, limit: 24, ...activeFilters }],
+    queryKey: ['/api/content', { type: 'television', page: currentPage, limit: 24, ...activeFilters }],
     queryFn: () => {
       const searchParams = new URLSearchParams({ 
-        type: 'tv',
+        type: 'television',
         page: currentPage.toString(),
         limit: '24',
         ...Object.fromEntries(Object.entries(activeFilters).filter(([_, value]) => value))
@@ -56,9 +56,9 @@ export default function Shows() {
           البرامج التلفزيونية
         </h1>
         
-        <AkStyleFilters 
+        <AdvancedFilters 
           onFilterChange={handleFilterChange}
-          contentType="tv"
+          contentType="television"
         />
 
         {isLoading ? (
