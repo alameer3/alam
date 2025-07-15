@@ -8,13 +8,20 @@ import { EnhancedNavigation } from "@/components/layout/enhanced-navigation";
 import { ErrorBoundary } from "@/components/ui/error-boundary";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
+import Ones from "@/pages/ones";
 import Movies from "@/pages/movies";
 import Series from "@/pages/series";
 import Television from "@/pages/television";
+import Shows from "@/pages/shows";
 import Miscellaneous from "@/pages/miscellaneous";
 import MiscContent from "@/pages/misc-content";
+import Mix from "@/pages/mix";
 import Search from "@/pages/search";
 import ContentDetail from "@/pages/content-detail";
+import MovieDetail from "@/pages/movie-detail";
+import SeriesDetail from "@/pages/series-detail";
+import ShowDetail from "@/pages/show-detail";
+import MixDetail from "@/pages/mix-detail";
 
 import SecretAdminAccess from "@/pages/secret-admin-access";
 import Login from "@/pages/login";
@@ -31,13 +38,20 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={Home} />
+      <Route path="/ones" component={Ones} />
       <Route path="/movies" component={Movies} />
       <Route path="/series" component={Series} />
       <Route path="/television" component={Television} />
+      <Route path="/shows" component={Shows} />
       <Route path="/miscellaneous" component={Miscellaneous} />
       <Route path="/misc-content" component={MiscContent} />
+      <Route path="/mix" component={Mix} />
       <Route path="/search" component={Search} />
       <Route path="/content/:id" component={ContentDetail} />
+      <Route path="/movie/:id/:title?" component={MovieDetail} />
+      <Route path="/series/:id/:title?" component={SeriesDetail} />
+      <Route path="/shows/:id/:title?" component={ShowDetail} />
+      <Route path="/mix/:id/:title?" component={MixDetail} />
 
       <Route path="/secret-admin" component={SecretAdminAccess} />
       <Route path="/unified-admin" component={UnifiedAdminPanel} />

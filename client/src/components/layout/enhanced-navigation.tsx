@@ -25,6 +25,12 @@ const navigationItems = [
     description: "الصفحة الرئيسية"
   },
   { 
+    path: "/ones", 
+    label: "المحتوى المميز", 
+    icon: Crown,
+    description: "المحتوى المميز"
+  },
+  { 
     path: "/movies", 
     label: "أفلام", 
     icon: Film,
@@ -37,22 +43,16 @@ const navigationItems = [
     description: "المسلسلات والدراما"
   },
   { 
-    path: "/television", 
+    path: "/shows", 
     label: "برامج تلفزيونية", 
     icon: Monitor,
     description: "البرامج التلفزيونية"
   },
   { 
-    path: "/miscellaneous", 
-    label: "متنوعات", 
+    path: "/mix", 
+    label: "منوعات", 
     icon: Music,
     description: "محتوى متنوع"
-  },
-  { 
-    path: "/misc-content", 
-    label: "منوعات", 
-    icon: Sparkles,
-    description: "محتوى منوع شامل"
   },
   { 
     path: "/trailers", 

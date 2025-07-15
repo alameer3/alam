@@ -10,6 +10,7 @@ interface AkStyleContentCardProps {
   onClick?: (content: Content) => void;
   showType?: boolean;
   variant?: "grid" | "list";
+  linkPath?: string;
 }
 
 function QualityBadge({ quality, resolution }: { quality?: string; resolution?: string }) {
@@ -48,7 +49,7 @@ function RatingBadge({ rating }: { rating?: number | string }) {
   );
 }
 
-export function AkStyleContentCard({ content, onClick, showType = true, variant = "grid" }: AkStyleContentCardProps) {
+export function AkStyleContentCard({ content, onClick, showType = true, variant = "grid", linkPath }: AkStyleContentCardProps) {
   const [isHovered, setIsHovered] = useState(false);
   const [isFavorited, setIsFavorited] = useState(false);
 
@@ -119,8 +120,23 @@ export function AkStyleContentCard({ content, onClick, showType = true, variant 
     );
   }
 
+  // Generate the correct link path based on content type and title
+  const generateLinkPath = () => {
+    if (linkPath) return linkPath;
+    
+    const cleanTitle = (content.titleArabic || content.title || '').replace(/[^a-zA-Z0-9\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]/g, '-').toLowerCase();
+    
+    switch (content.type) {
+      case 'movies': return `/movie/${content.id}/${cleanTitle}`;
+      case 'series': return `/series/${content.id}/${cleanTitle}`;
+      case 'tv': return `/shows/${content.id}/${cleanTitle}`;
+      case 'misc': return `/mix/${content.id}/${cleanTitle}`;
+      default: return `/content/${content.id}`;
+    }
+  };
+
   return (
-    <Link href={`/content/${content.id}`}>
+    <Link href={generateLinkPath()}>
       <div 
         className="relative bg-gray-900 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 group cursor-pointer"
         onMouseEnter={() => setIsHovered(true)}
