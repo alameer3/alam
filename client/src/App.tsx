@@ -3,13 +3,13 @@ import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { YemenThemeProvider } from "@/components/theme/yemen-theme-provider";
-import AkOriginalHeader from "@/components/layout/ak-original-header";
+import AkSvHeader from "@/components/layout/ak-sv-header";
 import { ErrorBoundary } from "@/components/ui/error-boundary";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
 import AkSvHomepage from "@/components/home/ak-sv-homepage";
 import Ones from "@/pages/ones";
-import Movies from "@/pages/movies";
+import AkSvMovies from "@/pages/ak-sv-movies";
 import Series from "@/pages/series";
 import Television from "@/pages/television";
 import Shows from "@/pages/shows";
@@ -38,7 +38,7 @@ function Router() {
     <Switch>
       <Route path="/" component={AkSvHomepage} />
       <Route path="/ones" component={Ones} />
-      <Route path="/movies" component={Movies} />
+      <Route path="/movies" component={AkSvMovies} />
       <Route path="/series" component={Series} />
       <Route path="/shows" component={Shows} />
       <Route path="/television" component={Television} />
@@ -74,7 +74,7 @@ function AppContent() {
 
   return (
     <div className="min-h-screen bg-background">
-      {!isHomePage && <AkOriginalHeader />}
+      {!isHomePage && <AkSvHeader />}
       <main>
         <Router />
       </main>
