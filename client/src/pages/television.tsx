@@ -19,8 +19,7 @@ export default function Television() {
   return (
     <div className="space-y-6">
       <AdvancedFilters
-        filters={filters}
-        onFiltersChange={handleFiltersChange}
+        onFilterChange={handleFiltersChange}
         contentType="tv"
       />
       <AkStyleContentGrid

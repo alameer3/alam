@@ -29,7 +29,7 @@ export default function TrailersPage() {
     rating: 'all'
   });
 
-  const { data: trendingTrailers, isLoading: trendingLoading, error: trendingError } = useTrendingTrailers();
+  const { data: trendingTrailers = [], isLoading: trendingLoading, error: trendingError } = useTrendingTrailers();
   const { data: featuredTrailer, isLoading: featuredLoading, error: featuredError } = useFeaturedTrailer();
 
   // Mock data for comprehensive trailer showcase
@@ -92,7 +92,7 @@ export default function TrailersPage() {
     }
   ];
 
-  const filteredTrailers = mockTrailersData?.filter(trailer => {
+  const filteredTrailers = mockTrailersData.filter(trailer => {
     const matchesSearch = trailer.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
                          trailer.description.toLowerCase().includes(searchQuery.toLowerCase());
     const matchesType = filters.type === 'all' || trailer.type === filters.type;
@@ -280,7 +280,7 @@ export default function TrailersPage() {
               <Card className="overflow-hidden">
                 <div className="aspect-video bg-gray-900 relative">
                   <img
-                    src={featuredTrailer.thumbnailUrl}
+                    src={featuredTrailer.thumbnailUrl || "/api/placeholder/800/450"}
                     alt={featuredTrailer.title}
                     className="w-full h-full object-cover"
                   />
