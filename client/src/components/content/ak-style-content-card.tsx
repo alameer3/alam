@@ -1,259 +1,147 @@
-import { useState } from "react";
 import { Link } from "wouter";
-import { Star, Play, Download, Share2, Heart, Calendar, Clock, Eye } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Content } from "@shared/schema";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { Star, Play, Calendar, Eye, Heart } from "lucide-react";
+
+interface Content {
+  id: number;
+  title: string;
+  titleArabic?: string;
+  type: string;
+  poster_url?: string;
+  rating?: number;
+  release_year?: number;
+  quality?: string;
+  genres?: string[];
+  categories?: string[];
+  view_count?: number;
+  duration?: number;
+}
 
 interface AkStyleContentCardProps {
   content: Content;
-  onClick?: (content: Content) => void;
-  showType?: boolean;
-  variant?: "grid" | "list";
-  linkPath?: string;
+  href?: string;
 }
 
-function QualityBadge({ quality, resolution }: { quality?: string; resolution?: string }) {
-  const getQualityColor = (qual: string) => {
-    switch (qual?.toLowerCase()) {
-      case '4k':
-      case 'uhd': return 'bg-purple-600 text-white';
-      case 'hd':
-      case '1080p': return 'bg-blue-600 text-white';
-      case '720p': return 'bg-green-600 text-white';
-      case '480p':
-      case 'sd': return 'bg-orange-600 text-white';
-      default: return 'bg-gray-600 text-white';
-    }
-  };
-
-  const displayQuality = resolution || quality || 'HD';
-  return (
-    <Badge className={`${getQualityColor(displayQuality)} absolute top-2 left-2 z-10 font-bold`}>
-      {displayQuality}
-    </Badge>
-  );
-}
-
-function RatingBadge({ rating }: { rating?: number | string }) {
-  if (!rating) return null;
-  
-  const numRating = typeof rating === 'string' ? parseFloat(rating) : rating;
-  const color = numRating >= 8 ? 'text-green-400' : numRating >= 6 ? 'text-yellow-400' : 'text-red-400';
-  
-  return (
-    <div className="absolute top-2 right-2 z-10 bg-black/70 backdrop-blur-sm rounded-lg px-2 py-1 flex items-center gap-1">
-      <Star className={`w-4 h-4 fill-current ${color}`} />
-      <span className="text-white font-bold text-sm">{numRating.toFixed(1)}</span>
-    </div>
-  );
-}
-
-export function AkStyleContentCard({ content, onClick, showType = true, variant = "grid", linkPath }: AkStyleContentCardProps) {
-  const [isHovered, setIsHovered] = useState(false);
-  const [isFavorited, setIsFavorited] = useState(false);
-
-  const handleCardClick = () => {
-    onClick?.(content);
-  };
-
-  const handleFavoriteClick = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsFavorited(!isFavorited);
-  };
-
-  const posterUrl = content.posterUrl || 'https://via.placeholder.com/300x450?text=' + encodeURIComponent(content.title || 'No Image');
-
-  if (variant === "list") {
-    return (
-      <div className="bg-gray-900 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 group">
-        <div className="flex">
-          <div className="relative w-32 h-48 flex-shrink-0">
-            <img 
-              src={posterUrl}
-              alt={content.title || content.titleArabic}
-              className="w-full h-full object-cover"
-            />
-            <QualityBadge quality={content.quality} resolution={content.resolution} />
-            <RatingBadge rating={content.rating} />
-          </div>
-          <div className="flex-1 p-4 flex flex-col justify-between">
-            <div>
-              <h3 className="text-lg font-bold text-white mb-2 line-clamp-2">
-                {content.titleArabic || content.title}
-              </h3>
-              <p className="text-gray-400 text-sm mb-2 line-clamp-3">
-                {content.descriptionArabic || content.description}
-              </p>
-              <div className="flex flex-wrap gap-2 mb-3">
-                <Badge variant="secondary" className="text-xs">
-                  <Calendar className="w-3 h-3 mr-1" />
-                  {content.year}
-                </Badge>
-                <Badge variant="secondary" className="text-xs">
-                  <Clock className="w-3 h-3 mr-1" />
-                  {content.duration} دقيقة
-                </Badge>
-                {showType && (
-                  <Badge variant="outline" className="text-xs">
-                    {content.type === 'movies' ? 'فيلم' : 
-                     content.type === 'series' ? 'مسلسل' :
-                     content.type === 'tv' ? 'تلفزيون' : 'منوع'}
-                  </Badge>
-                )}
-              </div>
-            </div>
-            <div className="flex gap-2">
-              <Button size="sm" className="bg-blue-600 hover:bg-blue-700">
-                <Play className="w-4 h-4 mr-1" />
-                مشاهدة
-              </Button>
-              <Button size="sm" variant="outline">
-                <Download className="w-4 h-4 mr-1" />
-                تحميل
-              </Button>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
-  // Generate the correct link path based on content type and title (ak.sv style)
-  const generateLinkPath = () => {
-    if (linkPath) return linkPath;
-    
-    // Use Arabic title if available, otherwise use English title
-    const titleToUse = content.titleArabic || content.title || '';
-    
-    // URL encode the title for proper Arabic support (like ak.sv)
-    const encodedTitle = encodeURIComponent(titleToUse);
-    
+export function AkStyleContentCard({ content, href }: AkStyleContentCardProps) {
+  const getDefaultHref = () => {
+    const slugTitle = content.titleArabic || content.title;
     switch (content.type) {
-      case 'movies': 
-      case 'movie': 
-        return `/movie/${content.id}/${encodedTitle}`;
-      case 'series': 
-        return `/series/${content.id}/${encodedTitle}`;
-      case 'tv': 
-      case 'shows': 
-        return `/shows/${content.id}/${encodedTitle}`;
-      case 'misc': 
-      case 'mix': 
-        return `/mix/${content.id}/${encodedTitle}`;
-      default: 
-        return `/content/${content.id}`;
+      case 'movie':
+        return `/movie/${content.id}/${slugTitle}`;
+      case 'series':
+        return `/series/${content.id}/${slugTitle}`;
+      case 'television':
+        return `/shows/${content.id}/${slugTitle}`;
+      case 'misc':
+        return `/mix/${content.id}/${slugTitle}`;
+      default:
+        return `/content/${content.id}/${slugTitle}`;
     }
   };
 
+  const finalHref = href || getDefaultHref();
+
   return (
-    <Link href={generateLinkPath()}>
-      <div 
-        className="relative bg-gray-900 rounded-lg overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 group cursor-pointer"
-        onMouseEnter={() => setIsHovered(true)}
-        onMouseLeave={() => setIsHovered(false)}
-        onClick={handleCardClick}
-      >
-        {/* Poster Image */}
-        <div className="relative aspect-[2/3] overflow-hidden">
+    <Card className="group relative overflow-hidden transition-all duration-300 hover:scale-105 hover:shadow-xl bg-white">
+      <Link to={finalHref}>
+        <div className="aspect-[2/3] relative">
           <img 
-            src={posterUrl}
-            alt={content.title || content.titleArabic}
-            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+            src={content.poster_url || '/api/placeholder/300/450'} 
+            alt={content.titleArabic || content.title}
+            className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
+            onError={(e) => {
+              e.currentTarget.src = '/api/placeholder/300/450';
+            }}
           />
           
           {/* Quality Badge */}
-          <QualityBadge quality={content.quality} resolution={content.resolution} />
-          
-          {/* Rating Badge */}
-          <RatingBadge rating={content.rating} />
-          
-          {/* Hover Overlay */}
-          <div className={`absolute inset-0 bg-black/70 backdrop-blur-sm transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-0'} flex flex-col justify-center items-center gap-3`}>
-            <Button 
-              size="sm" 
-              className="bg-blue-600 hover:bg-blue-700 text-white"
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-              }}
+          {content.quality && (
+            <Badge 
+              variant="secondary" 
+              className="absolute top-2 right-2 bg-black/80 text-white border-0"
             >
-              <Play className="w-4 h-4 mr-2" />
-              مشاهدة
-            </Button>
-            
-            <div className="flex gap-2">
-              <Button 
-                size="sm" 
-                variant="outline"
-                className="bg-black/50 border-white/20 text-white hover:bg-white/10"
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                }}
-              >
-                <Download className="w-4 h-4" />
-              </Button>
-              
-              <Button 
-                size="sm" 
-                variant="outline"
-                className={`bg-black/50 border-white/20 hover:bg-white/10 ${isFavorited ? 'text-red-500' : 'text-white'}`}
-                onClick={handleFavoriteClick}
-              >
-                <Heart className={`w-4 h-4 ${isFavorited ? 'fill-current' : ''}`} />
-              </Button>
-              
-              <Button 
-                size="sm" 
-                variant="outline"
-                className="bg-black/50 border-white/20 text-white hover:bg-white/10"
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                }}
-              >
-                <Share2 className="w-4 h-4" />
+              {content.quality}
+            </Badge>
+          )}
+
+          {/* Rating */}
+          {content.rating && (
+            <div className="absolute top-2 left-2 flex items-center gap-1 bg-black/80 text-white px-2 py-1 rounded-full text-sm">
+              <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+              <span>{content.rating}</span>
+            </div>
+          )}
+
+          {/* Overlay on hover */}
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <div className="absolute bottom-0 left-0 right-0 p-4">
+              <div className="flex items-center justify-between mb-2">
+                <div className="flex items-center gap-2 text-white text-sm">
+                  <Calendar className="w-4 h-4" />
+                  <span>{content.release_year}</span>
+                </div>
+                {content.view_count && (
+                  <div className="flex items-center gap-1 text-white text-sm">
+                    <Eye className="w-4 h-4" />
+                    <span>{content.view_count.toLocaleString()}</span>
+                  </div>
+                )}
+              </div>
+              <Button size="sm" className="w-full bg-red-600 hover:bg-red-700 text-white">
+                <Play className="w-4 h-4 mr-2" />
+                مشاهدة الآن
               </Button>
             </div>
           </div>
         </div>
+      </Link>
+
+      <CardContent className="p-4">
+        <h3 className="font-bold text-lg mb-2 line-clamp-2 text-right text-gray-800">
+          {content.titleArabic || content.title}
+        </h3>
         
-        {/* Content Info */}
-        <div className="p-4">
-          <h3 className="text-white font-bold text-sm mb-2 line-clamp-2 leading-tight">
-            {content.titleArabic || content.title}
-          </h3>
-          
-          <div className="flex flex-wrap gap-1 mb-2">
-            <Badge variant="secondary" className="text-xs">
-              {content.year}
-            </Badge>
-            {showType && (
-              <Badge variant="outline" className="text-xs">
-                {content.type === 'movies' ? 'فيلم' : 
-                 content.type === 'series' ? 'مسلسل' :
-                 content.type === 'tv' ? 'تلفزيون' : 'منوع'}
-              </Badge>
-            )}
-          </div>
-          
-          <div className="flex items-center justify-between text-xs text-gray-400">
-            <span className="flex items-center gap-1">
-              <Clock className="w-3 h-3" />
-              {content.duration} د
-            </span>
-            <span className="flex items-center gap-1">
-              <Eye className="w-3 h-3" />
-              {Math.floor(Math.random() * 1000)}
-            </span>
-          </div>
+        <div className="flex items-center justify-between text-sm text-gray-600 mb-2">
+          <span>{content.release_year}</span>
+          <span className="capitalize">{content.type}</span>
         </div>
-        
-        {/* Bottom Gradient */}
-        <div className="absolute bottom-0 left-0 right-0 h-24 bg-gradient-to-t from-gray-900 to-transparent pointer-events-none"></div>
-      </div>
-    </Link>
+
+        {content.genres && content.genres.length > 0 && (
+          <div className="flex flex-wrap gap-1 mb-2">
+            {content.genres.slice(0, 2).map((genre, index) => (
+              <Badge 
+                key={index} 
+                variant="outline" 
+                className="text-xs border-red-200 text-red-600"
+              >
+                {genre}
+              </Badge>
+            ))}
+          </div>
+        )}
+
+        {/* Action buttons */}
+        <div className="flex items-center justify-between mt-3">
+          <Button 
+            variant="ghost" 
+            size="sm"
+            className="text-red-600 hover:text-red-700 hover:bg-red-50"
+          >
+            <Heart className="w-4 h-4" />
+          </Button>
+          <Link to={finalHref}>
+            <Button 
+              variant="outline" 
+              size="sm"
+              className="border-red-200 text-red-600 hover:bg-red-50"
+            >
+              المزيد
+            </Button>
+          </Link>
+        </div>
+      </CardContent>
+    </Card>
   );
 }

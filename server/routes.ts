@@ -250,7 +250,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/content/featured", async (req, res) => {
     try {
       const featured = await serverDBStorage.getFeaturedContent();
-      res.json({ content: featured, total: featured.length, page: 1, limit: 20, totalPages: 1 });
+      res.json(featured);
     } catch (error) {
       if (process.env.NODE_ENV === 'development') {
         console.error('Featured content error:', error);
@@ -263,12 +263,66 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/content/trending", async (req, res) => {
     try {
       const trending = await serverDBStorage.getTrendingContent();
-      res.json({ content: trending, total: trending.length, page: 1, limit: 20, totalPages: 1 });
+      res.json(trending);
     } catch (error) {
       if (process.env.NODE_ENV === 'development') {
         console.error('Trending content error:', error);
       }
       res.status(500).json({ error: "Failed to fetch trending content" });
+    }
+  });
+
+  // Latest content route
+  app.get("/api/content/latest", async (req, res) => {
+    try {
+      const latest = await serverDBStorage.getFeaturedContent();
+      res.json(latest);
+    } catch (error) {
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Latest content error:', error);
+      }
+      res.status(500).json({ error: "Failed to fetch latest content" });
+    }
+  });
+
+  // ak.sv-style content routes
+  app.get("/api/content/shows", async (req, res) => {
+    try {
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 24;
+      const shows = await serverDBStorage.getContentByType("television", page, limit);
+      res.json(shows);
+    } catch (error) {
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Shows content error:', error);
+      }
+      res.status(500).json({ error: "Failed to fetch shows" });
+    }
+  });
+
+  app.get("/api/content/mix", async (req, res) => {
+    try {
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 24;
+      const mix = await serverDBStorage.getContentByType("misc", page, limit);
+      res.json(mix);
+    } catch (error) {
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Mix content error:', error);
+      }
+      res.status(500).json({ error: "Failed to fetch mix content" });
+    }
+  });
+
+  app.get("/api/content/top-rated", async (req, res) => {
+    try {
+      const topRated = await serverDBStorage.getTrendingContent();
+      res.json(topRated);
+    } catch (error) {
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Top rated content error:', error);
+      }
+      res.status(500).json({ error: "Failed to fetch top rated content" });
     }
   });
 

@@ -31,6 +31,9 @@ export default function TrailersPage() {
 
   const { data: trendingTrailers, isLoading: trendingLoading, error: trendingError } = useTrendingTrailers();
   const { data: featuredTrailer, isLoading: featuredLoading, error: featuredError } = useFeaturedTrailer();
+  
+  // Fix for trailers map error
+  const safeTrailers = trendingTrailers || [];
 
   // Mock data for comprehensive trailer showcase
   const mockTrailersData = [

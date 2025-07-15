@@ -1,9 +1,5 @@
-import AkStyleHeroNew from "@/components/home/ak-style-hero-new";
+import AkHomepage from "@/components/home/ak-homepage";
 
 export default function Home() {
-  return (
-    <div className="min-h-screen">
-      <AkStyleHeroNew />
-    </div>
-  );
+  return <AkHomepage />;
 }

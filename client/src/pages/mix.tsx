@@ -1,86 +1,106 @@
+import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { AkStyleContentCard } from "@/components/content/ak-style-content-card";
 import AdvancedFilters from "@/components/filters/advanced-filters";
 import { Skeleton } from "@/components/ui/skeleton";
-import { useState } from "react";
-
-interface Content {
-  id: number;
-  title: string;
-  description: string;
-  type: string;
-  poster_url: string;
-  release_year: number;
-  language: string;
-  quality: string;
-  resolution: string;
-  rating: number;
-  genres: string[];
-  categories: string[];
-}
+import { Button } from "@/components/ui/button";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function Mix() {
+  const [filters, setFilters] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
-  const [activeFilters, setActiveFilters] = useState({});
+  const [sortBy, setSortBy] = useState('latest');
 
   const { data, isLoading, error } = useQuery({
-    queryKey: ['/api/content', { type: 'miscellaneous', page: currentPage, limit: 24, ...activeFilters }],
-    queryFn: () => {
-      const searchParams = new URLSearchParams({ 
-        type: 'miscellaneous',
+    queryKey: ['/api/content/mix', currentPage, filters, sortBy],
+    queryFn: async () => {
+      const params = new URLSearchParams({
         page: currentPage.toString(),
         limit: '24',
-        ...Object.fromEntries(Object.entries(activeFilters).filter(([_, value]) => value))
+        sort: sortBy,
+        ...filters
       });
-      return fetch(`/api/content?${searchParams}`).then(res => res.json());
+      const response = await fetch(`/api/content/mix?${params}`);
+      if (!response.ok) throw new Error('Failed to fetch mix content');
+      return response.json();
     }
   });
 
-  const handleFilterChange = (filters: any) => {
-    setActiveFilters(filters);
+  const handleFiltersChange = (newFilters: any) => {
+    setFilters(newFilters);
     setCurrentPage(1);
   };
 
-  if (error) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-900 via-gray-900 to-black">
-        <p className="text-white text-xl">حدث خطأ في تحميل المحتوى المنوع</p>
-      </div>
-    );
-  }
+  const handlePageChange = (page: number) => {
+    setCurrentPage(page);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  const totalPages = Math.ceil((data?.total || 0) / 24);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-gray-900 to-black text-white">
-      <div className="container mx-auto px-4 py-6">
-        <h1 className="text-3xl font-bold mb-6 text-center bg-gradient-to-r from-purple-400 to-pink-600 bg-clip-text text-transparent">
-          المحتوى المنوع
-        </h1>
-        
-        <AdvancedFilters 
-          onFilterChange={handleFilterChange}
-          contentType="miscellaneous"
-        />
+    <div className="container mx-auto px-4 py-8">
+      <div className="text-center mb-8">
+        <h1 className="text-4xl font-bold mb-4 text-gray-800">المحتوى المنوع</h1>
+        <p className="text-lg text-gray-600">تشكيلة متنوعة من المحتوى المميز</p>
+      </div>
 
+      <AdvancedFilters 
+        onFiltersChange={handleFiltersChange}
+        contentType="mix"
+      />
+
+      <div className="mt-8">
         {isLoading ? (
-          <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mt-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 gap-6">
             {Array.from({ length: 24 }).map((_, i) => (
-              <Skeleton key={i} className="aspect-[2/3] w-full bg-slate-800" />
+              <div key={i} className="space-y-3">
+                <Skeleton className="aspect-[2/3] rounded-lg" />
+                <Skeleton className="h-4 w-3/4" />
+                <Skeleton className="h-3 w-1/2" />
+              </div>
             ))}
+          </div>
+        ) : error ? (
+          <div className="text-center py-12">
+            <p className="text-red-500 text-lg">{error.message}</p>
           </div>
         ) : (
           <>
-            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4 mt-6">
-              {data?.content?.map((item: Content) => (
-                <AkStyleContentCard 
-                  key={item.id} 
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-6 gap-6">
+              {data?.content?.map((item: any) => (
+                <AkStyleContentCard
+                  key={item.id}
                   content={item}
+                  href={`/mix/${item.id}/${item.titleArabic || item.title}`}
                 />
               ))}
             </div>
 
-            {data?.content?.length === 0 && (
-              <div className="text-center py-12">
-                <p className="text-gray-400 text-lg">لا يوجد محتوى متاح حالياً</p>
+            {/* Pagination */}
+            {totalPages > 1 && (
+              <div className="flex justify-center items-center mt-8 space-x-2">
+                <Button
+                  variant="outline"
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                >
+                  <ChevronRight className="w-4 h-4" />
+                  السابق
+                </Button>
+                
+                <span className="px-4 py-2 bg-gray-100 rounded-lg">
+                  صفحة {currentPage} من {totalPages}
+                </span>
+                
+                <Button
+                  variant="outline"
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                >
+                  التالي
+                  <ChevronLeft className="w-4 h-4" />
+                </Button>
               </div>
             )}
           </>

@@ -1,46 +1,41 @@
-import React from 'react';
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Star, Play, Clock, Calendar, Eye } from "lucide-react";
-import { Link } from "wouter";
+import { AkStyleContentCard } from "./ak-style-content-card";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface Content {
   id: number;
   title: string;
   titleArabic?: string;
   type: string;
-  year: number;
-  rating: number;
-  quality: string;
-  resolution: string;
-  language: string;
-  duration?: number;
-  views?: number;
-  poster?: string;
-  description?: string;
+  poster_url?: string;
+  rating?: number;
+  release_year?: number;
+  quality?: string;
   genres?: string[];
   categories?: string[];
-  releaseDate?: string;
 }
 
 interface AkStyleContentGridProps {
   content: Content[];
   loading?: boolean;
-  error?: string;
+  error?: Error | null;
+  columns?: number;
 }
 
-export default function AkStyleContentGrid({ content, loading, error }: AkStyleContentGridProps) {
+export default function AkStyleContentGrid({
+  content,
+  loading = false,
+  error = null,
+  columns = 6
+}: AkStyleContentGridProps) {
   if (loading) {
     return (
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
-        {Array.from({ length: 24 }).map((_, i) => (
-          <Card key={i} className="animate-pulse">
-            <div className="aspect-[2/3] bg-gray-300 rounded-t-lg" />
-            <CardContent className="p-3">
-              <div className="h-4 bg-gray-300 rounded mb-2" />
-              <div className="h-3 bg-gray-300 rounded w-2/3" />
-            </CardContent>
-          </Card>
+      <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-${columns} gap-6`}>
+        {Array.from({ length: 12 }).map((_, i) => (
+          <div key={i} className="space-y-3">
+            <Skeleton className="aspect-[2/3] rounded-lg" />
+            <Skeleton className="h-4 w-3/4" />
+            <Skeleton className="h-3 w-1/2" />
+          </div>
         ))}
       </div>
     );
@@ -49,7 +44,8 @@ export default function AkStyleContentGrid({ content, loading, error }: AkStyleC
   if (error) {
     return (
       <div className="text-center py-12">
-        <p className="text-red-500">{error}</p>
+        <p className="text-red-500 text-lg">حدث خطأ في تحميل المحتوى</p>
+        <p className="text-gray-600 text-sm mt-2">يرجى المحاولة مرة أخرى</p>
       </div>
     );
   }
@@ -57,157 +53,35 @@ export default function AkStyleContentGrid({ content, loading, error }: AkStyleC
   if (!content || content.length === 0) {
     return (
       <div className="text-center py-12">
-        <p className="text-gray-500">لا توجد محتويات للعرض</p>
+        <p className="text-gray-500 text-lg">لا يوجد محتوى متاح</p>
       </div>
     );
   }
 
   const getContentLink = (item: Content) => {
-    const title = item.titleArabic || item.title;
-    const slug = title.replace(/[^a-zA-Z0-9\u0600-\u06FF\s]/g, '').replace(/\s+/g, '-');
-    
+    const slugTitle = item.titleArabic || item.title;
     switch (item.type) {
       case 'movie':
-        return `/movie/${item.id}/${slug}`;
+        return `/movie/${item.id}/${slugTitle}`;
       case 'series':
-        return `/series/${item.id}/${slug}`;
+        return `/series/${item.id}/${slugTitle}`;
       case 'television':
-        return `/shows/${item.id}/${slug}`;
-      case 'miscellaneous':
-        return `/mix/${item.id}/${slug}`;
+        return `/shows/${item.id}/${slugTitle}`;
+      case 'misc':
+        return `/mix/${item.id}/${slugTitle}`;
       default:
-        return `/content/${item.id}`;
-    }
-  };
-
-  const getQualityColor = (quality: string) => {
-    switch (quality.toLowerCase()) {
-      case 'bluray':
-      case '4k':
-        return 'bg-purple-500';
-      case 'hd':
-      case '1080p':
-        return 'bg-blue-500';
-      case '720p':
-        return 'bg-green-500';
-      case 'dvd':
-      case '480p':
-        return 'bg-orange-500';
-      default:
-        return 'bg-gray-500';
-    }
-  };
-
-  const getTypeLabel = (type: string) => {
-    switch (type) {
-      case 'movie':
-        return 'فيلم';
-      case 'series':
-        return 'مسلسل';
-      case 'television':
-        return 'برنامج تلفزيوني';
-      case 'miscellaneous':
-        return 'منوعات';
-      default:
-        return 'محتوى';
+        return `/content/${item.id}/${slugTitle}`;
     }
   };
 
   return (
-    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
+    <div className={`grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 2xl:grid-cols-${columns} gap-6`}>
       {content.map((item) => (
-        <Card key={item.id} className="group hover:shadow-lg transition-all duration-300 overflow-hidden">
-          <div className="relative aspect-[2/3] overflow-hidden">
-            {/* Poster Image */}
-            <div className="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
-              {item.poster ? (
-                <img
-                  src={item.poster}
-                  alt={item.titleArabic || item.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                  onError={(e) => {
-                    (e.target as HTMLImageElement).style.display = 'none';
-                  }}
-                />
-              ) : (
-                <div className="text-white text-center p-4">
-                  <Play className="w-12 h-12 mx-auto mb-2 opacity-50" />
-                  <p className="text-sm opacity-70">{item.titleArabic || item.title}</p>
-                </div>
-              )}
-            </div>
-
-            {/* Overlay on hover */}
-            <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
-              <Play className="w-16 h-16 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-            </div>
-
-            {/* Quality Badge */}
-            <Badge className={`absolute top-2 right-2 ${getQualityColor(item.quality)} text-white text-xs`}>
-              {item.quality}
-            </Badge>
-
-            {/* Resolution Badge */}
-            {item.resolution && (
-              <Badge className="absolute top-2 left-2 bg-black bg-opacity-70 text-white text-xs">
-                {item.resolution}
-              </Badge>
-            )}
-
-            {/* Rating */}
-            <div className="absolute bottom-2 right-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded flex items-center gap-1">
-              <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
-              {item.rating.toFixed(1)}
-            </div>
-          </div>
-
-          <CardContent className="p-3">
-            <Link to={getContentLink(item)}>
-              <h3 className="font-semibold text-sm mb-1 line-clamp-2 hover:text-blue-600 transition-colors">
-                {item.titleArabic || item.title}
-              </h3>
-            </Link>
-            
-            <div className="flex items-center justify-between text-xs text-gray-500 mb-2">
-              <span>{getTypeLabel(item.type)}</span>
-              <span>{item.year}</span>
-            </div>
-
-            <div className="flex items-center gap-2 text-xs text-gray-500 mb-2">
-              <Calendar className="w-3 h-3" />
-              <span>{item.language}</span>
-              {item.duration && (
-                <>
-                  <Clock className="w-3 h-3" />
-                  <span>{item.duration} دقيقة</span>
-                </>
-              )}
-            </div>
-
-            {item.views && (
-              <div className="flex items-center gap-1 text-xs text-gray-500">
-                <Eye className="w-3 h-3" />
-                <span>{item.views.toLocaleString()} مشاهدة</span>
-              </div>
-            )}
-
-            {/* Genres */}
-            {item.genres && item.genres.length > 0 && (
-              <div className="flex flex-wrap gap-1 mt-2">
-                {item.genres.slice(0, 2).map((genre) => (
-                  <Badge key={genre} variant="secondary" className="text-xs px-1 py-0">
-                    {genre}
-                  </Badge>
-                ))}
-                {item.genres.length > 2 && (
-                  <Badge variant="secondary" className="text-xs px-1 py-0">
-                    +{item.genres.length - 2}
-                  </Badge>
-                )}
-              </div>
-            )}
-          </CardContent>
-        </Card>
+        <AkStyleContentCard
+          key={item.id}
+          content={item}
+          href={getContentLink(item)}
+        />
       ))}
     </div>
   );
