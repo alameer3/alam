@@ -1,247 +1,214 @@
-import { useState, useEffect } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { AkStyleContentCard } from "./ak-style-content-card";
-import { AkStyleFilters } from "../filters/ak-style-filters";
-import { Content } from "@shared/schema";
-import { Button } from "@/components/ui/button";
-import { ChevronLeft, ChevronRight, Grid3X3, List } from "lucide-react";
-import { Skeleton } from "@/components/ui/skeleton";
+import React from 'react';
+import { Card, CardContent } from "@/components/ui/card";
+import { Badge } from "@/components/ui/badge";
+import { Star, Play, Clock, Calendar, Eye } from "lucide-react";
+import { Link } from "wouter";
 
-interface FilterOptions {
-  section?: string;
-  category?: string;
-  rating?: string;
-  year?: string;
-  language?: string;
-  quality?: string;
-  resolution?: string;
+interface Content {
+  id: number;
+  title: string;
+  titleArabic?: string;
+  type: string;
+  year: number;
+  rating: number;
+  quality: string;
+  resolution: string;
+  language: string;
+  duration?: number;
+  views?: number;
+  poster?: string;
+  description?: string;
+  genres?: string[];
+  categories?: string[];
+  releaseDate?: string;
 }
 
 interface AkStyleContentGridProps {
-  contentType: string;
-  title: string;
-  onContentClick?: (content: Content) => void;
-  filters?: FilterOptions;
+  content: Content[];
+  loading?: boolean;
+  error?: string;
 }
 
-function ContentSkeleton({ variant = "grid" }: { variant?: "grid" | "list" }) {
-  if (variant === "list") {
+export default function AkStyleContentGrid({ content, loading, error }: AkStyleContentGridProps) {
+  if (loading) {
     return (
-      <div className="bg-gray-900 rounded-lg overflow-hidden">
-        <div className="flex">
-          <Skeleton className="w-32 h-48 bg-gray-800" />
-          <div className="flex-1 p-4 space-y-3">
-            <Skeleton className="h-6 w-3/4 bg-gray-800" />
-            <Skeleton className="h-4 w-full bg-gray-800" />
-            <Skeleton className="h-4 w-2/3 bg-gray-800" />
-            <div className="flex gap-2 pt-2">
-              <Skeleton className="h-8 w-20 bg-gray-800" />
-              <Skeleton className="h-8 w-20 bg-gray-800" />
-            </div>
-          </div>
-        </div>
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
+        {Array.from({ length: 24 }).map((_, i) => (
+          <Card key={i} className="animate-pulse">
+            <div className="aspect-[2/3] bg-gray-300 rounded-t-lg" />
+            <CardContent className="p-3">
+              <div className="h-4 bg-gray-300 rounded mb-2" />
+              <div className="h-3 bg-gray-300 rounded w-2/3" />
+            </CardContent>
+          </Card>
+        ))}
       </div>
     );
   }
-
-  return (
-    <div className="bg-gray-900 rounded-lg overflow-hidden">
-      <Skeleton className="aspect-[2/3] w-full bg-gray-800" />
-      <div className="p-4 space-y-2">
-        <Skeleton className="h-4 w-3/4 bg-gray-800" />
-        <div className="flex gap-2">
-          <Skeleton className="h-6 w-12 bg-gray-800" />
-          <Skeleton className="h-6 w-16 bg-gray-800" />
-        </div>
-      </div>
-    </div>
-  );
-}
-
-export function AkStyleContentGrid({ contentType, title, onContentClick, filters: propFilters }: AkStyleContentGridProps) {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [filters, setFilters] = useState({});
-  const [viewMode, setViewMode] = useState<"grid" | "list">("grid");
-  const itemsPerPage = 24;
-
-  // تحديث الفلاتر عند تغييرها من الخارج
-  useEffect(() => {
-    if (propFilters) {
-      setFilters(propFilters);
-      setCurrentPage(1); // إعادة تعيين الصفحة عند تغيير الفلاتر
-    }
-  }, [propFilters]);
-
-  const { data, isLoading, error } = useQuery({
-    queryKey: ['/api/content', contentType, currentPage, filters],
-    queryFn: async () => {
-      const params = new URLSearchParams({
-        type: contentType,
-        page: currentPage.toString(),
-        limit: itemsPerPage.toString(),
-        ...filters
-      });
-      const response = await fetch(`/api/content?${params}`);
-      if (!response.ok) throw new Error('Failed to fetch content');
-      return response.json();
-    }
-  });
-
-  const content = data?.content || [];
-  const totalPages = Math.ceil((parseInt(data?.total) || 0) / itemsPerPage);
-
-  useEffect(() => {
-    setCurrentPage(1);
-  }, [filters]);
-
-  const handleFiltersChange = (newFilters: any) => {
-    setFilters(newFilters);
-  };
-
-  const handlePageChange = (page: number) => {
-    setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gray-900 text-white">
-        <div className="container mx-auto px-4 py-8">
-          <div className="text-center">
-            <h2 className="text-2xl font-bold mb-4">خطأ في تحميل المحتوى</h2>
-            <p className="text-gray-400">حدث خطأ أثناء تحميل المحتوى. يرجى المحاولة مرة أخرى.</p>
-          </div>
-        </div>
+      <div className="text-center py-12">
+        <p className="text-red-500">{error}</p>
       </div>
     );
   }
 
+  if (!content || content.length === 0) {
+    return (
+      <div className="text-center py-12">
+        <p className="text-gray-500">لا توجد محتويات للعرض</p>
+      </div>
+    );
+  }
+
+  const getContentLink = (item: Content) => {
+    const title = item.titleArabic || item.title;
+    const slug = title.replace(/[^a-zA-Z0-9\u0600-\u06FF\s]/g, '').replace(/\s+/g, '-');
+    
+    switch (item.type) {
+      case 'movie':
+        return `/movie/${item.id}/${slug}`;
+      case 'series':
+        return `/series/${item.id}/${slug}`;
+      case 'television':
+        return `/shows/${item.id}/${slug}`;
+      case 'miscellaneous':
+        return `/mix/${item.id}/${slug}`;
+      default:
+        return `/content/${item.id}`;
+    }
+  };
+
+  const getQualityColor = (quality: string) => {
+    switch (quality.toLowerCase()) {
+      case 'bluray':
+      case '4k':
+        return 'bg-purple-500';
+      case 'hd':
+      case '1080p':
+        return 'bg-blue-500';
+      case '720p':
+        return 'bg-green-500';
+      case 'dvd':
+      case '480p':
+        return 'bg-orange-500';
+      default:
+        return 'bg-gray-500';
+    }
+  };
+
+  const getTypeLabel = (type: string) => {
+    switch (type) {
+      case 'movie':
+        return 'فيلم';
+      case 'series':
+        return 'مسلسل';
+      case 'television':
+        return 'برنامج تلفزيوني';
+      case 'miscellaneous':
+        return 'منوعات';
+      default:
+        return 'محتوى';
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-gray-900">
-      {/* Page Header */}
-      <div className="bg-gradient-to-r from-gray-900 via-black to-gray-900 py-8">
-        <div className="container mx-auto px-4">
-          <h1 className="text-4xl font-bold text-white text-center mb-2">{title}</h1>
-          <div className="w-24 h-1 bg-gradient-to-r from-orange-500 to-red-600 mx-auto rounded-full"></div>
-        </div>
-      </div>
+    <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 2xl:grid-cols-6 gap-4">
+      {content.map((item) => (
+        <Card key={item.id} className="group hover:shadow-lg transition-all duration-300 overflow-hidden">
+          <div className="relative aspect-[2/3] overflow-hidden">
+            {/* Poster Image */}
+            <div className="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
+              {item.poster ? (
+                <img
+                  src={item.poster}
+                  alt={item.titleArabic || item.title}
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                  onError={(e) => {
+                    (e.target as HTMLImageElement).style.display = 'none';
+                  }}
+                />
+              ) : (
+                <div className="text-white text-center p-4">
+                  <Play className="w-12 h-12 mx-auto mb-2 opacity-50" />
+                  <p className="text-sm opacity-70">{item.titleArabic || item.title}</p>
+                </div>
+              )}
+            </div>
 
-      {/* Filters */}
-      <AkStyleFilters 
-        onFiltersChange={handleFiltersChange}
-        contentType={contentType}
-      />
+            {/* Overlay on hover */}
+            <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-60 transition-all duration-300 flex items-center justify-center">
+              <Play className="w-16 h-16 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+            </div>
 
-      {/* View Mode Toggle & Stats */}
-      <div className="bg-gray-800 py-4 px-4 border-b border-gray-700">
-        <div className="container mx-auto flex justify-between items-center">
-          <div className="text-gray-400">
-            {isLoading ? (
-              <span>جاري التحميل...</span>
-            ) : (
-              <span>عرض {content.length} من أصل {data?.total || 0} نتيجة</span>
+            {/* Quality Badge */}
+            <Badge className={`absolute top-2 right-2 ${getQualityColor(item.quality)} text-white text-xs`}>
+              {item.quality}
+            </Badge>
+
+            {/* Resolution Badge */}
+            {item.resolution && (
+              <Badge className="absolute top-2 left-2 bg-black bg-opacity-70 text-white text-xs">
+                {item.resolution}
+              </Badge>
             )}
-          </div>
-          
-          <div className="flex gap-2">
-            <Button
-              variant={viewMode === "grid" ? "default" : "outline"}
-              size="sm"
-              onClick={() => setViewMode("grid")}
-              className="bg-gray-700 hover:bg-gray-600"
-            >
-              <Grid3X3 className="w-4 h-4" />
-            </Button>
-            <Button
-              variant={viewMode === "list" ? "default" : "outline"} 
-              size="sm"
-              onClick={() => setViewMode("list")}
-              className="bg-gray-700 hover:bg-gray-600"
-            >
-              <List className="w-4 h-4" />
-            </Button>
-          </div>
-        </div>
-      </div>
 
-      {/* Content Grid */}
-      <div className="container mx-auto px-4 py-8">
-        {isLoading ? (
-          <div className={viewMode === "grid" 
-            ? "grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4"
-            : "space-y-4"
-          }>
-            {Array.from({ length: 12 }, (_, i) => (
-              <ContentSkeleton key={i} variant={viewMode} />
-            ))}
-          </div>
-        ) : content.length > 0 ? (
-          <div className={viewMode === "grid" 
-            ? "grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4"
-            : "space-y-4"
-          }>
-            {content.map((item: Content) => (
-              <AkStyleContentCard
-                key={item.id}
-                content={item}
-                onClick={onContentClick}
-                variant={viewMode}
-              />
-            ))}
-          </div>
-        ) : (
-          <div className="text-center py-16">
-            <h3 className="text-xl font-bold text-white mb-2">لا توجد نتائج</h3>
-            <p className="text-gray-400">لم يتم العثور على محتوى مطابق للفلاتر المحددة</p>
-          </div>
-        )}
-      </div>
-
-      {/* Pagination */}
-      {totalPages > 1 && (
-        <div className="bg-gray-800 py-6 px-4 border-t border-gray-700">
-          <div className="container mx-auto">
-            <div className="flex justify-center items-center gap-2 flex-wrap">
-              <Button
-                variant="outline"
-                disabled={currentPage === 1}
-                onClick={() => handlePageChange(currentPage - 1)}
-                className="bg-gray-700 border-gray-600 text-white hover:bg-gray-600"
-              >
-                <ChevronRight className="w-4 h-4 mr-1" />
-                السابق
-              </Button>
-              
-              {Array.from({ length: Math.min(totalPages, 10) }, (_, i) => {
-                const pageNum = i + 1;
-                return (
-                  <Button
-                    key={pageNum}
-                    variant={currentPage === pageNum ? "default" : "outline"}
-                    onClick={() => handlePageChange(pageNum)}
-                    className={currentPage === pageNum 
-                      ? "bg-orange-600 hover:bg-orange-700" 
-                      : "bg-gray-700 border-gray-600 text-white hover:bg-gray-600"
-                    }
-                  >
-                    {pageNum}
-                  </Button>
-                );
-              })}
-              
-              <Button
-                variant="outline"
-                disabled={currentPage === totalPages}
-                onClick={() => handlePageChange(currentPage + 1)}
-                className="bg-gray-700 border-gray-600 text-white hover:bg-gray-600"
-              >
-                التالي
-                <ChevronLeft className="w-4 h-4 ml-1" />
-              </Button>
+            {/* Rating */}
+            <div className="absolute bottom-2 right-2 bg-black bg-opacity-70 text-white text-xs px-2 py-1 rounded flex items-center gap-1">
+              <Star className="w-3 h-3 fill-yellow-400 text-yellow-400" />
+              {item.rating.toFixed(1)}
             </div>
           </div>
-        </div>
-      )}
+
+          <CardContent className="p-3">
+            <Link to={getContentLink(item)}>
+              <h3 className="font-semibold text-sm mb-1 line-clamp-2 hover:text-blue-600 transition-colors">
+                {item.titleArabic || item.title}
+              </h3>
+            </Link>
+            
+            <div className="flex items-center justify-between text-xs text-gray-500 mb-2">
+              <span>{getTypeLabel(item.type)}</span>
+              <span>{item.year}</span>
+            </div>
+
+            <div className="flex items-center gap-2 text-xs text-gray-500 mb-2">
+              <Calendar className="w-3 h-3" />
+              <span>{item.language}</span>
+              {item.duration && (
+                <>
+                  <Clock className="w-3 h-3" />
+                  <span>{item.duration} دقيقة</span>
+                </>
+              )}
+            </div>
+
+            {item.views && (
+              <div className="flex items-center gap-1 text-xs text-gray-500">
+                <Eye className="w-3 h-3" />
+                <span>{item.views.toLocaleString()} مشاهدة</span>
+              </div>
+            )}
+
+            {/* Genres */}
+            {item.genres && item.genres.length > 0 && (
+              <div className="flex flex-wrap gap-1 mt-2">
+                {item.genres.slice(0, 2).map((genre) => (
+                  <Badge key={genre} variant="secondary" className="text-xs px-1 py-0">
+                    {genre}
+                  </Badge>
+                ))}
+                {item.genres.length > 2 && (
+                  <Badge variant="secondary" className="text-xs px-1 py-0">
+                    +{item.genres.length - 2}
+                  </Badge>
+                )}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+      ))}
     </div>
   );
 }

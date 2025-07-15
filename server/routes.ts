@@ -44,18 +44,59 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Featured content route
+  app.get("/api/content/featured", async (req, res) => {
+    try {
+      const content = await serverDBStorage.getFeaturedContent();
+      res.json(content);
+    } catch (error) {
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Featured content fetch error:', error);
+      }
+      res.status(500).json({ error: "Failed to fetch featured content" });
+    }
+  });
+
+  // Latest content route
+  app.get("/api/content/latest", async (req, res) => {
+    try {
+      const content = await serverDBStorage.getContentByType('all', 1, 24);
+      res.json(content.content);
+    } catch (error) {
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Latest content fetch error:', error);
+      }
+      res.status(500).json({ error: "Failed to fetch latest content" });
+    }
+  });
+
+  // Trending content route
+  app.get("/api/content/trending", async (req, res) => {
+    try {
+      const content = await serverDBStorage.getTrendingContent();
+      res.json(content);
+    } catch (error) {
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Trending content fetch error:', error);
+      }
+      res.status(500).json({ error: "Failed to fetch trending content" });
+    }
+  });
+
   // Content routes - simplified without cache
   app.get("/api/content/:type", async (req, res) => {
     try {
       const { type } = req.params;
       const page = parseInt(req.query.page as string) || 1;
-      const limit = parseInt(req.query.limit as string) || 20;
+      const limit = parseInt(req.query.limit as string) || 24;
       const filters = {
         year: req.query.year,
         language: req.query.language,
         quality: req.query.quality,
         resolution: req.query.resolution,
-        rating: req.query.rating
+        rating: req.query.rating,
+        category: req.query.category,
+        genre: req.query.genre
       };
 
       // Map API types to database types

@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { AkStyleContentCard } from "@/components/content/ak-style-content-card";
-import { AdvancedFilters } from "@/components/filters/advanced-filters";
+import AdvancedFilters from "@/components/filters/advanced-filters";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useState } from "react";
 
