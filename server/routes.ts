@@ -6,17 +6,17 @@ import { serverDBStorage } from "./serverdb-storage";
 import { insertContentSchema, insertGenreSchema, insertCategorySchema, insertUserSchema, insertUserCommentSchema, insertUserReviewSchema, insertReviewLikeSchema, insertUserFavoriteSchema, insertUserWatchHistorySchema, insertEpisodeSchema } from "@shared/schema";
 import { z } from "zod";
 import adminRoutes from "./routes/admin";
-import performanceRoutes from "./routes/performance";
+
 import authRoutes from "./routes/auth";
 import userRoutes from "./routes/users";
-import securityRoutes from "./routes/security";
+
 import enhancedContentRoutes from "./routes/enhanced-content";
 import trailerRoutes from "./routes/trailers";
 import analyticsRoutes from "./routes/analytics";
-import subscriptionRoutes from "./routes/subscriptions";
+
 // import { cacheMiddleware, clearCache, trackQueryPerformance } from "./middleware/cache";
 // import { QueryOptimizer } from "./middleware/performance";
-import { initializeBackupSystem } from "./middleware/backup";
+
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Content stats route - specific for homepage
@@ -513,8 +513,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Admin routes
   app.use("/api/admin", adminRoutes);
   
-  // Performance routes
-  app.use("/api/performance", performanceRoutes);
+
 
   // Content management routes
   app.get('/api/content/all', async (req, res) => {
@@ -544,7 +543,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
   
   // Initialize backup system
-  initializeBackupSystem();
+
   
   // Register user routes  
   userRoutes(app);
@@ -686,14 +685,12 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Security routes
-  app.use("/api/security", securityRoutes);
+
 
   // Analytics routes
   app.use("/api/analytics", analyticsRoutes);
 
-  // Subscription routes
-  app.use("/api/subscriptions", subscriptionRoutes);
+
 
   // Episodes routes
   app.get('/api/episodes/:contentId', async (req, res) => {

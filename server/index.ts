@@ -2,10 +2,8 @@ import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import { securityHeaders, validateInput, checkSecurityStatus } from "./middleware/security";
-// Performance middleware removed - functionality integrated into performance-monitor
 import { initializeDatabaseOptimizations } from "./middleware/database";
 import { errorHandler, notFoundHandler } from "./middleware/error-handler";
-import { performanceMonitor } from "./middleware/performance-monitor";
 import { execSync } from "child_process";
 import fs from "fs";
 
@@ -15,8 +13,7 @@ const app = express();
 app.use(securityHeaders);
 app.use(checkSecurityStatus);
 
-// Performance monitoring
-app.use(performanceMonitor.middleware());
+
 
 // Input sanitization and validation
 app.use(validateInput);

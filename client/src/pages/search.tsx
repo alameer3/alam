@@ -7,7 +7,7 @@ import { Badge } from '@/components/ui/badge';
 import Header from '@/components/layout/header';
 import Navigation from '@/components/layout/navigation';
 import Footer from '@/components/layout/footer';
-import { EnhancedSearchSystem } from '@/components/search/enhanced-search-system';
+import { AdvancedSearch } from '@/components/search/advanced-search';
 import { SearchResultsGrid } from '@/components/search/search-results-grid';
 import { VideoPlayerDemo } from '@/components/ui/video-player-demo';
 import { Content } from '@shared/schema';
@@ -159,7 +159,7 @@ export default function SearchPage() {
         {/* Search Section */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-6 text-center">البحث المتقدم</h1>
-          <EnhancedSearchSystem
+          <AdvancedSearch
             onSearch={handleSearch}
             isSearching={isSearching}
             suggestions={searchSuggestions}

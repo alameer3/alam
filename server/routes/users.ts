@@ -2,16 +2,11 @@ import type { Express } from "express";
 import { fileStorage } from "../file-storage-simple";
 import { insertUserSchema, insertUserCommentSchema, insertUserReviewSchema, insertUserFavoriteSchema, insertUserWatchHistorySchema } from "@shared/schema";
 import { z } from "zod";
-import { cacheMiddleware, clearCache } from "../middleware/cache";
+
 
 export default function registerUserRoutes(app: Express) {
   // User profile routes
-  app.get("/api/users/:id/profile", 
-    cacheMiddleware({ 
-      ttl: 300,
-      keyGenerator: (req) => `user:profile:${req.params.id}`
-    }),
-    async (req, res) => {
+  app.get("/api/users/:id/profile", async (req, res) => {
       try {
         const id = parseInt(req.params.id);
         const user = await storage.getUser(id);
@@ -42,7 +37,7 @@ export default function registerUserRoutes(app: Express) {
       const validatedData = insertUserSchema.partial().parse(req.body);
       const user = await storage.updateUser(id, validatedData);
       
-      clearCache(`user:profile:${id}`);
+      
       
       res.json(user);
     } catch (error) {
@@ -56,10 +51,6 @@ export default function registerUserRoutes(app: Express) {
 
   // User statistics
   app.get("/api/users/:id/stats", 
-    cacheMiddleware({ 
-      ttl: 180,
-      keyGenerator: (req) => `user:stats:${req.params.id}`
-    }),
     async (req, res) => {
       try {
         const id = parseInt(req.params.id);
@@ -81,10 +72,6 @@ export default function registerUserRoutes(app: Express) {
 
   // User favorites
   app.get("/api/users/:id/favorites", 
-    cacheMiddleware({ 
-      ttl: 300,
-      keyGenerator: (req) => `user:favorites:${req.params.id}`
-    }),
     async (req, res) => {
       try {
         const id = parseInt(req.params.id);
@@ -98,10 +85,6 @@ export default function registerUserRoutes(app: Express) {
 
   // User watch history
   app.get("/api/users/:id/watch-history", 
-    cacheMiddleware({ 
-      ttl: 300,
-      keyGenerator: (req) => `user:history:${req.params.id}`
-    }),
     async (req, res) => {
       try {
         const id = parseInt(req.params.id);
@@ -115,10 +98,6 @@ export default function registerUserRoutes(app: Express) {
 
   // Watchlists
   app.get("/api/users/:id/watchlists", 
-    cacheMiddleware({ 
-      ttl: 300,
-      keyGenerator: (req) => `user:watchlists:${req.params.id}`
-    }),
     async (req, res) => {
       try {
         const id = parseInt(req.params.id);
@@ -172,7 +151,7 @@ export default function registerUserRoutes(app: Express) {
         updatedAt: new Date().toISOString(),
       };
 
-      clearCache(`user:watchlists:${id}`);
+      
       
       res.status(201).json(newWatchlist);
     } catch (error) {
@@ -182,10 +161,6 @@ export default function registerUserRoutes(app: Express) {
 
   // Watchlist items
   app.get("/api/watchlists/:id/items", 
-    cacheMiddleware({ 
-      ttl: 300,
-      keyGenerator: (req) => `watchlist:items:${req.params.id}`
-    }),
     async (req, res) => {
       try {
         const id = parseInt(req.params.id);
@@ -220,8 +195,8 @@ export default function registerUserRoutes(app: Express) {
       const id = parseInt(req.params.id);
       
       // Mock delete - in real implementation, would delete from database
-      clearCache(`watchlist:items:${id}`);
-      clearCache(`user:watchlists:`); // Clear all user watchlists cache
+      
+       // Clear all user watchlists cache
       
       res.json({ message: "Watchlist deleted successfully" });
     } catch (error) {
@@ -231,10 +206,6 @@ export default function registerUserRoutes(app: Express) {
 
   // Notifications
   app.get("/api/users/:id/notifications", 
-    cacheMiddleware({ 
-      ttl: 60, // Short cache for notifications
-      keyGenerator: (req) => `user:notifications:${req.params.id}`
-    }),
     async (req, res) => {
       try {
         const id = parseInt(req.params.id);
@@ -290,7 +261,7 @@ export default function registerUserRoutes(app: Express) {
       const id = parseInt(req.params.id);
       
       // Mock mark as read
-      clearCache(`user:notifications:`);
+      
       
       res.json({ message: "Notification marked as read" });
     } catch (error) {
@@ -303,7 +274,7 @@ export default function registerUserRoutes(app: Express) {
       const id = parseInt(req.params.id);
       
       // Mock mark all as read
-      clearCache(`user:notifications:${id}`);
+      
       
       res.json({ message: "All notifications marked as read" });
     } catch (error) {
@@ -316,7 +287,7 @@ export default function registerUserRoutes(app: Express) {
       const id = parseInt(req.params.id);
       
       // Mock delete notification
-      clearCache(`user:notifications:`);
+      
       
       res.json({ message: "Notification deleted" });
     } catch (error) {
@@ -326,10 +297,6 @@ export default function registerUserRoutes(app: Express) {
 
   // Notification settings
   app.get("/api/users/:id/notification-settings", 
-    cacheMiddleware({ 
-      ttl: 600,
-      keyGenerator: (req) => `user:notification-settings:${req.params.id}`
-    }),
     async (req, res) => {
       try {
         const id = parseInt(req.params.id);
@@ -357,7 +324,7 @@ export default function registerUserRoutes(app: Express) {
       const settings = req.body;
       
       // Mock update settings
-      clearCache(`user:notification-settings:${id}`);
+      
       
       res.json(settings);
     } catch (error) {
