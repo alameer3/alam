@@ -6,6 +6,8 @@ import { securityHeaders, validateInput, checkSecurityStatus } from "./middlewar
 import { initializeDatabaseOptimizations } from "./middleware/database";
 import { errorHandler, notFoundHandler } from "./middleware/error-handler";
 import { performanceMonitor } from "./middleware/performance-monitor";
+import { execSync } from "child_process";
+import fs from "fs";
 
 const app = express();
 
@@ -56,6 +58,16 @@ app.use((req, res, next) => {
 });
 
 (async () => {
+  // تشغيل النظام التلقائي لـ Replit
+  console.log("🔧 تشغيل النظام التلقائي لـ Replit...");
+  try {
+    if (fs.existsSync("replit-auto-setup.cjs")) {
+      execSync("node replit-auto-setup.cjs", { stdio: "inherit" });
+    }
+  } catch (error) {
+    console.log("ℹ️ النظام التلقائي غير متاح، المتابعة بدونه...");
+  }
+  
   // Initialize database optimizations
   await initializeDatabaseOptimizations();
   
