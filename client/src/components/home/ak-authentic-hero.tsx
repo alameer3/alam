@@ -19,7 +19,7 @@ export default function AkAuthenticHero() {
     if (featuredContent.length > 0) {
       const timer = setInterval(() => {
         setCurrentSlide((prev) => (prev + 1) % featuredContent.length);
-      }, 5000);
+      }, 6000);
       return () => clearInterval(timer);
     }
   }, [featuredContent.length]);
@@ -28,83 +28,103 @@ export default function AkAuthenticHero() {
 
   if (!currentContent) {
     return (
-      <div className="relative h-[600px] bg-gradient-to-b from-slate-900 to-slate-800 flex items-center justify-center">
-        <div className="text-center text-white">
-          <h2 className="text-2xl font-bold mb-4">اكوام</h2>
-          <p className="text-gray-300">الموقع العربي الأول للمشاهدة والتحميل</p>
+      <div className="relative h-[700px] bg-gradient-to-br from-slate-900 via-slate-800 to-black flex items-center justify-center overflow-hidden">
+        <div className="absolute inset-0 bg-[url('/api/placeholder/1920/1080')] bg-cover bg-center opacity-20"></div>
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
+        <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4">
+          <div className="mb-8">
+            <div className="bg-gradient-to-r from-red-600 via-white to-black p-4 rounded-2xl shadow-2xl inline-block mb-6">
+              <span className="text-3xl font-bold">🇾🇪</span>
+            </div>
+            <h1 className="text-6xl font-bold mb-4 bg-gradient-to-r from-red-500 via-white to-black bg-clip-text text-transparent">
+              اكوام
+            </h1>
+            <p className="text-xl text-gray-300 mb-8">أفضل موقع عربي للأفلام والمسلسلات</p>
+            <div className="flex justify-center space-x-reverse space-x-4">
+              <Badge className="bg-red-600 text-white px-4 py-2 text-sm">جودة عالية</Badge>
+              <Badge className="bg-green-600 text-white px-4 py-2 text-sm">تحديث يومي</Badge>
+              <Badge className="bg-blue-600 text-white px-4 py-2 text-sm">مجاني</Badge>
+            </div>
+          </div>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="relative h-[600px] overflow-hidden">
+    <div className="relative h-[700px] overflow-hidden">
       {/* Background Image */}
       <div className="absolute inset-0">
         <img
           src={currentContent.backdrop || "/api/placeholder/1920/1080"}
           alt={currentContent.title}
-          className="w-full h-full object-cover"
+          className="w-full h-full object-cover scale-105 transition-transform duration-10000"
         />
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-900 via-slate-900/70 to-transparent" />
-        <div className="absolute inset-0 bg-gradient-to-r from-slate-900/80 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/50 to-transparent" />
       </div>
 
       {/* Content */}
       <div className="relative z-10 container mx-auto px-4 h-full flex items-center">
-        <div className="max-w-2xl text-right">
+        <div className="max-w-3xl text-right">
           {/* Title */}
-          <h1 className="text-5xl font-bold text-white mb-4 drop-shadow-lg">
+          <h1 className="text-6xl font-bold text-white mb-6 drop-shadow-2xl leading-tight">
             {currentContent.titleAr || currentContent.title}
           </h1>
 
           {/* Subtitle */}
           {currentContent.titleEn && currentContent.titleAr && (
-            <h2 className="text-xl text-gray-300 mb-6 font-light">
+            <h2 className="text-2xl text-gray-300 mb-8 font-light drop-shadow-lg">
               {currentContent.titleEn}
             </h2>
           )}
 
           {/* Rating and Info */}
-          <div className="flex items-center space-x-reverse space-x-4 mb-6">
-            <div className="flex items-center space-x-reverse space-x-1">
-              <Star className="h-5 w-5 text-yellow-400 fill-current" />
-              <span className="text-white font-semibold">
+          <div className="flex items-center space-x-reverse space-x-6 mb-8">
+            <div className="flex items-center space-x-reverse space-x-2 bg-black/50 px-4 py-2 rounded-full">
+              <Star className="h-6 w-6 text-yellow-400 fill-current" />
+              <span className="text-white font-bold text-lg">
                 {currentContent.rating || "8.5"}
               </span>
             </div>
-            <Badge variant="secondary" className="bg-red-600 text-white">
+            <Badge className="bg-red-600 text-white px-4 py-2 text-sm font-semibold">
               {currentContent.quality || "HD"}
             </Badge>
-            <span className="text-gray-300">{currentContent.year || "2024"}</span>
-            <span className="text-gray-300">{currentContent.duration || "120 دقيقة"}</span>
+            <div className="flex items-center space-x-reverse space-x-2 text-gray-300">
+              <Calendar className="h-5 w-5" />
+              <span>{currentContent.year || "2024"}</span>
+            </div>
+            <div className="flex items-center space-x-reverse space-x-2 text-gray-300">
+              <Clock className="h-5 w-5" />
+              <span>{currentContent.duration || "120 دقيقة"}</span>
+            </div>
           </div>
 
           {/* Description */}
-          <p className="text-gray-300 text-lg mb-8 leading-relaxed line-clamp-3">
-            {currentContent.descriptionAr || currentContent.description || "وصف المحتوى يظهر هنا..."}
+          <p className="text-gray-200 text-xl mb-10 leading-relaxed line-clamp-3 drop-shadow-lg">
+            {currentContent.descriptionAr || currentContent.description || "قصة مشوقة ومثيرة تجمع بين الإثارة والتشويق في عمل سينمائي رائع."}
           </p>
 
           {/* Action Buttons */}
-          <div className="flex items-center space-x-reverse space-x-4 mb-8">
-            <Button size="lg" className="bg-red-600 hover:bg-red-700 text-white">
-              <Play className="h-5 w-5 ml-2" />
+          <div className="flex items-center space-x-reverse space-x-6 mb-10">
+            <Button size="lg" className="bg-red-600 hover:bg-red-700 text-white px-8 py-4 text-lg font-semibold shadow-2xl hover:shadow-red-500/25 transition-all duration-300">
+              <Play className="h-6 w-6 ml-3" />
               مشاهدة الآن
             </Button>
-            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
-              <Heart className="h-5 w-5 ml-2" />
+            <Button size="lg" variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-black px-8 py-4 text-lg font-semibold backdrop-blur-sm">
+              <Heart className="h-6 w-6 ml-3" />
               إضافة للمفضلة
             </Button>
-            <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
-              <Share2 className="h-5 w-5 ml-2" />
+            <Button size="lg" variant="outline" className="border-2 border-white text-white hover:bg-white hover:text-black px-8 py-4 text-lg font-semibold backdrop-blur-sm">
+              <Share2 className="h-6 w-6 ml-3" />
               مشاركة
             </Button>
           </div>
 
           {/* Genres */}
-          <div className="flex flex-wrap gap-2">
-            {currentContent.genres?.slice(0, 3).map((genre: any) => (
-              <Badge key={genre.id} variant="outline" className="border-white/30 text-white hover:bg-white/10">
+          <div className="flex flex-wrap gap-3">
+            {currentContent.genres?.slice(0, 4).map((genre: any) => (
+              <Badge key={genre.id} variant="outline" className="border-white/40 text-white hover:bg-white/20 px-4 py-2 text-sm backdrop-blur-sm">
                 {genre.nameAr || genre.name}
               </Badge>
             ))}

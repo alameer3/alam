@@ -62,61 +62,68 @@ export default function AkAuthenticContentGrid({
   const displayContent = Array.isArray(content) ? content.slice(0, 16) : [];
 
   return (
-    <div className="py-8">
+    <div className="py-12 bg-gradient-to-b from-slate-900 to-slate-800">
       <div className="container mx-auto px-4">
         {/* Section Header */}
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="text-2xl font-bold text-white">{title}</h2>
+        <div className="flex items-center justify-between mb-8">
+          <h2 className="text-3xl font-bold text-white bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent">
+            {title}
+          </h2>
           {viewAllLink && (
             <Link to={viewAllLink}>
-              <Button variant="outline" size="sm" className="border-red-600 text-red-600 hover:bg-red-600 hover:text-white">
+              <Button variant="outline" size="lg" className="border-2 border-red-600 text-red-600 hover:bg-red-600 hover:text-white font-semibold px-6 py-3 transition-all duration-300">
                 عرض الكل
-                <MoreHorizontal className="h-4 w-4 mr-2" />
+                <MoreHorizontal className="h-5 w-5 mr-2" />
               </Button>
             </Link>
           )}
         </div>
 
         {/* Content Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-6">
           {displayContent.map((item: any) => (
-            <Card key={item.id} className="bg-slate-800 border-slate-700 hover:bg-slate-700 transition-colors group">
+            <Card key={item.id} className="bg-slate-800 border-slate-700 hover:border-red-500 transition-all duration-300 group shadow-lg hover:shadow-2xl hover:shadow-red-500/20">
               <CardContent className="p-0">
                 <Link to={getDetailLink(item)}>
-                  <div className="relative">
+                  <div className="relative overflow-hidden rounded-t-lg">
                     {/* Poster Image */}
                     <img
                       src={item.poster || "/api/placeholder/300/450"}
                       alt={item.titleAr || item.title}
-                      className="w-full aspect-[2/3] object-cover rounded-t-lg"
+                      className="w-full aspect-[2/3] object-cover transition-transform duration-300 group-hover:scale-105"
                     />
 
                     {/* Quality Badge */}
                     {item.quality && (
-                      <Badge className="absolute top-2 right-2 bg-red-600 text-white text-xs">
+                      <Badge className="absolute top-3 right-3 bg-red-600 text-white text-xs font-semibold px-3 py-1 shadow-lg">
                         {item.quality}
                       </Badge>
                     )}
 
                     {/* Rating */}
                     {item.rating && (
-                      <div className="absolute top-2 left-2 bg-black/70 text-white text-xs px-2 py-1 rounded flex items-center space-x-1">
+                      <div className="absolute top-3 left-3 bg-black/80 text-white text-xs px-3 py-1 rounded-full flex items-center space-x-reverse space-x-1 shadow-lg">
                         <Star className="h-3 w-3 text-yellow-400 fill-current" />
-                        <span>{item.rating}</span>
+                        <span className="font-semibold">{item.rating}</span>
                       </div>
                     )}
 
                     {/* Play Button Overlay */}
-                    <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 transition-opacity rounded-t-lg flex items-center justify-center">
-                      <Play className="h-8 w-8 text-white" />
+                    <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-all duration-300 flex items-center justify-center">
+                      <div className="bg-red-600 p-4 rounded-full shadow-2xl transform scale-75 group-hover:scale-100 transition-transform duration-300">
+                        <Play className="h-8 w-8 text-white" />
+                      </div>
                     </div>
+
+                    {/* Gradient Overlay */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                   </div>
                 </Link>
 
                 {/* Content Info */}
-                <div className="p-3">
+                <div className="p-4">
                   <Link to={getDetailLink(item)}>
-                    <h3 className="text-white font-semibold text-sm mb-1 line-clamp-2 hover:text-red-400 transition-colors">
+                    <h3 className="text-white font-semibold text-sm mb-2 line-clamp-2 hover:text-red-400 transition-colors leading-relaxed">
                       {item.titleAr || item.title}
                     </h3>
                   </Link>

@@ -52,43 +52,45 @@ export default function AkAuthenticHeader() {
   };
 
   return (
-    <header className="bg-slate-900 shadow-lg sticky top-0 z-50 border-b border-slate-700">
+    <header className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 shadow-2xl sticky top-0 z-50 border-b border-red-500/20">
       <div className="container mx-auto px-4">
-        {/* Top Bar - matching ak.sv layout */}
-        <div className="flex items-center justify-between py-2">
+        {/* Top Bar - enhanced ak.sv layout */}
+        <div className="flex items-center justify-between py-4">
           {/* Logo Section */}
-          <Link to="/" className="flex items-center space-x-reverse space-x-3">
-            <div className="bg-gradient-to-r from-red-600 via-white to-black p-2 rounded-lg shadow-lg">
-              <span className="text-lg font-bold">🇾🇪</span>
+          <Link to="/" className="flex items-center space-x-reverse space-x-4 hover:scale-105 transition-transform duration-300">
+            <div className="bg-gradient-to-r from-red-600 via-white to-black p-3 rounded-xl shadow-2xl">
+              <span className="text-2xl font-bold">🇾🇪</span>
             </div>
             <div className="text-right">
-              <h1 className="text-xl font-bold text-white">اكوام</h1>
-              <p className="text-xs text-gray-300">ak.sv</p>
+              <h1 className="text-2xl font-bold text-white bg-gradient-to-r from-red-400 to-red-600 bg-clip-text text-transparent">
+                اكوام
+              </h1>
+              <p className="text-sm text-gray-300 font-semibold">ak.sv</p>
             </div>
           </Link>
 
-          {/* Search Bar - centered like ak.sv */}
-          <div className="flex-1 max-w-2xl mx-8">
+          {/* Search Bar - enhanced centered design */}
+          <div className="flex-1 max-w-3xl mx-8">
             <form onSubmit={handleSearch} className="relative">
               <Input
                 type="text"
-                placeholder="بحث..."
+                placeholder="ابحث عن الأفلام والمسلسلات..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-4 py-2 text-right border border-slate-600 focus:border-red-500 rounded-lg bg-slate-800 text-white placeholder-gray-400"
+                className="w-full pl-12 pr-6 py-4 text-right border-2 border-slate-600 focus:border-red-500 rounded-xl bg-slate-800/80 backdrop-blur-sm text-white placeholder-gray-400 text-lg font-medium shadow-inner"
               />
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
+              <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 h-6 w-6 text-gray-400" />
             </form>
           </div>
 
           {/* User Section */}
-          <div className="flex items-center space-x-reverse space-x-4">
-            <Button variant="ghost" size="sm" className="text-white hover:bg-slate-800">
-              <User className="h-4 w-4 ml-2" />
+          <div className="flex items-center space-x-reverse space-x-6">
+            <Button variant="ghost" size="lg" className="text-white hover:bg-red-600/20 px-6 py-3 rounded-xl font-semibold">
+              <User className="h-5 w-5 ml-2" />
               تسجيل الدخول
             </Button>
-            <Button variant="ghost" size="sm" className="text-white hover:bg-slate-800">
-              <Heart className="h-4 w-4 ml-2" />
+            <Button variant="ghost" size="lg" className="text-white hover:bg-red-600/20 px-6 py-3 rounded-xl font-semibold">
+              <Heart className="h-5 w-5 ml-2" />
               المفضلة
             </Button>
           </div>
@@ -104,20 +106,20 @@ export default function AkAuthenticHeader() {
           </Button>
         </div>
 
-        {/* Navigation Bar - matching ak.sv structure */}
-        <nav className="hidden md:flex items-center justify-center space-x-reverse space-x-6 py-3 border-t border-slate-700">
+        {/* Navigation Bar - enhanced ak.sv structure */}
+        <nav className="hidden md:flex items-center justify-center space-x-reverse space-x-8 py-4 border-t border-slate-700/50">
           {navigation.map((item) => (
             <Link
               key={item.href}
               to={item.href}
-              className={`flex items-center space-x-reverse space-x-2 px-4 py-2 rounded-lg transition-colors ${
+              className={`flex items-center space-x-reverse space-x-3 px-6 py-3 rounded-xl transition-all duration-300 font-semibold ${
                 isActive(item.href)
-                  ? "bg-red-600 text-white"
-                  : "text-gray-300 hover:text-white hover:bg-slate-800"
+                  ? "bg-red-600 text-white shadow-lg shadow-red-500/25 transform scale-105"
+                  : "text-gray-300 hover:text-white hover:bg-slate-800/50 hover:scale-105"
               }`}
             >
-              <item.icon className="h-4 w-4" />
-              <span>{item.name}</span>
+              <item.icon className="h-5 w-5" />
+              <span className="text-sm">{item.name}</span>
             </Link>
           ))}
         </nav>
