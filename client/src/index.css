@@ -124,6 +124,82 @@ body {
   color: hsl(var(--primary-foreground));
   border: none;
   transition: all 0.3s ease;
+  border-radius: 0.5rem;
+  font-weight: 500;
+}
+
+.btn-yemen:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  background: linear-gradient(135deg, hsl(var(--primary)) 20%, hsl(var(--accent)) 120%);
+}
+
+/* أنماط تحسين الواجهة */
+.glass-effect {
+  backdrop-filter: blur(10px);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.yemen-card {
+  background: linear-gradient(135deg, 
+    hsl(var(--card)) 0%, 
+    hsl(var(--card))/95% 100%
+  );
+  border: 1px solid hsl(var(--border));
+  border-radius: var(--radius);
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.yemen-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  border-color: hsl(var(--primary));
+}
+
+/* تحسين الأزرار المتحركة */
+@keyframes yemen-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+}
+
+.yemen-pulse {
+  animation: yemen-pulse 2s infinite;
+}
+
+/* تحسين الخطوط العربية */
+.arabic-title {
+  font-family: 'Amiri', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+.arabic-subtitle {
+  font-family: 'Noto Sans Arabic', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-weight: 500;
+  letter-spacing: 0.25px;
+}
+
+/* تحسين الـ scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: hsl(var(--muted));
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: hsl(var(--primary));
+  border-radius: 4px;
+  border: 2px solid hsl(var(--muted));
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: hsl(var(--primary))/80%;
 }
 
 .btn-yemen:hover {
