@@ -18,7 +18,7 @@ import {
   Tag,
   SlidersHorizontal
 } from "lucide-react";
-import { Content } from "@shared/schema";
+import { Content, Category, Genre } from "@shared/schema";
 import ContentCard from "@/components/content/content-card";
 
 interface AdvancedSearchProps {

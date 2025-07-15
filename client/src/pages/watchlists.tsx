@@ -10,7 +10,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "@/hooks/use-toast";
-import { EnhancedContentCard } from "@/components/content/enhanced-content-card";
+import { AkStyleContentCard } from "@/components/content/ak-style-content-card";
 import { 
   Heart, 
   Plus, 
@@ -401,26 +401,39 @@ export default function Watchlists() {
               
               <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
                 {mockFavorites.map((item) => (
-                  <EnhancedContentCard
+                  <AkStyleContentCard
                     key={item.id}
                     content={{
                       id: item.content.id,
                       title: item.content.title,
-                      type: item.content.type as any,
-                      poster: item.content.poster,
+                      type: item.content.type,
+                      posterUrl: item.content.poster,
                       year: item.content.year,
                       rating: item.content.rating,
                       description: "",
                       duration: item.content.duration,
+                      titleArabic: item.content.title,
+                      descriptionArabic: "",
+                      category: "",
+                      genre: "",
+                      language: "",
+                      quality: "",
+                      resolution: "",
+                      director: "",
+                      cast: "",
+                      country: "",
+                      episodes: undefined,
+                      seasons: undefined,
+                      status: "",
+                      videoUrl: "",
+                      trailerUrl: "",
                       releaseDate: "",
                       createdAt: "",
-                      updatedAt: "",
-                      videoUrl: "",
-                      trailerUrl: ""
+                      updatedAt: ""
                     }}
-                    size="small"
-                    showAddedDate={true}
-                    addedDate={item.addedAt}
+                    onClick={() => {}}
+                    showType={true}
+                    variant="grid"
                   />
                 ))}
               </div>
@@ -435,26 +448,39 @@ export default function Watchlists() {
               
               <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
                 {mockFavorites.slice().reverse().map((item) => (
-                  <EnhancedContentCard
+                  <AkStyleContentCard
                     key={`recent-${item.id}`}
                     content={{
                       id: item.content.id,
                       title: item.content.title,
-                      type: item.content.type as any,
-                      poster: item.content.poster,
+                      type: item.content.type,
+                      posterUrl: item.content.poster,
                       year: item.content.year,
                       rating: item.content.rating,
                       description: "",
                       duration: item.content.duration,
+                      titleArabic: item.content.title,
+                      descriptionArabic: "",
+                      category: "",
+                      genre: "",
+                      language: "",
+                      quality: "",
+                      resolution: "",
+                      director: "",
+                      cast: "",
+                      country: "",
+                      episodes: undefined,
+                      seasons: undefined,
+                      status: "",
+                      videoUrl: "",
+                      trailerUrl: "",
                       releaseDate: "",
                       createdAt: "",
-                      updatedAt: "",
-                      videoUrl: "",
-                      trailerUrl: ""
+                      updatedAt: ""
                     }}
-                    size="small"
-                    showAddedDate={true}
-                    addedDate={item.addedAt}
+                    onClick={() => {}}
+                    showType={true}
+                    variant="grid"
                   />
                 ))}
               </div>

@@ -7,9 +7,9 @@ import { Badge } from '@/components/ui/badge';
 import Header from '@/components/layout/header';
 import Navigation from '@/components/layout/navigation';
 import Footer from '@/components/layout/footer';
-import { AdvancedSearch } from '@/components/search/advanced-search';
+import AdvancedSearch from '@/components/search/advanced-search';
 import { SearchResultsGrid } from '@/components/search/search-results-grid';
-import { VideoPlayerDemo } from '@/components/ui/video-player-demo';
+import AdvancedVideoPlayer from '@/components/content/advanced-video-player';
 import { Content } from '@shared/schema';
 
 interface SearchFilters {
@@ -159,11 +159,13 @@ export default function SearchPage() {
         {/* Search Section */}
         <div className="mb-8">
           <h1 className="text-3xl font-bold mb-6 text-center">البحث المتقدم</h1>
-          <AdvancedSearch
-            onSearch={handleSearch}
-            isSearching={isSearching}
-            suggestions={searchSuggestions}
-          />
+          <div className="max-w-4xl mx-auto">
+            <div className="bg-card rounded-lg p-6">
+              <p className="text-muted-foreground text-center">
+                استخدم البحث المتقدم للعثور على المحتوى المفضل لديك
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Search Results */}
@@ -299,11 +301,10 @@ export default function SearchPage() {
 
       {/* Video Player Modal */}
       {selectedContent && (
-        <VideoPlayerDemo
-          contentId={selectedContent.id}
-          title={selectedContent.title}
-          titleArabic={selectedContent.titleArabic}
-          posterUrl={selectedContent.posterUrl}
+        <AdvancedVideoPlayer
+          content={selectedContent}
+          onClose={() => setSelectedContent(null)}
+          autoPlay={false}
         />
       )}
 
