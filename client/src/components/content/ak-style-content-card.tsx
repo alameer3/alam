@@ -120,18 +120,30 @@ export function AkStyleContentCard({ content, onClick, showType = true, variant 
     );
   }
 
-  // Generate the correct link path based on content type and title
+  // Generate the correct link path based on content type and title (ak.sv style)
   const generateLinkPath = () => {
     if (linkPath) return linkPath;
     
-    const cleanTitle = (content.titleArabic || content.title || '').replace(/[^a-zA-Z0-9\u0600-\u06FF\u0750-\u077F\u08A0-\u08FF]/g, '-').toLowerCase();
+    // Use Arabic title if available, otherwise use English title
+    const titleToUse = content.titleArabic || content.title || '';
+    
+    // URL encode the title for proper Arabic support (like ak.sv)
+    const encodedTitle = encodeURIComponent(titleToUse);
     
     switch (content.type) {
-      case 'movies': return `/movie/${content.id}/${cleanTitle}`;
-      case 'series': return `/series/${content.id}/${cleanTitle}`;
-      case 'tv': return `/shows/${content.id}/${cleanTitle}`;
-      case 'misc': return `/mix/${content.id}/${cleanTitle}`;
-      default: return `/content/${content.id}`;
+      case 'movies': 
+      case 'movie': 
+        return `/movie/${content.id}/${encodedTitle}`;
+      case 'series': 
+        return `/series/${content.id}/${encodedTitle}`;
+      case 'tv': 
+      case 'shows': 
+        return `/shows/${content.id}/${encodedTitle}`;
+      case 'misc': 
+      case 'mix': 
+        return `/mix/${content.id}/${encodedTitle}`;
+      default: 
+        return `/content/${content.id}`;
     }
   };
 
