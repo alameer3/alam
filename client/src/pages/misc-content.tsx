@@ -136,8 +136,8 @@ export default function MiscContent() {
     const matchesCategory = activeCategory === 'all' || item.type === activeCategory;
     const matchesSearch = item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          item.description?.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesQuality = !selectedQuality || item.quality === selectedQuality;
-    const matchesYear = !selectedYear || item.uploadDate?.includes(selectedYear);
+    const matchesQuality = !selectedQuality || selectedQuality === "all" || item.quality === selectedQuality;
+    const matchesYear = !selectedYear || selectedYear === "all" || item.uploadDate?.includes(selectedYear);
     
     return matchesCategory && matchesSearch && matchesQuality && matchesYear;
   });
@@ -152,9 +152,9 @@ export default function MiscContent() {
   const resetFilters = () => {
     setActiveCategory('all');
     setSearchTerm('');
-    setSelectedQuality('');
-    setSelectedYear('');
-    setRatingFilter('');
+    setSelectedQuality('all');
+    setSelectedYear('all');
+    setRatingFilter('all');
     setCurrentPage(1);
   };
 
@@ -195,7 +195,7 @@ export default function MiscContent() {
                 <SelectValue placeholder="الجودة" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">جميع الجودات</SelectItem>
+                <SelectItem value="all">جميع الجودات</SelectItem>
                 {qualityOptions.map(option => (
                   <SelectItem key={option.value} value={option.value}>
                     {option.label}
@@ -210,7 +210,7 @@ export default function MiscContent() {
                 <SelectValue placeholder="سنة الإنتاج" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">جميع السنوات</SelectItem>
+                <SelectItem value="all">جميع السنوات</SelectItem>
                 {yearOptions.map(year => (
                   <SelectItem key={year} value={year.toString()}>
                     {year}
@@ -225,7 +225,7 @@ export default function MiscContent() {
                 <SelectValue placeholder="التقييم" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">جميع التقييمات</SelectItem>
+                <SelectItem value="all">جميع التقييمات</SelectItem>
                 {[1, 2, 3, 4, 5, 6, 7, 8, 9].map(rating => (
                   <SelectItem key={rating} value={rating.toString()}>
                     +{rating}

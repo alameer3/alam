@@ -12,7 +12,6 @@ import Movies from "@/pages/movies";
 import Series from "@/pages/series";
 import Television from "@/pages/television";
 import Shows from "@/pages/shows";
-import Miscellaneous from "@/pages/miscellaneous";
 import MiscContent from "@/pages/misc-content";
 import Mix from "@/pages/mix";
 import Search from "@/pages/search";
@@ -42,7 +41,7 @@ function Router() {
       <Route path="/series" component={Series} />
       <Route path="/shows" component={Shows} />
       <Route path="/television" component={Television} />
-      <Route path="/misc" component={Miscellaneous} />
+      <Route path="/misc" component={MiscContent} />
       <Route path="/misc-content" component={MiscContent} />
       <Route path="/mix" component={Mix} />
       <Route path="/search" component={Search} />

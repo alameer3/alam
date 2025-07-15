@@ -57,13 +57,13 @@ export default function Mix() {
       content.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
       content.titleArabic?.toLowerCase().includes(searchTerm.toLowerCase());
     
-    const matchesGenre = !selectedGenre || 
+    const matchesGenre = !selectedGenre || selectedGenre === "all" || 
       content.genres?.some(genre => genre === selectedGenre);
     
-    const matchesYear = !selectedYear || 
+    const matchesYear = !selectedYear || selectedYear === "all" || 
       content.release_year.toString() === selectedYear;
     
-    const matchesLanguage = !selectedLanguage || 
+    const matchesLanguage = !selectedLanguage || selectedLanguage === "all" || 
       content.language === selectedLanguage;
 
     return matchesSearch && matchesGenre && matchesYear && matchesLanguage;
@@ -175,7 +175,7 @@ export default function Mix() {
                 <SelectValue placeholder="النوع" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">جميع الأنواع</SelectItem>
+                <SelectItem value="all">جميع الأنواع</SelectItem>
                 {genres?.map((genre: any) => (
                   <SelectItem key={genre.id} value={genre.name}>
                     {genre.name_arabic || genre.name}
@@ -190,7 +190,7 @@ export default function Mix() {
                 <SelectValue placeholder="السنة" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">جميع السنوات</SelectItem>
+                <SelectItem value="all">جميع السنوات</SelectItem>
                 {Array.from({length: 24}, (_, i) => 2024 - i).map(year => (
                   <SelectItem key={year} value={year.toString()}>
                     {year}
@@ -205,7 +205,7 @@ export default function Mix() {
                 <SelectValue placeholder="اللغة" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">جميع اللغات</SelectItem>
+                <SelectItem value="all">جميع اللغات</SelectItem>
                 <SelectItem value="Arabic">العربية</SelectItem>
                 <SelectItem value="English">الإنجليزية</SelectItem>
                 <SelectItem value="French">الفرنسية</SelectItem>
