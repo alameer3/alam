@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { storage } from '../storage.js';
+import { fileStorage } from '../file-storage-simple.js';
 import { 
   insertCastMemberSchema, 
   insertContentCastSchema, 

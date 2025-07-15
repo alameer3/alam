@@ -1,7 +1,7 @@
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import { Request, Response, NextFunction } from 'express';
-import { storage } from './storage';
+import { fileStorage } from './file-storage-simple';
 import type { User } from '@shared/schema';
 
 // JWT Secret - في بيئة الإنتاج يجب أن يكون من متغيرات البيئة

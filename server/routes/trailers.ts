@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { storage } from '../storage';
+import { fileStorage } from '../file-storage-simple';
 import { z } from 'zod';
 import { body, validationResult } from 'express-validator';
 

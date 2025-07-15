@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { body, validationResult } from 'express-validator';
-import { storage } from '../storage';
+import { fileStorage } from '../file-storage-simple';
 import { hashPassword, verifyPassword, generateToken, authenticateToken, AuthRequest } from '../auth';
 import { insertUserSchema } from '@shared/schema';
 

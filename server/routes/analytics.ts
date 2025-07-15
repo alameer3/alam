@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { storage } from "../storage";
+import { fileStorage } from "../file-storage-simple";
 import { db } from "../db";
 import { sql } from "drizzle-orm";
 
@@ -26,7 +26,7 @@ router.get("/overview", async (req, res) => {
     `);
 
     // Get content stats
-    const contentStats = await storage.getContentStats();
+    const contentStats = await fileStorage.getStats();
     
     // Calculate additional metrics
     const totalContent = contentStats.movies + contentStats.series + contentStats.tv + contentStats.misc;

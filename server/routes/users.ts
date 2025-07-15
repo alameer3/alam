@@ -1,5 +1,5 @@
 import type { Express } from "express";
-import { storage } from "../storage";
+import { fileStorage } from "../file-storage-simple";
 import { insertUserSchema, insertUserCommentSchema, insertUserReviewSchema, insertUserFavoriteSchema, insertUserWatchHistorySchema } from "@shared/schema";
 import { z } from "zod";
 import { cacheMiddleware, clearCache } from "../middleware/cache";

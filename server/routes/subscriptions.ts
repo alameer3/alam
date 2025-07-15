@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { storage } from "../storage";
+import { fileStorage } from "../file-storage-simple";
 import { db } from "../db";
 import { sql } from "drizzle-orm";
 

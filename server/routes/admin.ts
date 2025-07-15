@@ -2,7 +2,7 @@ import { Router } from 'express';
 import { z } from 'zod';
 import { validateRequest } from '../middleware/validation';
 import { requireAdmin } from '../middleware/auth';
-import { storage } from '../storage';
+import { fileStorage } from '../file-storage-simple';
 import { insertContentSchema } from '@shared/schema';
 
 const router = Router();
@@ -13,7 +13,7 @@ router.use(requireAdmin);
 // Get admin dashboard stats
 router.get('/stats', async (req, res) => {
   try {
-    const stats = await storage.getContentStats();
+    const stats = await fileStorage.getStats();
     
     // Get additional stats
     const totalViews = 12485; // This would come from analytics
