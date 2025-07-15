@@ -52,7 +52,9 @@ class AuditLogger {
         console.log(`📝 Audit Log: ${entry.action} on ${entry.resource} by ${entry.userId || 'anonymous'} - ${entry.success ? 'SUCCESS' : 'FAILED'}`);
       }
     } catch (error) {
-      console.error('Failed to log audit entry:', error);
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Failed to log audit entry:', error);
+      }
     }
   }
 
@@ -79,7 +81,9 @@ class AuditLogger {
         console.log(`${severityEmoji[entry.severity]} Security Log: ${entry.eventType} from ${entry.ipAddress} - ${entry.severity.toUpperCase()}`);
       }
     } catch (error) {
-      console.error('Failed to log security entry:', error);
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Failed to log security entry:', error);
+      }
     }
   }
 
@@ -98,7 +102,9 @@ class AuditLogger {
       const logs = await query.limit(filters.limit || 100);
       return logs;
     } catch (error) {
-      console.error('Failed to get audit logs:', error);
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Failed to get audit logs:', error);
+      }
       return [];
     }
   }
@@ -118,7 +124,9 @@ class AuditLogger {
       const logs = await query.limit(filters.limit || 100);
       return logs;
     } catch (error) {
-      console.error('Failed to get security logs:', error);
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Failed to get security logs:', error);
+      }
       return [];
     }
   }

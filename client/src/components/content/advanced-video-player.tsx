@@ -192,7 +192,7 @@ export default function AdvancedVideoPlayer({
 
   const handleDownload = () => {
     if (content.downloadUrl) {
-      window.open(content.downloadUrl, '_blank');
+      window.open(content.downloadUrl, '_blank', 'noopener,noreferrer');
     }
   };
 

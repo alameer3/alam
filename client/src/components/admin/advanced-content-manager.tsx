@@ -419,7 +419,7 @@ export default function AdvancedContentManager() {
                         {rating.maxRating && <span className="text-sm text-muted-foreground">/{rating.maxRating}</span>}
                       </div>
                       {rating.url && (
-                        <Button variant="outline" size="sm" onClick={() => window.open(rating.url, '_blank')}>
+                        <Button variant="outline" size="sm" onClick={() => rating.url && window.open(rating.url, '_blank', 'noopener,noreferrer')}>
                           <ExternalLink className="h-3 w-3 mr-1" />
                           زيارة
                         </Button>

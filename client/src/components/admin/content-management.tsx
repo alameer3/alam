@@ -209,7 +209,7 @@ export default function ContentManagement() {
 
   const handleDelete = (id: number) => {
     // تأكيد الحذف
-    if (window.confirm('هل أنت متأكد من حذف هذا المحتوى؟')) {
+    if (confirm('هل أنت متأكد من حذف هذا المحتوى؟')) {
       deleteContentMutation.mutate(id);
     }
   };

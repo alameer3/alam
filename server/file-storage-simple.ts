@@ -28,7 +28,9 @@ export class SimpleFileStorage {
       
       this.initialized = true;
     } catch (error) {
-      console.error('خطأ في تهيئة FileStorage:', error);
+      if (process.env.NODE_ENV === 'development') {
+        console.error('خطأ في تهيئة FileStorage:', error);
+      }
       this.data = await this.createDefaultData();
       this.initialized = true;
     }
@@ -331,7 +333,9 @@ export class SimpleFileStorage {
     try {
       await fs.writeFile(this.dataPath, JSON.stringify(this.data, null, 2), 'utf-8');
     } catch (error) {
-      console.error('خطأ في حفظ البيانات:', error);
+      if (process.env.NODE_ENV === 'development') {
+        console.error('خطأ في حفظ البيانات:', error);
+      }
     }
   }
 

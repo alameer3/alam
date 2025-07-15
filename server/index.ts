@@ -59,13 +59,17 @@ app.use((req, res, next) => {
 
 (async () => {
   // تشغيل النظام التلقائي لـ Replit
-  console.log("🔧 تشغيل النظام التلقائي لـ Replit...");
+  if (process.env.NODE_ENV === 'development') {
+    console.log("🔧 تشغيل النظام التلقائي لـ Replit...");
+  }
   try {
     if (fs.existsSync("replit-auto-setup.cjs")) {
       execSync("node replit-auto-setup.cjs", { stdio: "inherit" });
     }
   } catch (error) {
-    console.log("ℹ️ النظام التلقائي غير متاح، المتابعة بدونه...");
+    if (process.env.NODE_ENV === 'development') {
+      console.log("ℹ️ النظام التلقائي غير متاح، المتابعة بدونه...");
+    }
   }
   
   // Initialize database optimizations
