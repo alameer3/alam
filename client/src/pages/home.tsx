@@ -1,5 +1,5 @@
-import AkHomepage from "@/components/home/ak-homepage";
+import AkAuthenticHomepage from "@/components/home/ak-authentic-homepage";
 
 export default function Home() {
-  return <AkHomepage />;
+  return <AkAuthenticHomepage />;
 }

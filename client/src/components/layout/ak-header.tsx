@@ -48,18 +48,18 @@ export default function AkHeader() {
   };
 
   return (
-    <header className="bg-gradient-to-r from-red-600 via-white to-black shadow-lg sticky top-0 z-50">
+    <header className="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 shadow-lg sticky top-0 z-50 border-b border-slate-700">
       <div className="container mx-auto px-4">
         {/* Top Bar */}
         <div className="flex items-center justify-between py-3">
           {/* Logo */}
-          <Link to="/" className="flex items-center space-x-3">
-            <div className="bg-gradient-to-r from-red-600 via-white to-black p-3 rounded-full shadow-lg">
-              <span className="text-2xl font-bold">🇾🇪</span>
+          <Link to="/" className="flex items-center space-x-reverse space-x-3">
+            <div className="bg-gradient-to-r from-red-600 via-white to-black p-2 rounded-lg shadow-lg">
+              <span className="text-xl font-bold">🇾🇪</span>
             </div>
             <div className="text-right">
-              <h1 className="text-3xl font-bold text-white drop-shadow-lg">YEMEN FLIX</h1>
-              <p className="text-sm text-gray-200">ak.sv - منصة المحتوى العربي</p>
+              <h1 className="text-2xl font-bold text-white drop-shadow-lg">اكوام</h1>
+              <p className="text-xs text-gray-300">ak.sv - الموقع العربي الأول</p>
             </div>
           </Link>
 
