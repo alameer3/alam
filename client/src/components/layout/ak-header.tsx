@@ -31,8 +31,8 @@ export default function AkHeader() {
     { name: "الأفلام", href: "/movies", icon: Film, color: "text-blue-600" },
     { name: "المسلسلات", href: "/series", icon: Video, color: "text-green-600" },
     { name: "البرامج", href: "/shows", icon: Tv, color: "text-purple-600" },
-    { name: "منوعات", href: "/misc", icon: Globe, color: "text-orange-600" },
-    { name: "المقاطع الدعائية", href: "/trailers", icon: Play, color: "text-pink-600" }
+    { name: "المحتوى المميز", href: "/ones", icon: Play, color: "text-yellow-600" },
+    { name: "منوعات", href: "/mix", icon: Globe, color: "text-orange-600" }
   ];
 
   const handleSearch = (e: React.FormEvent) => {
@@ -48,30 +48,30 @@ export default function AkHeader() {
   };
 
   return (
-    <header className="bg-white shadow-lg border-b-4 border-red-600 sticky top-0 z-50">
+    <header className="bg-gradient-to-r from-red-600 via-white to-black shadow-lg sticky top-0 z-50">
       <div className="container mx-auto px-4">
         {/* Top Bar */}
-        <div className="flex items-center justify-between py-4">
+        <div className="flex items-center justify-between py-3">
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-3">
-            <div className="bg-gradient-to-r from-red-600 via-black to-white p-2 rounded-lg">
-              <span className="text-white font-bold text-xl">🇾🇪</span>
+            <div className="bg-gradient-to-r from-red-600 via-white to-black p-3 rounded-full shadow-lg">
+              <span className="text-2xl font-bold">🇾🇪</span>
             </div>
             <div className="text-right">
-              <h1 className="text-2xl font-bold text-gray-800">YEMEN FLIX</h1>
-              <p className="text-sm text-gray-600">منصة المحتوى العربي الأولى</p>
+              <h1 className="text-3xl font-bold text-white drop-shadow-lg">YEMEN FLIX</h1>
+              <p className="text-sm text-gray-200">ak.sv - منصة المحتوى العربي</p>
             </div>
           </Link>
 
           {/* Search Bar */}
-          <div className="flex-1 max-w-2xl mx-8">
+          <div className="flex-1 max-w-3xl mx-8">
             <form onSubmit={handleSearch} className="relative">
               <Input
                 type="text"
-                placeholder="ابحث عن فيلم، مسلسل، أو أي محتوى..."
+                placeholder="ابحث في ak.sv عن الأفلام والمسلسلات..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-12 pr-4 py-3 text-right border-2 border-gray-200 focus:border-red-500 rounded-full text-lg"
+                className="w-full pl-12 pr-4 py-4 text-right border-2 border-white/30 focus:border-yellow-400 rounded-full text-lg bg-white/10 backdrop-blur-sm text-white placeholder-gray-300"
               />
               <Button
                 type="submit"
