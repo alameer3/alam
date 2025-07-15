@@ -12,6 +12,7 @@ import Movies from "@/pages/movies";
 import Series from "@/pages/series";
 import Television from "@/pages/television";
 import Miscellaneous from "@/pages/miscellaneous";
+import MiscContent from "@/pages/misc-content";
 import Search from "@/pages/search";
 import ContentDetail from "@/pages/content-detail";
 
@@ -34,6 +35,7 @@ function Router() {
       <Route path="/series" component={Series} />
       <Route path="/television" component={Television} />
       <Route path="/miscellaneous" component={Miscellaneous} />
+      <Route path="/misc-content" component={MiscContent} />
       <Route path="/search" component={Search} />
       <Route path="/content/:id" component={ContentDetail} />
 

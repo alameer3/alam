@@ -49,6 +49,12 @@ const navigationItems = [
     description: "محتوى متنوع"
   },
   { 
+    path: "/misc-content", 
+    label: "منوعات", 
+    icon: Sparkles,
+    description: "محتوى منوع شامل"
+  },
+  { 
     path: "/trailers", 
     label: "مقاطع دعائية", 
     icon: Play,

@@ -4,7 +4,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogDescription } from "@/components/ui/dialog";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -24,6 +24,9 @@ import {
 } from "lucide-react";
 import { Content } from "@shared/schema";
 import { useToast } from "@/hooks/use-toast";
+import ContentRating from "@/components/content/content-rating";
+import ContentTags from "@/components/content/content-tags";
+import ExternalLinks from "@/components/content/external-links";
 
 interface AkStyleContentDetailProps {
   contentId: string;
@@ -277,80 +280,43 @@ export function AkStyleContentDetail({ contentId }: AkStyleContentDetailProps) {
         </div>
       </div>
 
-      {/* التبليغ عن خطأ */}
+      {/* External Links */}
       <Card className="mt-8">
         <CardContent className="p-6">
-          <div className="flex items-center gap-3 mb-4">
-            <AlertTriangle className="w-5 h-5 text-red-500" />
-            <h3 className="text-lg font-semibold">التبليغ عن خطأ</h3>
-          </div>
-          
-          <Dialog open={isReportModalOpen} onOpenChange={setIsReportModalOpen}>
-            <DialogTrigger asChild>
-              <Button variant="outline" className="w-full">
-                <AlertTriangle className="w-4 h-4 mr-2" />
-                التبليغ عن خطأ
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="sm:max-w-[525px]">
-              <DialogHeader>
-                <DialogTitle>التبليغ عن خطأ</DialogTitle>
-              </DialogHeader>
-              <div className="space-y-4">
-                <div>
-                  <Label htmlFor="page-url">رابط الصفحة</Label>
-                  <Input 
-                    id="page-url" 
-                    value={window.location.href} 
-                    readOnly 
-                    className="mt-1"
-                  />
-                </div>
-                
-                <div>
-                  <Label htmlFor="email">البريد الإلكتروني (اختياري)</Label>
-                  <Input 
-                    id="email" 
-                    type="email"
-                    value={reportEmail}
-                    onChange={(e) => setReportEmail(e.target.value)}
-                    className="mt-1"
-                  />
-                </div>
-                
-                <div>
-                  <Label htmlFor="reason">السبب</Label>
-                  <Select value={reportReason} onValueChange={setReportReason}>
-                    <SelectTrigger className="mt-1">
-                      <SelectValue placeholder="اختر سبب التبليغ" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      {reportReasons.map((reason) => (
-                        <SelectItem key={reason} value={reason}>
-                          {reason}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-                
-                <div>
-                  <Label htmlFor="details">بيانات إضافية / برجاء توضيح المشكلة بالضبط ليتم التعامل معها باسرع وقت</Label>
-                  <Textarea 
-                    id="details"
-                    value={reportDetails}
-                    onChange={(e) => setReportDetails(e.target.value)}
-                    className="mt-1"
-                    rows={4}
-                  />
-                </div>
-                
-                <Button onClick={handleReportSubmit} className="w-full">
-                  ارسال
-                </Button>
-              </div>
-            </DialogContent>
-          </Dialog>
+          <ExternalLinks 
+            imdbId={content.imdbId}
+            tmdbId={content.tmdbId}
+            rottenTomatoesId={content.rottenTomatoesId}
+            imdbRating={content.imdbRating}
+            tmdbRating={content.tmdbRating}
+            rottenTomatoesRating={content.rottenTomatoesRating}
+          />
+        </CardContent>
+      </Card>
+
+      {/* Content Tags */}
+      <Card className="mt-8">
+        <CardContent className="p-6">
+          <ContentTags 
+            tags={content.tags || [`#${content.title}`, `#مشاهدة و تحميل ${content.type} ${content.title}`, `#${content.titleArabic || content.title}`]}
+            onTagClick={(tag) => {
+              // Navigate to search results for this tag
+              setLocation(`/search?q=${encodeURIComponent(tag)}`);
+            }}
+          />
+        </CardContent>
+      </Card>
+
+      {/* Content Rating and Report */}
+      <Card className="mt-8">
+        <CardContent className="p-6">
+          <ContentRating 
+            contentId={parseInt(contentId)}
+            currentRating={content.rating || 0}
+            totalRatings={content.ratingsCount || 0}
+            userRating={userRating}
+            onRatingChange={(rating) => setUserRating(rating)}
+          />
         </CardContent>
       </Card>
     </div>
