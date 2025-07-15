@@ -1,6 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
+import { fileStorage } from "./file-storage-simple";
 import { insertContentSchema, insertGenreSchema, insertCategorySchema, insertUserSchema, insertUserCommentSchema, insertUserReviewSchema, insertReviewLikeSchema, insertUserFavoriteSchema, insertUserWatchHistorySchema, insertEpisodeSchema } from "@shared/schema";
 import { z } from "zod";
 import adminRoutes from "./routes/admin";
@@ -20,17 +21,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Content stats route - specific for homepage
   app.get("/api/content/stats", async (req, res) => {
     try {
-      const stats = await storage.getContentStats();
+      const stats = await fileStorage.getStats();
       
       // Transform stats to match expected format
       const transformedStats = {
         content: [
-          { type: 'movies', count: stats.movies },
-          { type: 'series', count: stats.series },
-          { type: 'tv', count: stats.tv },
-          { type: 'misc', count: stats.misc }
+          { type: 'movies', count: stats.movieCount },
+          { type: 'series', count: stats.seriesCount },
+          { type: 'tv', count: stats.tvCount },
+          { type: 'misc', count: stats.miscCount }
         ],
-        total: (stats.movies + stats.series + stats.tv + stats.misc).toString()
+        total: stats.totalContent.toString()
       };
       
       res.json(transformedStats);
@@ -38,7 +39,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       if (process.env.NODE_ENV === 'development') {
         console.error('Stats fetch error:', error);
       }
-      res.status(500).json({ error: "Failed to fetch content stats", details: error.message });
+      res.status(500).json({ error: "Failed to fetch content stats" });
     }
   });
 
@@ -56,7 +57,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         rating: req.query.rating
       };
 
-      const result = await storage.getContentByType(type, page, limit, filters);
+      const result = await fileStorage.getContentByType(type, page, limit);
       res.json(result);
     } catch (error) {
       if (process.env.NODE_ENV === 'development') {
@@ -69,18 +70,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // General content route for ?type=movie queries
   app.get("/api/content", async (req, res) => {
     try {
-      const type = req.query.type as string || 'movie';
+      const type = req.query.type as string || 'movies';
       const page = parseInt(req.query.page as string) || 1;
-      const limit = parseInt(req.query.limit as string) || 20;
-      const filters = {
-        year: req.query.year,
-        language: req.query.language,
-        quality: req.query.quality,
-        resolution: req.query.resolution,
-        rating: req.query.rating
-      };
+      const limit = parseInt(req.query.limit as string) || 24;
 
-      const result = await storage.getContentByType(type, page, limit, filters);
+      const result = await fileStorage.getContentByType(type, page, limit);
       res.json(result);
     } catch (error) {
       if (process.env.NODE_ENV === 'development') {
@@ -93,7 +87,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/content/item/:id", async (req, res) => {
     try {
       const id = parseInt(req.params.id);
-      const content = await storage.getContent(id);
+      const content = await fileStorage.getContentById(id);
       
       if (!content) {
         return res.status(404).json({ error: "Content not found" });
@@ -193,7 +187,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         limit
       };
 
-      const results = await storage.searchContent(query, type, filters);
+      const results = await fileStorage.searchContent(query, filters);
       res.json({ content: results, total: results.length });
     } catch (error) {
       res.status(500).json({ error: "Search failed" });
@@ -203,58 +197,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
   // Genres routes
   app.get("/api/genres", async (req, res) => {
     try {
-      const genres = await storage.getAllGenres();
+      const genres = await fileStorage.getGenres();
       res.json(genres);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch genres" });
     }
   });
 
-  app.post("/api/genres", async (req, res) => {
-    try {
-      const validatedData = insertGenreSchema.parse(req.body);
-      const genre = await storage.createGenre(validatedData);
-      res.status(201).json(genre);
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        res.status(400).json({ error: error.errors });
-      } else {
-        res.status(500).json({ error: "Failed to create genre" });
-      }
-    }
-  });
-
   // Categories routes
   app.get("/api/categories", async (req, res) => {
     try {
-      const categories = await storage.getAllCategories();
+      const categories = await fileStorage.getCategories();
       res.json(categories);
     } catch (error) {
       if (process.env.NODE_ENV === 'development') {
         console.error('Categories fetch error:', error);
       }
-      res.status(500).json({ error: "Failed to fetch categories", details: error.message });
-    }
-  });
-
-  app.post("/api/categories", async (req, res) => {
-    try {
-      const validatedData = insertCategorySchema.parse(req.body);
-      const category = await storage.createCategory(validatedData);
-      res.status(201).json(category);
-    } catch (error) {
-      if (error instanceof z.ZodError) {
-        res.status(400).json({ error: error.errors });
-      } else {
-        res.status(500).json({ error: "Failed to create category" });
-      }
+      res.status(500).json({ error: "Failed to fetch categories" });
     }
   });
 
   // Stats route
   app.get("/api/stats", async (req, res) => {
     try {
-      const stats = await storage.getContentStats();
+      const stats = await fileStorage.getStats();
       res.json(stats);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch stats" });
