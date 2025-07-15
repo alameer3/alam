@@ -1,5 +1,5 @@
 import { useState } from "react";
-import AkStyleContentGrid from "@/components/content/ak-style-content-grid";
+import AdvancedContentGrid from "@/components/content/advanced-content-grid";
 import AdvancedFilters from "@/components/filters/advanced-filters";
 import { Content } from "@shared/schema";
 import { useLocation } from "wouter";
@@ -22,7 +22,7 @@ export default function Television() {
         onFiltersChange={handleFiltersChange}
         contentType="tv"
       />
-      <AkStyleContentGrid
+      <AdvancedContentGrid
         content={[]}
         loading={false}
         error={null}

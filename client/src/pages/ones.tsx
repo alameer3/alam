@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Award, TrendingUp, Clock } from "lucide-react";
-import AkAuthenticContentGrid from "@/components/home/ak-authentic-content-grid";
+import AdvancedContentGrid from "@/components/content/advanced-content-grid";
 
 export default function Ones() {
   const [activeTab, setActiveTab] = useState("featured");
@@ -33,7 +33,7 @@ export default function Ones() {
               الأعلى تقييماً
             </TabsTrigger>
             <TabsTrigger 
-              value="recent" 
+              value="latest" 
               className="flex items-center gap-2 data-[state=active]:bg-red-600 data-[state=active]:text-white text-white"
             >
               <Clock className="w-4 h-4" />
@@ -42,26 +42,35 @@ export default function Ones() {
           </TabsList>
 
           <TabsContent value="featured" className="mt-8">
-            <AkAuthenticContentGrid
+            <AdvancedContentGrid
               title="المحتوى المميز"
               endpoint="/api/content/featured"
               type="movies"
+              content={[]}
+              loading={false}
+              error={null}
             />
           </TabsContent>
 
           <TabsContent value="top-rated" className="mt-8">
-            <AkAuthenticContentGrid
+            <AdvancedContentGrid
               title="الأعلى تقييماً"
               endpoint="/api/content/trending"
               type="movies"
+              content={[]}
+              loading={false}
+              error={null}
             />
           </TabsContent>
 
-          <TabsContent value="recent" className="mt-8">
-            <AkAuthenticContentGrid
+          <TabsContent value="latest" className="mt-8">
+            <AdvancedContentGrid
               title="الأحدث"
               endpoint="/api/content/latest"
               type="movies"
+              content={[]}
+              loading={false}
+              error={null}
             />
           </TabsContent>
         </Tabs>

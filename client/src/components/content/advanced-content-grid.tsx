@@ -14,7 +14,8 @@ import {
   Play,
   Star,
   Clock,
-  Calendar
+  Calendar,
+  Film
 } from "lucide-react";
 import {
   DropdownMenu,
@@ -438,3 +439,5 @@ export function AdvancedContentGrid({
     </div>
   );
 }
+
+export default AdvancedContentGrid;

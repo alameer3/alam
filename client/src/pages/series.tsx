@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import AkStyleContentGrid from "@/components/content/ak-style-content-grid";
+import AdvancedContentGrid from "@/components/content/advanced-content-grid";
 import AdvancedFilters from "@/components/filters/advanced-filters";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -52,7 +52,7 @@ export default function Series() {
       />
 
       {/* Content Grid */}
-      <AkStyleContentGrid
+      <AdvancedContentGrid
         content={data?.content || []}
         loading={isLoading}
         error={error?.message}

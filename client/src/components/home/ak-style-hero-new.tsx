@@ -4,7 +4,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Play, Star, Clock, Calendar, TrendingUp, Crown, Fire } from "lucide-react";
 import { Link } from "wouter";
-import AkStyleContentGrid from "@/components/content/ak-style-content-grid";
+import AdvancedContentGrid from "@/components/content/advanced-content-grid";
 import { useState } from "react";
 
 export default function AkStyleHeroNew() {
@@ -178,7 +178,7 @@ export default function AkStyleHeroNew() {
           </div>
 
           {/* Content Grid */}
-          <AkStyleContentGrid
+          <AdvancedContentGrid
             content={getCurrentContent()}
             loading={false}
             error={undefined}

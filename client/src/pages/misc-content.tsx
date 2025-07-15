@@ -7,7 +7,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Search, BookOpen, Music, Image, Video, Play, Download, Filter } from 'lucide-react';
-import MixedContentGrid from '@/components/content/mixed-content-grid';
+import AdvancedContentGrid from '@/components/content/advanced-content-grid';
 import Pagination from '@/components/ui/pagination';
 
 const miscCategories = [
@@ -268,7 +268,7 @@ export default function MiscContent() {
         </TabsList>
 
         <TabsContent value={activeCategory} className="mt-6">
-          <MixedContentGrid 
+          <AdvancedContentGrid 
             items={filteredContent}
             onItemClick={handleItemClick}
           />

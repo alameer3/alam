@@ -23,13 +23,12 @@ import { Textarea } from '@/components/ui/textarea';
 import { useToast } from '@/hooks/use-toast';
 import AdminGuard from '@/components/admin/admin-guard';
 import { useAdminAuth } from '@/hooks/useAdminAuth';
-import ContentManagement from '@/components/admin/content-management';
+import AdvancedContentManager from '@/components/admin/advanced-content-manager';
 import UserManagement from '@/components/admin/user-management';
 import SettingsManagement from '@/components/admin/settings-management';
 import SecurityDashboard from '@/components/security/security-dashboard';
 import PasswordStrengthChecker from '@/components/security/password-strength-checker';
 import { PerformanceDashboard } from '@/components/admin/PerformanceDashboard';
-import AdvancedContentManager from '@/components/admin/advanced-content-manager';
 import AdvancedAnalyticsDashboard from '@/components/analytics/advanced-analytics-dashboard';
 import SubscriptionManagement from '@/components/subscription/subscription-management';
 
@@ -284,7 +283,7 @@ function UnifiedAdminPanelContent() {
 
           {/* إدارة المحتوى */}
           <TabsContent value="content">
-            <ContentManagement />
+            <AdvancedContentManager />
           </TabsContent>
 
           {/* إدارة المحتوى المتطور */}

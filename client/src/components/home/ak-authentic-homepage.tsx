@@ -1,4 +1,4 @@
-import AkEnhancedHero from "./ak-enhanced-hero";
+import AkStyleHeroNew from "./ak-style-hero-new";
 import AkEnhancedContentSections from "./ak-enhanced-content-sections";
 import { Card, CardContent } from "@/components/ui/card";
 import { useQuery } from "@tanstack/react-query";
@@ -61,7 +61,7 @@ export default function AkAuthenticHomepage() {
   return (
     <div className="min-h-screen bg-slate-900">
       {/* Enhanced Hero Section */}
-      <AkEnhancedHero />
+      <AkStyleHeroNew />
 
       {/* Enhanced Content Sections */}
       <AkEnhancedContentSections sections={contentSections} />
