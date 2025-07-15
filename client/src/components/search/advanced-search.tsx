@@ -19,7 +19,7 @@ import {
   SlidersHorizontal
 } from "lucide-react";
 import { Content, Category, Genre } from "@shared/schema";
-import ContentCard from "@/components/content/content-card";
+import { AkStyleContentCard } from "@/components/content/ak-style-content-card";
 
 interface AdvancedSearchProps {
   isOpen: boolean;
@@ -418,10 +418,12 @@ export default function AdvancedSearch({ isOpen, onClose, onContentClick }: Adva
                 </div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                   {searchResults.content.map((content: Content) => (
-                    <ContentCard
+                    <AkStyleContentCard
                       key={content.id}
                       content={content}
                       onClick={() => handleContentClick(content)}
+                      showType={true}
+                      variant="grid"
                     />
                   ))}
                 </div>

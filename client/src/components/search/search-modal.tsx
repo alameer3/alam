@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Search, X } from "lucide-react";
 import { Content } from "@shared/schema";
-import ContentCard from "@/components/content/content-card";
+import { AkStyleContentCard } from "@/components/content/ak-style-content-card";
 
 interface SearchModalProps {
   isOpen: boolean;
@@ -86,10 +86,12 @@ export default function SearchModal({ isOpen, onClose, onContentClick }: SearchM
             {searchResults?.content && searchResults.content.length > 0 && (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                 {searchResults.content.map((item: Content) => (
-                  <ContentCard
+                  <AkStyleContentCard
                     key={item.id}
                     content={item}
                     onClick={handleContentClick}
+                    showType={true}
+                    variant="grid"
                   />
                 ))}
               </div>
