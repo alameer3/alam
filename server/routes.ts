@@ -373,6 +373,17 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // User Statistics
+  app.get("/api/users/:id/statistics", async (req, res) => {
+    try {
+      const userId = parseInt(req.params.id);
+      const stats = await serverDBStorage.getUserStats(userId);
+      res.json(stats);
+    } catch (error) {
+      res.status(500).json({ error: "Failed to fetch user statistics" });
+    }
+  });
+
   app.put("/api/users/:id", async (req, res) => {
     try {
       const id = parseInt(req.params.id);
@@ -404,8 +415,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const userId = parseInt(req.params.id);
       const { contentId } = req.body;
       
-      // User favorites functionality not implemented yet
-      res.status(501).json({ message: "Feature not implemented" });
+      const favorite = await serverDBStorage.addToFavorites(userId, contentId);
+      res.status(201).json(favorite);
     } catch (error) {
       res.status(500).json({ error: "Failed to add to favorites" });
     }
@@ -416,8 +427,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const userId = parseInt(req.params.id);
       const contentId = parseInt(req.params.contentId);
       
-      // User favorites functionality not implemented yet
-      res.json({ message: "Feature not implemented" });
+      const result = await serverDBStorage.removeFromFavorites(userId, contentId);
+      res.json({ success: result });
     } catch (error) {
       res.status(500).json({ error: "Failed to remove from favorites" });
     }
@@ -426,8 +437,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/users/:id/favorites", async (req, res) => {
     try {
       const userId = parseInt(req.params.id);
-      // User favorites functionality not implemented yet
-      res.json({ content: [] });
+      const favorites = await serverDBStorage.getUserFavorites(userId);
+      res.json({ content: favorites });
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch favorites" });
     }
@@ -439,8 +450,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const userId = parseInt(req.params.id);
       const { contentId, progressMinutes } = req.body;
       
-      // Watch history functionality not implemented yet
-      res.status(501).json({ message: "Feature not implemented" });
+      const result = await serverDBStorage.addToWatchHistory(userId, contentId, progressMinutes || 0);
+      res.status(201).json({ success: result });
     } catch (error) {
       res.status(500).json({ error: "Failed to add to watch history" });
     }
@@ -449,8 +460,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/users/:id/watch-history", async (req, res) => {
     try {
       const userId = parseInt(req.params.id);
-      // Watch history functionality not implemented yet
-      res.json({ content: [] });
+      const history = await serverDBStorage.getUserWatchHistory(userId);
+      res.json(history);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch watch history" });
     }
@@ -462,26 +473,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const contentId = parseInt(req.params.id);
       const commentData = {
         ...req.body,
-        contentId
+        content_id: contentId
       };
       
-      const validatedData = insertUserCommentSchema.parse(commentData);
-      // Comments functionality not implemented yet
-      res.status(501).json({ message: "Feature not implemented" });
+      const comment = await serverDBStorage.addComment(commentData);
+      res.status(201).json(comment);
     } catch (error) {
-      if (error instanceof z.ZodError) {
-        res.status(400).json({ error: error.errors });
-      } else {
-        res.status(500).json({ error: "Failed to add comment" });
-      }
+      res.status(500).json({ error: "Failed to add comment" });
     }
   });
 
   app.get("/api/content/:id/comments", async (req, res) => {
     try {
       const contentId = parseInt(req.params.id);
-      // Comments functionality not implemented yet
-      res.json([]);
+      const comments = await serverDBStorage.getContentComments(contentId);
+      res.json(comments);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch comments" });
     }
@@ -505,26 +511,21 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const contentId = parseInt(req.params.id);
       const reviewData = {
         ...req.body,
-        contentId
+        content_id: contentId
       };
       
-      const validatedData = insertUserReviewSchema.parse(reviewData);
-      // Reviews functionality not implemented yet
-      res.status(501).json({ message: "Feature not implemented" });
+      const review = await serverDBStorage.addReview(reviewData);
+      res.status(201).json(review);
     } catch (error) {
-      if (error instanceof z.ZodError) {
-        res.status(400).json({ error: error.errors });
-      } else {
-        res.status(500).json({ error: "Failed to add review" });
-      }
+      res.status(500).json({ error: "Failed to add review" });
     }
   });
 
   app.get("/api/content/:id/reviews", async (req, res) => {
     try {
       const contentId = parseInt(req.params.id);
-      // Reviews functionality not implemented yet
-      res.json([]);
+      const reviews = await serverDBStorage.getContentReviews(contentId);
+      res.json(reviews);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch reviews" });
     }
@@ -564,8 +565,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const reviewId = parseInt(req.params.id);
       const { userId, isLike } = req.body;
       
-      // Reviews functionality not implemented yet
-      res.status(501).json({ message: "Feature not implemented" });
+      const like = await serverDBStorage.likeReview(userId, reviewId, isLike);
+      res.status(201).json(like);
     } catch (error) {
       res.status(500).json({ error: "Failed to like/dislike review" });
     }
@@ -576,8 +577,11 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const userId = parseInt(req.params.userId);
       const contentId = parseInt(req.params.contentId);
       
-      // Reviews functionality not implemented yet
-      res.status(404).json({ error: "Review not found" });
+      const review = await serverDBStorage.getUserReviewForContent(userId, contentId);
+      if (!review) {
+        return res.status(404).json({ error: "Review not found" });
+      }
+      res.json(review);
     } catch (error) {
       res.status(500).json({ error: "Failed to fetch user review" });
     }
@@ -587,8 +591,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.post("/api/content/:id/view", async (req, res) => {
     try {
       const contentId = parseInt(req.params.id);
-      // View counting functionality not implemented yet
-      res.json({ message: "View counted" });
+      const view = await serverDBStorage.incrementViewCount(contentId);
+      res.status(201).json(view);
     } catch (error) {
       res.status(500).json({ error: "Failed to count view" });
     }

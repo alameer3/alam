@@ -9,6 +9,14 @@ class DatabaseManager {
   constructor() {
     this.dataPath = path.join(__dirname, 'database.json');
     this.data = this.loadData();
+    
+    // Ensure all required collections exist
+    if (!this.data.userFavorites) this.data.userFavorites = [];
+    if (!this.data.userWatchHistory) this.data.userWatchHistory = [];
+    if (!this.data.userComments) this.data.userComments = [];
+    if (!this.data.userReviews) this.data.userReviews = [];
+    if (!this.data.reviewLikes) this.data.reviewLikes = [];
+    if (!this.data.contentViews) this.data.contentViews = [];
   }
 
   loadData() {
@@ -313,6 +321,208 @@ class DatabaseManager {
     );
     this.saveData();
     return true;
+  }
+
+  // User Favorites
+  async addToFavorites(userId, contentId) {
+    const newId = Math.max(...(this.data.userFavorites?.map(f => f.id) || [0])) + 1;
+    const favorite = {
+      id: newId,
+      user_id: parseInt(userId),
+      content_id: parseInt(contentId),
+      added_at: new Date().toISOString()
+    };
+    this.data.userFavorites.push(favorite);
+    this.saveData();
+    return favorite;
+  }
+
+  async removeFromFavorites(userId, contentId) {
+    this.data.userFavorites = this.data.userFavorites.filter(f => 
+      !(f.user_id === parseInt(userId) && f.content_id === parseInt(contentId))
+    );
+    this.saveData();
+    return true;
+  }
+
+  async getUserFavorites(userId) {
+    const favorites = this.data.userFavorites.filter(f => f.user_id === parseInt(userId));
+    return favorites.map(f => {
+      const content = this.data.content.find(c => c.id === f.content_id);
+      return {
+        ...f,
+        content: content || null
+      };
+    }).filter(f => f.content);
+  }
+
+  // User Watch History
+  async addToWatchHistory(userId, contentId, progressMinutes = 0) {
+    // Check if entry already exists
+    const existingIndex = this.data.userWatchHistory.findIndex(h => 
+      h.user_id === parseInt(userId) && h.content_id === parseInt(contentId)
+    );
+
+    if (existingIndex !== -1) {
+      // Update existing entry
+      this.data.userWatchHistory[existingIndex] = {
+        ...this.data.userWatchHistory[existingIndex],
+        progress_minutes: progressMinutes,
+        last_watched: new Date().toISOString()
+      };
+    } else {
+      // Create new entry
+      const newId = Math.max(...(this.data.userWatchHistory?.map(h => h.id) || [0])) + 1;
+      const history = {
+        id: newId,
+        user_id: parseInt(userId),
+        content_id: parseInt(contentId),
+        progress_minutes: progressMinutes,
+        first_watched: new Date().toISOString(),
+        last_watched: new Date().toISOString()
+      };
+      this.data.userWatchHistory.push(history);
+    }
+    this.saveData();
+    return true;
+  }
+
+  async getUserWatchHistory(userId) {
+    const history = this.data.userWatchHistory.filter(h => h.user_id === parseInt(userId));
+    return history.map(h => {
+      const content = this.data.content.find(c => c.id === h.content_id);
+      return {
+        ...h,
+        content: content || null
+      };
+    }).filter(h => h.content).sort((a, b) => new Date(b.last_watched) - new Date(a.last_watched));
+  }
+
+  // User Comments
+  async addComment(commentData) {
+    const newId = Math.max(...(this.data.userComments?.map(c => c.id) || [0])) + 1;
+    const comment = {
+      id: newId,
+      ...commentData,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    };
+    this.data.userComments.push(comment);
+    this.saveData();
+    return comment;
+  }
+
+  async getContentComments(contentId) {
+    return this.data.userComments.filter(c => c.content_id === parseInt(contentId))
+      .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+  }
+
+  async deleteComment(commentId, userId) {
+    const comment = this.data.userComments.find(c => c.id === parseInt(commentId));
+    if (!comment || comment.user_id !== parseInt(userId)) {
+      return false;
+    }
+    this.data.userComments = this.data.userComments.filter(c => c.id !== parseInt(commentId));
+    this.saveData();
+    return true;
+  }
+
+  // User Reviews
+  async addReview(reviewData) {
+    const newId = Math.max(...(this.data.userReviews?.map(r => r.id) || [0])) + 1;
+    const review = {
+      id: newId,
+      ...reviewData,
+      created_at: new Date().toISOString(),
+      updated_at: new Date().toISOString()
+    };
+    this.data.userReviews.push(review);
+    this.saveData();
+    return review;
+  }
+
+  async getContentReviews(contentId) {
+    return this.data.userReviews.filter(r => r.content_id === parseInt(contentId))
+      .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+  }
+
+  async updateReview(reviewId, userId, reviewData) {
+    const index = this.data.userReviews.findIndex(r => r.id === parseInt(reviewId) && r.user_id === parseInt(userId));
+    if (index === -1) return null;
+    
+    this.data.userReviews[index] = {
+      ...this.data.userReviews[index],
+      ...reviewData,
+      updated_at: new Date().toISOString()
+    };
+    this.saveData();
+    return this.data.userReviews[index];
+  }
+
+  async deleteReview(reviewId, userId) {
+    const review = this.data.userReviews.find(r => r.id === parseInt(reviewId));
+    if (!review || review.user_id !== parseInt(userId)) {
+      return false;
+    }
+    this.data.userReviews = this.data.userReviews.filter(r => r.id !== parseInt(reviewId));
+    this.saveData();
+    return true;
+  }
+
+  async getUserReviewForContent(userId, contentId) {
+    return this.data.userReviews.find(r => 
+      r.user_id === parseInt(userId) && r.content_id === parseInt(contentId)
+    ) || null;
+  }
+
+  // Review Likes
+  async likeReview(userId, reviewId, isLike) {
+    // Remove existing like/dislike first
+    this.data.reviewLikes = this.data.reviewLikes.filter(l => 
+      !(l.user_id === parseInt(userId) && l.review_id === parseInt(reviewId))
+    );
+
+    // Add new like/dislike
+    const newId = Math.max(...(this.data.reviewLikes?.map(l => l.id) || [0])) + 1;
+    const like = {
+      id: newId,
+      user_id: parseInt(userId),
+      review_id: parseInt(reviewId),
+      is_like: isLike,
+      created_at: new Date().toISOString()
+    };
+    this.data.reviewLikes.push(like);
+    this.saveData();
+    return like;
+  }
+
+  // Content Views
+  async incrementViewCount(contentId) {
+    const newId = Math.max(...(this.data.contentViews?.map(v => v.id) || [0])) + 1;
+    const view = {
+      id: newId,
+      content_id: parseInt(contentId),
+      viewed_at: new Date().toISOString()
+    };
+    this.data.contentViews.push(view);
+    this.saveData();
+    return view;
+  }
+
+  // User Statistics
+  async getUserStats(userId) {
+    const favorites = this.data.userFavorites?.filter(f => f.user_id === parseInt(userId)) || [];
+    const watchHistory = this.data.userWatchHistory?.filter(h => h.user_id === parseInt(userId)) || [];
+    const comments = this.data.userComments?.filter(c => c.user_id === parseInt(userId)) || [];
+    const reviews = this.data.userReviews?.filter(r => r.user_id === parseInt(userId)) || [];
+    
+    return {
+      favorites: favorites.length,
+      watchHistory: watchHistory.length,
+      comments: comments.length,
+      reviews: reviews.length,
+      totalWatchTime: watchHistory.reduce((sum, h) => sum + (h.progress_minutes || 0), 0)
+    };
   }
 }
 

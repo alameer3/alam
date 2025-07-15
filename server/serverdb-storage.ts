@@ -201,6 +201,85 @@ export class ServerDBStorage {
       genres: content.genres || []
     };
   }
+
+  // User Favorites
+  async addToFavorites(userId: number, contentId: number) {
+    return await dbManager.addToFavorites(userId, contentId);
+  }
+
+  async removeFromFavorites(userId: number, contentId: number) {
+    return await dbManager.removeFromFavorites(userId, contentId);
+  }
+
+  async getUserFavorites(userId: number) {
+    const favorites = await dbManager.getUserFavorites(userId);
+    return favorites.map(f => ({
+      ...f,
+      content: this.formatContent(f.content)
+    }));
+  }
+
+  // User Watch History
+  async addToWatchHistory(userId: number, contentId: number, progressMinutes: number = 0) {
+    return await dbManager.addToWatchHistory(userId, contentId, progressMinutes);
+  }
+
+  async getUserWatchHistory(userId: number) {
+    const history = await dbManager.getUserWatchHistory(userId);
+    return history.map(h => ({
+      ...h,
+      content: this.formatContent(h.content)
+    }));
+  }
+
+  // User Comments
+  async addComment(commentData: any) {
+    return await dbManager.addComment(commentData);
+  }
+
+  async getContentComments(contentId: number) {
+    return await dbManager.getContentComments(contentId);
+  }
+
+  async deleteComment(commentId: number, userId: number) {
+    return await dbManager.deleteComment(commentId, userId);
+  }
+
+  // User Reviews
+  async addReview(reviewData: any) {
+    return await dbManager.addReview(reviewData);
+  }
+
+  async getContentReviews(contentId: number) {
+    return await dbManager.getContentReviews(contentId);
+  }
+
+  async updateReview(reviewId: number, userId: number, reviewData: any) {
+    return await dbManager.updateReview(reviewId, userId, reviewData);
+  }
+
+  async deleteReview(reviewId: number, userId: number) {
+    return await dbManager.deleteReview(reviewId, userId);
+  }
+
+  async getUserReviewForContent(userId: number, contentId: number) {
+    return await dbManager.getUserReviewForContent(userId, contentId);
+  }
+
+  // Review Likes
+  async likeReview(userId: number, reviewId: number, isLike: boolean) {
+    return await dbManager.likeReview(userId, reviewId, isLike);
+  }
+
+  // Content Views
+  async incrementViewCount(contentId: number) {
+    return await dbManager.incrementViewCount(contentId);
+  }
+
+  // User Statistics
+  async getUserStats(userId: number) {
+    return await dbManager.getUserStats(userId);
+  }
 }
 
 export const serverDBStorage = new ServerDBStorage();

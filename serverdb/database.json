@@ -292,7 +292,7 @@
       "language": "English",
       "quality": "4K",
       "resolution": "2160p",
-      "rating": 9.0,
+      "rating": 9,
       "duration": 152,
       "episodes": null,
       "poster_url": "/serverdb/images/dark-knight.svg",
@@ -412,7 +412,7 @@
       "language": "Korean",
       "quality": "4K",
       "resolution": "2160p",
-      "rating": 8.0,
+      "rating": 8,
       "duration": 54,
       "episodes": 9,
       "poster_url": "/serverdb/images/squid-game.svg",
@@ -763,54 +763,289 @@
     }
   ],
   "content_categories": [
-    {"id": 1, "content_id": 1, "category_id": 2},
-    {"id": 2, "content_id": 2, "category_id": 2},
-    {"id": 3, "content_id": 3, "category_id": 2},
-    {"id": 4, "content_id": 4, "category_id": 2},
-    {"id": 5, "content_id": 5, "category_id": 1},
-    {"id": 6, "content_id": 6, "category_id": 1},
-    {"id": 7, "content_id": 7, "category_id": 5},
-    {"id": 8, "content_id": 8, "category_id": 3},
-    {"id": 9, "content_id": 9, "category_id": 1},
-    {"id": 10, "content_id": 10, "category_id": 1},
-    {"id": 11, "content_id": 11, "category_id": 1},
-    {"id": 12, "content_id": 12, "category_id": 4},
-    {"id": 13, "content_id": 13, "category_id": 2},
-    {"id": 14, "content_id": 14, "category_id": 1},
-    {"id": 15, "content_id": 15, "category_id": 1},
-    {"id": 16, "content_id": 16, "category_id": 7},
-    {"id": 17, "content_id": 17, "category_id": 1},
-    {"id": 18, "content_id": 18, "category_id": 1}
+    {
+      "id": 1,
+      "content_id": 1,
+      "category_id": 2
+    },
+    {
+      "id": 2,
+      "content_id": 2,
+      "category_id": 2
+    },
+    {
+      "id": 3,
+      "content_id": 3,
+      "category_id": 2
+    },
+    {
+      "id": 4,
+      "content_id": 4,
+      "category_id": 2
+    },
+    {
+      "id": 5,
+      "content_id": 5,
+      "category_id": 1
+    },
+    {
+      "id": 6,
+      "content_id": 6,
+      "category_id": 1
+    },
+    {
+      "id": 7,
+      "content_id": 7,
+      "category_id": 5
+    },
+    {
+      "id": 8,
+      "content_id": 8,
+      "category_id": 3
+    },
+    {
+      "id": 9,
+      "content_id": 9,
+      "category_id": 1
+    },
+    {
+      "id": 10,
+      "content_id": 10,
+      "category_id": 1
+    },
+    {
+      "id": 11,
+      "content_id": 11,
+      "category_id": 1
+    },
+    {
+      "id": 12,
+      "content_id": 12,
+      "category_id": 4
+    },
+    {
+      "id": 13,
+      "content_id": 13,
+      "category_id": 2
+    },
+    {
+      "id": 14,
+      "content_id": 14,
+      "category_id": 1
+    },
+    {
+      "id": 15,
+      "content_id": 15,
+      "category_id": 1
+    },
+    {
+      "id": 16,
+      "content_id": 16,
+      "category_id": 7
+    },
+    {
+      "id": 17,
+      "content_id": 17,
+      "category_id": 1
+    },
+    {
+      "id": 18,
+      "content_id": 18,
+      "category_id": 1
+    }
   ],
   "content_genres": [
-    {"id": 1, "content_id": 1, "genre_id": 3},
-    {"id": 2, "content_id": 2, "genre_id": 3},
-    {"id": 3, "content_id": 2, "genre_id": 4},
-    {"id": 4, "content_id": 3, "genre_id": 1},
-    {"id": 5, "content_id": 3, "genre_id": 7},
-    {"id": 6, "content_id": 4, "genre_id": 3},
-    {"id": 7, "content_id": 4, "genre_id": 7},
-    {"id": 8, "content_id": 5, "genre_id": 9},
-    {"id": 9, "content_id": 5, "genre_id": 3},
-    {"id": 10, "content_id": 6, "genre_id": 9},
-    {"id": 11, "content_id": 6, "genre_id": 3},
-    {"id": 12, "content_id": 7, "genre_id": 5},
-    {"id": 13, "content_id": 7, "genre_id": 3},
-    {"id": 14, "content_id": 8, "genre_id": 2},
-    {"id": 15, "content_id": 8, "genre_id": 3},
-    {"id": 16, "content_id": 9, "genre_id": 3},
-    {"id": 17, "content_id": 10, "genre_id": 3},
-    {"id": 18, "content_id": 11, "genre_id": 7},
-    {"id": 19, "content_id": 11, "genre_id": 3},
-    {"id": 20, "content_id": 12, "genre_id": 9},
-    {"id": 21, "content_id": 12, "genre_id": 11},
-    {"id": 22, "content_id": 13, "genre_id": 1},
-    {"id": 23, "content_id": 14, "genre_id": 2},
-    {"id": 24, "content_id": 14, "genre_id": 8},
-    {"id": 25, "content_id": 15, "genre_id": 15},
-    {"id": 26, "content_id": 15, "genre_id": 8},
-    {"id": 27, "content_id": 16, "genre_id": 15},
-    {"id": 28, "content_id": 17, "genre_id": 15},
-    {"id": 29, "content_id": 18, "genre_id": 12}
+    {
+      "id": 1,
+      "content_id": 1,
+      "genre_id": 3
+    },
+    {
+      "id": 2,
+      "content_id": 2,
+      "genre_id": 3
+    },
+    {
+      "id": 3,
+      "content_id": 2,
+      "genre_id": 4
+    },
+    {
+      "id": 4,
+      "content_id": 3,
+      "genre_id": 1
+    },
+    {
+      "id": 5,
+      "content_id": 3,
+      "genre_id": 7
+    },
+    {
+      "id": 6,
+      "content_id": 4,
+      "genre_id": 3
+    },
+    {
+      "id": 7,
+      "content_id": 4,
+      "genre_id": 7
+    },
+    {
+      "id": 8,
+      "content_id": 5,
+      "genre_id": 9
+    },
+    {
+      "id": 9,
+      "content_id": 5,
+      "genre_id": 3
+    },
+    {
+      "id": 10,
+      "content_id": 6,
+      "genre_id": 9
+    },
+    {
+      "id": 11,
+      "content_id": 6,
+      "genre_id": 3
+    },
+    {
+      "id": 12,
+      "content_id": 7,
+      "genre_id": 5
+    },
+    {
+      "id": 13,
+      "content_id": 7,
+      "genre_id": 3
+    },
+    {
+      "id": 14,
+      "content_id": 8,
+      "genre_id": 2
+    },
+    {
+      "id": 15,
+      "content_id": 8,
+      "genre_id": 3
+    },
+    {
+      "id": 16,
+      "content_id": 9,
+      "genre_id": 3
+    },
+    {
+      "id": 17,
+      "content_id": 10,
+      "genre_id": 3
+    },
+    {
+      "id": 18,
+      "content_id": 11,
+      "genre_id": 7
+    },
+    {
+      "id": 19,
+      "content_id": 11,
+      "genre_id": 3
+    },
+    {
+      "id": 20,
+      "content_id": 12,
+      "genre_id": 9
+    },
+    {
+      "id": 21,
+      "content_id": 12,
+      "genre_id": 11
+    },
+    {
+      "id": 22,
+      "content_id": 13,
+      "genre_id": 1
+    },
+    {
+      "id": 23,
+      "content_id": 14,
+      "genre_id": 2
+    },
+    {
+      "id": 24,
+      "content_id": 14,
+      "genre_id": 8
+    },
+    {
+      "id": 25,
+      "content_id": 15,
+      "genre_id": 15
+    },
+    {
+      "id": 26,
+      "content_id": 15,
+      "genre_id": 8
+    },
+    {
+      "id": 27,
+      "content_id": 16,
+      "genre_id": 15
+    },
+    {
+      "id": 28,
+      "content_id": 17,
+      "genre_id": 15
+    },
+    {
+      "id": 29,
+      "content_id": 18,
+      "genre_id": 12
+    }
+  ],
+  "userFavorites": [
+    {
+      "id": null,
+      "user_id": 1,
+      "content_id": 1,
+      "added_at": "2025-07-15T16:41:02.030Z"
+    }
+  ],
+  "userWatchHistory": [
+    {
+      "id": null,
+      "user_id": 1,
+      "content_id": 2,
+      "progress_minutes": 45,
+      "first_watched": "2025-07-15T16:41:03.468Z",
+      "last_watched": "2025-07-15T16:41:03.468Z"
+    }
+  ],
+  "userComments": [
+    {
+      "id": null,
+      "user_id": 1,
+      "comment_text": "فيلم رائع جداً!",
+      "content_id": 1,
+      "created_at": "2025-07-15T16:41:33.215Z",
+      "updated_at": "2025-07-15T16:41:33.215Z"
+    }
+  ],
+  "userReviews": [
+    {
+      "id": null,
+      "user_id": 1,
+      "rating": 5,
+      "review_text": "فيلم ممتاز وأداء رائع",
+      "content_id": 1,
+      "created_at": "2025-07-15T16:41:34.842Z",
+      "updated_at": "2025-07-15T16:41:34.842Z"
+    }
+  ],
+  "reviewLikes": [],
+  "contentViews": [
+    {
+      "id": null,
+      "content_id": 1,
+      "viewed_at": "2025-07-15T16:41:35.993Z"
+    }
   ]
 }
