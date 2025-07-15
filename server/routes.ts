@@ -58,7 +58,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
         rating: req.query.rating
       };
 
-      const result = await serverDBStorage.getContentByType(type, page, limit);
+      // Map API types to database types
+      const typeMapping = {
+        'movies': 'movie',
+        'series': 'series',
+        'tv': 'television',
+        'misc': 'miscellaneous'
+      };
+
+      const dbType = typeMapping[type as keyof typeof typeMapping] || type;
+      const result = await serverDBStorage.getContentByType(dbType, page, limit);
       res.json(result);
     } catch (error) {
       if (process.env.NODE_ENV === 'development') {
@@ -75,7 +84,16 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const page = parseInt(req.query.page as string) || 1;
       const limit = parseInt(req.query.limit as string) || 24;
 
-      const result = await serverDBStorage.getContentByType(type, page, limit);
+      // Map API types to database types
+      const typeMapping = {
+        'movies': 'movie',
+        'series': 'series',
+        'tv': 'television',
+        'misc': 'miscellaneous'
+      };
+
+      const dbType = typeMapping[type as keyof typeof typeMapping] || type;
+      const result = await serverDBStorage.getContentByType(dbType, page, limit);
       res.json(result);
     } catch (error) {
       if (process.env.NODE_ENV === 'development') {
