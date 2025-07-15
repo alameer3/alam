@@ -3,7 +3,7 @@ import { Link, useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { SmartSearchSystem } from "@/components/search/smart-search-system";
-import { AdvancedThemeSwitcher } from "@/components/theme/advanced-theme-switcher";
+
 import { useAuth } from "@/hooks/useAuth";
 import { Heart, User, Bell, Menu, X, Film, Settings } from "lucide-react";
 import {
@@ -72,7 +72,7 @@ export function EnhancedHeader() {
           {/* أدوات التنقل */}
           <div className="flex items-center gap-2">
             {/* مبدل الثيمات */}
-            <AdvancedThemeSwitcher />
+            {/* الثيم اليمني الأصيل فقط */}
 
             {/* المفضلة */}
             <Button variant="ghost" size="sm" className="relative hidden sm:flex">

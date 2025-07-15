@@ -6,7 +6,7 @@ import { Input } from "@/components/ui/input";
 import SearchModal from "@/components/search/search-modal";
 import AdvancedSearch from "@/components/search/advanced-search";
 import FavoritesModal from "@/components/user/favorites-modal";
-import { AdvancedThemeSwitcher } from "@/components/theme/advanced-theme-switcher";
+
 import { Content } from "@shared/schema";
 
 export default function Header() {
@@ -81,7 +81,7 @@ export default function Header() {
               <Search className="w-5 h-5" />
             </Button>
             
-            <AdvancedThemeSwitcher />
+            {/* الثيم اليمني الأصيل فقط */}
             
             <FavoritesModal onContentSelect={handleContentClick}>
               <Button 

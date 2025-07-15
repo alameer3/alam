@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
 import { MobileNavigation } from "./mobile-navigation";
-import { AdvancedThemeSwitcher } from "@/components/theme/advanced-theme-switcher";
+
 import { useResponsive } from "./responsive-layout";
 import { useAuthData } from "@/hooks/useAuth";
 import { UserMenu } from "./user-menu";
@@ -167,8 +167,7 @@ export function ImprovedResponsiveHeader() {
               )}
             </Button>
 
-            {/* مبدل الثيم - مخفي في الهاتف */}
-            {!isMobile && <AdvancedThemeSwitcher />}
+            {/* الثيم اليمني الأصيل فقط */}
 
             {/* قائمة المستخدم */}
             {isAuthenticated && user ? (
