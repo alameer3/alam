@@ -122,6 +122,63 @@ export const reviewLikes = pgTable("review_likes", {
   createdAt: timestamp("created_at").defaultNow().notNull(),
 });
 
+// نظام الحلقات للمسلسلات والمحتوى التلفزيوني
+export const episodes = pgTable("episodes", {
+  id: serial("id").primaryKey(),
+  contentId: integer("content_id").notNull(),
+  episodeNumber: integer("episode_number").notNull(),
+  seasonNumber: integer("season_number").default(1).notNull(),
+  title: text("title").notNull(),
+  titleArabic: text("title_arabic"),
+  description: text("description"),
+  descriptionArabic: text("description_arabic"),
+  duration: integer("duration"), // مدة الحلقة بالدقائق
+  quality: text("quality").notNull(),
+  resolution: text("resolution").notNull(),
+  language: text("language").notNull(),
+  subtitle: text("subtitle"), // الترجمة المتوفرة
+  videoUrl: text("video_url"),
+  downloadUrl: text("download_url"),
+  thumbnailUrl: text("thumbnail_url"),
+  isActive: boolean("is_active").default(true).notNull(),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+// نظام التبليغ عن الأخطاء
+export const errorReports = pgTable("error_reports", {
+  id: serial("id").primaryKey(),
+  contentId: integer("content_id"),
+  episodeId: integer("episode_id"),
+  reporterEmail: text("reporter_email"),
+  errorType: text("error_type").notNull(), // "download_link", "streaming_link", "subtitle_issue", "audio_video_issue", "content_issue", "quality_request", "other"
+  description: text("description").notNull(),
+  pageUrl: text("page_url").notNull(),
+  status: text("status").default("pending").notNull(), // "pending", "in_progress", "resolved", "rejected"
+  adminNotes: text("admin_notes"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+  updatedAt: timestamp("updated_at").defaultNow().notNull(),
+});
+
+// نظام تصنيف الأعمار
+export const ageRatings = pgTable("age_ratings", {
+  id: serial("id").primaryKey(),
+  code: text("code").notNull().unique(), // "G", "PG", "PG13", "R", "NC17"
+  name: text("name").notNull(),
+  nameArabic: text("name_arabic").notNull(),
+  description: text("description"),
+  descriptionArabic: text("description_arabic"),
+  minAge: integer("min_age"),
+  createdAt: timestamp("created_at").defaultNow().notNull(),
+});
+
+// إضافة تصنيف الأعمار للمحتوى
+export const contentAgeRatings = pgTable("content_age_ratings", {
+  id: serial("id").primaryKey(),
+  contentId: integer("content_id").notNull(),
+  ageRatingId: integer("age_rating_id").notNull(),
+});
+
 // جداول نظام الاشتراكات والتحليلات المتقدمة
 export const subscriptionPlans = pgTable("subscription_plans", {
   id: serial("id").primaryKey(),
@@ -290,6 +347,9 @@ export const contentRelations = relations(content, ({ many, one }) => ({
   externalRatings: many(externalRatings),
   favorites: many(userFavorites),
   watchHistory: many(userWatchHistory),
+  episodes: many(episodes),
+  errorReports: many(errorReports),
+  contentAgeRatings: many(contentAgeRatings),
   views: one(contentViews, {
     fields: [content.id],
     references: [contentViews.contentId],
@@ -414,6 +474,74 @@ export const reviewLikeRelations = relations(reviewLikes, ({ one }) => ({
   }),
 }));
 
+// العلاقات الجديدة
+export const episodeRelations = relations(episodes, ({ one }) => ({
+  content: one(content, {
+    fields: [episodes.contentId],
+    references: [content.id],
+  }),
+}));
+
+export const errorReportRelations = relations(errorReports, ({ one }) => ({
+  content: one(content, {
+    fields: [errorReports.contentId],
+    references: [content.id],
+  }),
+  episode: one(episodes, {
+    fields: [errorReports.episodeId],
+    references: [episodes.id],
+  }),
+}));
+
+export const ageRatingRelations = relations(ageRatings, ({ many }) => ({
+  contentAgeRatings: many(contentAgeRatings),
+}));
+
+export const contentAgeRatingRelations = relations(contentAgeRatings, ({ one }) => ({
+  content: one(content, {
+    fields: [contentAgeRatings.contentId],
+    references: [content.id],
+  }),
+  ageRating: one(ageRatings, {
+    fields: [contentAgeRatings.ageRatingId],
+    references: [ageRatings.id],
+  }),
+}));
+
+export const castMemberRelations = relations(castMembers, ({ many }) => ({
+  contentCast: many(contentCast),
+}));
+
+export const contentCastRelations = relations(contentCast, ({ one }) => ({
+  content: one(content, {
+    fields: [contentCast.contentId],
+    references: [content.id],
+  }),
+  castMember: one(castMembers, {
+    fields: [contentCast.castMemberId],
+    references: [castMembers.id],
+  }),
+}));
+
+export const contentImageRelations = relations(contentImages, ({ one }) => ({
+  content: one(content, {
+    fields: [contentImages.contentId],
+    references: [content.id],
+  }),
+}));
+
+export const externalRatingRelations = relations(externalRatings, ({ one }) => ({
+  content: one(content, {
+    fields: [externalRatings.contentId],
+    references: [content.id],
+  }),
+}));
+
+// أنواع البيانات الجديدة
+export type Episode = typeof episodes.$inferSelect;
+export type ErrorReport = typeof errorReports.$inferSelect;
+export type AgeRating = typeof ageRatings.$inferSelect;
+
 
 
 // Insert schemas
@@ -457,7 +585,11 @@ export const insertUserWatchHistorySchema = createInsertSchema(userWatchHistory)
   watchedAt: true,
 });
 
-// Insert schemas - الأنواع الجديدة لتطوير المحتوى
+// Insert schemas - الأنواع الجديدة المطلوبة
+export const insertEpisodeSchema = createInsertSchema(episodes).omit({ id: true, createdAt: true, updatedAt: true });
+export const insertErrorReportSchema = createInsertSchema(errorReports).omit({ id: true, createdAt: true, updatedAt: true });
+export const insertAgeRatingSchema = createInsertSchema(ageRatings).omit({ id: true, createdAt: true });
+export const insertContentAgeRatingSchema = createInsertSchema(contentAgeRatings).omit({ id: true });
 export const insertCastMemberSchema = createInsertSchema(castMembers).omit({ id: true, createdAt: true, updatedAt: true });
 export const insertContentCastSchema = createInsertSchema(contentCast).omit({ id: true, createdAt: true });
 export const insertContentImageSchema = createInsertSchema(contentImages).omit({ id: true, createdAt: true });
@@ -524,6 +656,22 @@ export const insertReviewLikeSchema = createInsertSchema(reviewLikes).omit({
   id: true,
   createdAt: true,
 });
+
+// أنواع البيانات للجداول الجديدة
+export type InsertEpisode = z.infer<typeof insertEpisodeSchema>;
+export type InsertErrorReport = z.infer<typeof insertErrorReportSchema>;
+export type InsertAgeRating = z.infer<typeof insertAgeRatingSchema>;
+export type InsertContentAgeRating = z.infer<typeof insertContentAgeRatingSchema>;
+export type InsertCastMember = z.infer<typeof insertCastMemberSchema>;
+export type InsertContentCast = z.infer<typeof insertContentCastSchema>;
+export type InsertContentImage = z.infer<typeof insertContentImageSchema>;
+export type InsertExternalRating = z.infer<typeof insertExternalRatingSchema>;
+
+export type CastMember = typeof castMembers.$inferSelect;
+export type ContentCast = typeof contentCast.$inferSelect;
+export type ContentImage = typeof contentImages.$inferSelect;
+export type ExternalRating = typeof externalRatings.$inferSelect;
+export type ContentAgeRating = typeof contentAgeRatings.$inferSelect;
 
 // Security and Audit Tables
 export const auditLogs = pgTable("audit_logs", {
@@ -686,47 +834,6 @@ export type InsertUserSession = z.infer<typeof insertUserSessionSchema>;
 export type PasswordReset = typeof passwordResets.$inferSelect;
 export type InsertPasswordReset = z.infer<typeof insertPasswordResetSchema>;
 
-// العلاقات الجديدة للمحتوى المتقدم
-export const castMemberRelations = relations(castMembers, ({ many }) => ({
-  contentCast: many(contentCast),
-}));
-
-export const contentCastRelations = relations(contentCast, ({ one }) => ({
-  content: one(content, {
-    fields: [contentCast.contentId],
-    references: [content.id],
-  }),
-  castMember: one(castMembers, {
-    fields: [contentCast.castMemberId],
-    references: [castMembers.id],
-  }),
-}));
-
-export const contentImageRelations = relations(contentImages, ({ one }) => ({
-  content: one(content, {
-    fields: [contentImages.contentId],
-    references: [content.id],
-  }),
-}));
-
-export const externalRatingRelations = relations(externalRatings, ({ one }) => ({
-  content: one(content, {
-    fields: [externalRatings.contentId],
-    references: [content.id],
-  }),
-}));
-
-// الأنواع الجديدة للمحتوى المتقدم
-export type CastMember = typeof castMembers.$inferSelect;
-export type InsertCastMember = z.infer<typeof insertCastMemberSchema>;
-
-export type ContentCast = typeof contentCast.$inferSelect;
-export type InsertContentCast = z.infer<typeof insertContentCastSchema>;
-
-export type ContentImage = typeof contentImages.$inferSelect;
-export type InsertContentImage = z.infer<typeof insertContentImageSchema>;
-
-export type ExternalRating = typeof externalRatings.$inferSelect;
-export type InsertExternalRating = z.infer<typeof insertExternalRatingSchema>;
+// نهاية الملف
 
 

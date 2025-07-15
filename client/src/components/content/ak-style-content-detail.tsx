@@ -27,6 +27,7 @@ import { useToast } from "@/hooks/use-toast";
 import ContentRating from "@/components/content/content-rating";
 import ContentTags from "@/components/content/content-tags";
 import ExternalLinks from "@/components/content/external-links";
+import { EpisodesSection } from "@/components/content/episodes-section";
 
 interface AkStyleContentDetailProps {
   contentId: string;
@@ -279,6 +280,16 @@ export function AkStyleContentDetail({ contentId }: AkStyleContentDetailProps) {
           </div>
         </div>
       </div>
+
+      {/* Episodes Section for Series */}
+      {(content.type === 'series' || content.type === 'tv') && (
+        <div className="mt-8">
+          <EpisodesSection 
+            contentId={parseInt(contentId)}
+            contentTitle={content.titleArabic || content.title}
+          />
+        </div>
+      )}
 
       {/* External Links */}
       <Card className="mt-8">

@@ -1,14 +1,15 @@
 import { 
   users, content, genres, categories, contentGenres, contentCategories, userRatings,
   userComments, userReviews, reviewLikes, userFavorites, userWatchHistory, contentViews,
-  castMembers, contentCast, contentImages, externalRatings,
+  castMembers, contentCast, contentImages, externalRatings, episodes,
   type User, type InsertUser, type Content, type InsertContent, 
   type Genre, type InsertGenre, type Category, type InsertCategory,
   type UserComment, type InsertUserComment, type UserReview, type InsertUserReview,
   type ReviewLike, type InsertReviewLike, type UserFavorite, type InsertUserFavorite,
   type UserWatchHistory, type InsertUserWatchHistory, type ContentView, type InsertContentView,
   type CastMember, type InsertCastMember, type ContentCast, type InsertContentCast,
-  type ContentImage, type InsertContentImage, type ExternalRating, type InsertExternalRating
+  type ContentImage, type InsertContentImage, type ExternalRating, type InsertExternalRating,
+  type Episode, type InsertEpisode
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and, ilike, sql } from "drizzle-orm";
@@ -91,6 +92,13 @@ export interface IStorage {
   addExternalRating(rating: InsertExternalRating): Promise<ExternalRating>;
   updateExternalRating(id: number, rating: Partial<InsertExternalRating>): Promise<ExternalRating>;
   deleteExternalRating(id: number): Promise<boolean>;
+  
+  // Episodes operations
+  getEpisodesByContentAndSeason(contentId: number, season: number): Promise<Episode[]>;
+  getSeasonsByContent(contentId: number): Promise<number[]>;
+  createEpisode(episode: InsertEpisode): Promise<Episode>;
+  updateEpisode(id: number, episode: Partial<InsertEpisode>): Promise<Episode>;
+  deleteEpisode(id: number): Promise<boolean>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -560,6 +568,44 @@ export class DatabaseStorage implements IStorage {
     return result.rowCount > 0;
   }
 
+  // Episodes operations
+  async getEpisodesByContentAndSeason(contentId: number, season: number): Promise<Episode[]> {
+    return await db
+      .select()
+      .from(episodes)
+      .where(and(eq(episodes.contentId, contentId), eq(episodes.season, season)))
+      .orderBy(episodes.episodeNumber);
+  }
+  
+  async getSeasonsByContent(contentId: number): Promise<number[]> {
+    const result = await db
+      .selectDistinct({ season: episodes.season })
+      .from(episodes)
+      .where(eq(episodes.contentId, contentId))
+      .orderBy(episodes.season);
+    
+    return result.map(r => r.season);
+  }
+  
+  async createEpisode(insertEpisode: InsertEpisode): Promise<Episode> {
+    const [episode] = await db.insert(episodes).values(insertEpisode).returning();
+    return episode;
+  }
+  
+  async updateEpisode(id: number, updateEpisode: Partial<InsertEpisode>): Promise<Episode> {
+    const [episode] = await db
+      .update(episodes)
+      .set({ ...updateEpisode, updatedAt: new Date() })
+      .where(eq(episodes.id, id))
+      .returning();
+    return episode;
+  }
+  
+  async deleteEpisode(id: number): Promise<boolean> {
+    const result = await db.delete(episodes).where(eq(episodes.id, id));
+    return result.rowCount > 0;
+  }
+
 }
 
 // Create a temporary in-memory storage for migration purposes
@@ -952,6 +998,53 @@ class TemporaryMemoryStorage implements IStorage {
   }
   
   async deleteExternalRating(id: number): Promise<boolean> {
+    return true;
+  }
+
+  // Episodes operations
+  async getEpisodesByContentAndSeason(contentId: number, season: number): Promise<Episode[]> {
+    return [];
+  }
+  
+  async getSeasonsByContent(contentId: number): Promise<number[]> {
+    return [1];
+  }
+  
+  async createEpisode(episode: InsertEpisode): Promise<Episode> {
+    const newEpisode: Episode = {
+      id: Date.now(),
+      ...episode,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    return newEpisode;
+  }
+  
+  async updateEpisode(id: number, episode: Partial<InsertEpisode>): Promise<Episode> {
+    const updated: Episode = {
+      id,
+      contentId: episode.contentId || 0,
+      title: episode.title || "",
+      titleArabic: episode.titleArabic || null,
+      episodeNumber: episode.episodeNumber || 1,
+      season: episode.season || 1,
+      description: episode.description || null,
+      descriptionArabic: episode.descriptionArabic || null,
+      duration: episode.duration || null,
+      videoUrl: episode.videoUrl || null,
+      downloadUrl: episode.downloadUrl || null,
+      thumbnailUrl: episode.thumbnailUrl || null,
+      quality: episode.quality || null,
+      resolution: episode.resolution || null,
+      language: episode.language || null,
+      subtitle: episode.subtitle || null,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    return updated;
+  }
+  
+  async deleteEpisode(id: number): Promise<boolean> {
     return true;
   }
 

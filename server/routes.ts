@@ -1,7 +1,7 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
-import { insertContentSchema, insertGenreSchema, insertCategorySchema, insertUserSchema, insertUserCommentSchema, insertUserReviewSchema, insertReviewLikeSchema, insertUserFavoriteSchema, insertUserWatchHistorySchema } from "@shared/schema";
+import { insertContentSchema, insertGenreSchema, insertCategorySchema, insertUserSchema, insertUserCommentSchema, insertUserReviewSchema, insertReviewLikeSchema, insertUserFavoriteSchema, insertUserWatchHistorySchema, insertEpisodeSchema } from "@shared/schema";
 import { z } from "zod";
 import adminRoutes from "./routes/admin";
 import performanceRoutes from "./routes/performance";
@@ -727,6 +727,95 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
   // Subscription routes
   app.use("/api/subscriptions", subscriptionRoutes);
+
+  // Episodes routes
+  app.get('/api/episodes/:contentId', async (req, res) => {
+    try {
+      const contentId = parseInt(req.params.contentId);
+      const season = parseInt(req.query.season as string) || 1;
+      
+      if (isNaN(contentId)) {
+        return res.status(400).json({ error: 'معرف المحتوى غير صحيح' });
+      }
+
+      const episodes = await storage.getEpisodesByContentAndSeason(contentId, season);
+      const seasons = await storage.getSeasonsByContent(contentId);
+      
+      res.json({
+        episodes,
+        seasons,
+        total: episodes.length
+      });
+    } catch (error) {
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Episodes fetch error:', error);
+      }
+      res.status(500).json({ error: 'فشل في تحميل الحلقات' });
+    }
+  });
+
+  app.post('/api/episodes', async (req, res) => {
+    try {
+      const episodeData = insertEpisodeSchema.parse(req.body);
+      const episode = await storage.createEpisode(episodeData);
+      res.status(201).json(episode);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ error: 'بيانات غير صحيحة', details: error.issues });
+      }
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Episode creation error:', error);
+      }
+      res.status(500).json({ error: 'فشل في إنشاء الحلقة' });
+    }
+  });
+
+  app.put('/api/episodes/:id', async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ error: 'معرف الحلقة غير صحيح' });
+      }
+
+      const updates = insertEpisodeSchema.partial().parse(req.body);
+      const episode = await storage.updateEpisode(id, updates);
+      
+      if (!episode) {
+        return res.status(404).json({ error: 'الحلقة غير موجودة' });
+      }
+      
+      res.json(episode);
+    } catch (error) {
+      if (error instanceof z.ZodError) {
+        return res.status(400).json({ error: 'بيانات غير صحيحة', details: error.issues });
+      }
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Episode update error:', error);
+      }
+      res.status(500).json({ error: 'فشل في تحديث الحلقة' });
+    }
+  });
+
+  app.delete('/api/episodes/:id', async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ error: 'معرف الحلقة غير صحيح' });
+      }
+
+      const success = await storage.deleteEpisode(id);
+      if (!success) {
+        return res.status(404).json({ error: 'الحلقة غير موجودة' });
+      }
+      
+      res.json({ success: true, message: 'تم حذف الحلقة بنجاح' });
+    } catch (error) {
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Episode deletion error:', error);
+      }
+      res.status(500).json({ error: 'فشل في حذف الحلقة' });
+    }
+  });
 
   // Error Reports Route - direct implementation
   app.post('/api/reports', async (req, res) => {
