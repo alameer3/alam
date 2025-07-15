@@ -22,6 +22,9 @@ app.use(validateInput);
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: false, limit: '10mb' }));
 
+// Serve static files from serverdb/images
+app.use('/serverdb/images', express.static('serverdb/images'));
+
 app.use((req, res, next) => {
   const start = Date.now();
   const path = req.path;

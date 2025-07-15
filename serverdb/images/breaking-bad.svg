@@ -1,0 +1,13 @@
+<svg width="300" height="450" xmlns="http://www.w3.org/2000/svg">
+  <rect width="300" height="450" fill="#1a1a1a"/>
+  <rect x="20" y="20" width="260" height="350" fill="#2c3e2c" stroke="#4CAF50" stroke-width="2"/>
+  <text x="150" y="50" text-anchor="middle" fill="#4CAF50" font-family="Arial, sans-serif" font-size="18" font-weight="bold">BREAKING</text>
+  <text x="150" y="70" text-anchor="middle" fill="#4CAF50" font-family="Arial, sans-serif" font-size="18" font-weight="bold">BAD</text>
+  <text x="150" y="100" text-anchor="middle" fill="#FF9800" font-family="Arial, sans-serif" font-size="14">بريكينغ باد</text>
+  <circle cx="150" cy="200" r="50" fill="#4CAF50" opacity="0.3"/>
+  <rect x="130" y="180" width="40" height="40" fill="#FF9800" opacity="0.8"/>
+  <text x="150" y="320" text-anchor="middle" fill="#4CAF50" font-family="Arial, sans-serif" font-size="18" font-weight="bold">9.5</text>
+  <text x="150" y="340" text-anchor="middle" fill="#ecf0f1" font-family="Arial, sans-serif" font-size="12">IMDB Rating</text>
+  <text x="150" y="380" text-anchor="middle" fill="#ecf0f1" font-family="Arial, sans-serif" font-size="12">2008 • Crime Drama • 62 Episodes</text>
+  <text x="150" y="420" text-anchor="middle" fill="#ecf0f1" font-family="Arial, sans-serif" font-size="12">HD • Series</text>
+</svg>

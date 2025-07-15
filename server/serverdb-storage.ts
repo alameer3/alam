@@ -1,0 +1,206 @@
+import { dbManager } from '../serverdb/database-manager.js';
+import type { User, Content, Category, Genre } from '@shared/schema';
+
+export class ServerDBStorage {
+  
+  async getCategories() {
+    const categories = await dbManager.getCategories();
+    return categories.map(cat => ({
+      id: cat.id,
+      name: cat.name,
+      nameArabic: cat.name_arabic,
+      description: cat.description,
+      createdAt: cat.created_at,
+      updatedAt: cat.updated_at
+    }));
+  }
+
+  async getCategoryById(id: number) {
+    const category = await dbManager.getCategoryById(id);
+    if (!category) return null;
+    return {
+      id: category.id,
+      name: category.name,
+      nameArabic: category.name_arabic,
+      description: category.description,
+      createdAt: category.created_at,
+      updatedAt: category.updated_at
+    };
+  }
+
+  async getGenres() {
+    const genres = await dbManager.getGenres();
+    return genres.map(genre => ({
+      id: genre.id,
+      name: genre.name,
+      nameArabic: genre.name_arabic,
+      description: genre.description,
+      createdAt: genre.created_at,
+      updatedAt: genre.updated_at
+    }));
+  }
+
+  async getGenreById(id: number) {
+    const genre = await dbManager.getGenreById(id);
+    if (!genre) return null;
+    return {
+      id: genre.id,
+      name: genre.name,
+      nameArabic: genre.name_arabic,
+      description: genre.description,
+      createdAt: genre.created_at,
+      updatedAt: genre.updated_at
+    };
+  }
+
+  async getContentByType(type: string, page: number = 1, limit: number = 24) {
+    const result = await dbManager.getContent({ type, page, limit });
+    return {
+      content: result.content.map(this.formatContent),
+      total: result.total,
+      page: result.page,
+      limit: result.limit,
+      totalPages: result.totalPages
+    };
+  }
+
+  async getContentById(id: number) {
+    const content = await dbManager.getContentById(id);
+    if (!content) return null;
+    return this.formatContent(content);
+  }
+
+  async searchContent(query: string, filters: any = {}) {
+    const result = await dbManager.searchContent(query, filters);
+    return {
+      content: result.content.map(this.formatContent),
+      total: result.total,
+      page: result.page,
+      limit: result.limit,
+      totalPages: result.totalPages
+    };
+  }
+
+  async getFeaturedContent() {
+    const content = await dbManager.getFeaturedContent();
+    return content.map(this.formatContent);
+  }
+
+  async getTrendingContent() {
+    const content = await dbManager.getTrendingContent();
+    return content.map(this.formatContent);
+  }
+
+  async getStats() {
+    return await dbManager.getStats();
+  }
+
+  async createContent(contentData: any) {
+    const content = await dbManager.createContent(contentData);
+    return this.formatContent(content);
+  }
+
+  async updateContent(id: number, contentData: any) {
+    const content = await dbManager.updateContent(id, contentData);
+    if (!content) return null;
+    return this.formatContent(content);
+  }
+
+  async deleteContent(id: number) {
+    return await dbManager.deleteContent(id);
+  }
+
+  async getUserById(id: number) {
+    const user = await dbManager.getUserById(id);
+    if (!user) return null;
+    return {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      firstName: user.first_name,
+      lastName: user.last_name,
+      profileImageUrl: user.profile_image_url,
+      isAdmin: user.is_admin,
+      isActive: user.is_active,
+      favorites: user.favorites || [],
+      watchHistory: user.watch_history || [],
+      createdAt: user.created_at,
+      updatedAt: user.updated_at
+    };
+  }
+
+  async getUserByEmail(email: string) {
+    const user = await dbManager.getUserByEmail(email);
+    if (!user) return null;
+    return {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      firstName: user.first_name,
+      lastName: user.last_name,
+      profileImageUrl: user.profile_image_url,
+      isAdmin: user.is_admin,
+      isActive: user.is_active,
+      favorites: user.favorites || [],
+      watchHistory: user.watch_history || [],
+      createdAt: user.created_at,
+      updatedAt: user.updated_at
+    };
+  }
+
+  async getUserByUsername(username: string) {
+    const user = await dbManager.getUserByUsername(username);
+    if (!user) return null;
+    return {
+      id: user.id,
+      username: user.username,
+      email: user.email,
+      firstName: user.first_name,
+      lastName: user.last_name,
+      profileImageUrl: user.profile_image_url,
+      isAdmin: user.is_admin,
+      isActive: user.is_active,
+      favorites: user.favorites || [],
+      watchHistory: user.watch_history || [],
+      createdAt: user.created_at,
+      updatedAt: user.updated_at
+    };
+  }
+
+  private formatContent(content: any) {
+    return {
+      id: content.id,
+      title: content.title,
+      titleArabic: content.title_arabic,
+      description: content.description,
+      descriptionArabic: content.description_arabic,
+      type: content.type,
+      year: content.year,
+      language: content.language,
+      quality: content.quality,
+      resolution: content.resolution,
+      rating: content.rating,
+      duration: content.duration,
+      episodes: content.episodes,
+      posterUrl: content.poster_url,
+      videoUrl: content.video_url,
+      downloadUrl: content.download_url,
+      trailerUrl: content.trailer_url,
+      imdbId: content.imdb_id,
+      tmdbId: content.tmdb_id,
+      rottenTomatoesScore: content.rotten_tomatoes_score,
+      metacriticScore: content.metacritic_score,
+      country: content.country,
+      budget: content.budget,
+      boxOffice: content.box_office,
+      awards: content.awards,
+      isActive: content.is_active,
+      createdAt: content.created_at,
+      updatedAt: content.updated_at,
+      categories: content.categories || [],
+      genres: content.genres || []
+    };
+  }
+}
+
+export const serverDBStorage = new ServerDBStorage();
