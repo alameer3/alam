@@ -145,7 +145,7 @@ export default function MiscContent() {
   const totalPages = Math.ceil(filteredContent.length / 12);
 
   const handleItemClick = (item: any) => {
-    console.log('Opening item:', item);
+    // Opening item - production ready
     // Here you would typically navigate to the item detail page or open a player
   };
 
