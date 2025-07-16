@@ -164,8 +164,8 @@ export default function AkSvHeader() {
 
           {/* الجانب الأيسر - الشعار وأُضيف حديثاً وقائمة الأقسام */}
           <div className="flex items-center gap-4">
-            {/* قائمة الأقسام - للديسكتوب فقط */}
-            <div className="hidden md:block relative" ref={sectionsRef}>
+            {/* قائمة الأقسام - للجميع */}
+            <div className="relative" ref={sectionsRef}>
               <button
                 onClick={() => setShowSections(!showSections)}
                 className="text-white hover:text-orange-400 transition-colors flex items-center gap-2 text-sm"
