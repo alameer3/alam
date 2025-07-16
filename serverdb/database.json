@@ -1484,6 +1484,48 @@
       "subtitle": "Arabic",
       "is_active": true,
       "created_at": "2025-07-16T19:00:00.000Z"
+    },
+    {
+      "id": 8,
+      "content_id": 4,
+      "episode_id": 3,
+      "quality": "HD",
+      "resolution": "1080p",
+      "file_size": "1.8 GB",
+      "download_url": "https://example.com/download/breaking-bad-s1e3-1080p.mp4",
+      "server_name": "سيرفر 1",
+      "language": "English",
+      "subtitle": "Arabic",
+      "is_active": true,
+      "created_at": "2025-07-16T19:00:00.000Z"
+    },
+    {
+      "id": 9,
+      "content_id": 6,
+      "episode_id": 5,
+      "quality": "HD",
+      "resolution": "1080p",
+      "file_size": "2.0 GB",
+      "download_url": "https://example.com/download/bab-alhara-s1e2-1080p.mp4",
+      "server_name": "سيرفر عربي",
+      "language": "Arabic",
+      "subtitle": "Arabic",
+      "is_active": true,
+      "created_at": "2025-07-16T19:00:00.000Z"
+    },
+    {
+      "id": 10,
+      "content_id": 7,
+      "episode_id": 6,
+      "quality": "4K",
+      "resolution": "2160p",
+      "file_size": "4.2 GB",
+      "download_url": "https://example.com/download/squid-game-s1e1-2160p.mp4",
+      "server_name": "سيرفر 4K",
+      "language": "Korean",
+      "subtitle": "Arabic",
+      "is_active": true,
+      "created_at": "2025-07-16T19:00:00.000Z"
     }
   ],
   "streamingLinks": [

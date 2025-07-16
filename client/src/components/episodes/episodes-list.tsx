@@ -49,7 +49,7 @@ export default function EpisodesList({ contentId, contentType }: EpisodesListPro
 
   // Group episodes by season
   const episodesBySeason = episodes.reduce((acc: any, episode: any) => {
-    const season = episode.seasonNumber;
+    const season = episode.seasonNumber || episode.season_number;
     if (!acc[season]) {
       acc[season] = [];
     }
@@ -96,7 +96,7 @@ export default function EpisodesList({ contentId, contentType }: EpisodesListPro
                       <div className="flex items-start justify-between">
                         <div>
                           <h5 className="font-semibold text-white truncate">
-                            الحلقة {episode.episodeNumber}: {episode.titleArabic || episode.title}
+                            الحلقة {episode.episodeNumber || episode.episode_number}: {episode.titleArabic || episode.title}
                           </h5>
                           <p className="text-sm text-gray-400 mt-1 line-clamp-2">
                             {episode.descriptionArabic || episode.description}
