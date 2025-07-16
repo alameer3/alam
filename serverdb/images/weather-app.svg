@@ -1,0 +1,47 @@
+<svg viewBox="0 0 400 600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0ea5e9;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#3b82f6;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="400" height="600" fill="url(#bg)"/>
+  
+  <!-- Phone Frame -->
+  <rect x="50" y="50" width="300" height="500" rx="25" fill="#1f2937" stroke="#4b5563" stroke-width="2"/>
+  <rect x="70" y="80" width="260" height="440" rx="15" fill="#f3f4f6"/>
+  
+  <!-- Status Bar -->
+  <rect x="70" y="80" width="260" height="30" rx="15" fill="#374151"/>
+  <text x="200" y="100" text-anchor="middle" font-family="Arial" font-size="12" fill="#fff">الطقس العربي</text>
+  
+  <!-- Weather Icon -->
+  <circle cx="200" cy="180" r="30" fill="#fbbf24"/>
+  <path d="M 180 160 Q 200 140 220 160" stroke="#fbbf24" stroke-width="3" fill="none"/>
+  <path d="M 175 170 Q 200 150 225 170" stroke="#fbbf24" stroke-width="3" fill="none"/>
+  <path d="M 170 180 Q 200 160 230 180" stroke="#fbbf24" stroke-width="3" fill="none"/>
+  
+  <!-- Temperature -->
+  <text x="200" y="250" text-anchor="middle" font-family="Arial" font-size="48" font-weight="bold" fill="#1f2937">28°</text>
+  <text x="200" y="280" text-anchor="middle" font-family="Arial" font-size="18" fill="#6b7280">الرياض، السعودية</text>
+  
+  <!-- Weather Description -->
+  <text x="200" y="310" text-anchor="middle" font-family="Arial" font-size="16" fill="#374151">مشمس</text>
+  
+  <!-- Weather Details -->
+  <rect x="90" y="340" width="220" height="100" rx="10" fill="#e5e7eb"/>
+  
+  <text x="110" y="365" font-family="Arial" font-size="14" fill="#374151">الرطوبة: 45%</text>
+  <text x="110" y="385" font-family="Arial" font-size="14" fill="#374151">الرياح: 15 كم/س</text>
+  <text x="110" y="405" font-family="Arial" font-size="14" fill="#374151">الرؤية: 10 كم</text>
+  <text x="110" y="425" font-family="Arial" font-size="14" fill="#374151">الضغط: 1013 هيكتوباسكال</text>
+  
+  <!-- Weekly Forecast -->
+  <rect x="90" y="460" width="220" height="40" rx="10" fill="#d1d5db"/>
+  <text x="200" y="485" text-anchor="middle" font-family="Arial" font-size="16" font-weight="bold" fill="#374151">توقعات الأسبوع</text>
+  
+  <!-- Arabic Title -->
+  <text x="200" y="40" text-anchor="middle" font-family="Arial" font-size="20" font-weight="bold" fill="#fff">تطبيق الطقس العربي</text>
+</svg>

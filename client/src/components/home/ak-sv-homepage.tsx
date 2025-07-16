@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useLocation } from "wouter";
-import { Search, Film, Tv, MonitorPlay, Sparkles } from "lucide-react";
+import { Search, Film, Tv, MonitorPlay, Sparkles, BookOpen, Gamepad2, Smartphone, Drama, Zap, Trophy } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
@@ -39,6 +39,42 @@ export default function AkSvHomepage() {
       icon: Sparkles,
       path: "/mix",
       color: "from-green-500 to-green-600"
+    },
+    {
+      title: "البرامج والكورسات",
+      icon: BookOpen,
+      path: "/programs",
+      color: "from-cyan-500 to-cyan-600"
+    },
+    {
+      title: "الألعاب",
+      icon: Gamepad2,
+      path: "/games",
+      color: "from-indigo-500 to-indigo-600"
+    },
+    {
+      title: "التطبيقات",
+      icon: Smartphone,
+      path: "/applications",
+      color: "from-pink-500 to-pink-600"
+    },
+    {
+      title: "المسرحيات",
+      icon: Drama,
+      path: "/theater",
+      color: "from-amber-500 to-amber-600"
+    },
+    {
+      title: "المصارعة",
+      icon: Zap,
+      path: "/wrestling",
+      color: "from-orange-500 to-orange-600"
+    },
+    {
+      title: "الرياضة",
+      icon: Trophy,
+      path: "/sports",
+      color: "from-teal-500 to-teal-600"
     }
   ];
 
@@ -99,7 +135,7 @@ export default function AkSvHomepage() {
         </div>
 
         {/* التصنيفات الأساسية */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8 mb-16">
+        <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-5 gap-6 mb-16">
           {categories.map((category) => (
             <button
               key={category.path}

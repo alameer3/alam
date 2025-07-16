@@ -1,0 +1,65 @@
+<svg viewBox="0 0 400 600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#dc2626;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#b91c1c;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="400" height="600" fill="url(#bg)"/>
+  
+  <!-- Theater Stage -->
+  <rect x="30" y="300" width="340" height="200" rx="10" fill="#8b5cf6" stroke="#7c3aed" stroke-width="2"/>
+  
+  <!-- Stage Curtains -->
+  <rect x="20" y="200" width="60" height="300" fill="#dc2626"/>
+  <rect x="320" y="200" width="60" height="300" fill="#dc2626"/>
+  
+  <!-- Theater Masks -->
+  <circle cx="150" cy="150" r="40" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  <circle cx="250" cy="150" r="40" fill="#fef3c7" stroke="#d97706" stroke-width="2"/>
+  
+  <!-- Happy Mask -->
+  <circle cx="140" cy="140" r="3" fill="#000"/>
+  <circle cx="160" cy="140" r="3" fill="#000"/>
+  <path d="M 130 165 Q 150 180 170 165" stroke="#000" stroke-width="2" fill="none"/>
+  
+  <!-- Sad Mask -->
+  <circle cx="240" cy="140" r="3" fill="#000"/>
+  <circle cx="260" cy="140" r="3" fill="#000"/>
+  <path d="M 230 175 Q 250 160 270 175" stroke="#000" stroke-width="2" fill="none"/>
+  
+  <!-- Stage Lights -->
+  <circle cx="100" cy="50" r="15" fill="#fbbf24"/>
+  <circle cx="200" cy="50" r="15" fill="#fbbf24"/>
+  <circle cx="300" cy="50" r="15" fill="#fbbf24"/>
+  
+  <!-- Light Beams -->
+  <polygon points="100,65 80,300 120,300" fill="#fbbf24" opacity="0.3"/>
+  <polygon points="200,65 180,300 220,300" fill="#fbbf24" opacity="0.3"/>
+  <polygon points="300,65 280,300 320,300" fill="#fbbf24" opacity="0.3"/>
+  
+  <!-- Actor on Stage -->
+  <circle cx="200" cy="380" r="20" fill="#fbbf24"/>
+  <rect x="190" y="400" width="20" height="40" fill="#3b82f6"/>
+  <rect x="185" y="420" width="30" height="20" fill="#ef4444"/>
+  <rect x="185" y="440" width="10" height="30" fill="#1f2937"/>
+  <rect x="205" y="440" width="10" height="30" fill="#1f2937"/>
+  
+  <!-- Audience Seats -->
+  <rect x="50" y="520" width="300" height="60" rx="10" fill="#374151"/>
+  <rect x="60" y="530" width="20" height="40" rx="5" fill="#6b7280"/>
+  <rect x="90" y="530" width="20" height="40" rx="5" fill="#6b7280"/>
+  <rect x="120" y="530" width="20" height="40" rx="5" fill="#6b7280"/>
+  <rect x="150" y="530" width="20" height="40" rx="5" fill="#6b7280"/>
+  <rect x="180" y="530" width="20" height="40" rx="5" fill="#6b7280"/>
+  <rect x="210" y="530" width="20" height="40" rx="5" fill="#6b7280"/>
+  <rect x="240" y="530" width="20" height="40" rx="5" fill="#6b7280"/>
+  <rect x="270" y="530" width="20" height="40" rx="5" fill="#6b7280"/>
+  <rect x="300" y="530" width="20" height="40" rx="5" fill="#6b7280"/>
+  <rect x="330" y="530" width="20" height="40" rx="5" fill="#6b7280"/>
+  
+  <!-- Arabic Title -->
+  <text x="200" y="30" text-anchor="middle" font-family="Arial" font-size="22" font-weight="bold" fill="#fff">مسرحية كوميدية</text>
+</svg>

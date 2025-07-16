@@ -31,6 +31,12 @@ import Notifications from "@/pages/notifications";
 import Dashboard from "@/pages/dashboard";
 import UnifiedAdminPanel from "@/pages/unified-admin-panel";
 import Trailers from "@/pages/trailers";
+import Programs from "@/pages/programs";
+import Games from "@/pages/games";
+import Applications from "@/pages/applications";
+import Theater from "@/pages/theater";
+import Wrestling from "@/pages/wrestling";
+import Sports from "@/pages/sports";
 
 
 function Router() {
@@ -51,6 +57,14 @@ function Router() {
       <Route path="/series/:id/:title?" component={SeriesDetail} />
       <Route path="/shows/:id/:title?" component={ShowDetail} />
       <Route path="/mix/:id/:title?" component={MixDetail} />
+      
+      {/* الأقسام الجديدة */}
+      <Route path="/programs" component={Programs} />
+      <Route path="/games" component={Games} />
+      <Route path="/applications" component={Applications} />
+      <Route path="/theater" component={Theater} />
+      <Route path="/wrestling" component={Wrestling} />
+      <Route path="/sports" component={Sports} />
 
       {/* المسارات المحمية - تحتاج authentication */}
       <Route path="/admin/secret" component={SecretAdminAccess} />
