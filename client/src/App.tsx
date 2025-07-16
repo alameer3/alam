@@ -30,6 +30,7 @@ import Watchlists from "@/pages/watchlists";
 import Notifications from "@/pages/notifications";
 import Dashboard from "@/pages/dashboard";
 import UnifiedAdminPanel from "@/pages/unified-admin-panel";
+import Admin from "@/pages/admin";
 import Trailers from "@/pages/trailers";
 import Programs from "@/pages/programs";
 import Games from "@/pages/games";
@@ -75,6 +76,7 @@ function Router() {
       {/* المسارات المحمية - تحتاج authentication */}
       <Route path="/admin/secret" component={SecretAdminAccess} />
       <Route path="/admin/panel" component={UnifiedAdminPanel} />
+      <Route path="/admin" component={Admin} />
       <Route path="/login" component={Login} />
       <Route path="/register" component={Register} />
       <Route path="/profile" component={Profile} />

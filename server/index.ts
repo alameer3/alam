@@ -2,8 +2,9 @@ import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import { securityHeaders, validateInput, checkSecurityStatus } from "./middleware/security";
-// Database optimizations removed
 import { errorHandler, notFoundHandler } from "./middleware/error-handler";
+import { dbManager } from "./database/database-manager.js";
+import apiRoutes from "./routes/api-routes.js";
 import { execSync } from "child_process";
 import fs from "fs";
 
@@ -92,7 +93,17 @@ app.use((req, res, next) => {
     }
   }
   
-  // Database optimizations removed
+  // Initialize database
+  try {
+    await dbManager.initialize();
+    console.log("✅ تم تهيئة قاعدة البيانات الجديدة بنجاح");
+  } catch (error) {
+    console.error("❌ خطأ في تهيئة قاعدة البيانات:", error);
+    // Continue with fallback system
+  }
+
+  // Add new API routes
+  app.use('/api', apiRoutes);
   
   const server = await registerRoutes(app);
 
