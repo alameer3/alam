@@ -8,7 +8,7 @@ import { ErrorBoundary } from "@/components/ui/error-boundary";
 import NotFound from "@/pages/not-found";
 import Home from "@/pages/home";
 import AkSvHomepage from "@/components/home/ak-sv-homepage";
-import Ones from "@/pages/ones";
+import OnesPage from "@/pages/ones";
 import AkSvMovies from "@/pages/ak-sv-movies";
 import Series from "@/pages/series";
 import Television from "@/pages/television";
@@ -45,7 +45,7 @@ function Router() {
   return (
     <Switch>
       <Route path="/" component={AkSvHomepage} />
-      <Route path="/ones" component={Ones} />
+      <Route path="/ones" component={OnesPage} />
       <Route path="/movies" component={AkSvMovies} />
       <Route path="/series" component={Series} />
       <Route path="/shows" component={Shows} />

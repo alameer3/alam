@@ -40,7 +40,8 @@
 - `serverdb/database.json` - قاعدة البيانات المحلية
 - `client/src/App.tsx` - التطبيق الرئيسي
 - `client/src/components/layout/ak-sv-header.tsx` - الهيدر
-- `client/src/components/home/ak-sv-homepage.tsx` - الصفحة الرئيسية
+- `client/src/components/home/ak-sv-homepage.tsx` - الصفحة الرئيسية `/`
+- `client/src/pages/ones.tsx` - الصفحة الرئيسية للموقع الأصلي `/ones`
 
 ## تفضيلات المستخدم
 - **اللغة**: العربية حصرياً
@@ -81,6 +82,7 @@
 - ✅ تحسين صفحة الأفلام بالفلاتر المتقدمة
 - ✅ إضافة زر المشاهدة في صفحة تفاصيل الفيلم
 - ✅ إضافة API endpoint للمحتوى الجديد (`/api/content/recent`)
+- ✅ إنشاء صفحة `/ones` كما في الموقع الأصلي (الصفحة الرئيسية الحقيقية)
 
 ## ملاحظات مهمة
 ⚠️ **يجب عدم تكرار هذا الملف** - هذا الملف نظيف وحديث اعتباراً من 16 يوليو 2025
