@@ -72,7 +72,7 @@ export function AdvancedContentGrid({
     );
   };
 
-  const sortedContent = [...content].sort((a, b) => {
+  const sortedContent = [...(content || [])].sort((a, b) => {
     switch (sortBy) {
       case 'rating':
         return parseFloat(b.rating) - parseFloat(a.rating);

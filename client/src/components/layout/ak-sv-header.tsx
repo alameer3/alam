@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useLocation } from "wouter";
-import { Search, User, HelpCircle, Menu } from "lucide-react";
+import { Search, User, HelpCircle, Menu, Film, Tv, MonitorPlay, Sparkles, BookOpen, Gamepad2, Smartphone, Drama, Zap, Trophy } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
@@ -15,8 +15,62 @@ export default function AkSvHeader() {
     }
   };
 
+  const categories = [
+    {
+      title: "أفلام",
+      icon: Film,
+      path: "/movies"
+    },
+    {
+      title: "مسلسلات",
+      icon: MonitorPlay,
+      path: "/series"
+    },
+    {
+      title: "تلفزيون",
+      icon: Tv,
+      path: "/television"
+    },
+    {
+      title: "منوعات",
+      icon: Sparkles,
+      path: "/mix"
+    },
+    {
+      title: "البرامج",
+      icon: BookOpen,
+      path: "/programs"
+    },
+    {
+      title: "الألعاب",
+      icon: Gamepad2,
+      path: "/games"
+    },
+    {
+      title: "التطبيقات",
+      icon: Smartphone,
+      path: "/applications"
+    },
+    {
+      title: "المسرحيات",
+      icon: Drama,
+      path: "/theater"
+    },
+    {
+      title: "المصارعة",
+      icon: Zap,
+      path: "/wrestling"
+    },
+    {
+      title: "الرياضة",
+      icon: Trophy,
+      path: "/sports"
+    }
+  ];
+
   return (
     <header className="bg-black/95 backdrop-blur-sm border-b border-white/10 sticky top-0 z-50">
+      {/* الهيدر العلوي */}
       <div className="container mx-auto px-4 py-3">
         <div className="flex items-center justify-between">
           
@@ -44,7 +98,7 @@ export default function AkSvHeader() {
             </form>
           </div>
 
-          {/* الجانب الأيسر - الشعار والقائمة */}
+          {/* الجانب الأيسر - الشعار */}
           <div className="flex items-center gap-4">
             <button
               onClick={() => setLocation("/")}
@@ -52,10 +106,24 @@ export default function AkSvHeader() {
             >
               △ أكواد
             </button>
-            <div className="flex items-center gap-2 text-white/80 text-sm">
-              <span>الأقسام</span>
-              <Menu className="w-4 h-4" />
-            </div>
+          </div>
+        </div>
+      </div>
+      
+      {/* شريط التنقل للأقسام */}
+      <div className="bg-black/80 backdrop-blur-sm border-t border-white/10">
+        <div className="container mx-auto px-4 py-2">
+          <div className="flex items-center justify-center gap-1 overflow-x-auto">
+            {categories.map((category) => (
+              <button
+                key={category.path}
+                onClick={() => setLocation(category.path)}
+                className="flex items-center gap-2 px-4 py-2 text-white/80 hover:text-white hover:bg-white/10 rounded-lg transition-all duration-200 whitespace-nowrap text-sm"
+              >
+                <category.icon className="w-4 h-4" />
+                <span>{category.title}</span>
+              </button>
+            ))}
           </div>
         </div>
       </div>
