@@ -35,7 +35,7 @@ export default function Movies() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const totalPages = Math.ceil((data?.total || 0) / 24);
+  const totalPages = Math.ceil((data?.data?.total || 0) / 24);
 
   return (
     <div className="container mx-auto px-4 py-6">
@@ -53,7 +53,7 @@ export default function Movies() {
 
       {/* Content Grid */}
       <AdvancedContentGrid
-        content={data?.content || []}
+        content={data?.data?.content || []}
         loading={isLoading}
         error={error?.message}
       />

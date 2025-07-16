@@ -138,7 +138,7 @@ export default function Sports() {
           <LoadingSpinner />
         ) : (
           <AdvancedContentGrid
-            content={contentData?.content || []}
+            content={contentData?.data?.content || []}
             loading={isLoading}
           />
         )}

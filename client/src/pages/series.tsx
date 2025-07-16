@@ -53,7 +53,7 @@ export default function Series() {
     setCurrentPage(1);
   };
 
-  const totalPages = Math.ceil((data?.total || 0) / 12);
+  const totalPages = Math.ceil((data?.data?.total || 0) / 12);
 
   // ak.sv exact filter options
   const categories = ['عربي', 'اجنبي', 'هندي', 'تركي', 'اسيوي'];
@@ -246,7 +246,7 @@ export default function Series() {
                 <div key={i} className="bg-gray-800 rounded-lg aspect-[2/3] animate-pulse" />
               ))
             ) : (
-              data?.content?.map((series: any) => (
+              data?.data?.content?.map((series: any) => (
                 <div
                   key={series.id}
                   className="group relative bg-gray-900 rounded-lg overflow-hidden hover:scale-105 transition-all duration-300 cursor-pointer"

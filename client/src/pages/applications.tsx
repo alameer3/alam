@@ -138,7 +138,7 @@ export default function Applications() {
           <LoadingSpinner />
         ) : (
           <AdvancedContentGrid
-            content={contentData?.content || []}
+            content={contentData?.data?.content || []}
             loading={isLoading}
           />
         )}
