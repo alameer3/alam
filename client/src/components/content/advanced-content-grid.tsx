@@ -28,18 +28,17 @@ import { cn } from "@/lib/utils";
 interface Content {
   id: number;
   title: string;
-  titleArabic: string;
+  title_ar: string;
   description?: string;
+  description_ar?: string;
   type: string;
-  year: number;
+  release_date: string;
   language: string;
   quality: string;
-  resolution: string;
-  rating: string;
+  rating: number;
   duration?: number;
-  episodes?: number;
-  posterUrl?: string;
-  createdAt: string;
+  poster?: string;
+  created_at: string;
 }
 
 interface AdvancedContentGridProps {
@@ -75,13 +74,13 @@ export function AdvancedContentGrid({
   const sortedContent = [...(content || [])].sort((a, b) => {
     switch (sortBy) {
       case 'rating':
-        return parseFloat(b.rating) - parseFloat(a.rating);
+        return b.rating - a.rating;
       case 'year':
-        return b.year - a.year;
+        return new Date(b.release_date).getFullYear() - new Date(a.release_date).getFullYear();
       case 'title':
         return a.title.localeCompare(b.title);
       default:
-        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+        return new Date(b.created_at).getTime() - new Date(a.created_at).getTime();
     }
   });
 
@@ -110,9 +109,9 @@ export function AdvancedContentGrid({
             <div className="flex gap-4">
               {/* الصورة */}
               <div className="relative flex-shrink-0 w-24 h-36 rounded-lg overflow-hidden bg-gradient-to-br from-primary/20 to-primary/5">
-                {item.posterUrl ? (
+                {item.poster ? (
                   <img 
-                    src={item.posterUrl} 
+                    src={item.poster} 
                     alt={item.title}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
                   />
@@ -131,7 +130,7 @@ export function AdvancedContentGrid({
               <div className="flex-1 min-w-0">
                 <div className="flex items-start justify-between mb-2">
                   <div>
-                    <h3 className="font-bold text-lg leading-tight line-clamp-1">{item.titleArabic}</h3>
+                    <h3 className="font-bold text-lg leading-tight line-clamp-1">{item.title_ar}</h3>
                     <p className="text-sm text-muted-foreground line-clamp-1">{item.title}</p>
                   </div>
                   <div className="flex items-center gap-1 text-yellow-500">
@@ -141,13 +140,13 @@ export function AdvancedContentGrid({
                 </div>
 
                 <p className="text-sm text-muted-foreground line-clamp-2 mb-3">
-                  {item.description || "وصف غير متوفر"}
+                  {item.description_ar || item.description || "وصف غير متوفر"}
                 </p>
 
                 <div className="flex flex-wrap gap-2 mb-3">
                   <Badge variant="outline" className="text-xs">
                     <Calendar className="h-3 w-3 ml-1" />
-                    {item.year}
+                    {new Date(item.release_date).getFullYear()}
                   </Badge>
                   <Badge variant="outline" className="text-xs">
                     {item.language}
@@ -196,9 +195,9 @@ export function AdvancedContentGrid({
           <CardContent className="p-3">
             <div className="flex items-center gap-3">
               <div className="relative w-16 h-20 rounded overflow-hidden bg-gradient-to-br from-primary/20 to-primary/5 flex-shrink-0">
-                {item.posterUrl ? (
+                {item.poster ? (
                   <img 
-                    src={item.posterUrl} 
+                    src={item.poster} 
                     alt={item.title}
                     className="w-full h-full object-cover"
                   />
@@ -210,10 +209,10 @@ export function AdvancedContentGrid({
               </div>
               
               <div className="flex-1 min-w-0">
-                <h4 className="font-medium text-sm line-clamp-1">{item.titleArabic}</h4>
+                <h4 className="font-medium text-sm line-clamp-1">{item.title_ar}</h4>
                 <p className="text-xs text-muted-foreground line-clamp-1">{item.title}</p>
                 <div className="flex items-center gap-2 mt-1">
-                  <Badge variant="outline" className="text-xs px-1 py-0.5">{item.year}</Badge>
+                  <Badge variant="outline" className="text-xs px-1 py-0.5">{new Date(item.release_date).getFullYear()}</Badge>
                   <div className="flex items-center gap-1 text-yellow-500">
                     <Star className="h-3 w-3 fill-current" />
                     <span className="text-xs">{item.rating}</span>
@@ -244,9 +243,9 @@ export function AdvancedContentGrid({
     return (
       <Card className="group hover:shadow-xl transition-all duration-300 hover:scale-105 overflow-hidden">
         <div className="relative aspect-[2/3] overflow-hidden bg-gradient-to-br from-primary/20 to-primary/5">
-          {item.posterUrl ? (
+          {item.poster ? (
             <img 
-              src={item.posterUrl} 
+              src={item.poster} 
               alt={item.title}
               className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
             />
@@ -296,14 +295,14 @@ export function AdvancedContentGrid({
         </div>
 
         <CardContent className="p-3">
-          <h3 className="font-bold text-sm line-clamp-1 mb-1">{item.titleArabic}</h3>
+          <h3 className="font-bold text-sm line-clamp-1 mb-1">{item.title_ar}</h3>
           <p className="text-xs text-muted-foreground line-clamp-1 mb-2">{item.title}</p>
           
           <div className="flex flex-wrap gap-1 mb-2">
-            <Badge variant="outline" className="text-xs px-1 py-0.5">{item.year}</Badge>
+            <Badge variant="outline" className="text-xs px-1 py-0.5">{new Date(item.release_date).getFullYear()}</Badge>
             <Badge variant="outline" className="text-xs px-1 py-0.5">{item.language}</Badge>
-            {item.episodes && item.episodes > 0 && (
-              <Badge variant="outline" className="text-xs px-1 py-0.5">{item.episodes} ح</Badge>
+            {item.duration && (
+              <Badge variant="outline" className="text-xs px-1 py-0.5">{item.duration}د</Badge>
             )}
           </div>
         </CardContent>
