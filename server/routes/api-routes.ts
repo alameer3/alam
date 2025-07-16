@@ -33,17 +33,7 @@ router.get('/content', async (req, res) => {
   }
 });
 
-router.get('/content/:id', async (req, res) => {
-  try {
-    const id = parseInt(req.params.id);
-    const result = await contentService.getContentById(id);
-    res.json(result);
-  } catch (error) {
-    res.status(500).json({ success: false, error: 'خطأ في الخادم' });
-  }
-});
-
-// مسارات المحتوى حسب النوع
+// مسارات المحتوى حسب النوع - يجب أن تكون قبل :id لتجنب التضارب
 router.get('/content/movies', async (req, res) => {
   try {
     const filters: SearchFilters = {
@@ -160,7 +150,7 @@ router.get('/content/sports', async (req, res) => {
   }
 });
 
-// مسارات المحتوى المميز
+// مسارات المحتوى المميز والأحدث - يجب أن تكون قبل :id
 router.get('/content/featured', async (req, res) => {
   try {
     const result = await contentService.getFeaturedContent();
@@ -190,6 +180,17 @@ router.get('/content/recent', async (req, res) => {
     };
     
     const result = await contentService.getRecentContent(filters);
+    res.json(result);
+  } catch (error) {
+    res.status(500).json({ success: false, error: 'خطأ في الخادم' });
+  }
+});
+
+// مسار المحتوى حسب الـ ID - يجب أن يكون آخر مسار
+router.get('/content/:id', async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    const result = await contentService.getContentById(id);
     res.json(result);
   } catch (error) {
     res.status(500).json({ success: false, error: 'خطأ في الخادم' });

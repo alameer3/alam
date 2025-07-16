@@ -4,8 +4,12 @@ import type { Content, SearchFilters, ApiResponse } from '../../shared/types.js'
 export class ContentService {
   async getContent(filters: SearchFilters = {}): Promise<ApiResponse<{ content: Content[], total: number }>> {
     try {
+      console.log('🔍 ContentService.getContent called with filters:', filters);
       const result = await dbManager.getContent(filters);
       
+      console.log('📊 ContentService results:', result.content.length, 'items,', result.total, 'total');
+      
+      // لا نُرجع خطأ إذا لم يكن هناك محتوى - نُرجع مصفوفة فارغة
       return {
         success: true,
         data: result,

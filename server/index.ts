@@ -7,6 +7,7 @@ import { dbManager } from "./database/database-manager.js";
 import apiRoutes from "./routes/api-routes.js";
 import { execSync } from "child_process";
 import fs from "fs";
+import { createServer } from "http";
 
 const app = express();
 
@@ -107,7 +108,11 @@ app.use((req, res, next) => {
   // Add new API routes
   app.use('/api', apiRoutes);
   
-  const server = await registerRoutes(app);
+  // Register all routes - تم تعطيل routes.ts القديم لتجنب التضارب
+  // const server = await registerRoutes(app);
+  
+  // Create server directly
+  const server = createServer(app);
 
   // Add error handler only (404 handler should be after vite setup)
   app.use(errorHandler);

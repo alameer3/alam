@@ -719,44 +719,57 @@ export class DatabaseManager {
   }
 
   async getContent(filters: SearchFilters = {}): Promise<{ content: Content[], total: number }> {
-    let query = `SELECT c.*, 
-                        GROUP_CONCAT(DISTINCT cat.name_ar) as categories,
-                        GROUP_CONCAT(DISTINCT g.name_ar) as genres
-                 FROM content c
-                 LEFT JOIN content_categories cc ON c.id = cc.content_id
-                 LEFT JOIN categories cat ON cc.category_id = cat.id
-                 LEFT JOIN content_genres cg ON c.id = cg.content_id
-                 LEFT JOIN genres g ON cg.genre_id = g.id
-                 WHERE c.is_active = 1`;
-    
+    let query = `SELECT * FROM content WHERE is_active = 1`;
     const params: any[] = [];
     
     if (filters.type) {
-      query += ` AND c.type = ?`;
+      query += ` AND type = ?`;
       params.push(filters.type);
     }
     
     if (filters.query) {
-      query += ` AND (c.title LIKE ? OR c.title_ar LIKE ?)`;
+      query += ` AND (title LIKE ? OR title_ar LIKE ?)`;
       params.push(`%${filters.query}%`, `%${filters.query}%`);
     }
     
-    query += ` GROUP BY c.id ORDER BY c.created_at DESC`;
+    // الترتيب
+    const sortBy = filters.sortBy || 'created_at';
+    const sortOrder = filters.sortOrder || 'desc';
+    query += ` ORDER BY ${sortBy} ${sortOrder}`;
     
-    if (filters.limit) {
-      query += ` LIMIT ?`;
-      params.push(filters.limit);
-      
-      if (filters.page && filters.page > 1) {
-        query += ` OFFSET ?`;
-        params.push((filters.page - 1) * filters.limit);
-      }
+    // الحصول على العدد الإجمالي
+    let countQuery = `SELECT COUNT(*) as count FROM content WHERE is_active = 1`;
+    const countParams: any[] = [];
+    
+    if (filters.type) {
+      countQuery += ` AND type = ?`;
+      countParams.push(filters.type);
     }
     
-    const content = await this.db!.all(query, params);
-    const total = await this.db!.get(`SELECT COUNT(*) as count FROM content WHERE is_active = 1`);
+    if (filters.query) {
+      countQuery += ` AND (title LIKE ? OR title_ar LIKE ?)`;
+      countParams.push(`%${filters.query}%`, `%${filters.query}%`);
+    }
     
-    return { content, total: total.count };
+    const totalResult = await this.db!.get(countQuery, countParams);
+    const total = totalResult?.count || 0;
+    
+    // التصفح
+    const page = filters.page || 1;
+    const limit = filters.limit || 24;
+    const offset = (page - 1) * limit;
+    
+    query += ` LIMIT ? OFFSET ?`;
+    params.push(limit, offset);
+    
+    console.log('🔍 Database query:', query);
+    console.log('🔍 Parameters:', params);
+    
+    const content = await this.db!.all(query, params);
+    
+    console.log('📊 Query results:', content.length, 'items found');
+    
+    return { content: content || [], total };
   }
 
   async getContentById(id: number): Promise<Content | null> {
