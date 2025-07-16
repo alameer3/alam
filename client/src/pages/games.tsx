@@ -34,7 +34,7 @@ export default function Games() {
       if (filters.year) params.append('year', filters.year);
       if (filters.quality) params.append('quality', filters.quality);
       
-      const response = await fetch(`/api/content?type=games&${params}`);
+      const response = await fetch(`/api/content/games?${params}`);
       if (!response.ok) throw new Error('Failed to fetch content');
       return response.json();
     }

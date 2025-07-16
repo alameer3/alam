@@ -34,7 +34,7 @@ export default function Wrestling() {
       if (filters.year) params.append('year', filters.year);
       if (filters.quality) params.append('quality', filters.quality);
       
-      const response = await fetch(`/api/content?type=wrestling&${params}`);
+      const response = await fetch(`/api/content/wrestling?${params}`);
       if (!response.ok) throw new Error('Failed to fetch content');
       return response.json();
     }

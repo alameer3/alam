@@ -23,10 +23,9 @@ export default function Series() {
       const params = new URLSearchParams({
         page: currentPage.toString(),
         limit: '12',
-        type: 'series',
         ...Object.fromEntries(Object.entries(filters).filter(([_, v]) => v))
       });
-      const response = await fetch(`/api/content?${params}`);
+      const response = await fetch(`/api/content/series?${params}`);
       if (!response.ok) throw new Error('Failed to fetch series');
       return response.json();
     }
