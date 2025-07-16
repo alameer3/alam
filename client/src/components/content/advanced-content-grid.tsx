@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useLocation } from "wouter";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -57,6 +58,7 @@ export function AdvancedContentGrid({
   const [selectedView, setSelectedView] = useState(viewMode);
   const [sortBy, setSortBy] = useState('date');
   const [favorites, setFavorites] = useState<number[]>([]);
+  const [, setLocation] = useLocation();
 
   const handleViewChange = (mode: 'grid' | 'list' | 'compact') => {
     setSelectedView(mode);
@@ -96,6 +98,30 @@ export function AdvancedContentGrid({
         return 'bg-green-500';
       default:
         return 'bg-gray-500';
+    }
+  };
+
+  const getDetailUrl = (item: Content) => {
+    const title = encodeURIComponent(item.title_ar.replace(/\s+/g, '-'));
+    switch (item.type) {
+      case 'movie':
+        return `/movie/${item.id}/${title}`;
+      case 'series':
+        return `/series/${item.id}/${title}`;
+      case 'program':
+        return `/program/${item.id}/${title}`;
+      case 'game':
+        return `/game/${item.id}/${title}`;
+      case 'application':
+        return `/application/${item.id}/${title}`;
+      case 'theater':
+        return `/theater/${item.id}/${title}`;
+      case 'wrestling':
+        return `/wrestling/${item.id}/${title}`;
+      case 'sports':
+        return `/sports/${item.id}/${title}`;
+      default:
+        return `/content/${item.id}`;
     }
   };
 
@@ -166,7 +192,11 @@ export function AdvancedContentGrid({
 
                 {/* الأزرار */}
                 <div className="flex items-center gap-2">
-                  <Button size="sm" className="flex-1">
+                  <Button 
+                    size="sm" 
+                    className="flex-1"
+                    onClick={() => setLocation(getDetailUrl(item))}
+                  >
                     <Play className="h-4 w-4 ml-2" />
                     مشاهدة
                   </Button>
@@ -221,7 +251,12 @@ export function AdvancedContentGrid({
               </div>
 
               <div className="flex flex-col gap-1">
-                <Button size="sm" variant="ghost" className="h-6 w-6 p-0">
+                <Button 
+                  size="sm" 
+                  variant="ghost" 
+                  className="h-6 w-6 p-0"
+                  onClick={() => setLocation(getDetailUrl(item))}
+                >
                   <Play className="h-3 w-3" />
                 </Button>
                 <Button 
@@ -271,7 +306,11 @@ export function AdvancedContentGrid({
 
           {/* أزرار التحكم */}
           <div className="absolute bottom-2 left-2 right-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-            <Button size="sm" className="flex-1 h-8 text-xs">
+            <Button 
+              size="sm" 
+              className="flex-1 h-8 text-xs"
+              onClick={() => setLocation(getDetailUrl(item))}
+            >
               <Play className="h-3 w-3 ml-1" />
               مشاهدة
             </Button>
@@ -295,8 +334,13 @@ export function AdvancedContentGrid({
         </div>
 
         <CardContent className="p-3">
-          <h3 className="font-bold text-sm line-clamp-1 mb-1">{item.title_ar}</h3>
-          <p className="text-xs text-muted-foreground line-clamp-1 mb-2">{item.title}</p>
+          <div 
+            className="cursor-pointer"
+            onClick={() => setLocation(getDetailUrl(item))}
+          >
+            <h3 className="font-bold text-sm line-clamp-1 mb-1">{item.title_ar}</h3>
+            <p className="text-xs text-muted-foreground line-clamp-1 mb-2">{item.title}</p>
+          </div>
           
           <div className="flex flex-wrap gap-1 mb-2">
             <Badge variant="outline" className="text-xs px-1 py-0.5">{new Date(item.release_date).getFullYear()}</Badge>

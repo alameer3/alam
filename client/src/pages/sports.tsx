@@ -98,7 +98,7 @@ export default function Sports() {
                   className="w-full p-2 bg-slate-700 border border-slate-600 rounded text-white"
                 >
                   <option value="">كل الفئات</option>
-                  {categories?.map((cat: any) => (
+                  {categories?.data?.map((cat: any) => (
                     <option key={cat.id} value={cat.id}>{cat.name_arabic}</option>
                   ))}
                 </select>

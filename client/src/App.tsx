@@ -52,6 +52,12 @@ function Router() {
       <Route path="/content/:id" component={ContentDetail} />
       <Route path="/movie/:id/:title?" component={AkSvMovieDetail} />
       <Route path="/series/:id/:title?" component={SeriesDetail} />
+      <Route path="/program/:id/:title?" component={ContentDetail} />
+      <Route path="/game/:id/:title?" component={ContentDetail} />
+      <Route path="/application/:id/:title?" component={ContentDetail} />
+      <Route path="/theater/:id/:title?" component={ContentDetail} />
+      <Route path="/wrestling/:id/:title?" component={ContentDetail} />
+      <Route path="/sports/:id/:title?" component={ContentDetail} />
       
       {/* صفحات المشاهدة والمحتوى الجديد */}
       <Route path="/watch/:id/:episodeId?/:title?" component={Watch} />
