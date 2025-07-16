@@ -52,8 +52,9 @@ function Router() {
       <Route path="/shows/:id/:title?" component={ShowDetail} />
       <Route path="/mix/:id/:title?" component={MixDetail} />
 
-      <Route path="/secret-admin" component={SecretAdminAccess} />
-      <Route path="/unified-admin" component={UnifiedAdminPanel} />
+      {/* المسارات المحمية - تحتاج authentication */}
+      <Route path="/admin/secret" component={SecretAdminAccess} />
+      <Route path="/admin/panel" component={UnifiedAdminPanel} />
       <Route path="/login" component={Login} />
       <Route path="/register" component={Register} />
       <Route path="/profile" component={Profile} />

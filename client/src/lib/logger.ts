@@ -59,8 +59,33 @@ class Logger {
     const entry = this.createLogEntry('error', message, context);
     this.addToHistory(entry);
     
-    // دائماً نسجل الأخطاء حتى في الإنتاج
-    console.error(`[ERROR] ${message}`, context || '');
+    // فقط في بيئة التطوير
+    if (this.isDevelopment) {
+      console.error(`[ERROR] ${message}`, context || '');
+    }
+    
+    // في الإنتاج، أرسل للخادم بدلاً من console
+    if (!this.isDevelopment && typeof window !== 'undefined') {
+      this.sendErrorToServer(entry);
+    }
+  }
+
+  private sendErrorToServer(entry: LogEntry): void {
+    // أرسل الخطأ للخادم بدون كشف تفاصيل حساسة
+    fetch('/api/logs/error', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        message: entry.message,
+        timestamp: entry.timestamp,
+        // لا نرسل السياق الكامل في الإنتاج
+        level: entry.level
+      })
+    }).catch(() => {
+      // فشل في الإرسال - لا نفعل شيء لتجنب loops
+    });
   }
 
   debug(message: string, context?: Record<string, any>): void {

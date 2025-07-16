@@ -28,6 +28,7 @@ export class SimpleFileStorage {
       
       this.initialized = true;
     } catch (error) {
+      // Log error only in development environment
       if (process.env.NODE_ENV === 'development') {
         console.error('خطأ في تهيئة FileStorage:', error);
       }
@@ -333,6 +334,7 @@ export class SimpleFileStorage {
     try {
       await fs.writeFile(this.dataPath, JSON.stringify(this.data, null, 2), 'utf-8');
     } catch (error) {
+      // Log save errors only in development
       if (process.env.NODE_ENV === 'development') {
         console.error('خطأ في حفظ البيانات:', error);
       }

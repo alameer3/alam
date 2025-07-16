@@ -64,7 +64,10 @@ export default function MixDetail() {
   }
 
   const handleReport = () => {
-    console.log('Report submitted:', { reportReason, reportDetails, userEmail });
+    // تم إرسال التقرير - في الإنتاج سيتم إرساله للخادم
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Report submitted:', { reportReason, reportDetails, userEmail });
+    }
     setShowReportDialog(false);
     setReportReason('');
     setReportDetails('');

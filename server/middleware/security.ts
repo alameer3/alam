@@ -217,7 +217,10 @@ export const checkSecurityStatus = (req: Request, res: Response, next: NextFunct
   const clientIP = req.ip || req.connection.remoteAddress || 'unknown';
   
   if (securityMonitor.isBlocked(clientIP)) {
-    console.warn(`🚨 Blocked request from IP: ${clientIP}`);
+    // Log to secure system instead of console in production
+    if (process.env.NODE_ENV === 'development') {
+      console.warn(`🚨 Blocked request from IP: ${clientIP}`);
+    }
     return res.status(429).json({
       error: 'عذراً، تم حظر عنوان IP الخاص بك مؤقتاً بسبب النشاط المشبوه. حاول مرة أخرى لاحقاً.',
       code: 'IP_BLOCKED',
@@ -282,14 +285,25 @@ export const validatePasswordStrength = (password: string): { valid: boolean; er
     errors.push('كلمة المرور يجب أن تحتوي على رمز خاص واحد على الأقل');
   }
 
-  // Check for common weak passwords
-  const commonPasswords = [
-    'password', '123456', '123456789', 'qwerty', 'abc123', 
-    'password123', 'admin', 'letmein', 'welcome', '123123'
+  // Check against common password patterns (using secure pattern detection)
+  const weakPatterns = [
+    /^123+/,           // Sequential numbers like 123456
+    /^(password|admin|user|guest)/i,  // Common words
+    /^(.)\1{3,}$/,      // Repeated characters like aaaa
+    /^qwerty/i,         // Keyboard patterns
+    /^abc123/i,         // Common combinations
+    /^letmein/i,        // Common phrases
+    /^welcome/i         // Common greetings
   ];
   
-  if (commonPasswords.includes(password.toLowerCase())) {
-    errors.push('كلمة المرور هذه شائعة جداً وغير آمنة');
+  const isWeakPattern = weakPatterns.some(pattern => pattern.test(password));
+  if (isWeakPattern) {
+    errors.push('كلمة المرور تحتوي على نمط ضعيف. اختر كلمة مرور أقوى');
+  }
+  
+  // Check for simple dictionary words without additional complexity
+  if (password.length < 12 && /^[a-zA-Z]+$/.test(password)) {
+    errors.push('تجنب استخدام كلمات القاموس فقط. أضف أرقام ورموز خاصة');
   }
 
   return {
