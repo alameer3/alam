@@ -86,10 +86,11 @@ function Router() {
 function AppContent() {
   const [location] = useLocation();
   const isHomePage = location === "/";
+  const isNewSectionPage = ["/programs", "/games", "/applications", "/theater", "/wrestling", "/sports"].includes(location);
 
   return (
     <div className="min-h-screen bg-background">
-      {!isHomePage && <AkSvHeader />}
+      {!isHomePage && !isNewSectionPage && <AkSvHeader />}
       <main>
         <Router />
       </main>
