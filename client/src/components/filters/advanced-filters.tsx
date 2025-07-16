@@ -1,108 +1,100 @@
-import React, { useState } from 'react';
-import { Card, CardContent } from "@/components/ui/card";
+import { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Badge } from "@/components/ui/badge";
-import { FilterIcon, X } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { Filter, X } from "lucide-react";
 
 interface AdvancedFiltersProps {
   onFiltersChange: (filters: any) => void;
-  initialFilters?: any;
+  contentType: string;
+  categories?: any[];
+  genres?: any[];
 }
 
-export default function AdvancedFilters({ onFiltersChange, initialFilters = {} }: AdvancedFiltersProps) {
-  const [filters, setFilters] = useState(initialFilters);
+export default function AdvancedFilters({ 
+  onFiltersChange, 
+  contentType, 
+  categories = [], 
+  genres = [] 
+}: AdvancedFiltersProps) {
   const [showFilters, setShowFilters] = useState(false);
+  const [filters, setFilters] = useState({
+    section: "",
+    category: "",
+    genre: "",
+    year: "",
+    language: "",
+    quality: "",
+    resolution: "",
+    rating: ""
+  });
 
-  const categories = [
-    { value: 'arabic', label: 'عربي' },
-    { value: 'foreign', label: 'أجنبي' },
-    { value: 'hindi', label: 'هندي' },
-    { value: 'turkish', label: 'تركي' },
-    { value: 'asian', label: 'آسيوي' },
-    { value: 'korean', label: 'كوري' },
-    { value: 'anime', label: 'أنمي' }
+  // القسم (Section) - حسب المحتوى
+  const sections = {
+    movies: [
+      { value: "29", label: "عربي" },
+      { value: "30", label: "أجنبي" },
+      { value: "31", label: "هندي" },
+      { value: "32", label: "تركي" },
+      { value: "33", label: "آسيوي" }
+    ],
+    series: [
+      { value: "29", label: "عربي" },
+      { value: "30", label: "أجنبي" },
+      { value: "31", label: "هندي" },
+      { value: "32", label: "تركي" },
+      { value: "33", label: "آسيوي" }
+    ],
+    programs: [
+      { value: "programs", label: "البرامج" },
+      { value: "tablets", label: "الأجهزة اللوحية" },
+      { value: "courses", label: "الكورسات التعليمية" }
+    ]
+  };
+
+  // التصنيف (Genre)
+  const allGenres = [
+    "رمضان", "انمي", "اكشن", "مدبلج", "NETFLIX", "كوميديا", "اثارة", "غموض", 
+    "عائلي", "اطفال", "حربي", "رياضي", "قصير", "فانتازيا", "خيال علمي", 
+    "موسيقى", "سيرة ذاتية", "وثائقي", "رومانسي", "تاريخي", "درامي", "رعب", 
+    "جريمة", "مغامرة", "غربي"
   ];
 
-  const genres = [
-    { value: 'action', label: 'أكشن' },
-    { value: 'comedy', label: 'كوميديا' },
-    { value: 'drama', label: 'دراما' },
-    { value: 'thriller', label: 'إثارة' },
-    { value: 'horror', label: 'رعب' },
-    { value: 'romance', label: 'رومانسي' },
-    { value: 'family', label: 'عائلي' },
-    { value: 'documentary', label: 'وثائقي' },
-    { value: 'mystery', label: 'غموض' },
-    { value: 'crime', label: 'جريمة' },
-    { value: 'adventure', label: 'مغامرة' },
-    { value: 'fantasy', label: 'فانتازيا' },
-    { value: 'sci-fi', label: 'خيال علمي' },
-    { value: 'history', label: 'تاريخي' },
-    { value: 'war', label: 'حربي' },
-    { value: 'sport', label: 'رياضي' },
-    { value: 'music', label: 'موسيقى' },
-    { value: 'biography', label: 'سيرة ذاتية' },
-    { value: 'western', label: 'غربي' }
+  const programGenres = [
+    "انظمة التشغيل", "برامج المالتيميديا", "برامج التصميم و الصور", 
+    "برامج التصفح و التحميل", "برامج التنظيف و الصيانة", "برامج الحماية"
   ];
 
-  const ratings = [
-    { value: '1+', label: '+1' },
-    { value: '2+', label: '+2' },
-    { value: '3+', label: '+3' },
-    { value: '4+', label: '+4' },
-    { value: '5+', label: '+5' },
-    { value: '6+', label: '+6' },
-    { value: '7+', label: '+7' },
-    { value: '8+', label: '+8' },
-    { value: '9+', label: '+9' }
-  ];
-
-  const years = Array.from({ length: 100 }, (_, i) => 2025 - i).map(year => ({
-    value: year.toString(),
-    label: year.toString()
+  // التقييم
+  const ratings = Array.from({ length: 9 }, (_, i) => ({
+    value: `${i + 1}`,
+    label: `+${i + 1}`
   }));
 
+  // سنة الإنتاج
+  const currentYear = new Date().getFullYear();
+  const years = Array.from({ length: currentYear - 1924 }, (_, i) => ({
+    value: `${currentYear - i}`,
+    label: `${currentYear - i}`
+  }));
+
+  // اللغة
   const languages = [
-    { value: 'arabic', label: 'العربية' },
-    { value: 'english', label: 'الإنجليزية' },
-    { value: 'hindi', label: 'الهندية' },
-    { value: 'spanish', label: 'الاسبانية' },
-    { value: 'french', label: 'الفرنسية' },
-    { value: 'german', label: 'الألمانية' },
-    { value: 'italian', label: 'الإيطالية' },
-    { value: 'turkish', label: 'التركية' },
-    { value: 'korean', label: 'الكورية' },
-    { value: 'japanese', label: 'اليابانية' },
-    { value: 'chinese', label: 'الصينية' },
-    { value: 'russian', label: 'الروسية' }
+    "العربية", "الإنجليزية", "الهندية", "الاسبانية", "الصينية", "البرتغالية",
+    "الفرنسية", "الروسية", "اليابانية", "الألمانية", "الكورية", "الفارسية",
+    "الفيتنامية", "الإيطالية", "التركية", "البولندية", "الأوكرانية", "الفلندية",
+    "التايلاندية", "الدنماركية", "السويدية", "الإندونيسية", "الماليزية",
+    "النرويجية", "الهولندية", "الاردية", "المجرية"
   ];
 
+  // الجودة
   const qualities = [
-    { value: 'BluRay', label: 'BluRay' },
-    { value: 'WebRip', label: 'WebRip' },
-    { value: 'BRRIP', label: 'BRRIP' },
-    { value: 'DVDrip', label: 'DVDrip' },
-    { value: 'DVDSCR', label: 'DVDSCR' },
-    { value: 'HD', label: 'HD' },
-    { value: 'HDTS', label: 'HDTS' },
-    { value: 'HDTV', label: 'HDTV' },
-    { value: 'CAM', label: 'CAM' },
-    { value: 'WEB-DL', label: 'WEB-DL' },
-    { value: 'HDTC', label: 'HDTC' },
-    { value: 'BDRIP', label: 'BDRIP' },
-    { value: 'HDRIP', label: 'HDRIP' },
-    { value: 'HC HDRIP', label: 'HC HDRIP' }
+    "BluRay", "WebRip", "BRRIP", "DVDrip", "DVDSCR", "HD", "HDTS", 
+    "HDTV", "CAM", "WEB-DL", "HDTC", "BDRIP", "HDRIP", "HC HDRIP"
   ];
 
+  // الدقة
   const resolutions = [
-    { value: '240p', label: '240p' },
-    { value: '360p', label: '360p' },
-    { value: '480p', label: '480p' },
-    { value: '720p', label: '720p' },
-    { value: '1080p', label: '1080p' },
-    { value: '3D', label: '3D' },
-    { value: '4K', label: '4K' }
+    "240p", "360p", "480p", "720p", "1080p", "3D", "4K"
   ];
 
   const handleFilterChange = (key: string, value: string) => {
@@ -111,188 +103,182 @@ export default function AdvancedFilters({ onFiltersChange, initialFilters = {} }
     onFiltersChange(newFilters);
   };
 
-  const clearFilter = (key: string) => {
-    const newFilters = { ...filters };
-    delete newFilters[key];
-    setFilters(newFilters);
-    onFiltersChange(newFilters);
+  const clearFilters = () => {
+    const clearedFilters = {
+      section: "",
+      category: "",
+      genre: "",
+      year: "",
+      language: "",
+      quality: "",
+      resolution: "",
+      rating: ""
+    };
+    setFilters(clearedFilters);
+    onFiltersChange(clearedFilters);
   };
-
-  const clearAllFilters = () => {
-    setFilters({});
-    onFiltersChange({});
-  };
-
-  const activeFiltersCount = Object.keys(filters).length;
 
   return (
-    <div className="w-full mb-6">
-      <div className="flex items-center gap-4 mb-4">
-        <Button
-          variant="outline"
-          onClick={() => setShowFilters(!showFilters)}
-          className="flex items-center gap-2"
-        >
-          <FilterIcon className="w-4 h-4" />
-          فلترة متقدمة
-          {activeFiltersCount > 0 && (
-            <Badge variant="secondary" className="mr-2">
-              {activeFiltersCount}
-            </Badge>
-          )}
-        </Button>
-        
-        {activeFiltersCount > 0 && (
-          <Button
-            variant="ghost"
-            onClick={clearAllFilters}
-            className="text-red-500 hover:text-red-700"
-          >
-            مسح جميع الفلاتر
-          </Button>
-        )}
-      </div>
+    <div className="bg-slate-800/50 rounded-lg p-4 mb-6">
+      {/* Toggle Button */}
+      <Button
+        variant="outline"
+        onClick={() => setShowFilters(!showFilters)}
+        className="mb-4 bg-slate-700 border-slate-600 text-white hover:bg-slate-600"
+      >
+        <Filter className="w-4 h-4 ml-2" />
+        {showFilters ? "إخفاء الفلاتر" : "إظهار الفلاتر المتقدمة"}
+      </Button>
 
-      {/* Active Filters Display */}
-      {activeFiltersCount > 0 && (
-        <div className="flex flex-wrap gap-2 mb-4">
-          {Object.entries(filters).map(([key, value]) => (
-            <Badge key={key} variant="secondary" className="flex items-center gap-1">
-              {value as string}
-              <X
-                className="w-3 h-3 cursor-pointer hover:text-red-500"
-                onClick={() => clearFilter(key)}
-              />
-            </Badge>
-          ))}
-        </div>
-      )}
-
+      {/* Filters */}
       {showFilters && (
-        <Card>
-          <CardContent className="p-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
-              {/* Category Filter */}
-              <div>
-                <label className="block text-sm font-medium mb-2">القسم</label>
-                <Select value={filters.category || ''} onValueChange={(value) => handleFilterChange('category', value)}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="اختر القسم" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {categories.map((cat) => (
-                      <SelectItem key={cat.value} value={cat.value}>
-                        {cat.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* Genre Filter */}
-              <div>
-                <label className="block text-sm font-medium mb-2">التصنيف</label>
-                <Select value={filters.genre || ''} onValueChange={(value) => handleFilterChange('genre', value)}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="اختر التصنيف" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {genres.map((genre) => (
-                      <SelectItem key={genre.value} value={genre.value}>
-                        {genre.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* Rating Filter */}
-              <div>
-                <label className="block text-sm font-medium mb-2">التقييم</label>
-                <Select value={filters.rating || ''} onValueChange={(value) => handleFilterChange('rating', value)}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="اختر التقييم" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {ratings.map((rating) => (
-                      <SelectItem key={rating.value} value={rating.value}>
-                        {rating.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* Year Filter */}
-              <div>
-                <label className="block text-sm font-medium mb-2">سنة الإنتاج</label>
-                <Select value={filters.year || ''} onValueChange={(value) => handleFilterChange('year', value)}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="اختر السنة" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {years.map((year) => (
-                      <SelectItem key={year.value} value={year.value}>
-                        {year.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* Language Filter */}
-              <div>
-                <label className="block text-sm font-medium mb-2">اللغة</label>
-                <Select value={filters.language || ''} onValueChange={(value) => handleFilterChange('language', value)}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="اختر اللغة" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {languages.map((lang) => (
-                      <SelectItem key={lang.value} value={lang.value}>
-                        {lang.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* Quality Filter */}
-              <div>
-                <label className="block text-sm font-medium mb-2">الجودة</label>
-                <Select value={filters.quality || ''} onValueChange={(value) => handleFilterChange('quality', value)}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="اختر الجودة" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {qualities.map((quality) => (
-                      <SelectItem key={quality.value} value={quality.value}>
-                        {quality.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-
-              {/* Resolution Filter */}
-              <div>
-                <label className="block text-sm font-medium mb-2">الدقة</label>
-                <Select value={filters.resolution || ''} onValueChange={(value) => handleFilterChange('resolution', value)}>
-                  <SelectTrigger>
-                    <SelectValue placeholder="اختر الدقة" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {resolutions.map((res) => (
-                      <SelectItem key={res.value} value={res.value}>
-                        {res.label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
+        <div className="space-y-6">
+          {/* Filter Row 1 */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {/* Section */}
+            <div>
+              <label className="block text-sm font-medium text-slate-300 mb-1">القسم</label>
+              <select
+                value={filters.section}
+                onChange={(e) => handleFilterChange("section", e.target.value)}
+                className="w-full p-2 bg-slate-700 border border-slate-600 rounded-md text-white text-sm"
+              >
+                <option value="">جميع الأقسام</option>
+                {sections[contentType as keyof typeof sections]?.map(section => (
+                  <option key={section.value} value={section.value}>
+                    {section.label}
+                  </option>
+                ))}
+              </select>
             </div>
-          </CardContent>
-        </Card>
+
+            {/* Category */}
+            <div>
+              <label className="block text-sm font-medium text-slate-300 mb-1">الفئة</label>
+              <select
+                value={filters.category}
+                onChange={(e) => handleFilterChange("category", e.target.value)}
+                className="w-full p-2 bg-slate-700 border border-slate-600 rounded-md text-white text-sm"
+              >
+                <option value="">جميع الفئات</option>
+                {categories?.map((category: any) => (
+                  <option key={category.id} value={category.id}>
+                    {category.nameArabic || category.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Genre */}
+            <div>
+              <label className="block text-sm font-medium text-slate-300 mb-1">التصنيف</label>
+              <select
+                value={filters.genre}
+                onChange={(e) => handleFilterChange("genre", e.target.value)}
+                className="w-full p-2 bg-slate-700 border border-slate-600 rounded-md text-white text-sm"
+              >
+                <option value="">جميع التصنيفات</option>
+                {(contentType === "programs" ? programGenres : allGenres).map(genre => (
+                  <option key={genre} value={genre}>{genre}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Rating */}
+            <div>
+              <label className="block text-sm font-medium text-slate-300 mb-1">التقييم</label>
+              <select
+                value={filters.rating}
+                onChange={(e) => handleFilterChange("rating", e.target.value)}
+                className="w-full p-2 bg-slate-700 border border-slate-600 rounded-md text-white text-sm"
+              >
+                <option value="">جميع التقييمات</option>
+                {ratings.map(rating => (
+                  <option key={rating.value} value={rating.value}>
+                    {rating.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          {/* Filter Row 2 */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+            {/* Year */}
+            <div>
+              <label className="block text-sm font-medium text-slate-300 mb-1">سنة الإنتاج</label>
+              <select
+                value={filters.year}
+                onChange={(e) => handleFilterChange("year", e.target.value)}
+                className="w-full p-2 bg-slate-700 border border-slate-600 rounded-md text-white text-sm"
+              >
+                <option value="">جميع السنوات</option>
+                {years.map(year => (
+                  <option key={year.value} value={year.value}>
+                    {year.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            {/* Language */}
+            <div>
+              <label className="block text-sm font-medium text-slate-300 mb-1">اللغة</label>
+              <select
+                value={filters.language}
+                onChange={(e) => handleFilterChange("language", e.target.value)}
+                className="w-full p-2 bg-slate-700 border border-slate-600 rounded-md text-white text-sm"
+              >
+                <option value="">جميع اللغات</option>
+                {languages.map(language => (
+                  <option key={language} value={language}>{language}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Quality */}
+            <div>
+              <label className="block text-sm font-medium text-slate-300 mb-1">الجودة</label>
+              <select
+                value={filters.quality}
+                onChange={(e) => handleFilterChange("quality", e.target.value)}
+                className="w-full p-2 bg-slate-700 border border-slate-600 rounded-md text-white text-sm"
+              >
+                <option value="">جميع الجودات</option>
+                {qualities.map(quality => (
+                  <option key={quality} value={quality}>{quality}</option>
+                ))}
+              </select>
+            </div>
+
+            {/* Resolution */}
+            <div>
+              <label className="block text-sm font-medium text-slate-300 mb-1">الدقة</label>
+              <select
+                value={filters.resolution}
+                onChange={(e) => handleFilterChange("resolution", e.target.value)}
+                className="w-full p-2 bg-slate-700 border border-slate-600 rounded-md text-white text-sm"
+              >
+                <option value="">جميع الدقات</option>
+                {resolutions.map(resolution => (
+                  <option key={resolution} value={resolution}>{resolution}</option>
+                ))}
+              </select>
+            </div>
+          </div>
+
+          {/* Clear Filters Button */}
+          <div className="flex justify-end">
+            <Button
+              variant="outline"
+              onClick={clearFilters}
+              className="bg-slate-700 border-slate-600 text-white hover:bg-slate-600"
+            >
+              <X className="w-4 h-4 ml-2" />
+              إلغاء جميع الفلاتر
+            </Button>
+          </div>
+        </div>
       )}
     </div>
   );

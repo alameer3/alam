@@ -291,6 +291,34 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Recent content route (أُضيف حديثاً)
+  app.get("/api/content/recent", async (req, res) => {
+    try {
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 24;
+      const type = req.query.type as string;
+      const category = req.query.category as string;
+      const search = req.query.search as string;
+      
+      let result;
+      if (search) {
+        result = await serverDBStorage.searchContent(search, { type, category });
+      } else if (type) {
+        result = await serverDBStorage.getContentByType(type, page, limit);
+      } else {
+        // Get all recent content sorted by creation date
+        result = await serverDBStorage.getContentByType('all', page, limit);
+      }
+      
+      res.json(result);
+    } catch (error) {
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Recent content error:', error);
+      }
+      res.status(500).json({ error: "Failed to fetch recent content" });
+    }
+  });
+
   // ak.sv-style content routes
   app.get("/api/content/shows", async (req, res) => {
     try {

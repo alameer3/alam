@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useLocation } from "wouter";
-import { Search, User, HelpCircle, Menu, Film, Tv, MonitorPlay, Sparkles, BookOpen, Gamepad2, Smartphone, Drama, Zap, Trophy } from "lucide-react";
+import { Search, User, HelpCircle, Menu, Film, Tv, MonitorPlay, Sparkles, BookOpen, Gamepad2, Smartphone, Drama, Zap, Trophy, Clock } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
@@ -98,8 +98,15 @@ export default function AkSvHeader() {
             </form>
           </div>
 
-          {/* الجانب الأيسر - الشعار */}
+          {/* الجانب الأيسر - الشعار وأُضيف حديثاً */}
           <div className="flex items-center gap-4">
+            <button
+              onClick={() => setLocation("/recent")}
+              className="text-orange-400 hover:text-orange-300 transition-colors flex items-center gap-2 text-sm"
+            >
+              <Clock className="w-4 h-4" />
+              أُضيف حديثاً
+            </button>
             <button
               onClick={() => setLocation("/")}
               className="text-white text-xl font-bold hover:text-orange-400 transition-colors"

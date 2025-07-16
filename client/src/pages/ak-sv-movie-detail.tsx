@@ -223,7 +223,10 @@ export default function AkSvMovieDetail() {
                   <Play className="w-4 h-4 mr-2" />
                   الإعلان
                 </Button>
-                <Button className="bg-orange-600 hover:bg-orange-700 text-white">
+                <Button 
+                  onClick={() => setLocation(`/watch/${movie.id}/1/${encodeURIComponent(movie.title)}`)}
+                  className="bg-orange-600 hover:bg-orange-700 text-white"
+                >
                   <Play className="w-4 h-4 mr-2" />
                   مشاهدة
                 </Button>

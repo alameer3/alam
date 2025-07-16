@@ -5,6 +5,7 @@ import { Star, ChevronLeft, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
+import AdvancedFilters from "@/components/filters/advanced-filters";
 
 interface Movie {
   id: number;
@@ -21,6 +22,7 @@ export default function AkSvMovies() {
   const [, setLocation] = useLocation();
   const [currentPage, setCurrentPage] = useState(1);
   const [filters, setFilters] = useState({
+    section: "",
     category: "",
     genre: "",
     rating: "",
@@ -76,12 +78,25 @@ export default function AkSvMovies() {
       </div>
 
       <div className="container mx-auto px-4 py-8">
+        {/* الفلاتر المتقدمة */}
+        <AdvancedFilters 
+          onFiltersChange={setFilters}
+          contentType="movies"
+          categories={[
+            { id: "29", name: "Arabic", nameArabic: "عربي" },
+            { id: "30", name: "Foreign", nameArabic: "أجنبي" },
+            { id: "31", name: "Indian", nameArabic: "هندي" },
+            { id: "32", name: "Turkish", nameArabic: "تركي" },
+            { id: "33", name: "Asian", nameArabic: "آسيوي" }
+          ]}
+        />
+        
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           
-          {/* الفلاتر الجانبية */}
+          {/* الفلاتر الجانبية البسيطة */}
           <div className="lg:col-span-1">
             <div className="bg-black/60 backdrop-blur-sm rounded-2xl p-6 border border-white/10 sticky top-24">
-              <h2 className="text-xl font-bold text-white mb-6">تصفية النتائج</h2>
+              <h2 className="text-xl font-bold text-white mb-6">تصفية سريعة</h2>
               
               <div className="space-y-4">
                 {/* القسم */}

@@ -37,6 +37,8 @@ import Applications from "@/pages/applications";
 import Theater from "@/pages/theater";
 import Wrestling from "@/pages/wrestling";
 import Sports from "@/pages/sports";
+import Recent from "@/pages/recent";
+import Watch from "@/pages/watch";
 
 
 function Router() {
@@ -57,6 +59,10 @@ function Router() {
       <Route path="/series/:id/:title?" component={SeriesDetail} />
       <Route path="/shows/:id/:title?" component={ShowDetail} />
       <Route path="/mix/:id/:title?" component={MixDetail} />
+      
+      {/* صفحات المشاهدة والمحتوى الجديد */}
+      <Route path="/watch/:id/:episodeId?/:title?" component={Watch} />
+      <Route path="/recent" component={Recent} />
       
       {/* الأقسام الجديدة */}
       <Route path="/programs" component={Programs} />
