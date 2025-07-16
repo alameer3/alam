@@ -18,6 +18,21 @@ export default function Programs() {
     queryKey: ['/api/categories'],
   });
 
+  const { data: contentData, isLoading } = useQuery({
+    queryKey: ['/api/content/programs', filters],
+    queryFn: async () => {
+      const params = new URLSearchParams();
+      if (filters.search) params.append('search', filters.search);
+      if (filters.category) params.append('category', filters.category);
+      if (filters.year) params.append('year', filters.year);
+      if (filters.quality) params.append('quality', filters.quality);
+      
+      const response = await fetch(`/api/content/programs?${params}`);
+      if (!response.ok) throw new Error('Failed to fetch content');
+      return response.json();
+    }
+  });
+
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     // البحث سيتم عبر التصفية
@@ -119,11 +134,14 @@ export default function Programs() {
         )}
 
         {/* Content Grid */}
-        <AdvancedContentGrid
-          contentType="programs"
-          filters={filters}
-          title="البرامج والكورسات"
-        />
+        {isLoading ? (
+          <LoadingSpinner />
+        ) : (
+          <AdvancedContentGrid
+            content={contentData?.content || []}
+            loading={isLoading}
+          />
+        )}
       </div>
     </div>
   );
