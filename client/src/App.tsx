@@ -11,16 +11,10 @@ import AkSvHomepage from "@/components/home/ak-sv-homepage";
 import OnesPage from "@/pages/ones";
 import AkSvMovies from "@/pages/ak-sv-movies";
 import Series from "@/pages/series";
-import Television from "@/pages/television";
-import Shows from "@/pages/shows";
-import MiscContent from "@/pages/misc-content";
-import Mix from "@/pages/mix";
 import Search from "@/pages/search";
 import ContentDetail from "@/pages/content-detail";
 import AkSvMovieDetail from "@/pages/ak-sv-movie-detail";
 import SeriesDetail from "@/pages/series-detail";
-import ShowDetail from "@/pages/show-detail";
-import MixDetail from "@/pages/mix-detail";
 
 import SecretAdminAccess from "@/pages/secret-admin-access";
 import Login from "@/pages/login";
@@ -49,17 +43,10 @@ function Router() {
       <Route path="/ones" component={OnesPage} />
       <Route path="/movies" component={AkSvMovies} />
       <Route path="/series" component={Series} />
-      <Route path="/shows" component={Shows} />
-      <Route path="/television" component={Television} />
-      <Route path="/misc" component={MiscContent} />
-      <Route path="/misc-content" component={MiscContent} />
-      <Route path="/mix" component={Mix} />
       <Route path="/search" component={Search} />
       <Route path="/content/:id" component={ContentDetail} />
       <Route path="/movie/:id/:title?" component={AkSvMovieDetail} />
       <Route path="/series/:id/:title?" component={SeriesDetail} />
-      <Route path="/shows/:id/:title?" component={ShowDetail} />
-      <Route path="/mix/:id/:title?" component={MixDetail} />
       
       {/* صفحات المشاهدة والمحتوى الجديد */}
       <Route path="/watch/:id/:episodeId?/:title?" component={Watch} />

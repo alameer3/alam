@@ -71,7 +71,7 @@ export default function AkSvMovies() {
               أفلام
             </h1>
             <div className="text-white/70 text-sm">
-              عدد الأفلام: {moviesData?.total || 0}
+              عدد الأفلام: {moviesData?.data?.total || 0}
             </div>
           </div>
         </div>
@@ -226,7 +226,7 @@ export default function AkSvMovies() {
             ) : (
               <>
                 <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 mb-8">
-                  {moviesData?.content?.map((movie: Movie) => (
+                  {moviesData?.data?.content?.map((movie: Movie) => (
                     <div 
                       key={movie.id} 
                       className="group cursor-pointer"
@@ -279,7 +279,7 @@ export default function AkSvMovies() {
                   </Button>
                   
                   <span className="text-white/80 text-sm">
-                    صفحة {currentPage} من {Math.ceil((moviesData?.total || 0) / 12)}
+                    صفحة {currentPage} من {Math.ceil((moviesData?.data?.total || 0) / 12)}
                   </span>
                   
                   <Button
