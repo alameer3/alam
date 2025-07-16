@@ -21,8 +21,17 @@ app.use(validateInput);
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: false, limit: '10mb' }));
 
-// Serve static files from serverdb/images
-app.use('/serverdb/images', express.static('serverdb/images'));
+// Serve static files from serverdata/images or serverdb/images
+const serverDataImagesPath = 'serverdata/images';
+const serverDbImagesPath = 'serverdb/images';
+
+if (fs.existsSync(serverDataImagesPath)) {
+  app.use('/serverdb/images', express.static(serverDataImagesPath));
+  console.log('🔧 استخدام صور من serverdata');
+} else {
+  app.use('/serverdb/images', express.static(serverDbImagesPath));
+  console.log('🔧 استخدام صور من serverdb');
+}
 
 app.use((req, res, next) => {
   const start = Date.now();
@@ -55,6 +64,20 @@ app.use((req, res, next) => {
 });
 
 (async () => {
+  // تشغيل النظام التلقائي لـ ServerData
+  if (process.env.NODE_ENV === 'development') {
+    console.log("🔧 تشغيل النظام التلقائي لـ ServerData...");
+  }
+  try {
+    if (fs.existsSync("serverdata/setup.cjs")) {
+      execSync("node serverdata/setup.cjs", { stdio: "inherit" });
+    }
+  } catch (error) {
+    if (process.env.NODE_ENV === 'development') {
+      console.log("ℹ️ ServerData غير متاح، المتابعة بدونه...");
+    }
+  }
+
   // تشغيل النظام التلقائي لـ Replit
   if (process.env.NODE_ENV === 'development') {
     console.log("🔧 تشغيل النظام التلقائي لـ Replit...");

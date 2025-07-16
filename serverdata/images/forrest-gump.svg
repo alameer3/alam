@@ -1,0 +1,14 @@
+<svg width="300" height="450" xmlns="http://www.w3.org/2000/svg">
+  <rect width="300" height="450" fill="#4CAF50"/>
+  <rect x="20" y="20" width="260" height="350" fill="#E8F5E8" stroke="#4CAF50" stroke-width="2"/>
+  <text x="150" y="50" text-anchor="middle" fill="#4CAF50" font-family="Arial, sans-serif" font-size="16" font-weight="bold">FORREST</text>
+  <text x="150" y="70" text-anchor="middle" fill="#4CAF50" font-family="Arial, sans-serif" font-size="16" font-weight="bold">GUMP</text>
+  <text x="150" y="100" text-anchor="middle" fill="#4CAF50" font-family="Arial, sans-serif" font-size="14">فورست غمب</text>
+  <circle cx="150" cy="180" r="30" fill="#FFC107"/>
+  <rect x="135" y="165" width="30" height="30" fill="#4CAF50" opacity="0.7"/>
+  <text x="150" y="250" text-anchor="middle" fill="#4CAF50" font-family="Arial, sans-serif" font-size="12">"Life is like a box of chocolates"</text>
+  <text x="150" y="320" text-anchor="middle" fill="#4CAF50" font-family="Arial, sans-serif" font-size="18" font-weight="bold">8.8</text>
+  <text x="150" y="340" text-anchor="middle" fill="#4CAF50" font-family="Arial, sans-serif" font-size="12">IMDB Rating</text>
+  <text x="150" y="380" text-anchor="middle" fill="#4CAF50" font-family="Arial, sans-serif" font-size="12">1994 • Drama Romance • 142 min</text>
+  <text x="150" y="420" text-anchor="middle" fill="#4CAF50" font-family="Arial, sans-serif" font-size="12">HD • 1080p</text>
+</svg>

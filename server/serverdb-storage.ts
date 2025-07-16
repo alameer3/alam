@@ -1,5 +1,32 @@
-import { dbManager } from '../serverdb/database-manager.js';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import type { User, Content, Category, Genre } from '@shared/schema';
+
+// حل مشكلة __dirname في ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+// التحقق من وجود serverdata أولاً
+const serverDataPath = path.join(__dirname, '../serverdata/database-manager.js');
+const serverDbPath = path.join(__dirname, '../serverdb/database-manager.js');
+
+let dbManager: any;
+
+async function initializeDbManager() {
+  if (fs.existsSync(serverDataPath)) {
+    console.log('🔧 استخدام قاعدة البيانات التجريبية من serverdata');
+    const module = await import(serverDataPath);
+    dbManager = module.dbManager;
+  } else {
+    console.log('🔧 استخدام قاعدة البيانات الأساسية من serverdb');
+    const module = await import(serverDbPath);
+    dbManager = module.dbManager;
+  }
+}
+
+// تشغيل التهيئة
+initializeDbManager().catch(console.error);
 
 export class ServerDBStorage {
   
