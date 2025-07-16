@@ -1,13 +1,10 @@
-<svg width="300" height="450" xmlns="http://www.w3.org/2000/svg">
-  <rect width="300" height="450" fill="#000000"/>
-  <rect x="20" y="20" width="260" height="350" fill="#1a1a1a" stroke="#FFD700" stroke-width="2"/>
-  <text x="150" y="50" text-anchor="middle" fill="#FFD700" font-family="Arial, sans-serif" font-size="16" font-weight="bold">THE DARK</text>
-  <text x="150" y="70" text-anchor="middle" fill="#FFD700" font-family="Arial, sans-serif" font-size="16" font-weight="bold">KNIGHT</text>
-  <text x="150" y="100" text-anchor="middle" fill="#FFD700" font-family="Arial, sans-serif" font-size="14">فارس الظلام</text>
-  <circle cx="150" cy="200" r="60" fill="#FFD700" opacity="0.3"/>
-  <path d="M 120 180 Q 150 150 180 180 Q 150 220 120 180" fill="#FFD700"/>
-  <text x="150" y="320" text-anchor="middle" fill="#FFD700" font-family="Arial, sans-serif" font-size="18" font-weight="bold">9.0</text>
-  <text x="150" y="340" text-anchor="middle" fill="#ecf0f1" font-family="Arial, sans-serif" font-size="12">IMDB Rating</text>
-  <text x="150" y="380" text-anchor="middle" fill="#ecf0f1" font-family="Arial, sans-serif" font-size="12">2008 • Action Crime • 152 min</text>
-  <text x="150" y="420" text-anchor="middle" fill="#ecf0f1" font-family="Arial, sans-serif" font-size="12">4K • 2160p</text>
+<svg width="260" height="380" viewBox="0 0 260 380" xmlns="http://www.w3.org/2000/svg">
+  <rect width="260" height="380" fill="#1f2937"/>
+  <rect x="10" y="10" width="240" height="360" fill="none" stroke="white" stroke-width="2"/>
+  <text x="130" y="190" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white" text-anchor="middle">
+    The Dark Knight
+  </text>
+  <text x="130" y="220" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="middle">
+    YEMEN FLIX
+  </text>
 </svg>

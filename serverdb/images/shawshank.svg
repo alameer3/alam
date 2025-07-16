@@ -1,13 +1,10 @@
-<svg width="300" height="450" xmlns="http://www.w3.org/2000/svg">
-  <rect width="300" height="450" fill="#2c3e50"/>
-  <rect x="20" y="20" width="260" height="350" fill="#34495e" stroke="#ecf0f1" stroke-width="2"/>
-  <text x="150" y="50" text-anchor="middle" fill="#ecf0f1" font-family="Arial, sans-serif" font-size="16" font-weight="bold">THE SHAWSHANK</text>
-  <text x="150" y="70" text-anchor="middle" fill="#ecf0f1" font-family="Arial, sans-serif" font-size="16" font-weight="bold">REDEMPTION</text>
-  <text x="150" y="100" text-anchor="middle" fill="#e74c3c" font-family="Arial, sans-serif" font-size="14">الخلاص من شاوشانك</text>
-  <circle cx="150" cy="200" r="60" fill="#3498db" opacity="0.7"/>
-  <rect x="120" y="170" width="60" height="60" fill="#e74c3c" opacity="0.8"/>
-  <text x="150" y="320" text-anchor="middle" fill="#f39c12" font-family="Arial, sans-serif" font-size="18" font-weight="bold">9.3</text>
-  <text x="150" y="340" text-anchor="middle" fill="#ecf0f1" font-family="Arial, sans-serif" font-size="12">IMDB Rating</text>
-  <text x="150" y="380" text-anchor="middle" fill="#ecf0f1" font-family="Arial, sans-serif" font-size="12">1994 • Drama • 142 min</text>
-  <text x="150" y="420" text-anchor="middle" fill="#ecf0f1" font-family="Arial, sans-serif" font-size="12">HD • 1080p</text>
+<svg width="260" height="380" viewBox="0 0 260 380" xmlns="http://www.w3.org/2000/svg">
+  <rect width="260" height="380" fill="#1e40af"/>
+  <rect x="10" y="10" width="240" height="360" fill="none" stroke="white" stroke-width="2"/>
+  <text x="130" y="190" font-family="Arial, sans-serif" font-size="16" font-weight="bold" fill="white" text-anchor="middle">
+    The Shawshank Redemption
+  </text>
+  <text x="130" y="220" font-family="Arial, sans-serif" font-size="12" fill="white" text-anchor="middle">
+    YEMEN FLIX
+  </text>
 </svg>

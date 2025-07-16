@@ -2,7 +2,7 @@ import express, { type Request, Response, NextFunction } from "express";
 import { registerRoutes } from "./routes";
 import { setupVite, serveStatic, log } from "./vite";
 import { securityHeaders, validateInput, checkSecurityStatus } from "./middleware/security";
-import { initializeDatabaseOptimizations } from "./middleware/database";
+// Database optimizations removed
 import { errorHandler, notFoundHandler } from "./middleware/error-handler";
 import { execSync } from "child_process";
 import fs from "fs";
@@ -92,8 +92,7 @@ app.use((req, res, next) => {
     }
   }
   
-  // Initialize database optimizations
-  await initializeDatabaseOptimizations();
+  // Database optimizations removed
   
   const server = await registerRoutes(app);
 
