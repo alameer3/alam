@@ -21,10 +21,9 @@ export default function Shows() {
   const [sortBy, setSortBy] = useState('latest');
 
   const { data: showsData, isLoading } = useQuery({
-    queryKey: ['/api/content', { type: 'show', ...filters }],
+    queryKey: ['/api/content/programs', { ...filters }],
     queryFn: async () => {
       const params = new URLSearchParams({
-        type: 'show',
         page: filters.page.toString(),
         limit: '24',
         ...(filters.category && { category: filters.category }),
@@ -36,7 +35,7 @@ export default function Shows() {
         sort: sortBy
       });
       
-      const response = await fetch(`/api/content?${params}`);
+      const response = await fetch(`/api/content/programs?${params}`);
       if (!response.ok) throw new Error('Failed to fetch shows');
       return response.json();
     }
@@ -60,7 +59,7 @@ export default function Shows() {
     }
   });
 
-  const shows = showsData?.content || [];
+  const shows = showsData?.data?.content || [];
   const totalPages = showsData?.totalPages || 1;
   const currentPage = showsData?.page || 1;
 

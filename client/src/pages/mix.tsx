@@ -22,7 +22,6 @@ export default function Mix() {
     queryKey: ['/api/content', { type: 'mix', ...filters }],
     queryFn: async () => {
       const params = new URLSearchParams({
-        type: 'mix',
         page: filters.page.toString(),
         limit: '24',
         ...(filters.category && { category: filters.category }),
@@ -32,7 +31,7 @@ export default function Mix() {
         sort: sortBy
       });
       
-      const response = await fetch(`/api/content?${params}`);
+      const response = await fetch(`/api/content?type=mix&${params}`);
       if (!response.ok) throw new Error('Failed to fetch mix content');
       return response.json();
     }
@@ -47,7 +46,7 @@ export default function Mix() {
     }
   });
 
-  const mixContent = mixData?.content || [];
+  const mixContent = mixData?.data?.content || [];
   const totalPages = mixData?.totalPages || 1;
   const currentPage = mixData?.page || 1;
 

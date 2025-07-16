@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link } from "wouter";
+import AdvancedContentGrid from "@/components/content/advanced-content-grid";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -30,7 +31,7 @@ export default function Recent() {
       if (filters.category) params.append('category', filters.category);
       if (filters.type) params.append('type', filters.type);
       
-      const response = await fetch(`/api/content/recent?${params}`);
+      const response = await fetch(`/api/content?${params}`);
       if (!response.ok) throw new Error('Failed to fetch content');
       return response.json();
     }
@@ -164,67 +165,10 @@ export default function Recent() {
             <LoadingSpinner />
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6 gap-6">
-            {contentData?.content?.map((item: any) => (
-              <div key={item.id} className="bg-slate-800 rounded-lg overflow-hidden hover:bg-slate-700 transition-colors">
-                <Link href={`/movie/${item.id}/${item.title}`}>
-                  <div className="aspect-[2/3] bg-slate-700 relative">
-                    {item.posterUrl ? (
-                      <img
-                        src={item.posterUrl}
-                        alt={item.title}
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-slate-400">
-                        <Calendar className="w-12 h-12" />
-                      </div>
-                    )}
-                    
-                    {/* Content Type Badge */}
-                    <div className="absolute top-2 right-2 bg-orange-600 text-white px-2 py-1 rounded-md text-xs">
-                      {contentTypes.find(t => t.value === item.type)?.label || item.type}
-                    </div>
-                    
-                    {/* New Badge */}
-                    <div className="absolute top-2 left-2 bg-red-600 text-white px-2 py-1 rounded-md text-xs">
-                      جديد
-                    </div>
-                  </div>
-                  
-                  <div className="p-4">
-                    <h3 className="font-semibold text-white mb-1 line-clamp-2">
-                      {item.title}
-                    </h3>
-                    <p className="text-sm text-slate-400 mb-2">
-                      {item.year || 'غير محدد'}
-                    </p>
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs text-slate-500">
-                        {item.rating && `⭐ ${item.rating}`}
-                      </span>
-                      <span className="text-xs text-orange-400">
-                        أُضيف حديثاً
-                      </span>
-                    </div>
-                  </div>
-                </Link>
-              </div>
-            ))}
-          </div>
-        )}
-
-        {/* Empty State */}
-        {contentData?.content?.length === 0 && (
-          <div className="text-center py-12">
-            <Clock className="w-16 h-16 text-slate-600 mx-auto mb-4" />
-            <h3 className="text-xl font-semibold text-slate-400 mb-2">
-              لم يتم العثور على محتوى
-            </h3>
-            <p className="text-slate-500">
-              جرب تغيير الفلاتر أو البحث عن شيء آخر
-            </p>
-          </div>
+          <AdvancedContentGrid
+            content={contentData?.data?.content || []}
+            loading={isLoading}
+          />
         )}
       </div>
     </div>
