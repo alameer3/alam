@@ -79,17 +79,19 @@ app.use((req, res, next) => {
     }
   }
 
-  // تشغيل النظام التلقائي لـ Replit
-  if (process.env.NODE_ENV === 'development') {
-    console.log("🔧 تشغيل النظام التلقائي لـ Replit...");
-  }
-  try {
-    if (fs.existsSync("replit-auto-setup.cjs")) {
-      execSync("node replit-auto-setup.cjs", { stdio: "inherit" });
-    }
-  } catch (error) {
+  // تشغيل النظام التلقائي لـ Replit فقط إذا لم يكن serverdata متاحاً
+  if (!fs.existsSync("serverdata/setup.cjs")) {
     if (process.env.NODE_ENV === 'development') {
-      console.log("ℹ️ النظام التلقائي غير متاح، المتابعة بدونه...");
+      console.log("🔧 تشغيل النظام التلقائي لـ Replit...");
+    }
+    try {
+      if (fs.existsSync("replit-auto-setup.cjs")) {
+        execSync("node replit-auto-setup.cjs", { stdio: "inherit" });
+      }
+    } catch (error) {
+      if (process.env.NODE_ENV === 'development') {
+        console.log("ℹ️ النظام التلقائي غير متاح، المتابعة بدونه...");
+      }
     }
   }
   

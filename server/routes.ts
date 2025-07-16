@@ -55,7 +55,6 @@ class SimpleDatabase {
 
   async getContentByType(type: string, page: number = 1, limit: number = 24) {
     const allContent = this.data.content || [];
-    
     // Filter by type if specified
     let filteredContent = allContent;
     if (type && type !== 'all') {
@@ -136,9 +135,9 @@ class SimpleDatabase {
     
     let filteredContent = allContent.filter((item: any) => {
       const titleMatch = item.title.toLowerCase().includes(query.toLowerCase()) ||
-                        item.title_arabic.toLowerCase().includes(query.toLowerCase());
+                        (item.title_arabic && item.title_arabic.toLowerCase().includes(query.toLowerCase()));
       const descMatch = item.description.toLowerCase().includes(query.toLowerCase()) ||
-                       item.description_arabic.toLowerCase().includes(query.toLowerCase());
+                       (item.description_arabic && item.description_arabic.toLowerCase().includes(query.toLowerCase()));
       return titleMatch || descMatch;
     });
 
@@ -333,8 +332,8 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Content by type route
-  app.get("/api/content/:type", async (req, res) => {
+  // Content by type route (should come after specific routes)
+  app.get("/api/content/type/:type", async (req, res) => {
     try {
       const { type } = req.params;
       const page = parseInt(req.query.page as string) || 1;
@@ -385,9 +384,9 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const limit = parseInt(req.query.limit as string) || 24;
       const result = await db.getContentByType('all', page, limit);
       res.json(result);
-    } catch (error) {
+    } catch (error: any) {
       console.error('Recent content error:', error);
-      res.status(500).json({ error: "Failed to fetch recent content" });
+      res.status(500).json({ success: false, error: "المحتوى غير موجود" });
     }
   });
 
@@ -465,7 +464,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Download links route
-  app.get("/api/content/:id/download", async (req, res) => {
+  app.get("/api/content/:id/download-links", async (req, res) => {
     try {
       const contentId = parseInt(req.params.id);
       const episodeId = req.query.episode ? parseInt(req.query.episode as string) : null;
@@ -478,7 +477,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Streaming links route
-  app.get("/api/content/:id/stream", async (req, res) => {
+  app.get("/api/content/:id/streaming-links", async (req, res) => {
     try {
       const contentId = parseInt(req.params.id);
       const episodeId = req.query.episode ? parseInt(req.query.episode as string) : null;
