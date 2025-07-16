@@ -73,6 +73,10 @@ export class DatabaseManager {
       // إدراج المحتوى التجريبي
       await this.insertDefaultContent();
       
+      // إدراج الحلقات والروابط
+      await this.insertDefaultEpisodes();
+      await this.insertDefaultLinks();
+      
       console.log('✅ تم إدراج البيانات الافتراضية');
     } catch (error) {
       console.error('❌ خطأ في إدراج البيانات الافتراضية:', error);
@@ -251,6 +255,264 @@ export class DatabaseManager {
         duration: 0,
         categories: [4], // أحدث
         genres: [9] // تعليمي
+      },
+      // أفلام أجنبية مشهورة
+      {
+        title: 'The Shawshank Redemption',
+        title_ar: 'الخلاص من شاوشانك',
+        description: 'Hope and friendship in prison',
+        description_ar: 'الأمل والصداقة في السجن',
+        type: 'movie',
+        poster: '/serverdata/images/shawshank.svg',
+        release_date: '1994-09-23',
+        rating: 4.9,
+        duration: 142,
+        categories: [2], // أجنبي
+        genres: [2] // دراما
+      },
+      {
+        title: 'The Dark Knight',
+        title_ar: 'فارس الظلام',
+        description: 'Batman faces the Joker',
+        description_ar: 'باتمان يواجه الجوكر',
+        type: 'movie',
+        poster: '/serverdata/images/dark-knight.svg',
+        release_date: '2008-07-18',
+        rating: 4.8,
+        duration: 152,
+        categories: [2], // أجنبي
+        genres: [1, 6] // أكشن، جريمة
+      },
+      {
+        title: 'Forrest Gump',
+        title_ar: 'فورست غامب',
+        description: 'Life is like a box of chocolates',
+        description_ar: 'الحياة مثل علبة الشوكولاتة',
+        type: 'movie',
+        poster: '/serverdata/images/forrest-gump.svg',
+        release_date: '1994-07-06',
+        rating: 4.7,
+        duration: 142,
+        categories: [2], // أجنبي
+        genres: [2, 3] // دراما، كوميديا
+      },
+      {
+        title: '3 Idiots',
+        title_ar: '3 أغبياء',
+        description: 'Engineering students and friendship',
+        description_ar: 'طلاب الهندسة والصداقة',
+        type: 'movie',
+        poster: '/serverdata/images/3-idiots.svg',
+        release_date: '2009-12-25',
+        rating: 4.6,
+        duration: 170,
+        categories: [2], // أجنبي
+        genres: [2, 3] // دراما، كوميديا
+      },
+      {
+        title: 'Squid Game',
+        title_ar: 'لعبة الحبار',
+        description: 'Survival game series',
+        description_ar: 'مسلسل ألعاب البقاء',
+        type: 'series',
+        poster: '/serverdata/images/squid-game.svg',
+        release_date: '2021-09-17',
+        rating: 4.4,
+        duration: 60,
+        categories: [2], // أجنبي
+        genres: [4, 5] // إثارة، رعب
+      },
+      {
+        title: 'Breaking Bad',
+        title_ar: 'كسر الحدود',
+        description: 'Chemistry teacher becomes drug dealer',
+        description_ar: 'مدرس كيمياء يصبح تاجر مخدرات',
+        type: 'series',
+        poster: '/serverdata/images/breaking-bad.svg',
+        release_date: '2008-01-20',
+        rating: 4.9,
+        duration: 47,
+        categories: [2], // أجنبي
+        genres: [4, 6] // إثارة، جريمة
+      },
+      
+      // مسلسلات عربية
+      {
+        title: 'Bab Al-Hara',
+        title_ar: 'باب الحارة',
+        description: 'Syrian historical drama',
+        description_ar: 'دراما تاريخية سورية',
+        type: 'series',
+        poster: '/serverdata/images/bab-alhara.svg',
+        release_date: '2006-10-01',
+        rating: 4.3,
+        duration: 45,
+        categories: [1], // عربي
+        genres: [2, 11] // دراما، تاريخي
+      },
+      {
+        title: 'Al-Risalah',
+        title_ar: 'الرسالة',
+        description: 'The Message - Islamic historical film',
+        description_ar: 'فيلم تاريخي إسلامي',
+        type: 'movie',
+        poster: '/serverdata/images/alrisalah.svg',
+        release_date: '1976-03-09',
+        rating: 4.8,
+        duration: 177,
+        categories: [1], // عربي
+        genres: [2, 11] // دراما، تاريخي
+      },
+      
+      // برامج ومنوعات
+      {
+        title: 'Arabs Got Talent',
+        title_ar: 'عرب جوت تالنت',
+        description: 'Arab talent show',
+        description_ar: 'برنامج المواهب العربي',
+        type: 'program',
+        poster: '/serverdata/images/arabs-got-talent.svg',
+        release_date: '2011-01-01',
+        rating: 4.1,
+        duration: 90,
+        categories: [1], // عربي
+        genres: [10] // منوعات
+      },
+      {
+        title: 'The Voice Kids Arabia',
+        title_ar: 'ذا فويس كيدز العربية',
+        description: 'Singing competition for kids',
+        description_ar: 'مسابقة الغناء للأطفال',
+        type: 'program',
+        poster: '/serverdata/images/voice-kids-arabia.svg',
+        release_date: '2016-01-01',
+        rating: 4.0,
+        duration: 80,
+        categories: [1], // عربي
+        genres: [10] // منوعات
+      },
+      {
+        title: 'Mohamed Mounir Songs',
+        title_ar: 'أغاني محمد منير',
+        description: 'Songs collection by Mohamed Mounir',
+        description_ar: 'مجموعة أغاني محمد منير',
+        type: 'program',
+        poster: '/serverdata/images/mohamed-mounir-aghnia.svg',
+        release_date: '2020-01-01',
+        rating: 4.4,
+        duration: 45,
+        categories: [1], // عربي
+        genres: [10] // منوعات
+      },
+      {
+        title: 'Arabic Songs Collection',
+        title_ar: 'مجموعة أغاني عربية',
+        description: 'Best Arabic songs collection',
+        description_ar: 'مجموعة أفضل الأغاني العربية',
+        type: 'program',
+        poster: '/serverdata/images/arabic-songs-collection.svg',
+        release_date: '2023-01-01',
+        rating: 4.2,
+        duration: 60,
+        categories: [1], // عربي
+        genres: [10] // منوعات
+      },
+      {
+        title: 'Arabic Nature Documentary',
+        title_ar: 'وثائقي الطبيعة العربية',
+        description: 'Nature documentary about Arab region',
+        description_ar: 'وثائقي عن الطبيعة في المنطقة العربية',
+        type: 'program',
+        poster: '/serverdata/images/arabic-nature-documentary.svg',
+        release_date: '2022-01-01',
+        rating: 4.3,
+        duration: 75,
+        categories: [1], // عربي
+        genres: [8] // وثائقي
+      },
+      
+      // مسرحيات وعروض
+      {
+        title: 'Comedy Theater Show',
+        title_ar: 'عرض مسرحي كوميدي',
+        description: 'Arabic comedy theater performance',
+        description_ar: 'عرض مسرحي كوميدي عربي',
+        type: 'theater',
+        poster: '/serverdata/images/comedy-theater.svg',
+        release_date: '2023-06-01',
+        rating: 4.1,
+        duration: 120,
+        categories: [1], // عربي
+        genres: [3] // كوميديا
+      },
+      
+      // مصارعة ورياضة
+      {
+        title: 'WWE Saturday Night Main Event',
+        title_ar: 'WWE ليلة السبت الرئيسية',
+        description: 'WWE wrestling event',
+        description_ar: 'حدث مصارعة WWE',
+        type: 'wrestling',
+        poster: '/serverdata/images/wwe-snme.svg',
+        release_date: '2024-01-01',
+        rating: 3.9,
+        duration: 180,
+        categories: [2], // أجنبي
+        genres: [14] // رياضي
+      },
+      {
+        title: 'Arabic Wrestling Championship',
+        title_ar: 'بطولة المصارعة العربية',
+        description: 'Arab wrestling championship',
+        description_ar: 'بطولة المصارعة العربية',
+        type: 'wrestling',
+        poster: '/serverdata/images/arabic-wrestling.svg',
+        release_date: '2024-03-01',
+        rating: 3.8,
+        duration: 150,
+        categories: [1], // عربي
+        genres: [14] // رياضي
+      },
+      {
+        title: 'Arabic World Cup Coverage',
+        title_ar: 'تغطية كأس العالم العربي',
+        description: 'World Cup coverage in Arabic',
+        description_ar: 'تغطية كأس العالم باللغة العربية',
+        type: 'sports',
+        poster: '/serverdata/images/arabic-world-cup.svg',
+        release_date: '2022-11-01',
+        rating: 4.5,
+        duration: 90,
+        categories: [1], // عربي
+        genres: [14] // رياضي
+      },
+      
+      // ألعاب وتطبيقات
+      {
+        title: 'Arabic Action Game',
+        title_ar: 'لعبة أكشن عربية',
+        description: 'Action game with Arabic story',
+        description_ar: 'لعبة أكشن بقصة عربية',
+        type: 'game',
+        poster: '/serverdata/images/arabic-action-game.svg',
+        release_date: '2024-02-01',
+        rating: 4.0,
+        duration: 0,
+        categories: [1], // عربي
+        genres: [1] // أكشن
+      },
+      {
+        title: 'Programming Course',
+        title_ar: 'دورة البرمجة',
+        description: 'Learn programming in Arabic',
+        description_ar: 'تعلم البرمجة باللغة العربية',
+        type: 'application',
+        poster: '/serverdata/images/programming-course.svg',
+        release_date: '2024-01-01',
+        rating: 4.7,
+        duration: 0,
+        categories: [1], // عربي
+        genres: [9] // تعليمي
       }
     ];
 
@@ -279,6 +541,153 @@ export class DatabaseManager {
           );
         }
       }
+    }
+  }
+
+  private async insertDefaultEpisodes(): Promise<void> {
+    const episodes = [
+      // حلقات مسلسل حكايات صنعاء
+      {
+        content_id: 2, // Sana'a Stories
+        title: 'The Beginning',
+        title_ar: 'البداية',
+        description: 'First episode of the series',
+        episode_number: 1,
+        season_number: 1,
+        duration: 45,
+        release_date: '2024-01-01'
+      },
+      {
+        content_id: 2,
+        title: 'The Market',
+        title_ar: 'السوق',
+        description: 'Life in the traditional market',
+        episode_number: 2,
+        season_number: 1,
+        duration: 47,
+        release_date: '2024-01-08'
+      },
+      {
+        content_id: 2,
+        title: 'The Wedding',
+        title_ar: 'العرس',
+        description: 'Traditional wedding ceremony',
+        episode_number: 3,
+        season_number: 1,
+        duration: 52,
+        release_date: '2024-01-15'
+      },
+      // حلقات مسلسل Breaking Bad
+      {
+        content_id: 7, // Breaking Bad
+        title: 'Pilot',
+        title_ar: 'الحلقة التجريبية',
+        description: 'Walter White begins his journey',
+        episode_number: 1,
+        season_number: 1,
+        duration: 58,
+        release_date: '2008-01-20'
+      },
+      {
+        content_id: 7,
+        title: 'Cat\'s in the Bag',
+        title_ar: 'القط في الحقيبة',
+        description: 'Walter and Jesse dispose of evidence',
+        episode_number: 2,
+        season_number: 1,
+        duration: 48,
+        release_date: '2008-01-27'
+      }
+    ];
+
+    for (const episode of episodes) {
+      await this.db!.run(
+        `INSERT OR IGNORE INTO episodes (content_id, title, title_ar, description, episode_number, season_number, duration, release_date) 
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
+        [episode.content_id, episode.title, episode.title_ar, episode.description, episode.episode_number, episode.season_number, episode.duration, episode.release_date]
+      );
+    }
+  }
+
+  private async insertDefaultLinks(): Promise<void> {
+    // روابط التحميل
+    const downloadLinks = [
+      {
+        content_id: 1, // The Yemeni Wedding
+        quality: 'HD',
+        size: '1.2GB',
+        url: 'https://example.com/download/yemeni-wedding-hd.mp4',
+        server: 'Server 1'
+      },
+      {
+        content_id: 1,
+        quality: 'SD',
+        size: '800MB',
+        url: 'https://example.com/download/yemeni-wedding-sd.mp4',
+        server: 'Server 2'
+      },
+      {
+        content_id: 2, // Sana'a Stories
+        episode_id: 1,
+        quality: 'HD',
+        size: '600MB',
+        url: 'https://example.com/download/sanaa-stories-ep1-hd.mp4',
+        server: 'Server 1'
+      },
+      {
+        content_id: 6, // The Dark Knight
+        quality: 'Full HD',
+        size: '2.1GB',
+        url: 'https://example.com/download/dark-knight-fhd.mp4',
+        server: 'Server 1'
+      },
+      {
+        content_id: 7, // Breaking Bad
+        episode_id: 4,
+        quality: 'HD',
+        size: '750MB',
+        url: 'https://example.com/download/breaking-bad-s1e1-hd.mp4',
+        server: 'Server 1'
+      }
+    ];
+
+    for (const link of downloadLinks) {
+      await this.db!.run(
+        `INSERT OR IGNORE INTO download_links (content_id, episode_id, quality, size, url, server) 
+         VALUES (?, ?, ?, ?, ?, ?)`,
+        [link.content_id, link.episode_id || null, link.quality, link.size, link.url, link.server]
+      );
+    }
+
+    // روابط المشاهدة
+    const streamingLinks = [
+      {
+        content_id: 1, // The Yemeni Wedding
+        quality: 'HD',
+        url: 'https://example.com/stream/yemeni-wedding-hd.m3u8',
+        server: 'Stream Server 1'
+      },
+      {
+        content_id: 2, // Sana'a Stories
+        episode_id: 1,
+        quality: 'HD',
+        url: 'https://example.com/stream/sanaa-stories-ep1-hd.m3u8',
+        server: 'Stream Server 1'
+      },
+      {
+        content_id: 6, // The Dark Knight
+        quality: 'Full HD',
+        url: 'https://example.com/stream/dark-knight-fhd.m3u8',
+        server: 'Stream Server 1'
+      }
+    ];
+
+    for (const link of streamingLinks) {
+      await this.db!.run(
+        `INSERT OR IGNORE INTO streaming_links (content_id, episode_id, quality, url, server) 
+         VALUES (?, ?, ?, ?, ?)`,
+        [link.content_id, link.episode_id || null, link.quality, link.url, link.server]
+      );
     }
   }
 

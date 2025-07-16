@@ -1,16 +1,67 @@
-<svg width="300" height="450" xmlns="http://www.w3.org/2000/svg">
-  <rect width="300" height="450" fill="#FF9800"/>
-  <rect x="20" y="20" width="260" height="350" fill="#FFF3E0" stroke="#FF9800" stroke-width="2"/>
-  <text x="150" y="50" text-anchor="middle" fill="#FF9800" font-family="Arial, sans-serif" font-size="18" font-weight="bold">3 IDIOTS</text>
-  <text x="150" y="80" text-anchor="middle" fill="#FF9800" font-family="Arial, sans-serif" font-size="14">ثلاثة أغبياء</text>
-  <circle cx="120" cy="160" r="20" fill="#4CAF50"/>
-  <circle cx="150" cy="160" r="20" fill="#2196F3"/>
-  <circle cx="180" cy="160" r="20" fill="#FF5722"/>
-  <text x="120" y="167" text-anchor="middle" fill="#FFF" font-family="Arial, sans-serif" font-size="16">1</text>
-  <text x="150" y="167" text-anchor="middle" fill="#FFF" font-family="Arial, sans-serif" font-size="16">2</text>
-  <text x="180" y="167" text-anchor="middle" fill="#FFF" font-family="Arial, sans-serif" font-size="16">3</text>
-  <text x="150" y="320" text-anchor="middle" fill="#FF9800" font-family="Arial, sans-serif" font-size="18" font-weight="bold">8.4</text>
-  <text x="150" y="340" text-anchor="middle" fill="#FF9800" font-family="Arial, sans-serif" font-size="12">IMDB Rating</text>
-  <text x="150" y="380" text-anchor="middle" fill="#FF9800" font-family="Arial, sans-serif" font-size="12">2009 • كوميدي هندي • 170 دقيقة</text>
-  <text x="150" y="420" text-anchor="middle" fill="#FF9800" font-family="Arial, sans-serif" font-size="12">HD • Hindi</text>
+<svg viewBox="0 0 400 600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="schoolGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF6B6B;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#FF8E53;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="skyGrad3" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#74B9FF;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0984E3;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Sky background -->
+  <rect x="0" y="0" width="400" height="400" fill="url(#skyGrad3)"/>
+  
+  <!-- Ground -->
+  <rect x="0" y="400" width="400" height="200" fill="#00B894"/>
+  
+  <!-- College building -->
+  <rect x="50" y="200" width="300" height="200" fill="#2D3436"/>
+  <rect x="80" y="250" width="40" height="60" fill="#FDCB6E"/>
+  <rect x="140" y="250" width="40" height="60" fill="#FDCB6E"/>
+  <rect x="200" y="250" width="40" height="60" fill="#FDCB6E"/>
+  <rect x="260" y="250" width="40" height="60" fill="#FDCB6E"/>
+  <rect x="320" y="250" width="40" height="60" fill="#FDCB6E"/>
+  
+  <!-- Door -->
+  <rect x="180" y="320" width="40" height="80" fill="#8B4513"/>
+  <circle cx="210" cy="360" r="3" fill="#FFD700"/>
+  
+  <!-- Three students -->
+  <circle cx="120" cy="450" r="15" fill="#FDBCB4"/>
+  <rect x="110" y="465" width="20" height="30" fill="#0066CC"/>
+  <rect x="105" y="495" width="30" height="15" fill="#8B4513"/>
+  
+  <circle cx="200" cy="450" r="15" fill="#FDBCB4"/>
+  <rect x="190" y="465" width="20" height="30" fill="#FF6347"/>
+  <rect x="185" y="495" width="30" height="15" fill="#8B4513"/>
+  
+  <circle cx="280" cy="450" r="15" fill="#FDBCB4"/>
+  <rect x="270" y="465" width="20" height="30" fill="#00B894"/>
+  <rect x="265" y="495" width="30" height="15" fill="#8B4513"/>
+  
+  <!-- Books -->
+  <rect x="110" y="440" width="12" height="8" fill="#E84393"/>
+  <rect x="190" y="440" width="12" height="8" fill="#6C5CE7"/>
+  <rect x="270" y="440" width="12" height="8" fill="#A29BFE"/>
+  
+  <!-- Engineering tools -->
+  <rect x="150" y="520" width="100" height="3" fill="#2D3436"/>
+  <rect x="160" y="530" width="80" height="3" fill="#2D3436"/>
+  <circle cx="200" cy="540" r="8" fill="#FFD700"/>
+  <rect x="196" y="532" width="8" height="16" fill="#2D3436"/>
+  
+  <!-- Title -->
+  <text x="200" y="50" font-family="Arial, sans-serif" font-size="28" font-weight="bold" text-anchor="middle" fill="#ffffff">3 IDIOTS</text>
+  <text x="200" y="80" font-family="Arial, sans-serif" font-size="18" text-anchor="middle" fill="#ffffff">٣ أغبياء</text>
+  
+  <!-- Quote -->
+  <text x="200" y="120" font-family="Arial, sans-serif" font-size="16" text-anchor="middle" fill="#ffffff">"All is well"</text>
+  <text x="200" y="140" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#ffffff">كل شيء على ما يرام</text>
+  
+  <!-- Stars -->
+  <polygon points="100,30 105,40 115,40 107,47 110,57 100,50 90,57 93,47 85,40 95,40" fill="#FFD700"/>
+  <polygon points="300,40 305,50 315,50 307,57 310,67 300,60 290,67 293,57 285,50 295,50" fill="#FFD700"/>
+  <polygon points="350,80 355,90 365,90 357,97 360,107 350,100 340,107 343,97 335,90 345,90" fill="#FFD700"/>
 </svg>

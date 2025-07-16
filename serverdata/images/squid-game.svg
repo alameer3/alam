@@ -1,13 +1,65 @@
-<svg width="300" height="450" xmlns="http://www.w3.org/2000/svg">
-  <rect width="300" height="450" fill="#FF1744"/>
-  <rect x="20" y="20" width="260" height="350" fill="#FFEB3B" stroke="#FF1744" stroke-width="3"/>
-  <text x="150" y="50" text-anchor="middle" fill="#FF1744" font-family="Arial, sans-serif" font-size="16" font-weight="bold">SQUID GAME</text>
-  <text x="150" y="80" text-anchor="middle" fill="#FF1744" font-family="Arial, sans-serif" font-size="14">لعبة الحبار</text>
-  <circle cx="150" cy="160" r="30" fill="#FF1744"/>
-  <rect x="135" y="145" width="30" height="30" fill="#FFEB3B"/>
-  <polygon points="150,200 130,230 170,230" fill="#4CAF50"/>
-  <text x="150" y="320" text-anchor="middle" fill="#FF1744" font-family="Arial, sans-serif" font-size="18" font-weight="bold">8.0</text>
-  <text x="150" y="340" text-anchor="middle" fill="#FF1744" font-family="Arial, sans-serif" font-size="12">IMDB Rating</text>
-  <text x="150" y="380" text-anchor="middle" fill="#FF1744" font-family="Arial, sans-serif" font-size="12">2021 • كوري • 9 حلقات</text>
-  <text x="150" y="420" text-anchor="middle" fill="#FF1744" font-family="Arial, sans-serif" font-size="12">4K • Series</text>
+<svg viewBox="0 0 400 600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="redGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#FF0000;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#8B0000;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="greenGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00FF00;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#008B00;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect x="0" y="0" width="400" height="600" fill="#FFB6C1"/>
+  
+  <!-- Traffic light game -->
+  <rect x="150" y="100" width="100" height="200" fill="#2C3E50"/>
+  <circle cx="200" cy="130" r="15" fill="url(#redGrad)"/>
+  <circle cx="200" cy="170" r="15" fill="#FFD700"/>
+  <circle cx="200" cy="210" r="15" fill="url(#greenGrad)"/>
+  
+  <!-- Doll -->
+  <circle cx="200" cy="350" r="30" fill="#FDBCB4"/>
+  <rect x="185" y="380" width="30" height="50" fill="#FF69B4"/>
+  <rect x="175" y="430" width="50" height="20" fill="#8B4513"/>
+  
+  <!-- Doll face -->
+  <circle cx="190" cy="340" r="3" fill="#000000"/>
+  <circle cx="210" cy="340" r="3" fill="#000000"/>
+  <path d="M 190 355 Q 200 365 210 355" stroke="#000000" stroke-width="2" fill="none"/>
+  
+  <!-- Hair -->
+  <path d="M 170 330 Q 200 310 230 330" stroke="#8B4513" stroke-width="8" fill="none"/>
+  <path d="M 175 325 Q 200 315 225 325" stroke="#8B4513" stroke-width="6" fill="none"/>
+  
+  <!-- Players -->
+  <rect x="50" y="480" width="15" height="30" fill="#2E8B57"/>
+  <circle cx="57" cy="475" r="8" fill="#FDBCB4"/>
+  
+  <rect x="100" y="480" width="15" height="30" fill="#2E8B57"/>
+  <circle cx="107" cy="475" r="8" fill="#FDBCB4"/>
+  
+  <rect x="150" y="480" width="15" height="30" fill="#2E8B57"/>
+  <circle cx="157" cy="475" r="8" fill="#FDBCB4"/>
+  
+  <rect x="200" y="480" width="15" height="30" fill="#2E8B57"/>
+  <circle cx="207" cy="475" r="8" fill="#FDBCB4"/>
+  
+  <rect x="250" y="480" width="15" height="30" fill="#2E8B57"/>
+  <circle cx="257" cy="475" r="8" fill="#FDBCB4"/>
+  
+  <rect x="300" y="480" width="15" height="30" fill="#2E8B57"/>
+  <circle cx="307" cy="475" r="8" fill="#FDBCB4"/>
+  
+  <!-- Ground -->
+  <rect x="0" y="510" width="400" height="90" fill="#DEB887"/>
+  
+  <!-- Title -->
+  <text x="200" y="50" font-family="Arial, sans-serif" font-size="24" font-weight="bold" text-anchor="middle" fill="#8B0000">SQUID GAME</text>
+  <text x="200" y="75" font-family="Arial, sans-serif" font-size="18" text-anchor="middle" fill="#8B0000">لعبة الحبار</text>
+  
+  <!-- Korean symbols -->
+  <text x="200" y="550" font-family="Arial, sans-serif" font-size="20" font-weight="bold" text-anchor="middle" fill="#FF0000">456</text>
+  <text x="200" y="575" font-family="Arial, sans-serif" font-size="14" text-anchor="middle" fill="#000000">Red Light, Green Light</text>
 </svg>
