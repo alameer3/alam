@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import AdvancedContentGrid from "@/components/content/advanced-content-grid";
 
-import LoadingSpinner from "@/components/ui/loading-spinner";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, Filter } from "lucide-react";
@@ -18,6 +18,13 @@ export default function Programs() {
     queryKey: ['/api/categories'],
   });
 
+  const filters = {
+    search: searchQuery,
+    category: selectedCategory,
+    year: selectedYear,
+    quality: selectedQuality
+  };
+
   const { data: contentData, isLoading } = useQuery({
     queryKey: ['/api/content/programs', filters],
     queryFn: async () => {
@@ -27,7 +34,7 @@ export default function Programs() {
       if (filters.year) params.append('year', filters.year);
       if (filters.quality) params.append('quality', filters.quality);
       
-      const response = await fetch(`/api/content/programs?${params}`);
+      const response = await fetch(`/api/content?type=programs&${params}`);
       if (!response.ok) throw new Error('Failed to fetch content');
       return response.json();
     }
@@ -36,13 +43,6 @@ export default function Programs() {
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
     // البحث سيتم عبر التصفية
-  };
-
-  const filters = {
-    search: searchQuery,
-    category: selectedCategory,
-    year: selectedYear,
-    quality: selectedQuality,
   };
 
   return (

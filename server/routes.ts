@@ -130,7 +130,13 @@ export async function registerRoutes(app: Express): Promise<Server> {
         'movies': 'movie',
         'series': 'series',
         'tv': 'television',
-        'misc': 'miscellaneous'
+        'misc': 'miscellaneous',
+        'games': 'games',
+        'programs': 'programs',
+        'wrestling': 'wrestling',
+        'applications': 'applications',
+        'theater': 'theater',
+        'sports': 'sports'
       };
 
       const dbType = typeMapping[type as keyof typeof typeMapping] || type;
