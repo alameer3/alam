@@ -43,6 +43,11 @@ function Router() {
       <Route path="/ones" component={OnesPage} />
       <Route path="/movies" component={AkSvMovies} />
       <Route path="/series" component={Series} />
+      <Route path="/television" component={Series} />
+      <Route path="/shows" component={Programs} />
+      <Route path="/misc" component={Programs} />
+      <Route path="/misc-content" component={Programs} />
+      <Route path="/mix" component={Programs} />
       <Route path="/search" component={Search} />
       <Route path="/content/:id" component={ContentDetail} />
       <Route path="/movie/:id/:title?" component={AkSvMovieDetail} />
