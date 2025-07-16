@@ -545,11 +545,15 @@ class DatabaseManager {
 
   // Download links management
   async getDownloadLinks(contentId, episodeId = null) {
-    return (this.data.downloadLinks || []).filter(link => 
-      link.content_id === parseInt(contentId) && 
-      link.episode_id === (episodeId ? parseInt(episodeId) : null) &&
-      link.is_active
-    ).sort((a, b) => {
+    const links = (this.data.downloadLinks || []).filter(link => {
+      const contentMatch = link.content_id === parseInt(contentId);
+      const episodeMatch = episodeId ? 
+        link.episode_id === parseInt(episodeId) : 
+        link.episode_id === null;
+      return contentMatch && episodeMatch && link.is_active;
+    });
+    
+    return links.sort((a, b) => {
       // Sort by quality priority: 4K > HD > SD
       const qualityOrder = { '4K': 3, 'HD': 2, 'SD': 1 };
       return (qualityOrder[b.quality] || 0) - (qualityOrder[a.quality] || 0);
