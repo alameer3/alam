@@ -7,6 +7,9 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
+import { LoadingSpinner } from "@/components/ui/loading-spinner";
+import EpisodesList from "@/components/episodes/episodes-list";
+import DownloadLinks from "@/components/download/download-links";
 import { 
   Play, 
   Plus, 
@@ -33,7 +36,7 @@ export default function SeriesDetail() {
   const [activeTab, setActiveTab] = useState("episodes");
 
   const { data: content, isLoading } = useQuery({
-    queryKey: ['/api/content', contentId],
+    queryKey: [`/api/content/${contentId}`],
     queryFn: async () => {
       const response = await fetch(`/api/content/${contentId}`);
       if (!response.ok) throw new Error('Failed to fetch content');
@@ -42,22 +45,10 @@ export default function SeriesDetail() {
     enabled: !!contentId
   });
 
-  const { data: episodes } = useQuery({
-    queryKey: ['/api/content', contentId, 'episodes'],
-    queryFn: async () => {
-      // Mock episodes data - replace with actual API
-      return [
-        { id: 1, title: "الحلقة الأولى", duration: "45:30", views: "1.2M", rating: 8.5 },
-        { id: 2, title: "الحلقة الثانية", duration: "42:15", views: "980K", rating: 8.7 },
-        { id: 3, title: "الحلقة الثالثة", duration: "44:20", views: "1.1M", rating: 8.3 },
-      ];
-    }
-  });
-
   if (isLoading) {
     return (
       <div className="min-h-screen bg-black flex items-center justify-center">
-        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-red-600"></div>
+        <LoadingSpinner />
       </div>
     );
   }
@@ -194,8 +185,9 @@ export default function SeriesDetail() {
       {/* Main Content Tabs */}
       <div className="container mx-auto px-4 py-8">
         <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-          <TabsList className="grid w-full grid-cols-4 bg-gray-900">
+          <TabsList className="grid w-full grid-cols-5 bg-gray-900">
             <TabsTrigger value="episodes" className="data-[state=active]:bg-red-600">الحلقات</TabsTrigger>
+            <TabsTrigger value="download" className="data-[state=active]:bg-red-600">التحميل</TabsTrigger>
             <TabsTrigger value="cast" className="data-[state=active]:bg-red-600">فريق العمل</TabsTrigger>
             <TabsTrigger value="reviews" className="data-[state=active]:bg-red-600">المراجعات</TabsTrigger>
             <TabsTrigger value="similar" className="data-[state=active]:bg-red-600">مشابه</TabsTrigger>
@@ -203,48 +195,18 @@ export default function SeriesDetail() {
 
           {/* Episodes Tab */}
           <TabsContent value="episodes" className="mt-6">
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <h3 className="text-2xl font-bold">حلقات المسلسل</h3>
-                <Badge className="bg-blue-600">
-                  {episodes?.length || 0} حلقة
-                </Badge>
-              </div>
-              
-              <div className="grid gap-4">
-                {episodes?.map((episode: any) => (
-                  <Card key={episode.id} className="bg-gray-900 border-gray-700 hover:bg-gray-800 transition-colors">
-                    <CardContent className="p-4">
-                      <div className="flex items-center gap-4">
-                        <div className="w-20 h-12 bg-gray-700 rounded flex items-center justify-center">
-                          <Play className="w-5 h-5 text-white" />
-                        </div>
-                        <div className="flex-1">
-                          <h4 className="font-semibold text-white">{episode.title}</h4>
-                          <div className="flex items-center gap-4 text-sm text-gray-400 mt-1">
-                            <span className="flex items-center gap-1">
-                              <Clock className="w-3 h-3" />
-                              {episode.duration}
-                            </span>
-                            <span className="flex items-center gap-1">
-                              <Eye className="w-3 h-3" />
-                              {episode.views}
-                            </span>
-                            <span className="flex items-center gap-1">
-                              <Star className="w-3 h-3 text-yellow-400" />
-                              {episode.rating}
-                            </span>
-                          </div>
-                        </div>
-                        <Button size="sm" className="bg-red-600 hover:bg-red-700">
-                          مشاهدة
-                        </Button>
-                      </div>
-                    </CardContent>
-                  </Card>
-                ))}
-              </div>
-            </div>
+            <EpisodesList 
+              contentId={parseInt(contentId)}
+              contentType={content.type}
+            />
+          </TabsContent>
+          
+          {/* Download Tab */}
+          <TabsContent value="download" className="mt-6">
+            <DownloadLinks 
+              contentId={parseInt(contentId)}
+              title={content.titleArabic || content.title}
+            />
           </TabsContent>
 
           {/* Cast Tab */}

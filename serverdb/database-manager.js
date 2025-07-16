@@ -524,6 +524,50 @@ class DatabaseManager {
       totalWatchTime: watchHistory.reduce((sum, h) => sum + (h.progress_minutes || 0), 0)
     };
   }
+
+  // Episodes management
+  async getContentEpisodes(contentId) {
+    return (this.data.episodes || []).filter(ep => 
+      ep.content_id === parseInt(contentId) && ep.is_active
+    ).sort((a, b) => {
+      if (a.season_number !== b.season_number) {
+        return a.season_number - b.season_number;
+      }
+      return a.episode_number - b.episode_number;
+    });
+  }
+
+  async getEpisodeById(episodeId) {
+    return (this.data.episodes || []).find(ep => 
+      ep.id === parseInt(episodeId) && ep.is_active
+    ) || null;
+  }
+
+  // Download links management
+  async getDownloadLinks(contentId, episodeId = null) {
+    return (this.data.downloadLinks || []).filter(link => 
+      link.content_id === parseInt(contentId) && 
+      link.episode_id === (episodeId ? parseInt(episodeId) : null) &&
+      link.is_active
+    ).sort((a, b) => {
+      // Sort by quality priority: 4K > HD > SD
+      const qualityOrder = { '4K': 3, 'HD': 2, 'SD': 1 };
+      return (qualityOrder[b.quality] || 0) - (qualityOrder[a.quality] || 0);
+    });
+  }
+
+  // Streaming links management
+  async getStreamingLinks(contentId, episodeId = null) {
+    return (this.data.streamingLinks || []).filter(link => 
+      link.content_id === parseInt(contentId) && 
+      link.episode_id === (episodeId ? parseInt(episodeId) : null) &&
+      link.is_active
+    ).sort((a, b) => {
+      // Sort by quality priority: 4K > HD > SD
+      const qualityOrder = { '4K': 3, 'HD': 2, 'SD': 1 };
+      return (qualityOrder[b.quality] || 0) - (qualityOrder[a.quality] || 0);
+    });
+  }
 }
 
 export const dbManager = new DatabaseManager();

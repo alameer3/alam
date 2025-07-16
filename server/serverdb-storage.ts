@@ -280,6 +280,95 @@ export class ServerDBStorage {
   async getUserStats(userId: number) {
     return await dbManager.getUserStats(userId);
   }
+
+  // Episodes management
+  async getContentEpisodes(contentId: number) {
+    const episodes = await dbManager.getContentEpisodes(contentId);
+    return episodes.map(episode => ({
+      id: episode.id,
+      contentId: episode.content_id,
+      episodeNumber: episode.episode_number,
+      seasonNumber: episode.season_number,
+      title: episode.title,
+      titleArabic: episode.title_arabic,
+      description: episode.description,
+      descriptionArabic: episode.description_arabic,
+      duration: episode.duration,
+      quality: episode.quality,
+      resolution: episode.resolution,
+      language: episode.language,
+      subtitle: episode.subtitle,
+      videoUrl: episode.video_url,
+      downloadUrl: episode.download_url,
+      thumbnailUrl: episode.thumbnail_url,
+      isActive: episode.is_active,
+      createdAt: episode.created_at,
+      updatedAt: episode.updated_at
+    }));
+  }
+
+  async getEpisodeById(episodeId: number) {
+    const episode = await dbManager.getEpisodeById(episodeId);
+    if (!episode) return null;
+    return {
+      id: episode.id,
+      contentId: episode.content_id,
+      episodeNumber: episode.episode_number,
+      seasonNumber: episode.season_number,
+      title: episode.title,
+      titleArabic: episode.title_arabic,
+      description: episode.description,
+      descriptionArabic: episode.description_arabic,
+      duration: episode.duration,
+      quality: episode.quality,
+      resolution: episode.resolution,
+      language: episode.language,
+      subtitle: episode.subtitle,
+      videoUrl: episode.video_url,
+      downloadUrl: episode.download_url,
+      thumbnailUrl: episode.thumbnail_url,
+      isActive: episode.is_active,
+      createdAt: episode.created_at,
+      updatedAt: episode.updated_at
+    };
+  }
+
+  // Download links management
+  async getDownloadLinks(contentId: number, episodeId: number | null = null) {
+    const links = await dbManager.getDownloadLinks(contentId, episodeId);
+    return links.map(link => ({
+      id: link.id,
+      contentId: link.content_id,
+      episodeId: link.episode_id,
+      quality: link.quality,
+      resolution: link.resolution,
+      fileSize: link.file_size,
+      downloadUrl: link.download_url,
+      serverName: link.server_name,
+      language: link.language,
+      subtitle: link.subtitle,
+      isActive: link.is_active,
+      createdAt: link.created_at
+    }));
+  }
+
+  // Streaming links management
+  async getStreamingLinks(contentId: number, episodeId: number | null = null) {
+    const links = await dbManager.getStreamingLinks(contentId, episodeId);
+    return links.map(link => ({
+      id: link.id,
+      contentId: link.content_id,
+      episodeId: link.episode_id,
+      quality: link.quality,
+      resolution: link.resolution,
+      streamingUrl: link.streaming_url,
+      serverName: link.server_name,
+      language: link.language,
+      subtitle: link.subtitle,
+      isActive: link.is_active,
+      createdAt: link.created_at
+    }));
+  }
 }
 
 export const serverDBStorage = new ServerDBStorage();

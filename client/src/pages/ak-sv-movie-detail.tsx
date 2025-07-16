@@ -10,6 +10,8 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { useToast } from "@/hooks/use-toast";
+import EpisodesList from "@/components/episodes/episodes-list";
+import DownloadLinks from "@/components/download/download-links";
 
 export default function AkSvMovieDetail() {
   const { id } = useParams();
@@ -357,6 +359,24 @@ export default function AkSvMovieDetail() {
             </p>
           </CardContent>
         </Card>
+
+        {/* نظام التحميل والمشاهدة */}
+        <div className="mb-8">
+          <DownloadLinks 
+            contentId={parseInt(id)}
+            title={movie.titleArabic || movie.title}
+          />
+        </div>
+
+        {/* عرض الحلقات للمسلسلات */}
+        {movie.type === 'series' && (
+          <div className="mb-8">
+            <EpisodesList 
+              contentId={parseInt(id)}
+              contentType={movie.type}
+            />
+          </div>
+        )}
 
         {/* صور من الفيلم */}
         <Card className="bg-black/60 backdrop-blur-sm border-white/10 mb-8">

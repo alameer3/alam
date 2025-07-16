@@ -168,6 +168,68 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
+  // Episodes routes
+  app.get("/api/content/:id/episodes", async (req, res) => {
+    try {
+      const contentId = parseInt(req.params.id);
+      const episodes = await serverDBStorage.getContentEpisodes(contentId);
+      res.json(episodes);
+    } catch (error) {
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Episodes fetch error:', error);
+      }
+      res.status(500).json({ error: "Failed to fetch episodes" });
+    }
+  });
+
+  app.get("/api/episodes/:id", async (req, res) => {
+    try {
+      const episodeId = parseInt(req.params.id);
+      const episode = await serverDBStorage.getEpisodeById(episodeId);
+      
+      if (!episode) {
+        return res.status(404).json({ error: "Episode not found" });
+      }
+
+      res.json(episode);
+    } catch (error) {
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Episode fetch error:', error);
+      }
+      res.status(500).json({ error: "Failed to fetch episode" });
+    }
+  });
+
+  // Download links routes
+  app.get("/api/content/:id/download", async (req, res) => {
+    try {
+      const contentId = parseInt(req.params.id);
+      const episodeId = req.query.episode ? parseInt(req.query.episode as string) : null;
+      const downloadLinks = await serverDBStorage.getDownloadLinks(contentId, episodeId);
+      res.json(downloadLinks);
+    } catch (error) {
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Download links fetch error:', error);
+      }
+      res.status(500).json({ error: "Failed to fetch download links" });
+    }
+  });
+
+  // Streaming links routes
+  app.get("/api/content/:id/stream", async (req, res) => {
+    try {
+      const contentId = parseInt(req.params.id);
+      const episodeId = req.query.episode ? parseInt(req.query.episode as string) : null;
+      const streamingLinks = await serverDBStorage.getStreamingLinks(contentId, episodeId);
+      res.json(streamingLinks);
+    } catch (error) {
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Streaming links fetch error:', error);
+      }
+      res.status(500).json({ error: "Failed to fetch streaming links" });
+    }
+  });
+
   app.post("/api/content", async (req, res) => {
     try {
       const validatedData = insertContentSchema.parse(req.body);
@@ -466,6 +528,67 @@ export async function registerRoutes(app: Express): Promise<Server> {
       res.json({ message: "Cache cleared successfully" });
     } catch (error) {
       res.status(500).json({ error: "Failed to clear cache" });
+    }
+  });
+
+  // Episodes routes - for series content
+  app.get("/api/content/:id/episodes", async (req, res) => {
+    try {
+      const contentId = parseInt(req.params.id);
+      const episodes = await serverDBStorage.getContentEpisodes(contentId);
+      res.json(episodes);
+    } catch (error) {
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Episodes fetch error:', error);
+      }
+      res.status(500).json({ error: "Failed to fetch episodes" });
+    }
+  });
+
+  // Download links - multiple servers and qualities
+  app.get("/api/content/:id/download", async (req, res) => {
+    try {
+      const contentId = parseInt(req.params.id);
+      const episodeId = req.query.episode ? parseInt(req.query.episode as string) : null;
+      const downloadLinks = await serverDBStorage.getDownloadLinks(contentId, episodeId);
+      res.json(downloadLinks);
+    } catch (error) {
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Download links fetch error:', error);
+      }
+      res.status(500).json({ error: "Failed to fetch download links" });
+    }
+  });
+
+  // Streaming links - multiple servers and qualities
+  app.get("/api/content/:id/stream", async (req, res) => {
+    try {
+      const contentId = parseInt(req.params.id);
+      const episodeId = req.query.episode ? parseInt(req.query.episode as string) : null;
+      const streamingLinks = await serverDBStorage.getStreamingLinks(contentId, episodeId);
+      res.json(streamingLinks);
+    } catch (error) {
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Streaming links fetch error:', error);
+      }
+      res.status(500).json({ error: "Failed to fetch streaming links" });
+    }
+  });
+
+  // Episode details
+  app.get("/api/episodes/:id", async (req, res) => {
+    try {
+      const episodeId = parseInt(req.params.id);
+      const episode = await serverDBStorage.getEpisodeById(episodeId);
+      if (!episode) {
+        return res.status(404).json({ error: "Episode not found" });
+      }
+      res.json(episode);
+    } catch (error) {
+      if (process.env.NODE_ENV === 'development') {
+        console.error('Episode fetch error:', error);
+      }
+      res.status(500).json({ error: "Failed to fetch episode" });
     }
   });
 
