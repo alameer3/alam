@@ -65,6 +65,7 @@ export default function ContentRating({
     // Here you would typically send the report to your API
     if (process.env.NODE_ENV === 'development') {
       // Report submitted successfully - production ready
+      console.log('تم إرسال التبليغ:', {
         contentId,
         ...reportData,
         timestamp: new Date().toISOString()
