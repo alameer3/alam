@@ -1,113 +1,105 @@
-import { Switch, Route, useLocation } from "wouter";
-import { queryClient } from "./lib/queryClient";
-import { QueryClientProvider } from "@tanstack/react-query";
-import { Toaster } from "@/components/ui/toaster";
-import { YemenThemeProvider } from "@/components/theme/yemen-theme-provider";
-import AkSvEnhancedHeader from "@/components/layout/ak-sv-enhanced-header";
-import AkSvEnhancedFooter from "@/components/layout/ak-sv-enhanced-footer";
-import { ErrorBoundary } from "@/components/ui/error-boundary";
-import NotFound from "@/pages/not-found";
-import AkSvEnhancedHomepage from "@/components/home/ak-sv-enhanced-homepage";
-import OnesPage from "@/pages/ones";
-import AkSvEnhancedMovies from "@/pages/ak-sv-enhanced-movies";
-import Series from "@/pages/series";
-import Search from "@/pages/search";
-import ContentDetail from "@/pages/content-detail";
-import SeriesDetail from "@/pages/series-detail";
+import React, { useState, useEffect } from 'react';
+import { Route, Switch, useLocation } from 'wouter';
+import './index.css';
 
-import Login from "@/pages/login";
-import Register from "@/pages/register";
-import Profile from "@/pages/profile";
-import Watchlists from "@/pages/watchlists";
-import Notifications from "@/pages/notifications";
-import Admin from "@/pages/admin";
-import Trailers from "@/pages/trailers";
-import Programs from "@/pages/programs";
-import Games from "@/pages/games";
-import Applications from "@/pages/applications";
-import Theater from "@/pages/theater";
-import Wrestling from "@/pages/wrestling";
-import Sports from "@/pages/sports";
-import Recent from "@/pages/recent";
-import Watch from "@/pages/watch";
-
-
-function Router() {
-  return (
-    <Switch>
-      <Route path="/" component={AkSvEnhancedHomepage} />
-      <Route path="/ones" component={OnesPage} />
-      <Route path="/movies" component={AkSvEnhancedMovies} />
-      <Route path="/series" component={Series} />
-      <Route path="/television" component={Series} />
-      <Route path="/shows" component={Programs} />
-      <Route path="/misc" component={Programs} />
-      <Route path="/misc-content" component={Programs} />
-      <Route path="/mix" component={Programs} />
-      <Route path="/search" component={Search} />
-      <Route path="/content/:id" component={ContentDetail} />
-      <Route path="/movie/:id/:title?" component={ContentDetail} />
-      <Route path="/series/:id/:title?" component={SeriesDetail} />
-      <Route path="/program/:id/:title?" component={ContentDetail} />
-      <Route path="/game/:id/:title?" component={ContentDetail} />
-      <Route path="/application/:id/:title?" component={ContentDetail} />
-      <Route path="/theater/:id/:title?" component={ContentDetail} />
-      <Route path="/wrestling/:id/:title?" component={ContentDetail} />
-      <Route path="/sports/:id/:title?" component={ContentDetail} />
-      
-      {/* صفحات المشاهدة والمحتوى الجديد */}
-      <Route path="/watch/:id/:episodeId?/:title?" component={Watch} />
-      <Route path="/recent" component={Recent} />
-      
-      {/* الأقسام الجديدة */}
-      <Route path="/programs" component={Programs} />
-      <Route path="/games" component={Games} />
-      <Route path="/applications" component={Applications} />
-      <Route path="/theater" component={Theater} />
-      <Route path="/wrestling" component={Wrestling} />
-      <Route path="/sports" component={Sports} />
-
-      {/* المسارات المحمية - تحتاج authentication */}
-      <Route path="/admin" component={Admin} />
-      <Route path="/login" component={Login} />
-      <Route path="/register" component={Register} />
-      <Route path="/profile" component={Profile} />
-      <Route path="/watchlists" component={Watchlists} />
-      <Route path="/notifications" component={Notifications} />
-      <Route path="/trailers" component={Trailers} />
-
-
-      <Route component={NotFound} />
-    </Switch>
-  );
-}
-
-function AppContent() {
-  const [location] = useLocation();
-  const isHomePage = location === "/";
-
-  return (
-    <div className="min-h-screen bg-background">
-      {isHomePage && <AkSvEnhancedHeader />}
-      {!isHomePage && <AkSvEnhancedHeader />}
-      <main>
-        <Router />
-      </main>
-      {!isHomePage && <AkSvEnhancedFooter />}
-      <Toaster />
-    </div>
-  );
-}
+import Header from './components/Header';
+import HomePage from './pages/HomePage';
+import ContentGrid from './components/ContentGrid';
+import MovieDetails from './components/MovieDetails';
+import SeriesDetails from './components/SeriesDetails';
+import ShowDetails from './components/ShowDetails';
+import WatchPage from './components/WatchPage';
+import SearchResults from './components/SearchResults';
+import FavoritesPage from './components/FavoritesPage';
+import AdminDashboard from './components/AdminDashboard';
 
 function App() {
+  const [location] = useLocation();
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  // مراقبة التمرير لتأثيرات الهيدر
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 100);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   return (
-    <QueryClientProvider client={queryClient}>
-      <YemenThemeProvider>
-        <ErrorBoundary>
-          <AppContent />
-        </ErrorBoundary>
-      </YemenThemeProvider>
-    </QueryClientProvider>
+    <div className="App" dir="rtl">
+      {/* الهيدر */}
+      <Header isScrolled={isScrolled} />
+
+      {/* المحتوى الرئيسي */}
+      <main className="main-content">
+        <Switch>
+          <Route path="/" component={HomePage} />
+          <Route path="/movies" component={() => <ContentGrid contentType="movie" />} />
+          <Route path="/series" component={() => <ContentGrid contentType="series" />} />
+          <Route path="/shows" component={() => <ContentGrid contentType="show" />} />
+          <Route path="/mix" component={() => <ContentGrid contentType="mix" />} />
+          <Route path="/movie/:id" component={MovieDetails} />
+          <Route path="/series/:id" component={SeriesDetails} />
+          <Route path="/show/:id" component={ShowDetails} />
+          <Route path="/watch/:type/:id" component={WatchPage} />
+          <Route path="/search" component={SearchResults} />
+          <Route path="/favorite" component={FavoritesPage} />
+          <Route path="/admin" component={AdminDashboard} />
+          <Route component={() => (
+            <div className="container py-5 text-center">
+              <h1 className="display-1">404</h1>
+              <p className="fs-4">الصفحة غير موجودة</p>
+              <a href="/" className="btn btn-primary">العودة للرئيسية</a>
+            </div>
+          )} />
+        </Switch>
+      </main>
+
+      {/* الفوتر */}
+      <footer className="bg-dark text-white py-5">
+        <div className="container">
+          <div className="row">
+            <div className="col-md-4 mb-4">
+              <h3 className="h5 text-primary mb-3">اكوام</h3>
+              <p className="text-muted">
+                شمس المواقع، الموقع العربي الأول لتحميل ومشاهدة الأفلام والمسلسلات والبرامج
+              </p>
+            </div>
+            <div className="col-md-4 mb-4">
+              <h3 className="h5 text-primary mb-3">روابط مهمة</h3>
+              <ul className="list-unstyled">
+                <li className="mb-2">
+                  <a href="/contactus" className="text-muted text-decoration-none">تواصل معنا</a>
+                </li>
+                <li className="mb-2">
+                  <a href="/dmca" className="text-muted text-decoration-none">حقوق الطبع والنشر</a>
+                </li>
+                <li className="mb-2">
+                  <a href="/ad-policy" className="text-muted text-decoration-none">سياسة الإعلانات</a>
+                </li>
+              </ul>
+            </div>
+            <div className="col-md-4 mb-4">
+              <h3 className="h5 text-primary mb-3">تابعنا</h3>
+              <div className="d-flex gap-3">
+                <a href="https://facebook.com/akwamofficial" className="text-muted text-decoration-none" target="_blank" rel="noopener noreferrer">
+                  <i className="icon-facebook"></i> فيسبوك
+                </a>
+                <a href="https://youtube.com/akwamofficial" className="text-muted text-decoration-none" target="_blank" rel="noopener noreferrer">
+                  <i className="icon-youtube"></i> يوتيوب
+                </a>
+              </div>
+            </div>
+          </div>
+          <hr className="border-secondary my-4" />
+          <div className="text-center text-muted">
+            <p className="mb-0">جميع الحقوق محفوظة لـ شبكة اكوام © 2025</p>
+          </div>
+        </div>
+      </footer>
+    </div>
   );
 }
 
