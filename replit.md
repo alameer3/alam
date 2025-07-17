@@ -2,8 +2,8 @@
 
 ## 🚨 تحذير مهم جداً - اقرأ هذا أولاً! 🚨
 **للمطور الذي يستورد من GitHub**: هذا الملف هو مرجعك الأساسي لحفظ الذاكرة بين الجلسات.
-**آخر تحديث**: 17 يوليو 2025 - الساعة 6:53 PM
-**الحالة الحالية**: إعادة كتابة الموقع ليطابق الأصلي تماماً مع المكونات الجديدة والتصميم الأصلي
+**آخر تحديث**: 17 يوليو 2025 - الساعة 7:02 PM
+**الحالة الحالية**: تم ترحيل المشروع بنجاح من Replit Agent إلى بيئة Replit
 **المطلوب**: جاهز للاستخدام والتطوير
 
 ## نظرة عامة
@@ -89,6 +89,52 @@
 - ✅ **نسخ الخطوط الأصلية** - STC-Bold, STC-Light, STC-Regular من extracted_files (17 يوليو 2025 - 6:53 PM)
 - ✅ **JavaScript الأصلي** - إضافة جميع تأثيرات الموقع الأصلي (header scroll, search toggle, menu toggle, typed.js) (17 يوليو 2025 - 6:53 PM)
 - ✅ **التصميم الأصلي الكامل** - تطبيق التصميم والهيكل الأصلي بالكامل مع جميع الفئات والأيقونات (17 يوليو 2025 - 6:53 PM)
+- ✅ **ترحيل المشروع من Replit Agent** - إعداد البيئة وإصلاح ملفات CSS/JS (17 يوليو 2025 - 7:02 PM)
+
+## 🔧 التغييرات المطلوبة في client (17 يوليو 2025 - 7:02 PM)
+
+### ✅ الملفات المضافة في client/public:
+- **CSS Files**: plugins_orig.css, style_orig.css, akwam_orig.css, home_orig.css
+- **JavaScript Files**: jquery-3.2.1.min.js, typed.min.js, select2.full.min.js, jquery.lazy.min.js
+- **JavaScript Plugins**: ar.js, sweetalert.min.js, infinite-scroll.pkgd.min.js, jquery.fancybox.min.js, pace.min.js, jquery.cookie.js, idTabs.js, jquery.validate.min.js, messages_ar.min.js, akwam.js
+- **Fonts**: STC-Bold.eot/woff/ttf/svg, STC-Light.eot/woff/ttf/svg, STC-Regular.eot/woff/ttf/svg
+- **Assets**: favicon.ico, logo-white.svg
+
+### ✅ الملفات المحدثة:
+- **client/src/index.css**: إزالة @import statements المعطلة وإصلاح PostCSS errors
+- **client/index.html**: يحتوي على جميع روابط CSS و JavaScript الأصلية
+
+### ✅ الهيكل النهائي لـ client/public:
+```
+client/public/
+├── css/
+│   ├── plugins_orig.css
+│   ├── style_orig.css
+│   ├── akwam_orig.css
+│   └── home_orig.css
+├── js/
+│   ├── jquery-3.2.1.min.js
+│   ├── akwam.js
+│   └── plugins/
+│       ├── typed.min.js
+│       ├── select2.full.min.js
+│       ├── jquery.lazy.min.js
+│       ├── ar.js
+│       ├── sweetalert.min.js
+│       ├── infinite-scroll.pkgd.min.js
+│       ├── jquery.fancybox.min.js
+│       ├── pace.min.js
+│       ├── jquery.cookie.js
+│       ├── idTabs.js
+│       ├── jquery.validate.min.js
+│       └── messages_ar.min.js
+├── fonts/
+│   ├── STC-Bold.eot/woff/ttf/svg
+│   ├── STC-Light.eot/woff/ttf/svg
+│   └── STC-Regular.eot/woff/ttf/svg
+├── favicon.ico
+└── logo-white.svg
+```
 
 ## 🔧 نظام ServerData التجريبي (مكتمل بنجاح)
 
