@@ -23,6 +23,25 @@ app.use(validateInput);
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: false, limit: '10mb' }));
 
+// Serve static files from client/public (CSS, JS, fonts, images)
+app.use(express.static('client/public', {
+  setHeaders: (res, path) => {
+    if (path.endsWith('.css')) {
+      res.setHeader('Content-Type', 'text/css');
+    } else if (path.endsWith('.js')) {
+      res.setHeader('Content-Type', 'application/javascript');
+    } else if (path.endsWith('.woff') || path.endsWith('.woff2')) {
+      res.setHeader('Content-Type', 'font/woff');
+    } else if (path.endsWith('.ttf')) {
+      res.setHeader('Content-Type', 'font/ttf');
+    } else if (path.endsWith('.svg')) {
+      res.setHeader('Content-Type', 'image/svg+xml');
+    } else if (path.endsWith('.eot')) {
+      res.setHeader('Content-Type', 'application/vnd.ms-fontobject');
+    }
+  }
+}));
+
 // Serve static files from serverdata/images or serverdb/images
 const serverDataImagesPath = 'serverdata/images';
 const serverDbImagesPath = 'serverdb/images';
