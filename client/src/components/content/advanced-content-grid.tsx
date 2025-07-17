@@ -137,9 +137,12 @@ export function AdvancedContentGrid({
               <div className="relative flex-shrink-0 w-24 h-36 rounded-lg overflow-hidden bg-gradient-to-br from-primary/20 to-primary/5">
                 {item.poster ? (
                   <img 
-                    src={item.poster} 
+                    src={item.poster ? `/serverdata/images/${item.poster}` : '/api/placeholder/150/200'} 
                     alt={item.title}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+                    onError={(e) => {
+                      e.currentTarget.src = '/api/placeholder/150/200';
+                    }}
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-muted-foreground">
@@ -227,9 +230,12 @@ export function AdvancedContentGrid({
               <div className="relative w-16 h-20 rounded overflow-hidden bg-gradient-to-br from-primary/20 to-primary/5 flex-shrink-0">
                 {item.poster ? (
                   <img 
-                    src={item.poster} 
+                    src={item.poster ? `/serverdata/images/${item.poster}` : '/api/placeholder/80/100'} 
                     alt={item.title}
                     className="w-full h-full object-cover"
+                    onError={(e) => {
+                      e.currentTarget.src = '/api/placeholder/80/100';
+                    }}
                   />
                 ) : (
                   <div className="w-full h-full flex items-center justify-center text-muted-foreground">
@@ -280,9 +286,12 @@ export function AdvancedContentGrid({
         <div className="relative aspect-[2/3] overflow-hidden bg-gradient-to-br from-primary/20 to-primary/5">
           {item.poster ? (
             <img 
-              src={item.poster} 
+              src={item.poster ? `/serverdata/images/${item.poster}` : '/api/placeholder/300/450'} 
               alt={item.title}
               className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300"
+              onError={(e) => {
+                e.currentTarget.src = '/api/placeholder/300/450';
+              }}
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center text-muted-foreground">

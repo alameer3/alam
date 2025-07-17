@@ -48,7 +48,7 @@ export function AkStyleContentCard({ content, href }: AkStyleContentCardProps) {
       <Link to={finalHref}>
         <div className="aspect-[2/3] relative">
           <img 
-            src={content.poster_url || '/api/placeholder/300/450'} 
+            src={content.poster ? `/serverdata/images/${content.poster}` : '/api/placeholder/300/450'} 
             alt={content.titleArabic || content.title}
             className="w-full h-full object-cover transition-transform duration-200 group-hover:scale-105"
             onError={(e) => {

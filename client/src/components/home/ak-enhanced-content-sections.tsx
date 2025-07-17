@@ -147,9 +147,12 @@ function ContentSection({ title, endpoint, viewAllLink, type, icon: IconComponen
                   <div className="relative overflow-hidden">
                     {/* Poster Image */}
                     <img
-                      src={item.poster || "/api/placeholder/300/450"}
+                      src={item.poster ? `/serverdata/images/${item.poster}` : "/api/placeholder/300/450"}
                       alt={item.titleAr || item.title}
                       className="w-full aspect-[2/3] object-cover transition-transform duration-500 group-hover:scale-110"
+                      onError={(e) => {
+                        e.currentTarget.src = '/api/placeholder/300/450';
+                      }}
                     />
 
                     {/* Quality Badge */}

@@ -70,9 +70,12 @@ export default function SimpleContentGrid({ title, endpoint, viewAllLink }: Simp
               <div className="content-card group cursor-pointer">
                 <div className="relative aspect-[2/3] overflow-hidden">
                   <img
-                    src={item.poster}
+                    src={item.poster ? `/serverdata/images/${item.poster}` : '/api/placeholder/300/450'}
                     alt={item.titleAr || item.title}
                     className="image-clean w-full h-full object-cover"
+                    onError={(e) => {
+                      e.currentTarget.src = '/api/placeholder/300/450';
+                    }}
                   />
                   <div className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                     <Play className="h-12 w-12 text-white" />
