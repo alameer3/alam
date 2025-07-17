@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 import { Play, Heart, Star, Clock, TrendingUp } from "lucide-react";
@@ -23,6 +23,46 @@ interface Content {
 
 export default function OnesPage() {
   const [, setLocation] = useLocation();
+  const [searchQuery, setSearchQuery] = useState("");
+  const typedRef = useRef<HTMLInputElement>(null);
+
+  // إضافة تأثيرات Typed.js للبحث
+  useEffect(() => {
+    const script = document.createElement('script');
+    script.src = '/js/typed.min.js';
+    script.onload = () => {
+      if (typedRef.current && (window as any).Typed) {
+        new (window as any).Typed(typedRef.current, {
+          strings: [
+            'ابحث عن فيلم او مسلسل او لعبة او برنامج ...',
+            'مثال: الجزيرة',
+            'مثال آخر: اسم مؤقت',
+            'مثال: FIFA',
+            'ابحث هنا في اكوام باسم الفيلم او المسلسل او اي لعبة او برنامج ترغب به'
+          ],
+          typeSpeed: 50,
+          backSpeed: 30,
+          loop: true,
+          backDelay: 2000,
+          attr: 'placeholder'
+        });
+      }
+    };
+    document.head.appendChild(script);
+
+    return () => {
+      if (document.head.contains(script)) {
+        document.head.removeChild(script);
+      }
+    };
+  }, []);
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      setLocation(`/search?q=${encodeURIComponent(searchQuery.trim())}`);
+    }
+  };
 
   // جلب المحتوى المميز
   const { data: featuredContent, isLoading: featuredLoading } = useQuery({
@@ -137,41 +177,68 @@ export default function OnesPage() {
     </div>
   );
 
+  // التصنيفات الرئيسية
+  const mainCategories = [
+    { title: "أفلام", path: "/movies", icon: "icon-video-camera" },
+    { title: "مسلسلات", path: "/series", icon: "icon-monitor" },
+    { title: "تلفزيون", path: "/shows", icon: "icon-tv" },
+    { title: "منوعات", path: "/mix", icon: "icon-mix" }
+  ];
+
   return (
     <div className="min-h-screen bg-black text-white">
-      {/* Hero Section */}
-      <div className="relative h-[400px] bg-gradient-to-r from-black via-slate-900 to-black">
-        <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent"></div>
-        <div className="relative z-10 container mx-auto px-4 h-full flex items-center">
-          <div className="max-w-2xl">
-            <h1 className="text-4xl md:text-6xl font-bold mb-4 text-white">
-              مرحباً بك في أكوام
-            </h1>
-            <p className="text-xl text-white/80 mb-6">
-              شاهد أحدث الأفلام والمسلسلات العربية والأجنبية مجاناً
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <Button
-                size="lg"
-                onClick={() => setLocation("/recent")}
-                className="bg-orange-600 hover:bg-orange-700 text-white"
-              >
-                <Clock className="w-5 h-5 mr-2" />
-                أُضيف حديثاً
-              </Button>
-              <Button
-                size="lg"
-                variant="outline"
-                onClick={() => setLocation("/movies")}
-                className="border-white/20 text-white hover:bg-white/10"
-              >
-                <Play className="w-5 h-5 mr-2" />
-                تصفح الأفلام
-              </Button>
+      <div style={{ marginBottom: "90px" }}></div>
+      
+      {/* Widget البحث والتصنيفات */}
+      <div className="container mx-auto px-4">
+        <div className="widget-2 widget mb-4">
+          <div className="widget-body">
+            <div className="col-lg-8 mx-auto">
+              {/* شريط البحث المحسن */}
+              <form onSubmit={handleSearch} className="form d-flex no-gutters mb-5">
+                <div className="col pl-3 relative">
+                  <input 
+                    ref={typedRef}
+                    type="text" 
+                    className="form-control w-full p-4 bg-gray-800 border border-gray-700 rounded-r-lg text-white placeholder-gray-400"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    style={{ direction: 'rtl' }}
+                  />
+                </div>
+                <div className="col-auto">
+                  <button 
+                    type="submit" 
+                    className="btn btn-orange px-6 py-4 bg-orange-500 hover:bg-orange-600 text-white rounded-l-lg"
+                  >
+                    بحث
+                  </button>
+                </div>
+              </form>
+              
+              {/* التصنيفات الرئيسية */}
+              <div className="main-categories-list">
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                  {mainCategories.map((category) => (
+                    <button
+                      key={category.path}
+                      onClick={() => setLocation(category.path)}
+                      className="item d-block text-center text-white py-6 h-100 bg-gray-800 hover:bg-gray-700 rounded-lg transition-colors"
+                    >
+                      <div className="icn mb-2">
+                        <i className={`${category.icon} text-3xl text-orange-500`}></i>
+                      </div>
+                      <div className="font-size-16">{category.title}</div>
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
           </div>
         </div>
       </div>
+      
+      <div className="main-categories-list-end mb-8"></div>
 
       <div className="container mx-auto px-4 py-8">
         {/* المحتوى المميز */}

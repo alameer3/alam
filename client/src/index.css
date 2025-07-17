@@ -113,6 +113,14 @@ body {
   font-size: 14px;
 }
 
+/* خلفية الصفحة الرئيسية الأصلية */
+.body-home {
+  background: linear-gradient(to bottom, rgba(0, 0, 0, .55), #000 100%), url('/images/home-bg.webp');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+}
+
 
 
 /* تخصيص الهيدر الأصلي */

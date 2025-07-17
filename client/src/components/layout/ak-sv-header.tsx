@@ -115,7 +115,7 @@ export default function AkSvHeader() {
               <div className="col-auto">
                 <h2 className="main-logo m-0">
                   <button onClick={() => setLocation("/ones")} className="d-inline-flex bg-transparent border-0">
-                    <img src="/logo-white.svg" className="img-fluid" alt="اكوام" />
+                    <img src="/images/logo-white.svg" className="img-fluid" alt="اكوام" />
                   </button>
                 </h2>
               </div>
