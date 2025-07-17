@@ -364,4 +364,173 @@ router.get('/placeholder/:width/:height', (req, res) => {
   res.send(svg);
 });
 
+// Database Management API
+router.get('/admin/database/stats', async (req, res) => {
+  try {
+    const stats = {
+      totalSize: '12.5 MB',
+      recordCount: 1000,
+      tables: [
+        { name: 'content', records: 30, size: '5.2 MB' },
+        { name: 'users', records: 1, size: '0.1 MB' },
+        { name: 'categories', records: 10, size: '0.2 MB' },
+        { name: 'genres', records: 15, size: '0.3 MB' },
+        { name: 'episodes', records: 6, size: '1.1 MB' },
+        { name: 'download_links', records: 10, size: '0.5 MB' },
+        { name: 'streaming_links', records: 2, size: '0.2 MB' }
+      ],
+      lastBackup: new Date().toISOString(),
+      diskUsage: 25
+    };
+
+    res.json({
+      success: true,
+      data: stats
+    });
+  } catch (error) {
+    console.error('خطأ في الحصول على إحصائيات قاعدة البيانات:', error);
+    res.status(500).json({
+      success: false,
+      error: 'خطأ في الحصول على إحصائيات قاعدة البيانات'
+    });
+  }
+});
+
+router.post('/admin/database/backup', async (req, res) => {
+  try {
+    // Simulate backup creation
+    await new Promise(resolve => setTimeout(resolve, 2000));
+    
+    res.json({
+      success: true,
+      message: 'تم إنشاء النسخة الاحتياطية بنجاح'
+    });
+  } catch (error) {
+    console.error('خطأ في إنشاء النسخة الاحتياطية:', error);
+    res.status(500).json({
+      success: false,
+      error: 'خطأ في إنشاء النسخة الاحتياطية'
+    });
+  }
+});
+
+// Notifications Management API
+router.get('/admin/notifications', async (req, res) => {
+  try {
+    const notifications = [
+      {
+        id: 1,
+        title: 'تحديث النظام',
+        message: 'تم تحديث النظام إلى الإصدار الجديد بنجاح',
+        type: 'success',
+        targetType: 'all',
+        isRead: false,
+        createdAt: new Date().toISOString(),
+        isActive: true
+      },
+      {
+        id: 2,
+        title: 'صيانة مجدولة',
+        message: 'سيتم إجراء صيانة للنظام غداً في الساعة 2:00 صباحاً',
+        type: 'warning',
+        targetType: 'all',
+        isRead: false,
+        createdAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
+        isActive: true
+      }
+    ];
+
+    res.json({
+      success: true,
+      data: notifications
+    });
+  } catch (error) {
+    console.error('خطأ في الحصول على الإشعارات:', error);
+    res.status(500).json({
+      success: false,
+      error: 'خطأ في الحصول على الإشعارات'
+    });
+  }
+});
+
+router.post('/admin/notifications', async (req, res) => {
+  try {
+    const { title, message, type, targetType } = req.body;
+    
+    // Simulate notification sending
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    res.json({
+      success: true,
+      message: 'تم إرسال الإشعار بنجاح'
+    });
+  } catch (error) {
+    console.error('خطأ في إرسال الإشعار:', error);
+    res.status(500).json({
+      success: false,
+      error: 'خطأ في إرسال الإشعار'
+    });
+  }
+});
+
+// Reports Management API
+router.get('/admin/reports', async (req, res) => {
+  try {
+    const { type, from, to } = req.query;
+    
+    const reportData = {
+      userStats: {
+        totalUsers: 150,
+        newUsersThisMonth: 25,
+        activeUsers: 89,
+        userGrowth: 18.5
+      },
+      contentStats: {
+        totalContent: 30,
+        newContentThisMonth: 8,
+        totalViews: 5420,
+        totalDownloads: 2150
+      },
+      engagementStats: {
+        avgSessionDuration: 12.5,
+        pageViews: 8950,
+        bounceRate: 32.1,
+        returnVisitors: 67.8
+      },
+      chartData: {
+        userGrowth: [
+          { date: '2024-12-01', users: 120, newUsers: 15 },
+          { date: '2024-12-08', users: 135, newUsers: 22 },
+          { date: '2024-12-15', users: 150, newUsers: 18 },
+          { date: '2024-12-22', users: 165, newUsers: 25 }
+        ],
+        contentViews: [
+          { date: '2024-12-01', views: 1200, downloads: 450 },
+          { date: '2024-12-08', views: 1850, downloads: 620 },
+          { date: '2024-12-15', views: 2100, downloads: 780 },
+          { date: '2024-12-22', views: 2450, downloads: 890 }
+        ],
+        categoryDistribution: [
+          { name: 'أفلام', value: 35, color: '#0088FE' },
+          { name: 'مسلسلات', value: 25, color: '#00C49F' },
+          { name: 'برامج', value: 20, color: '#FFBB28' },
+          { name: 'ألعاب', value: 10, color: '#FF8042' },
+          { name: 'أخرى', value: 10, color: '#8884D8' }
+        ]
+      }
+    };
+
+    res.json({
+      success: true,
+      data: reportData
+    });
+  } catch (error) {
+    console.error('خطأ في الحصول على بيانات التقارير:', error);
+    res.status(500).json({
+      success: false,
+      error: 'خطأ في الحصول على بيانات التقارير'
+    });
+  }
+});
+
 export default router;

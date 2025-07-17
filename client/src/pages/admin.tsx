@@ -5,6 +5,12 @@ import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { AdminDashboard } from '@/components/admin/admin-dashboard';
 import { SiteSettingsComponent } from '@/components/admin/site-settings';
+import UserManagement from '@/components/admin/user-management';
+import AdvancedContentManager from '@/components/admin/advanced-content-manager';
+import { PerformanceDashboard } from '@/components/admin/PerformanceDashboard';
+import DatabaseManagement from '@/components/admin/database-management';
+import NotificationsManagement from '@/components/admin/notifications-management';
+import ReportsManagement from '@/components/admin/reports-management';
 import { 
   Home, 
   Settings, 
@@ -100,27 +106,11 @@ export default function AdminPage() {
           </TabsContent>
 
           <TabsContent value="content" className="space-y-6">
-            <div className="text-center py-12">
-              <Film className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                إدارة المحتوى
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                قريباً - إدارة الأفلام والمسلسلات والبرامج
-              </p>
-            </div>
+            <AdvancedContentManager />
           </TabsContent>
 
           <TabsContent value="users" className="space-y-6">
-            <div className="text-center py-12">
-              <Users className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                إدارة المستخدمين
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                قريباً - إدارة المستخدمين والصلاحيات
-              </p>
-            </div>
+            <UserManagement />
           </TabsContent>
 
           <TabsContent value="settings" className="space-y-6">
@@ -128,51 +118,19 @@ export default function AdminPage() {
           </TabsContent>
 
           <TabsContent value="analytics" className="space-y-6">
-            <div className="text-center py-12">
-              <BarChart3 className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                التحليلات والإحصائيات
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                قريباً - تحليلات مفصلة للموقع
-              </p>
-            </div>
+            <PerformanceDashboard />
           </TabsContent>
 
           <TabsContent value="database" className="space-y-6">
-            <div className="text-center py-12">
-              <Database className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                إدارة قاعدة البيانات
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                قريباً - نسخ احتياطية وإدارة البيانات
-              </p>
-            </div>
+            <DatabaseManagement />
           </TabsContent>
 
           <TabsContent value="notifications" className="space-y-6">
-            <div className="text-center py-12">
-              <Bell className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                إدارة الإشعارات
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                قريباً - إرسال وإدارة الإشعارات
-              </p>
-            </div>
+            <NotificationsManagement />
           </TabsContent>
 
           <TabsContent value="reports" className="space-y-6">
-            <div className="text-center py-12">
-              <FileText className="w-16 h-16 text-gray-400 mx-auto mb-4" />
-              <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                التقارير والإحصائيات
-              </h3>
-              <p className="text-gray-600 dark:text-gray-400">
-                قريباً - تقارير شاملة للموقع
-              </p>
-            </div>
+            <ReportsManagement />
           </TabsContent>
         </Tabs>
       </div>
