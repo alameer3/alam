@@ -99,7 +99,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       };
       
       const result = await dbManager.getContent(filters);
-      res.json({ success: true, data: result });
+      res.json({ success: true, data: result.content });
     } catch (error) {
       console.error('Recent content error:', error);
       res.status(500).json({ success: false, error: "خطأ في الخادم" });
@@ -119,7 +119,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       };
       
       const result = await dbManager.getContent(filters);
-      res.json({ success: true, data: result });
+      res.json({ success: true, data: result.content });
     } catch (error) {
       console.error('Featured content error:', error);
       res.status(500).json({ success: false, error: "خطأ في الخادم" });
@@ -139,7 +139,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       };
       
       const result = await dbManager.getContent(filters);
-      res.json({ success: true, data: result });
+      res.json({ success: true, data: result.content });
     } catch (error) {
       console.error('Trending content error:', error);
       res.status(500).json({ success: false, error: "خطأ في الخادم" });

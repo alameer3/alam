@@ -737,7 +737,7 @@ export class DatabaseManager {
     }
     
     if (filters.trending) {
-      query += ` AND view_count > 100`;
+      query += ` AND view_count >= 100`;
     }
     
     // الترتيب
@@ -764,7 +764,7 @@ export class DatabaseManager {
     }
     
     if (filters.trending) {
-      countQuery += ` AND view_count > 100`;
+      countQuery += ` AND view_count >= 100`;
     }
     
     const totalResult = await this.db!.get(countQuery, countParams);
