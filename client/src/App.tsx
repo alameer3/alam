@@ -3,13 +3,14 @@ import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { YemenThemeProvider } from "@/components/theme/yemen-theme-provider";
-import AuthenticHeader from "@/components/layout/authentic-header";
-import AuthenticFooter from "@/components/layout/authentic-footer";
+import AkSvEnhancedHeader from "@/components/layout/ak-sv-enhanced-header";
+import AkSvEnhancedFooter from "@/components/layout/ak-sv-enhanced-footer";
 import { ErrorBoundary } from "@/components/ui/error-boundary";
 import NotFound from "@/pages/not-found";
-import AuthenticHomepage from "@/components/home/authentic-homepage";
+import AkSvEnhancedHomepage from "@/components/home/ak-sv-enhanced-homepage";
 import OnesPage from "@/pages/ones";
 import AkSvMovies from "@/pages/ak-sv-movies";
+import AkSvEnhancedMovies from "@/pages/ak-sv-enhanced-movies";
 import Series from "@/pages/series";
 import Search from "@/pages/search";
 import ContentDetail from "@/pages/content-detail";
@@ -36,9 +37,9 @@ import Watch from "@/pages/watch";
 function Router() {
   return (
     <Switch>
-      <Route path="/" component={AuthenticHomepage} />
+      <Route path="/" component={AkSvEnhancedHomepage} />
       <Route path="/ones" component={OnesPage} />
-      <Route path="/movies" component={AkSvMovies} />
+      <Route path="/movies" component={AkSvEnhancedMovies} />
       <Route path="/series" component={Series} />
       <Route path="/television" component={Series} />
       <Route path="/shows" component={Programs} />
@@ -89,12 +90,12 @@ function AppContent() {
 
   return (
     <div className="min-h-screen bg-background">
-      {isHomePage && <AuthenticHeader />}
-      {!isHomePage && <AuthenticHeader />}
+      {isHomePage && <AkSvEnhancedHeader />}
+      {!isHomePage && <AkSvEnhancedHeader />}
       <main>
         <Router />
       </main>
-      {!isHomePage && <AuthenticFooter />}
+      {!isHomePage && <AkSvEnhancedFooter />}
       <Toaster />
     </div>
   );
