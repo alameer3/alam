@@ -1,19 +1,10 @@
-import os
+import requests
 
-try:
-    import gdown
-except ImportError:
-    os.system("pip install gdown")
-    import gdown
+url = "https://drive.google.com/uc?export=download&id=1LIzuWned5_YMnwbOIpRnWbjTtCPgjT-G"
+filename = "downloaded_file.ext"
 
-# معرّف الملف من Google Drive
-file_id = "1YmLVXDQmwR7OTMrDjiyRd7zacynRjLF2"
+response = requests.get(url, allow_redirects=True)
+with open(filename, "wb") as f:
+    f.write(response.content)
 
-# صيغة الرابط المباشر
-url = f"https://drive.google.com/uc?id={file_id}"
-
-# تحميل الملف
-output_file = "downloaded_file.zip"  # يمكنك تغيير الاسم حسب نوع الملف
-gdown.download(url, output_file, quiet=False)
-
-print(f"\n✅ تم تحميل الملف وحفظه باسم: {output_file}")
+print("تم تحميل الملف بنجاح:", filename)
