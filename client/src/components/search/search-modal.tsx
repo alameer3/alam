@@ -48,7 +48,7 @@ export default function SearchModal({ isOpen, onClose, onContentClick }: SearchM
             البحث في المحتوى
           </DialogTitle>
           <DialogDescription>
-            ابحث عن الأفلام والمسلسلات والبرامج التلفزيونية
+            ابحث عن الأفلام والمسلسلات والبرامج والألعاب والتطبيقات
           </DialogDescription>
         </DialogHeader>
 
@@ -56,7 +56,7 @@ export default function SearchModal({ isOpen, onClose, onContentClick }: SearchM
           {/* Search Input */}
           <div className="flex gap-2">
             <Input
-              placeholder="ابحث عن الأفلام والمسلسلات..."
+              placeholder="ابحث في جميع أنواع المحتوى..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               className="flex-1"
@@ -69,8 +69,12 @@ export default function SearchModal({ isOpen, onClose, onContentClick }: SearchM
               <option value="">جميع الأنواع</option>
               <option value="movie">الأفلام</option>
               <option value="series">المسلسلات</option>
-              <option value="tv">التلفزيون</option>
-              <option value="misc">المنوعات</option>
+              <option value="program">البرامج</option>
+              <option value="game">الألعاب</option>
+              <option value="application">التطبيقات</option>
+              <option value="theater">المسرحيات</option>
+              <option value="wrestling">المصارعة</option>
+              <option value="sports">الرياضة</option>
             </select>
           </div>
 

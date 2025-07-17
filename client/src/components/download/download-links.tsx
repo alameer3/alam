@@ -41,12 +41,12 @@ export default function DownloadLinks({ contentId, episodeId, title }: DownloadL
     enabled: activeTab === 'stream'
   });
 
-  const handleDownload = (link: any) => {
+  const handleDownload = (link: { url: string; server: string; quality: string; size?: string }) => {
     // In a real app, this would handle the download
     window.open(link.downloadUrl, '_blank');
   };
 
-  const handleStream = (link: any) => {
+  const handleStream = (link: { url: string; server: string; quality: string }) => {
     // In a real app, this would handle the streaming
     window.open(link.streamingUrl, '_blank');
   };
@@ -103,7 +103,7 @@ export default function DownloadLinks({ contentId, episodeId, title }: DownloadL
               <LoadingSpinner />
             ) : downloadLinks && downloadLinks.length > 0 ? (
               <div className="space-y-3">
-                {downloadLinks.map((link: any) => (
+                {downloadLinks.map((link: { id: number; url: string; server: string; quality: string; size?: string }) => (
                   <div key={link.id} className="flex items-center justify-between p-4 bg-gray-700 rounded-lg">
                     <div className="flex items-center space-x-4 space-x-reverse">
                       <div className="flex items-center space-x-2 space-x-reverse">
@@ -158,7 +158,7 @@ export default function DownloadLinks({ contentId, episodeId, title }: DownloadL
               <LoadingSpinner />
             ) : streamingLinks && streamingLinks.length > 0 ? (
               <div className="space-y-3">
-                {streamingLinks.map((link: any) => (
+                {streamingLinks.map((link: { id: number; url: string; server: string; quality: string }) => (
                   <div key={link.id} className="flex items-center justify-between p-4 bg-gray-700 rounded-lg">
                     <div className="flex items-center space-x-4 space-x-reverse">
                       <div className="flex items-center space-x-2 space-x-reverse">

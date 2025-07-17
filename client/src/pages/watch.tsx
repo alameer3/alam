@@ -53,8 +53,22 @@ export default function Watch() {
 
   const handleReport = async (e: React.FormEvent) => {
     e.preventDefault();
-    // إرسال التبليغ
-    console.log('Report submitted:', reportData);
+    
+    try {
+      // إرسال التبليغ إلى API
+      await fetch('/api/reports', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ...reportData,
+          contentId: id,
+          timestamp: new Date().toISOString()
+        })
+      });
+    } catch (error) {
+      // Handle silently in production
+    }
+    
     setShowReportModal(false);
     setReportData({
       url: typeof window !== 'undefined' ? window.location.href : "",

@@ -62,14 +62,20 @@ export default function ContentRating({
       return;
     }
 
-    // Here you would typically send the report to your API
-    if (process.env.NODE_ENV === 'development') {
-      // Report submitted successfully - production ready
-      console.log('تم إرسال التبليغ:', {
-        contentId,
-        ...reportData,
-        timestamp: new Date().toISOString()
+    // إرسال التبليغ إلى API
+    try {
+      // Send report to API endpoint
+      fetch('/api/reports', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          contentId,
+          ...reportData,
+          timestamp: new Date().toISOString()
+        })
       });
+    } catch (error) {
+      // Handle silently in production
     }
 
     toast({

@@ -37,11 +37,23 @@ class ErrorBoundary extends React.Component<ErrorBoundaryProps, ErrorBoundarySta
       errorInfo
     });
     
-    // Log error to console in development
+    // Log error only in development
     if (process.env.NODE_ENV === 'development') {
-      // Error tracking for production - remove console.error in production
-      if (process.env.NODE_ENV !== 'production') {
-        console.error('Error caught by boundary:', error, errorInfo);
+      console.error('Error caught by boundary:', error, errorInfo);
+    } else {
+      // In production, send error to monitoring service
+      try {
+        fetch('/api/logs/error', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            error: error.message,
+            stack: error.stack,
+            timestamp: new Date().toISOString()
+          })
+        });
+      } catch {
+        // Fail silently
       }
     }
   }
