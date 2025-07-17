@@ -99,10 +99,50 @@ export async function registerRoutes(app: Express): Promise<Server> {
       };
       
       const result = await dbManager.getContent(filters);
-      res.json(result);
+      res.json({ success: true, data: result });
     } catch (error) {
       console.error('Recent content error:', error);
-      res.status(500).json({ error: "Failed to fetch recent content" });
+      res.status(500).json({ success: false, error: "خطأ في الخادم" });
+    }
+  });
+
+  // Featured content route
+  app.get("/api/content/featured", async (req, res) => {
+    try {
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 12;
+      
+      const filters = {
+        featured: true,
+        page,
+        limit
+      };
+      
+      const result = await dbManager.getContent(filters);
+      res.json({ success: true, data: result });
+    } catch (error) {
+      console.error('Featured content error:', error);
+      res.status(500).json({ success: false, error: "خطأ في الخادم" });
+    }
+  });
+
+  // Trending content route
+  app.get("/api/content/trending", async (req, res) => {
+    try {
+      const page = parseInt(req.query.page as string) || 1;
+      const limit = parseInt(req.query.limit as string) || 12;
+      
+      const filters = {
+        trending: true,
+        page,
+        limit
+      };
+      
+      const result = await dbManager.getContent(filters);
+      res.json({ success: true, data: result });
+    } catch (error) {
+      console.error('Trending content error:', error);
+      res.status(500).json({ success: false, error: "خطأ في الخادم" });
     }
   });
 

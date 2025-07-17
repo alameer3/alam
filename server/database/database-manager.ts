@@ -732,6 +732,14 @@ export class DatabaseManager {
       params.push(`%${filters.query}%`, `%${filters.query}%`);
     }
     
+    if (filters.featured) {
+      query += ` AND rating >= 4.5`;
+    }
+    
+    if (filters.trending) {
+      query += ` AND view_count > 100`;
+    }
+    
     // الترتيب
     const sortBy = filters.sortBy || 'created_at';
     const sortOrder = filters.sortOrder || 'desc';
@@ -749,6 +757,14 @@ export class DatabaseManager {
     if (filters.query) {
       countQuery += ` AND (title LIKE ? OR title_ar LIKE ?)`;
       countParams.push(`%${filters.query}%`, `%${filters.query}%`);
+    }
+    
+    if (filters.featured) {
+      countQuery += ` AND rating >= 4.5`;
+    }
+    
+    if (filters.trending) {
+      countQuery += ` AND view_count > 100`;
     }
     
     const totalResult = await this.db!.get(countQuery, countParams);

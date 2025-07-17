@@ -1,4 +1,9 @@
-/* تم إزالة استيراد ملفات CSS غير موجودة */
+/* استيراد CSS الأصلي من الموقع الأصلي */
+@import url('/css/plugins.css');
+@import url('/css/style.css');
+@import url('/css/akwam.css');
+@import url('/css/home.css');
+@import url('/css/fontawesome.css');
 
 @tailwind base;
 @tailwind components;
