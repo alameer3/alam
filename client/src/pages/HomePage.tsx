@@ -14,24 +14,29 @@ const HomePage: React.FC = () => {
     // تطبيق كلاس الصفحة الرئيسية
     document.body.classList.add('body-home');
 
-    // إعداد Typed.js
-    if (window.Typed && typedElementRef.current) {
-      typedInstance.current = new window.Typed(typedElementRef.current, {
-        strings: [
-          'ابحث عن أفلام مميزة...',
-          'ابحث عن مسلسلات رائعة...',
-          'ابحث عن برامج مشوقة...',
-          'ابحث عن ألعاب ممتعة...',
-          'ابحث عن محتوى متنوع...'
-        ],
-        typeSpeed: 50,
-        backSpeed: 30,
-        backDelay: 2000,
-        loop: true,
-        showCursor: true,
-        cursorChar: '|'
-      });
-    }
+    // إعداد Typed.js (بعد تحميل المكتبة)
+    const initTyped = () => {
+      if (window.Typed && typedElementRef.current) {
+        typedInstance.current = new window.Typed(typedElementRef.current, {
+          strings: [
+            'ابحث عن أفلام مميزة...',
+            'ابحث عن مسلسلات رائعة...',
+            'ابحث عن برامج مشوقة...',
+            'ابحث عن ألعاب ممتعة...',
+            'ابحث عن محتوى متنوع...'
+          ],
+          typeSpeed: 50,
+          backSpeed: 30,
+          backDelay: 2000,
+          loop: true,
+          showCursor: true,
+          cursorChar: '|'
+        });
+      }
+    };
+
+    // تأخير لضمان تحميل المكتبات
+    setTimeout(initTyped, 500);
 
     return () => {
       document.body.classList.remove('body-home');

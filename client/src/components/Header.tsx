@@ -18,9 +18,6 @@ const Header: React.FC<HeaderProps> = ({ isScrolled }) => {
 
   return (
     <>
-      {/* تراكب الموقع */}
-      <div className={`site-overlay ${isMenuOpen ? 'active' : ''}`} onClick={() => setIsMenuOpen(false)}></div>
-
       {/* الهيدر الرئيسي */}
       <header className={`main-header ${isScrolled ? 'scrolled' : ''}`}>
         <div className="container">
@@ -95,66 +92,36 @@ const Header: React.FC<HeaderProps> = ({ isScrolled }) => {
         </div>
       </header>
 
+      {/* تراكب الموقع */}
+      {isMenuOpen && <div className="site-overlay" onClick={() => setIsMenuOpen(false)}></div>}
+      
       {/* القائمة الجانبية للهواتف */}
-      <aside className={`main-menu ${isMenuOpen ? 'active' : ''}`}>
-        <div className="menu">
-          <a href="/" className="item">
-            <div className="icn">
-              <i className="icon-home"></i>
-            </div>
-            <div className="text">الرئيسية</div>
-          </a>
-          <a href="/movies" className="item">
-            <div className="icn">
-              <i className="icon-video-camera"></i>
-            </div>
-            <div className="text">أفلام</div>
-          </a>
-          <a href="/series" className="item">
-            <div className="icn">
-              <i className="icon-monitor"></i>
-            </div>
-            <div className="text">مسلسلات</div>
-          </a>
-          <a href="/shows" className="item">
-            <div className="icn">
-              <i className="icon-tv"></i>
-            </div>
-            <div className="text">تلفزيون</div>
-          </a>
-          <a href="/mix" className="item">
-            <div className="icn">
-              <i className="icon-mix"></i>
-            </div>
-            <div className="text">منوعات</div>
-          </a>
-          <a href="/favorite" className="item">
-            <div className="icn">
-              <i className="icon-star"></i>
-            </div>
-            <div className="text">المفضلة</div>
-          </a>
-          <a href="/profile" className="item">
-            <div className="icn">
-              <i className="icon-user"></i>
-            </div>
-            <div className="text">الملف الشخصي</div>
-          </a>
-        </div>
-
-        {/* الشبكات الاجتماعية */}
-        <div className="social">
-          <a href="https://facebook.com/akwamofficial" target="_blank" rel="noopener noreferrer">
-            <i className="icon-facebook"></i>
-          </a>
-          <a href="https://youtube.com/akwamofficial" target="_blank" rel="noopener noreferrer">
-            <i className="icon-youtube"></i>
-          </a>
-          <a href="mailto:contact@ak.sv">
-            <i className="icon-email"></i>
-          </a>
-        </div>
-      </aside>
+      {isMenuOpen && (
+        <aside className="main-menu active">
+          <div className="menu">
+            <a href="/" className="item">
+              <div className="icn">🏠</div>
+              <div className="text">الرئيسية</div>
+            </a>
+            <a href="/movies" className="item">
+              <div className="icn">🎬</div>
+              <div className="text">أفلام</div>
+            </a>
+            <a href="/series" className="item">
+              <div className="icn">📺</div>
+              <div className="text">مسلسلات</div>
+            </a>
+            <a href="/shows" className="item">
+              <div className="icn">📻</div>
+              <div className="text">تلفزيون</div>
+            </a>
+            <a href="/mix" className="item">
+              <div className="icn">🎭</div>
+              <div className="text">منوعات</div>
+            </a>
+          </div>
+        </aside>
+      )}
     </>
   );
 };
