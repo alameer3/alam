@@ -19,8 +19,34 @@
     <link rel="stylesheet" href="/css/style_orig.css">
     <link rel="stylesheet" href="/css/akwam_orig.css">
     <link rel="stylesheet" href="/css/home_orig.css">
+    
+    <!-- خط اكوام الأصلي -->
+    <style>
+      @font-face{
+        font-family: 'akoam';
+        src: url('/fonts/STC-Bold.eot');
+        src: local('?'), url('/fonts/STC-Bold.woff') format('woff'), url('/fonts/STC-Bold.ttf') format('truetype'), url('/fonts/STC-Bold.svg') format('svg');
+        font-weight: 700;
+        font-style: normal;
+      }
+      @font-face{
+        font-family: 'akoam';
+        src: url('/fonts/STC-Light.eot');
+        src: local('?'), url('/fonts/STC-Light.woff') format('woff'), url('/fonts/STC-Light.ttf') format('truetype'), url('/fonts/STC-Light.svg') format('svg');
+        font-weight: 400;
+        font-style: normal;
+      }
+      @font-face{
+        font-family: 'akoam';
+        src: url('/fonts/STC-Regular.eot');
+        src: local('?'), url('/fonts/STC-Regular.woff') format('woff'), url('/fonts/STC-Regular.ttf') format('truetype'), url('/fonts/STC-Regular.svg') format('svg');
+        font-weight: 600;
+        font-style: normal;
+      }
+      body { font-family: 'akoam', Arial, sans-serif; }
+    </style>
   </head>
-  <body>
+  <body class="header-fixed">
     <div id="root"></div>
     
     <!-- JavaScript Libraries from Original AK.SV -->
@@ -38,6 +64,82 @@
     <script src="/js/plugins/jquery.validate.min.js"></script>
     <script src="/js/plugins/messages_ar.min.js"></script>
     <script src="/js/akwam.js"></script>
+    
+    <!-- تأثيرات الموقع الأصلي -->
+    <script type="text/javascript">
+      $(document).ready(function() {
+        // تأثير header scroll
+        function headerEffect() {
+          if ($('.main-header').length) {
+            if ($(window).scrollTop() <= 50) {
+              $('body').removeClass('header-bg');
+            } else {
+              $('body').addClass('header-bg');
+            }
+            
+            if ($('.main-categories-list-end').length) {
+              if ($(window).scrollTop() <= $('.main-categories-list-end').offset().top) {
+                $('body').removeClass('header-menu');
+              } else {
+                $('body').addClass('header-menu');
+              }
+            }
+          }
+        }
+        
+        headerEffect();
+        $(window).on('scroll', function() {
+          headerEffect();
+        });
+        
+        // تأثير الكتابة في الصفحة الرئيسية
+        if ($('.widget-2').length) {
+          new Typed('.widget-2 .form label[for="widget2SearchInput"] span', {
+            stringsElement: '.widget-2 .form .label-text',
+            typeSpeed: 30
+          });
+        }
+        
+        // إغلاق القوائم بمفتاح ESC
+        $(document).on('keydown', function(e) {
+          if (e.keyCode === 27) {
+            $('body').removeClass('search-active main-menu-active');
+          }
+        });
+        
+        // تأثير focus على input
+        $('input, textarea').on('focusout change submit blur', function() {
+          if ($(this).val()) {
+            $(this).addClass('not-empty');
+          } else {
+            $(this).removeClass('not-empty');
+          }
+        });
+        
+        // تأثير إعادة تعيين النموذج
+        $('button[type="reset"]').on('click', function() {
+          $(this).parents('form').find('input, textarea').removeClass('not-empty');
+        });
+        
+        // إغلاق القوائم بالنقر على overlay
+        $('.site-overlay').on('click', function() {
+          $('body').removeClass('main-menu-active search-active');
+        });
+        
+        // تبديل القائمة الرئيسية
+        $('.menu-toggle').on('click', function() {
+          $('body').removeClass('search-active').toggleClass('main-menu-active');
+        });
+        
+        // تبديل صندوق البحث
+        $('.search-toggle').on('click', function() {
+          $('body').removeClass('main-menu-active').toggleClass('search-active');
+          setTimeout(function() {
+            $('.search-box form input').focus();
+          }, 200);
+        });
+      });
+    </script>
     
     <script type="module" src="/src/main.tsx"></script>
     <!-- This is a replit script which adds a banner on the top of the page when opened in development mode outside the replit environment -->
