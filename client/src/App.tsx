@@ -3,7 +3,7 @@ import Layout from './components/layout/Layout';
 import './index.css';
 
 // الصفحات
-import HomeSimple from './pages/HomeSimple';
+import HomeEnhanced from './pages/HomeEnhanced';
 import OnesPage from './pages/ones';
 import MoviesPage from './pages/movies';
 import SeriesPage from './pages/series';
@@ -15,7 +15,7 @@ function App() {
     <div className="App" dir="rtl">
       <Layout>
         <Switch>
-          <Route path="/" component={HomeSimple} />
+          <Route path="/" component={HomeEnhanced} />
           <Route path="/ones" component={OnesPage} />
           <Route path="/movies" component={MoviesPage} />
           <Route path="/series" component={SeriesPage} />
