@@ -5,6 +5,7 @@ import { Play, Heart, Star, Clock, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
+import FeaturedContentWidget from "@/components/content/featured-content-widget";
 
 interface Content {
   id: number;
@@ -239,6 +240,24 @@ export default function OnesPage() {
       </div>
       
       <div className="main-categories-list-end mb-8"></div>
+
+      {/* المحتوى المميز بالتصميم الأصلي */}
+      <FeaturedContentWidget 
+        title="المميزة" 
+        apiEndpoint="/api/content/featured" 
+      />
+      
+      {/* المحتوى الشائع */}
+      <FeaturedContentWidget 
+        title="الأكثر مشاهدة" 
+        apiEndpoint="/api/content/trending" 
+      />
+      
+      {/* المحتوى الأحدث */}
+      <FeaturedContentWidget 
+        title="أضيف حديثاً" 
+        apiEndpoint="/api/content/recent" 
+      />
 
       <div className="container mx-auto px-4 py-8">
         {/* المحتوى المميز */}

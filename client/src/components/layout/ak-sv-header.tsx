@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { useLocation } from "wouter";
+import EnhancedSearch from "@/components/search/enhanced-search";
 
 export default function AkSvHeader() {
   const [, setLocation] = useLocation();
@@ -153,20 +154,15 @@ export default function AkSvHeader() {
               
               <div className="ml-auto"></div>
               
-              {/* البحث */}
+              {/* البحث المطور */}
               <div className="col-md-5 col-lg-6 search-container">
                 <div className="search-form">
-                  <form onSubmit={handleSearch}>
-                    <input 
-                      type="text" 
-                      id="headerSearchInput" 
-                      name="q"
-                      value={searchQuery}
-                      onChange={(e) => setSearchQuery(e.target.value)}
-                    />
-                    <label htmlFor="headerSearchInput">ابحث عن فيلم او مسلسل ...</label>
-                    <button type="submit"><i className="icon-search"></i></button>
-                  </form>
+                  <EnhancedSearch 
+                    onSearch={setSearchQuery}
+                    placeholder="ابحث عن فيلم، مسلسل، برنامج..."
+                    showTyped={true}
+                    showResults={true}
+                  />
                 </div>
               </div>
               
