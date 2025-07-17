@@ -1,0 +1,21 @@
+<svg viewBox="0 0 400 600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="newsGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#DC2626;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#0F172A;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="400" height="600" fill="url(#newsGrad)"/>
+  <rect x="70" y="120" width="260" height="160" fill="#FFFFFF" rx="15" opacity="0.95"/>
+  <rect x="90" y="140" width="220" height="120" fill="#DC2626" rx="10"/>
+  <text x="200" y="170" text-anchor="middle" fill="#FFFFFF" font-size="18" font-weight="bold">أخبار اليمن</text>
+  <text x="200" y="200" text-anchor="middle" fill="#FBBF24" font-size="16">الرسمية</text>
+  <text x="200" y="230" text-anchor="middle" fill="#FFFFFF" font-size="14">آخر الأخبار</text>
+  <rect x="100" y="300" width="200" height="80" fill="#0F172A" rx="10"/>
+  <text x="200" y="330" text-anchor="middle" fill="#FFFFFF" font-size="14">تحديثات مباشرة</text>
+  <text x="200" y="350" text-anchor="middle" fill="#FBBF24" font-size="12">24/7</text>
+  <rect x="50" y="420" width="300" height="120" fill="#0F172A" rx="15" opacity="0.9"/>
+  <text x="200" y="460" text-anchor="middle" fill="#DC2626" font-size="18">Yemen News</text>
+  <text x="200" y="490" text-anchor="middle" fill="#FFFFFF" font-size="16">Official App</text>
+  <text x="200" y="520" text-anchor="middle" fill="#FFFFFF" font-size="12">Live Updates</text>
+</svg>

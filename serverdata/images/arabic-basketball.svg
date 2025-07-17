@@ -1,0 +1,18 @@
+<svg viewBox="0 0 400 600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="basketballGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F97316;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7C2D12;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="400" height="600" fill="url(#basketballGrad)"/>
+  <circle cx="200" cy="200" r="80" fill="#F59E0B" opacity="0.8"/>
+  <rect x="70" y="120" width="260" height="160" fill="#7C2D12" rx="12"/>
+  <text x="200" y="170" text-anchor="middle" fill="#F59E0B" font-size="16" font-weight="bold">بطولة كرة السلة</text>
+  <text x="200" y="200" text-anchor="middle" fill="#F59E0B" font-size="14">العربية</text>
+  <text x="200" y="230" text-anchor="middle" fill="#F59E0B" font-size="14">2024</text>
+  <rect x="50" y="340" width="300" height="200" fill="#7C2D12" rx="15" opacity="0.9"/>
+  <text x="200" y="410" text-anchor="middle" fill="#F59E0B" font-size="18">Basketball</text>
+  <text x="200" y="440" text-anchor="middle" fill="#F59E0B" font-size="16">Championship</text>
+  <text x="200" y="490" text-anchor="middle" fill="#FFFFFF" font-size="12">HD Quality</text>
+</svg>

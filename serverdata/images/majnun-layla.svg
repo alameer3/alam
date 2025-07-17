@@ -1,0 +1,18 @@
+<svg viewBox="0 0 400 600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="arabicGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1A472A;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#7C2D12;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="400" height="600" fill="url(#arabicGrad)"/>
+  <circle cx="200" cy="180" r="90" fill="#F59E0B" opacity="0.7"/>
+  <rect x="80" y="100" width="240" height="160" fill="#1A472A" rx="12"/>
+  <text x="200" y="160" text-anchor="middle" fill="#F59E0B" font-size="20" font-weight="bold">مجنون ليلى</text>
+  <text x="200" y="190" text-anchor="middle" fill="#F59E0B" font-size="14">قصة حب عربية</text>
+  <text x="200" y="220" text-anchor="middle" fill="#F59E0B" font-size="14">كلاسيكية</text>
+  <rect x="60" y="320" width="280" height="220" fill="#7C2D12" rx="15" opacity="0.9"/>
+  <text x="200" y="400" text-anchor="middle" fill="#F59E0B" font-size="18">مسرحية</text>
+  <text x="200" y="430" text-anchor="middle" fill="#F59E0B" font-size="16">التراث العربي</text>
+  <text x="200" y="480" text-anchor="middle" fill="#FFFFFF" font-size="12">HD Quality</text>
+</svg>

@@ -1,0 +1,20 @@
+<svg viewBox="0 0 400 600" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="olympicGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#1D4ED8;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#DC2626;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="400" height="600" fill="url(#olympicGrad)"/>
+  <circle cx="150" cy="160" r="30" fill="none" stroke="#FBBF24" stroke-width="4"/>
+  <circle cx="250" cy="160" r="30" fill="none" stroke="#22C55E" stroke-width="4"/>
+  <circle cx="200" cy="220" r="30" fill="none" stroke="#DC2626" stroke-width="4"/>
+  <rect x="60" y="100" width="280" height="180" fill="#1D4ED8" rx="15" opacity="0.8"/>
+  <text x="200" y="140" text-anchor="middle" fill="#FBBF24" font-size="16" font-weight="bold">الألعاب الأولمبية</text>
+  <text x="200" y="170" text-anchor="middle" fill="#FFFFFF" font-size="14">بالتعليق العربي</text>
+  <text x="200" y="200" text-anchor="middle" fill="#FBBF24" font-size="14">2024</text>
+  <rect x="40" y="350" width="320" height="200" fill="#DC2626" rx="15" opacity="0.9"/>
+  <text x="200" y="420" text-anchor="middle" fill="#FBBF24" font-size="18">Olympics</text>
+  <text x="200" y="450" text-anchor="middle" fill="#FFFFFF" font-size="16">Arabic Commentary</text>
+  <text x="200" y="500" text-anchor="middle" fill="#FFFFFF" font-size="12">4K Quality</text>
+</svg>
