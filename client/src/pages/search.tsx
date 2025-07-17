@@ -4,8 +4,7 @@ import { Grid, List, LayoutGrid } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import Header from '@/components/layout/header';
-import Navigation from '@/components/layout/navigation';
+
 import Footer from '@/components/layout/footer';
 import AdvancedSearch from '@/components/search/advanced-search';
 import { SearchResultsGrid } from '@/components/search/search-results-grid';

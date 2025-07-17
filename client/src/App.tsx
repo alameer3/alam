@@ -6,7 +6,6 @@ import { YemenThemeProvider } from "@/components/theme/yemen-theme-provider";
 import AkSvHeader from "@/components/layout/ak-sv-header";
 import { ErrorBoundary } from "@/components/ui/error-boundary";
 import NotFound from "@/pages/not-found";
-import Home from "@/pages/home";
 import AkSvHomepage from "@/components/home/ak-sv-homepage";
 import OnesPage from "@/pages/ones";
 import AkSvMovies from "@/pages/ak-sv-movies";
@@ -16,14 +15,11 @@ import ContentDetail from "@/pages/content-detail";
 import AkSvMovieDetail from "@/pages/ak-sv-movie-detail";
 import SeriesDetail from "@/pages/series-detail";
 
-import SecretAdminAccess from "@/pages/secret-admin-access";
 import Login from "@/pages/login";
 import Register from "@/pages/register";
 import Profile from "@/pages/profile";
 import Watchlists from "@/pages/watchlists";
 import Notifications from "@/pages/notifications";
-import Dashboard from "@/pages/dashboard";
-import UnifiedAdminPanel from "@/pages/unified-admin-panel";
 import Admin from "@/pages/admin";
 import Trailers from "@/pages/trailers";
 import Programs from "@/pages/programs";
@@ -72,15 +68,12 @@ function Router() {
       <Route path="/sports" component={Sports} />
 
       {/* المسارات المحمية - تحتاج authentication */}
-      <Route path="/admin/secret" component={SecretAdminAccess} />
-      <Route path="/admin/panel" component={UnifiedAdminPanel} />
       <Route path="/admin" component={Admin} />
       <Route path="/login" component={Login} />
       <Route path="/register" component={Register} />
       <Route path="/profile" component={Profile} />
       <Route path="/watchlists" component={Watchlists} />
       <Route path="/notifications" component={Notifications} />
-      <Route path="/dashboard" component={Dashboard} />
       <Route path="/trailers" component={Trailers} />
 
 
