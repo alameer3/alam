@@ -1,10 +1,9 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "wouter";
 
 export default function AkSvEnhancedHomepage() {
   const [, setLocation] = useLocation();
   const [searchQuery, setSearchQuery] = useState("");
-  const typedRef = useRef<HTMLSpanElement>(null);
 
   useEffect(() => {
     // إضافة classes مطابقة للموقع الأصلي
@@ -22,20 +21,7 @@ export default function AkSvEnhancedHomepage() {
     };
   }, []);
 
-  useEffect(() => {
-    // تهيئة Typed.js للصفحة الرئيسية - مطابق للموقع الأصلي
-    if (typedRef.current && (window as any).Typed) {
-      new (window as any).Typed(typedRef.current, {
-        stringsElement: ".label-text",
-        typeSpeed: 30,
-        backSpeed: 20,
-        loop: true,
-        backDelay: 2000,
-        showCursor: true,
-        cursorChar: '|'
-      });
-    }
-  }, []);
+  // تم إزالة Typed.js مؤقتاً لحل مشكلة الخطأ
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -97,7 +83,7 @@ export default function AkSvEnhancedHomepage() {
                       onChange={(e) => setSearchQuery(e.target.value)}
                     />
                     <label htmlFor="widget2SearchInput" className="m-0">
-                      <span className="label" ref={typedRef}></span>
+                      <span className="label">ابحث هنا في اكوام باسم الفيلم او المسلسل...</span>
                     </label>
                     {/* النصوص المتحركة - مطابقة للموقع الأصلي */}
                     <div className="label-text d-none">

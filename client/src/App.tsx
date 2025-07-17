@@ -9,12 +9,10 @@ import { ErrorBoundary } from "@/components/ui/error-boundary";
 import NotFound from "@/pages/not-found";
 import AkSvEnhancedHomepage from "@/components/home/ak-sv-enhanced-homepage";
 import OnesPage from "@/pages/ones";
-import AkSvMovies from "@/pages/ak-sv-movies";
 import AkSvEnhancedMovies from "@/pages/ak-sv-enhanced-movies";
 import Series from "@/pages/series";
 import Search from "@/pages/search";
 import ContentDetail from "@/pages/content-detail";
-import AkSvMovieDetail from "@/pages/ak-sv-movie-detail";
 import SeriesDetail from "@/pages/series-detail";
 
 import Login from "@/pages/login";
@@ -48,7 +46,7 @@ function Router() {
       <Route path="/mix" component={Programs} />
       <Route path="/search" component={Search} />
       <Route path="/content/:id" component={ContentDetail} />
-      <Route path="/movie/:id/:title?" component={AkSvMovieDetail} />
+      <Route path="/movie/:id/:title?" component={ContentDetail} />
       <Route path="/series/:id/:title?" component={SeriesDetail} />
       <Route path="/program/:id/:title?" component={ContentDetail} />
       <Route path="/game/:id/:title?" component={ContentDetail} />

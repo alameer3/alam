@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 
-import Footer from '@/components/layout/footer';
+import AkSvEnhancedFooter from '@/components/layout/ak-sv-enhanced-footer';
 import AdvancedSearch from '@/components/search/advanced-search';
 import { SearchResultsGrid } from '@/components/search/search-results-grid';
 import AdvancedVideoPlayer from '@/components/content/advanced-video-player';
@@ -151,8 +151,6 @@ export default function SearchPage() {
 
   return (
     <div className="min-h-screen" dir="rtl">
-      <Header />
-      <Navigation />
       
       <div className="container mx-auto px-4 py-8">
         {/* Search Section */}
@@ -307,7 +305,7 @@ export default function SearchPage() {
         />
       )}
 
-      <Footer />
+      <AkSvEnhancedFooter />
     </div>
   );
 }
