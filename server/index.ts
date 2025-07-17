@@ -66,8 +66,17 @@ app.use((req, res, next) => {
 });
 
 (async () => {
-  // تشغيل النظام التلقائي لـ ServerData
+  // تشغيل إعداد ملفات العميل أولاً
   if (process.env.NODE_ENV === 'development') {
+    console.log("🔧 إعداد ملفات العميل...");
+    try {
+      if (fs.existsSync("setup-client-assets.cjs")) {
+        execSync("node setup-client-assets.cjs", { stdio: "inherit" });
+      }
+    } catch (error) {
+      console.log("تحذير: لم يتم العثور على setup-client-assets.cjs");
+    }
+    
     console.log("🔧 تشغيل النظام التلقائي لـ ServerData...");
   }
   try {
