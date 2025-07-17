@@ -69,12 +69,41 @@ app.use((req, res, next) => {
   // تشغيل إعداد ملفات العميل أولاً
   if (process.env.NODE_ENV === 'development') {
     console.log("🔧 إعداد ملفات العميل...");
+    
+    // التأكد من وجود الملفات الأساسية
     try {
-      if (fs.existsSync("setup-client-assets.cjs")) {
-        execSync("node setup-client-assets.cjs", { stdio: "inherit" });
+      if (fs.existsSync("ensure-client-assets.cjs")) {
+        execSync("node ensure-client-assets.cjs", { stdio: "inherit" });
       }
     } catch (error) {
-      console.log("تحذير: لم يتم العثور على setup-client-assets.cjs");
+      console.log("تحذير: لم يتم العثور على ensure-client-assets.cjs");
+    }
+    
+    // نسخ الملفات من المصادر الأصلية (إذا كانت متاحة)
+    try {
+      if (fs.existsSync("copy-all-assets.cjs")) {
+        execSync("node copy-all-assets.cjs", { stdio: "inherit" });
+      }
+    } catch (error) {
+      console.log("تحذير: لم يتم العثور على copy-all-assets.cjs");
+    }
+    
+    // إنشاء مكتبات JavaScript مكتملة
+    try {
+      if (fs.existsSync("create-complete-js-libs.cjs")) {
+        execSync("node create-complete-js-libs.cjs", { stdio: "inherit" });
+      }
+    } catch (error) {
+      console.log("تحذير: لم يتم العثور على create-complete-js-libs.cjs");
+    }
+    
+    // تجهيز الملفات النهائية
+    try {
+      if (fs.existsSync("finalize-assets.cjs")) {
+        execSync("node finalize-assets.cjs", { stdio: "inherit" });
+      }
+    } catch (error) {
+      console.log("تحذير: لم يتم العثور على finalize-assets.cjs");
     }
     
     console.log("🔧 تشغيل النظام التلقائي لـ ServerData...");
