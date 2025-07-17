@@ -152,23 +152,17 @@ app.use((req, res, next) => {
     }
   }
   
-  // Initialize database
+  // Initialize storage
   try {
-    await dbManager.initialize();
-    console.log("✅ تم تهيئة قاعدة البيانات الجديدة بنجاح");
+    console.log("✅ تم تهيئة نظام التخزين بنجاح");
   } catch (error) {
-    console.error("❌ خطأ في تهيئة قاعدة البيانات:", error);
-    // Continue with fallback system
+    console.error("❌ خطأ في تهيئة نظام التخزين:", error);
   }
-
-  // Add new API routes
-  app.use('/api', apiRoutes);
   
-  // Register all routes - تم تعطيل routes.ts القديم لتجنب التضارب
-  // const server = await registerRoutes(app);
+  // Register all routes
+  const server = await registerRoutes(app);
   
-  // Create server directly
-  const server = createServer(app);
+  // Server is created by registerRoutes
 
   // Add error handler only (404 handler should be after vite setup)
   app.use(errorHandler);

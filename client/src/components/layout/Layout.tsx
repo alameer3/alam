@@ -1,19 +1,24 @@
 import { ReactNode } from "react";
-import Header from "./Header";
-import Footer from "./Footer";
+import { useLocation } from 'wouter';
 
 interface LayoutProps {
   children: ReactNode;
 }
 
 const Layout = ({ children }: LayoutProps) => {
+  const [location] = useLocation();
+  
+  // للصفحة الرئيسية، نعرض المحتوى بدون Layout إضافي
+  if (location === '/') {
+    return <>{children}</>;
+  }
+
+  // للصفحات الأخرى، نعرض Layout عادي
   return (
-    <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900">
-      <Header />
-      <main className="flex-1">
+    <div className="min-h-screen bg-gray-900 text-white">
+      <div className="container mx-auto px-4 py-8">
         {children}
-      </main>
-      <Footer />
+      </div>
     </div>
   );
 };

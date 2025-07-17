@@ -1,4 +1,8 @@
-/* Reset and base styles */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* إعادة تعيين الأنماط الأساسية */
 * {
   margin: 0;
   padding: 0;
@@ -7,26 +11,33 @@
 
 /* خطوط عربية مخصصة */
 @font-face {
-  font-family: 'STC-Bold';
-  src: url('/fonts/STC-Bold.woff2') format('woff2'),
-       url('/fonts/STC-Bold.woff') format('woff');
+  font-family: 'akoam';
+  src: url('/ak_sv_site_extracted/style/assets/css/fonts/font/STC-Bold.woff2') format('woff2'),
+       url('/ak_sv_site_extracted/style/assets/css/fonts/font/STC-Bold.woff') format('woff'),
+       url('/ak_sv_site_extracted/style/assets/css/fonts/font/STC-Bold.ttf') format('truetype');
   font-weight: 700;
   font-style: normal;
 }
 
 @font-face {
-  font-family: 'STC-Regular';
-  src: url('/fonts/STC-Regular.woff2') format('woff2'),
-       url('/fonts/STC-Regular.woff') format('woff');
+  font-family: 'akoam';
+  src: url('/ak_sv_site_extracted/style/assets/css/fonts/font/STC-Regular.woff2') format('woff2'),
+       url('/ak_sv_site_extracted/style/assets/css/fonts/font/STC-Regular.woff') format('woff'),
+       url('/ak_sv_site_extracted/style/assets/css/fonts/font/STC-Regular.ttf') format('truetype');
   font-weight: 400;
   font-style: normal;
 }
 
+html {
+  direction: rtl;
+  font-family: 'akoam', 'Cairo', sans-serif;
+}
+
 body {
-  font-family: 'STC-Regular', Arial, sans-serif;
+  font-family: 'akoam', 'Cairo', sans-serif;
   direction: rtl;
   text-align: right;
-  background: linear-gradient(145deg, #0a0a0a 0%, #1a1a2e 25%, #16213e 50%, #0f3460 75%, #0a0a0a 100%);
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.55), #000 100%);
   color: #ffffff;
   min-height: 100vh;
 }
