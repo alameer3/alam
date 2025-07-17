@@ -192,10 +192,10 @@ export default function OnesPage() {
           
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {[
-              { title: "أفلام", path: "/movies", icon: "🎬", count: "1,200+" },
-              { title: "مسلسلات", path: "/series", icon: "📺", count: "500+" },
-              { title: "تلفزيون", path: "/television", icon: "📡", count: "300+" },
-              { title: "منوعات", path: "/mix", icon: "🎭", count: "250+" }
+              { title: "أفلام", path: "/movies", icon: "🎬", count: "12+" },
+              { title: "مسلسلات", path: "/series", icon: "📺", count: "8+" },
+              { title: "البرامج", path: "/programs", icon: "📻", count: "24+" },
+              { title: "الألعاب", path: "/games", icon: "🎮", count: "8+" }
             ].map((section) => (
               <div
                 key={section.path}

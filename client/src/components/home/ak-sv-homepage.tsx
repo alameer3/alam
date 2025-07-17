@@ -103,10 +103,10 @@ export default function AkSvHomepage() {
         
         {/* الشعار */}
         <div className="mb-12">
-          <div className="w-48 h-48 rounded-full border-4 border-white bg-black/50 backdrop-blur-sm flex items-center justify-center shadow-2xl hover:scale-105 transition-transform duration-300">
+          <div className="w-48 h-48 rounded-full border-4 border-orange-400 bg-black/50 backdrop-blur-sm flex items-center justify-center shadow-2xl hover:scale-105 transition-transform duration-300">
             <div className="text-center">
-              <div className="text-6xl font-bold mb-2 text-white">△</div>
-              <div className="text-base font-bold text-white">المكتبة الرقمية</div>
+              <div className="text-4xl font-bold mb-2 text-orange-400">AK.SV</div>
+              <div className="text-sm font-bold text-white">أكوام يمني</div>
             </div>
           </div>
         </div>
@@ -179,7 +179,7 @@ export default function AkSvHomepage() {
             <span>الدعم</span>
           </div>
           <div className="text-xs">
-            جميع الحقوق محفوظة © 2025 • المكتبة الرقمية
+            جميع الحقوق محفوظة © 2025 • أكوام يمني AK.SV
           </div>
         </div>
       </div>
@@ -191,8 +191,11 @@ export default function AkSvHomepage() {
             <span>أهلاً بك، ضيف</span>
             <span className="text-green-400">●</span>
           </div>
-          <div className="text-white/80 text-lg font-bold">
-            △ أكواد
+          <div className="text-orange-400 text-lg font-bold flex items-center gap-2">
+            <div className="w-6 h-6 rounded-full border border-orange-400 bg-orange-500/10 flex items-center justify-center">
+              <span className="text-xs font-bold">AK</span>
+            </div>
+            أكوام يمني
           </div>
         </div>
       </div>

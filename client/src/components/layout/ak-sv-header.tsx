@@ -57,14 +57,9 @@ export default function AkSvHeader() {
       path: "/series"
     },
     {
-      title: "تلفزيون",
-      icon: Tv,
-      path: "/television"
-    },
-    {
-      title: "منوعات",
-      icon: Sparkles,
-      path: "/mix"
+      title: "الإعلانات",
+      icon: Film,
+      path: "/trailers"
     },
     {
       title: "البرامج",
@@ -205,9 +200,12 @@ export default function AkSvHeader() {
             </button>
             <button
               onClick={() => setLocation("/")}
-              className="text-white text-xl font-bold hover:text-orange-400 transition-colors"
+              className="text-orange-400 hover:text-orange-300 transition-colors flex items-center gap-2"
             >
-              △ أكواد
+              <div className="w-8 h-8 rounded-full border-2 border-orange-400 bg-orange-500/10 flex items-center justify-center">
+                <span className="text-xs font-bold">AK</span>
+              </div>
+              <span className="text-lg font-bold">أكوام يمني</span>
             </button>
           </div>
         </div>
