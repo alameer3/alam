@@ -51,8 +51,14 @@ const ShowsPage: React.FC = () => {
               <h2 className="main-logo m-0">
                 <a href="/" className="d-inline-flex">
                   <svg width="50" height="40" viewBox="0 0 87 80" fill="none">
-                    <path d="M43.5 0L87 20V60L43.5 80L0 60V20L43.5 0Z" fill="#f3951e"/>
-                    <text x="43.5" y="45" textAnchor="middle" fill="white" fontSize="20" fontFamily="STC-Bold">A</text>
+                    <defs>
+                      <linearGradient id="headerGradient3" x1="0%" y1="0%" x2="100%" y2="100%">
+                        <stop offset="0%" stopColor="#007bff"/>
+                        <stop offset="100%" stopColor="#28a745"/>
+                      </linearGradient>
+                    </defs>
+                    <path d="M43.5 0L87 20V60L43.5 80L0 60V20L43.5 0Z" fill="url(#headerGradient3)"/>
+                    <text x="43.5" y="45" textAnchor="middle" fill="white" fontSize="18" fontFamily="STC-Bold">A</text>
                   </svg>
                 </a>
               </h2>

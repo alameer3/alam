@@ -34,8 +34,15 @@ const HomePage: React.FC = () => {
             <div className="hero-content">
               <div className="hero-logo">
                 <svg width="120" height="100" viewBox="0 0 87 80" fill="none">
-                  <path d="M43.5 0L87 20V60L43.5 80L0 60V20L43.5 0Z" fill="#f3951e"/>
-                  <text x="43.5" y="45" textAnchor="middle" fill="white" fontSize="20" fontFamily="STC-Bold">أكوام</text>
+                  <defs>
+                    <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                      <stop offset="0%" stopColor="#007bff"/>
+                      <stop offset="50%" stopColor="#28a745"/>
+                      <stop offset="100%" stopColor="#6f42c1"/>
+                    </linearGradient>
+                  </defs>
+                  <path d="M43.5 0L87 20V60L43.5 80L0 60V20L43.5 0Z" fill="url(#logoGradient)"/>
+                  <text x="43.5" y="45" textAnchor="middle" fill="white" fontSize="18" fontFamily="STC-Bold">أكوام</text>
                 </svg>
               </div>
               <h1 className="hero-title">شمس المواقع العربية</h1>
