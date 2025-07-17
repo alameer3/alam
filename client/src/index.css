@@ -2,16 +2,41 @@
 @tailwind components;
 @tailwind utilities;
 
+/* خطوط اكوام الأصلية */
+@font-face {
+  font-family: 'akoam';
+  src: url('./assets/fonts/STC-Regular.woff') format('woff'),
+       url('./assets/fonts/STC-Regular.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'akoam';
+  src: url('./assets/fonts/STC-Bold.woff') format('woff'),
+       url('./assets/fonts/STC-Bold.ttf') format('truetype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'akoam';
+  src: url('./assets/fonts/STC-Light.woff') format('woff'),
+       url('./assets/fonts/STC-Light.ttf') format('truetype');
+  font-weight: 300;
+  font-style: normal;
+}
+
 @layer base {
   :root {
-    /* تصميم مشابه لموقع أكوام - ألوان نظيفة وبسيطة */
+    /* ألوان اكوام الأصلية - النسخة الفاتحة */
     --background: 0 0% 100%;
     --foreground: 220 13% 18%;
     --card: 0 0% 100%;
     --card-foreground: 220 13% 18%;
     --popover: 0 0% 100%;
     --popover-foreground: 220 13% 18%;
-    --primary: 346 77% 49%;
+    --primary: 27 93% 53%; /* اللون البرتقالي الأصلي #f3951e */
     --primary-foreground: 0 0% 100%;
     --secondary: 220 13% 95%;
     --secondary-foreground: 220 13% 18%;
@@ -23,41 +48,43 @@
     --destructive-foreground: 0 0% 100%;
     --border: 220 13% 91%;
     --input: 220 13% 91%;
-    --ring: 346 77% 49%;
-    --radius: 0.75rem;
-    --chart-1: 346 77% 49%;
-    --chart-2: 200 95% 40%;
-    --chart-3: 120 60% 50%;
-    --chart-4: 60 90% 55%;
-    --chart-5: 280 60% 60%;
+    --ring: 27 93% 53%;
+    --radius: 0.1875rem; /* 3px كما في الأصل */
+    
+    /* ألوان اكوام المحددة */
+    --akwam-primary: 27 93% 53%; /* #f3951e */
+    --akwam-background: 220 6% 9%; /* #161619 */
+    --akwam-menu-bg: 220 6% 15%; /* #27272c */
+    --akwam-hover: 27 93% 53%; /* #f3951e */
   }
 
   .dark {
-    /* تصميم داكن مريح للعين مثل أكوام */
-    --background: 220 20% 8%;
-    --foreground: 220 15% 95%;
-    --card: 220 18% 12%;
-    --card-foreground: 220 15% 95%;
-    --popover: 220 18% 12%;
-    --popover-foreground: 220 15% 95%;
-    --primary: 346 77% 55%;
-    --primary-foreground: 220 20% 8%;
-    --secondary: 220 16% 16%;
-    --secondary-foreground: 220 15% 85%;
-    --muted: 220 16% 16%;
+    /* ألوان اكوام الأصلية - النسخة الداكنة */
+    --background: 220 6% 9%; /* #161619 */
+    --foreground: 0 0% 100%;
+    --card: 220 6% 15%; /* #27272c */
+    --card-foreground: 0 0% 100%;
+    --popover: 220 6% 15%;
+    --popover-foreground: 0 0% 100%;
+    --primary: 27 93% 53%; /* #f3951e */
+    --primary-foreground: 220 6% 9%;
+    --secondary: 220 6% 15%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 220 6% 15%;
     --muted-foreground: 220 9% 65%;
-    --accent: 220 16% 20%;
-    --accent-foreground: 220 15% 85%;
+    --accent: 220 6% 20%;
+    --accent-foreground: 0 0% 100%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 100%;
-    --border: 220 16% 20%;
-    --input: 220 16% 20%;
-    --ring: 346 77% 55%;
-    --chart-1: 346 77% 55%;
-    --chart-2: 200 95% 50%;
-    --chart-3: 120 60% 60%;
-    --chart-4: 60 90% 65%;
-    --chart-5: 280 60% 70%;
+    --border: 220 6% 20%;
+    --input: 220 6% 20%;
+    --ring: 27 93% 53%;
+    
+    /* ألوان اكوام المحددة للوضع الداكن */
+    --akwam-primary: 27 93% 53%; /* #f3951e */
+    --akwam-background: 220 6% 9%; /* #161619 */
+    --akwam-menu-bg: 220 6% 15%; /* #27272c */
+    --akwam-hover: 27 93% 53%; /* #f3951e */
   }
 }
 
@@ -66,11 +93,134 @@
 }
 
 body {
-  color: hsl(var(--foreground));
-  background: hsl(var(--background));
+  color: #ffffff;
+  background: #161619;
   font-feature-settings: "rlig" 1, "calt" 1;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  line-height: 1.6;
+  font-family: 'akoam', Arial, Helvetica, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  line-height: 1.5;
+  direction: rtl;
+  text-align: right;
+  font-size: 14px;
+}
+
+/* قواعد اكوام الأصلية */
+.akwam-transition {
+  transition: .5s, color .2s;
+}
+
+.akwam-radius {
+  border-radius: 3px;
+}
+
+.akwam-primary-color {
+  color: #f3951e;
+}
+
+.akwam-primary-bg {
+  background-color: #f3951e;
+}
+
+.akwam-dark-bg {
+  background-color: #161619;
+}
+
+.akwam-menu-bg {
+  background-color: #27272c;
+}
+
+/* تأثيرات hover الأصلية */
+.akwam-hover:hover {
+  color: #f3951e !important;
+  transition: color .2s;
+}
+
+/* تمركز العناصر كما في الأصل */
+.akwam-center {
+  position: absolute;
+  top: 50%;
+  right: 50%;
+  transform: translate(50%, -50%);
+}
+
+/* تمرير مخصص */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0a0a0b;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4a4a51;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #4c4c54;
+}
+
+/* تحسينات النص */
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'akoam', Arial, Helvetica, sans-serif;
+  font-weight: bold;
+}
+
+/* تحسينات زر البحث */
+.akwam-search-btn {
+  background: none;
+  border: none;
+  color: #f3951e;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 3px;
+  transition: all .2s;
+}
+
+.akwam-search-btn:hover {
+  background: #f3951e;
+  color: #161619;
+}
+
+/* تحسينات الأيقونات */
+.akwam-icon {
+  color: #ffffff;
+  transition: color .2s;
+}
+
+.akwam-icon:hover {
+  color: #f3951e;
+}
+
+/* تحسينات الخطوط */
+.akwam-text-sm {
+  font-size: 13px;
+}
+
+.akwam-text-base {
+  font-size: 14px;
+}
+
+.akwam-text-lg {
+  font-size: 16px;
+}
+
+/* تحسينات الخلفية */
+.akwam-bg-gradient {
+  background: linear-gradient(135deg, #161619 0%, #27272c 100%);
+}
+
+/* تحسينات الظلال */
+.akwam-shadow {
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* تحسينات الحدود */
+.akwam-border {
+  border: 1px solid #4a4a51;
+}
+
+.akwam-border-orange {
+  border: 1px solid #f3951e;
 }
 
 /* تحسينات للنصوص العربية */
