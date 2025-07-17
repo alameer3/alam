@@ -7,6 +7,8 @@ This is a comprehensive media platform inspired by the original AK.SV website, f
 ## User Preferences
 
 Preferred communication style: Simple, everyday language.
+Development approach: Start with core features and build incrementally.
+Priority: Focus on authenticity to original AK.SV design and functionality.
 Language: Arabic - user prefers communication in Arabic
 Request: User wants a development plan for the AK.SV platform
 
