@@ -1,0 +1,12 @@
+Sitemap: https://ak.sv/sitemap.xml
+User-agent: *
+Disallow: /o2cp/
+Disallow: /admin/
+Disallow: /ajax/
+Disallow: /ads/
+Disallow: /comments/
+Disallow: /search?q*
+Disallow: /movies?tag=*
+Disallow: /series?tag=*
+Disallow: /shows?tag=*
+Disallow: /mix?tag=*
