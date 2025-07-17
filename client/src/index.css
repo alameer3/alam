@@ -1,3 +1,10 @@
+/* استيراد CSS الأصلي من الموقع الأصلي */
+@import url('/css/plugins.css');
+@import url('/css/style.css');
+@import url('/css/akwam.css');
+@import url('/css/home.css');
+@import url('/css/fontawesome.css');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -104,12 +111,7 @@ body {
   font-size: 14px;
 }
 
-/* استيراد CSS الأصلي من الموقع الأصلي */
-@import url('/css/style.css');
-@import url('/css/akwam.css');
-@import url('/css/plugins.css');
-@import url('/css/home.css');
-@import url('/css/fontawesome.css');
+
 
 /* تخصيص الهيدر الأصلي */
 .main-header {
