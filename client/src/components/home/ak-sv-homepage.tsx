@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useLocation } from "wouter";
 import { Search, Film, Tv, MonitorPlay, Sparkles, BookOpen, Gamepad2, Smartphone, Drama, Zap, Trophy } from "lucide-react";
 import { Input } from "@/components/ui/input";
@@ -7,6 +7,37 @@ import { Button } from "@/components/ui/button";
 export default function AkSvHomepage() {
   const [, setLocation] = useLocation();
   const [searchQuery, setSearchQuery] = useState("");
+  const typedRef = useRef<HTMLSpanElement>(null);
+
+  useEffect(() => {
+    // Load Typed.js library
+    const script = document.createElement('script');
+    script.src = '/js/plugins/typed.min.js';
+    script.onload = () => {
+      if (typedRef.current && (window as any).Typed) {
+        new (window as any).Typed(typedRef.current, {
+          strings: [
+            'ابحث عن فيلم او مسلسل او لعبة او برنامج ...',
+            'مثال: الجزيرة',
+            'مثال آخر: اسم مؤقت',
+            'مثال: FIFA',
+            'ابحث هنا في اكوام باسم الفيلم او المسلسل او اي لعبة او برنامج ترغب به'
+          ],
+          typeSpeed: 30,
+          backSpeed: 20,
+          loop: true,
+          backDelay: 2000,
+          showCursor: true,
+          cursorChar: '|'
+        });
+      }
+    };
+    document.head.appendChild(script);
+
+    return () => {
+      document.head.removeChild(script);
+    };
+  }, []);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -115,14 +146,21 @@ export default function AkSvHomepage() {
         <div className="w-full max-w-2xl mb-12">
           <form onSubmit={handleSearch} className="relative">
             <div className="flex">
-              <Input
-                type="text"
-                placeholder="البحث في الأفلام والمسلسلات والبرامج التلفزيونية..."
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className="h-14 pr-6 pl-16 text-lg bg-black/30 border-white/20 text-white placeholder:text-white/70 backdrop-blur-sm rounded-l-full"
-                dir="rtl"
-              />
+              <div className="relative flex-1">
+                <Input
+                  type="text"
+                  placeholder=""
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="h-14 pr-6 pl-16 text-lg bg-black/30 border-white/20 text-white placeholder:text-white/70 backdrop-blur-sm rounded-l-full"
+                  dir="rtl"
+                />
+                {!searchQuery && (
+                  <label className="absolute right-6 top-1/2 transform -translate-y-1/2 text-white/70 pointer-events-none">
+                    <span ref={typedRef}></span>
+                  </label>
+                )}
+              </div>
               <Button
                 type="submit"
                 className="h-14 px-8 bg-orange-500 hover:bg-orange-600 text-white rounded-r-full"
