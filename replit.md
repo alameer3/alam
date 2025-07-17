@@ -1,188 +1,188 @@
-# AK.SV Clone - Movie & Series Platform
+# منصة أكوام - نسخة من موقع AK.SV للأفلام والمسلسلات
 
-## Overview
+## نظرة عامة
 
-This is a comprehensive media platform inspired by the original AK.SV website, featuring Arabic content including movies, series, TV shows, and various entertainment media. The application is built with modern web technologies and follows a full-stack architecture with React frontend and Express backend.
+هذه منصة إعلامية شاملة مستوحاة من موقع AK.SV الأصلي، تتضمن المحتوى العربي مثل الأفلام والمسلسلات والبرامج التلفزيونية ومختلف وسائل الترفيه. التطبيق مبني باستخدام تقنيات الويب الحديثة ويتبع هيكل full-stack مع واجهة React أمامية وخادم Express خلفي.
 
-## User Preferences
+## تفضيلات المستخدم
 
-Preferred communication style: Simple, everyday language.
-Development approach: Start with core features and build incrementally.
-Priority: Focus on authenticity to original AK.SV design and functionality.
-Language: Arabic - user prefers communication in Arabic
-Design Preference: Modern 2025 style with blue/green gradients (NOT 2024 style)
-Request: Complete AK.SV clone with modern 2025 aesthetic
+أسلوب التواصل المفضل: لغة بسيطة ومفهومة.
+نهج التطوير: البدء بالميزات الأساسية والبناء التدريجي.
+الأولوية: التركيز على الأصالة لتصميم ووظائف موقع AK.SV الأصلي.
+اللغة: العربية - المستخدم يفضل التواصل باللغة العربية
+تفضيل التصميم: طراز 2025 الحديث مع تدرجات زرقاء/خضراء (وليس طراز 2024)
+الطلب: نسخة كاملة من AK.SV مع طراز 2025 الحديث
 
-## System Architecture
+## هيكل النظام
 
-### Frontend Architecture
-- **Framework**: React 18 with TypeScript
-- **Styling**: 
-  - Tailwind CSS for modern utility-first styling
-  - Custom CSS for AK.SV-specific design elements
-  - Original AK.SV fonts (STC-Bold, STC-Regular, STC-Light)
-- **State Management**: React Query for server state management
-- **Routing**: Wouter for lightweight client-side routing
-- **UI Components**: Radix UI components with shadcn/ui styling
-- **Language Support**: Full Arabic RTL support with English fallback
+### هيكل الواجهة الأمامية
+- **إطار العمل**: React 18 مع TypeScript
+- **التصميم**: 
+  - Tailwind CSS للتصميم الحديث والمساعد
+  - CSS مخصص لعناصر التصميم الخاصة بـ AK.SV
+  - خطوط AK.SV الأصلية (STC-Bold, STC-Regular, STC-Light)
+- **إدارة الحالة**: React Query لإدارة حالة الخادم
+- **التوجيه**: Wouter للتوجيه الخفيف من جانب العميل
+- **مكونات الواجهة**: مكونات Radix UI مع تصميم shadcn/ui
+- **دعم اللغة**: دعم كامل للعربية RTL مع احتياط إنجليزي
 
-### Backend Architecture
-- **Runtime**: Node.js with Express.js
-- **Language**: TypeScript for type safety
-- **Database**: JSON-based file system with potential PostgreSQL migration
-- **Authentication**: JWT-based authentication system
-- **API Design**: RESTful API with structured error handling
+### هيكل الخادم الخلفي
+- **بيئة التشغيل**: Node.js مع Express.js
+- **اللغة**: TypeScript لسلامة الأنواع
+- **قاعدة البيانات**: نظام ملفات JSON مع إمكانية الترحيل إلى PostgreSQL
+- **المصادقة**: نظام مصادقة قائم على JWT
+- **تصميم API**: RESTful API مع معالجة أخطاء منظمة
 
-## Key Components
+## المكونات الرئيسية
 
-### 1. Content Management System
-- **Content Types**: Movies, Series, TV Shows, Programs, Games, Applications, Theater, Wrestling, Sports
-- **Metadata**: Title (Arabic/English), descriptions, ratings, release dates, quality, language, country
-- **Media Assets**: Poster images, backdrop images, trailers
-- **Categories**: Arabic, Foreign, Hindi, Turkish, Korean, Yemeni, Egyptian, Gulf, Syrian, Lebanese
-- **Genres**: Action, Comedy, Drama, Romance, Horror, Thriller, Documentary, Animation, etc.
+### 1. نظام إدارة المحتوى
+- **أنواع المحتوى**: أفلام، مسلسلات، برامج تلفزيونية، برامج، ألعاب، تطبيقات، مسرح، مصارعة، رياضة
+- **البيانات الوصفية**: العنوان (عربي/إنجليزي)، الوصف، التقييمات، تواريخ الإصدار، الجودة، اللغة، البلد
+- **الأصول الإعلامية**: صور البوستر، صور الخلفية، العروض الترويجية
+- **الفئات**: عربي، أجنبي، هندي، تركي، كوري، يمني، مصري، خليجي، سوري، لبناني
+- **الأنواع**: أكشن، كوميديا، دراما، رومانسي، رعب، إثارة، وثائقي، رسوم متحركة، إلخ.
 
-### 2. User System
-- **Authentication**: Login/logout functionality with JWT tokens
-- **User Profiles**: Personal information, preferences, avatar
-- **User Features**: Favorites, watch history, comments, reviews
-- **Roles**: Admin, User, Moderator with appropriate permissions
+### 2. نظام المستخدمين
+- **المصادقة**: وظائف تسجيل الدخول/الخروج مع رموز JWT
+- **ملفات المستخدمين**: المعلومات الشخصية، التفضيلات، الصورة الرمزية
+- **ميزات المستخدم**: المفضلة، تاريخ المشاهدة، التعليقات، المراجعات
+- **الأدوار**: مدير، مستخدم، مشرف مع الصلاحيات المناسبة
 
-### 3. Search & Discovery
-- **Advanced Search**: Multi-criteria filtering by type, category, genre, year, rating, quality
-- **Real-time Search**: Dynamic search suggestions with Arabic support
-- **Sorting Options**: By date, rating, popularity, alphabetical
-- **Pagination**: Efficient content browsing with load-more functionality
+### 3. البحث والاستكشاف
+- **البحث المتقدم**: فلترة متعددة المعايير حسب النوع، الفئة، النوع، السنة، التقييم، الجودة
+- **البحث الفوري**: اقتراحات بحث ديناميكية مع دعم العربية
+- **خيارات الترتيب**: حسب التاريخ، التقييم، الشعبية، الأبجدية
+- **التقسيم**: تصفح المحتوى بكفاءة مع وظيفة تحميل المزيد
 
-### 4. Media Streaming & Downloads
-- **Streaming Links**: Direct video streaming with multiple quality options
-- **Download Links**: Multiple download options with various quality levels
-- **Episode Management**: Series with season and episode organization
-- **Quality Options**: HD, Full HD, 4K support
+### 4. البث والتحميل
+- **روابط البث**: بث الفيديو المباشر مع خيارات جودة متعددة
+- **روابط التحميل**: خيارات تحميل متعددة بمستويات جودة مختلفة
+- **إدارة الحلقات**: المسلسلات مع تنظيم الموسم والحلقة
+- **خيارات الجودة**: دعم HD، Full HD، 4K
 
-### 5. Admin Dashboard
-- **Content Management**: Add, edit, delete content with rich metadata
-- **User Management**: User administration and moderation tools
-- **Analytics**: Site statistics, user engagement metrics
-- **Site Settings**: Configuration management for site-wide settings
+### 5. لوحة تحكم الإدارة
+- **إدارة المحتوى**: إضافة، تعديل، حذف المحتوى مع بيانات وصفية غنية
+- **إدارة المستخدمين**: أدوات إدارة المستخدمين والإشراف
+- **التحليلات**: إحصائيات الموقع، مقاييس تفاعل المستخدمين
+- **إعدادات الموقع**: إدارة التكوين للإعدادات على مستوى الموقع
 
-## Data Flow
+## تدفق البيانات
 
-### 1. Content Delivery
-1. User requests content from frontend
-2. Frontend queries backend API endpoints
-3. Backend retrieves data from JSON database
-4. Data is filtered, sorted, and paginated
-5. Response sent back to frontend with proper Arabic localization
-6. Frontend renders content with appropriate RTL styling
+### 1. توصيل المحتوى
+1. المستخدم يطلب المحتوى من الواجهة الأمامية
+2. الواجهة الأمامية تستعلم نقاط API الخلفية
+3. الخادم الخلفي يسترجع البيانات من قاعدة بيانات JSON
+4. البيانات تُفلتر وتُرتب وتُقسم
+5. الاستجابة تُرسل إلى الواجهة الأمامية مع الترجمة العربية المناسبة
+6. الواجهة الأمامية تعرض المحتوى مع تصميم RTL المناسب
 
-### 2. User Authentication
-1. User submits login credentials
-2. Backend validates credentials against user database
-3. JWT token generated and sent to client
-4. Token stored in client for subsequent requests
-5. Protected routes validate token on each request
+### 2. مصادقة المستخدم
+1. المستخدم يرسل بيانات تسجيل الدخول
+2. الخادم الخلفي يتحقق من البيانات مقابل قاعدة بيانات المستخدمين
+3. رمز JWT يُنشأ ويُرسل إلى العميل
+4. الرمز يُحفظ في العميل للطلبات اللاحقة
+5. المسارات المحمية تتحقق من الرمز في كل طلب
 
-### 3. Search Process
-1. User enters search query in Arabic or English
-2. Frontend debounces input and sends query to backend
-3. Backend performs full-text search across content titles and descriptions
-4. Results filtered by active filters (type, category, genre, etc.)
-5. Paginated results returned with metadata
+### 3. عملية البحث
+1. المستخدم يدخل استعلام البحث باللغة العربية أو الإنجليزية
+2. الواجهة الأمامية تؤخر الإدخال وترسل الاستعلام إلى الخادم الخلفي
+3. الخادم الخلفي يؤدي بحث نص كامل عبر عناوين ووصف المحتوى
+4. النتائج تُفلتر بالمرشحات النشطة (النوع، الفئة، النوع، إلخ.)
+5. النتائج المقسمة تُرجع مع البيانات الوصفية
 
-## External Dependencies
+## التبعيات الخارجية
 
-### Production Dependencies
-- **Core Framework**: React, Express, TypeScript
-- **Database**: Potential Neon Database (PostgreSQL) integration
-- **Authentication**: JWT handling with bcrypt for password security
-- **UI Components**: Radix UI ecosystem for accessible components
-- **Styling**: Tailwind CSS with custom Arabic font integration
-- **Media Processing**: Support for various image and video formats
+### تبعيات الإنتاج
+- **الإطار الأساسي**: React، Express، TypeScript
+- **قاعدة البيانات**: تكامل محتمل مع Neon Database (PostgreSQL)
+- **المصادقة**: معالجة JWT مع bcrypt لأمان كلمات المرور
+- **مكونات الواجهة**: نظام Radix UI البيئي للمكونات القابلة للوصول
+- **التصميم**: Tailwind CSS مع تكامل الخط العربي المخصص
+- **معالجة الوسائط**: دعم لتنسيقات الصور والفيديو المختلفة
 
-### Development Dependencies
-- **Build Tools**: Vite for fast development and building
-- **Code Quality**: ESLint, TypeScript compiler
-- **Database Tools**: Drizzle ORM for database management
+### تبعيات التطوير
+- **أدوات البناء**: Vite للتطوير والبناء السريع
+- **جودة الكود**: ESLint، مترجم TypeScript
+- **أدوات قاعدة البيانات**: Drizzle ORM لإدارة قاعدة البيانات
 
-### Third-party Integrations
-- **Media Storage**: File system based with potential cloud storage migration
-- **External APIs**: TMDB/IMDB integration for movie metadata
-- **Social Features**: Social media sharing capabilities
-- **Payment Processing**: Stripe integration for potential premium features
+### التكاملات الطرف الثالث
+- **تخزين الوسائط**: نظام قائم على الملفات مع إمكانية الترحيل إلى التخزين السحابي
+- **واجهات API خارجية**: تكامل TMDB/IMDB للبيانات الوصفية للأفلام
+- **الميزات الاجتماعية**: قدرات مشاركة وسائل التواصل الاجتماعي
+- **معالجة الدفع**: تكامل Stripe للميزات المتميزة المحتملة
 
-## Deployment Strategy
+## استراتيجية النشر
 
-### Development Environment
-- **Local Development**: Vite dev server with hot reloading
-- **Database**: Local JSON file with automatic backups
-- **File Serving**: Express static file serving for media assets
+### بيئة التطوير
+- **التطوير المحلي**: خادم Vite dev مع إعادة التحميل السريع
+- **قاعدة البيانات**: ملف JSON محلي مع نسخ احتياطية تلقائية
+- **خدمة الملفات**: خدمة ملفات Express الثابتة لأصول الوسائط
 
-### Production Deployment
-- **Platform**: Optimized for Replit deployment
-- **Database**: Automatic migration to PostgreSQL when needed
-- **Static Assets**: Efficient serving of CSS, fonts, and images
-- **Performance**: Optimized bundle size and loading strategies
+### نشر الإنتاج
+- **المنصة**: محسن لنشر Replit
+- **قاعدة البيانات**: ترحيل تلقائي إلى PostgreSQL عند الحاجة
+- **الأصول الثابتة**: خدمة فعالة لـ CSS والخطوط والصور
+- **الأداء**: حجم حزمة محسن واستراتيجيات التحميل
 
-### Security Considerations
-- **Rate Limiting**: Implemented for API endpoints and authentication
-- **Input Validation**: Server-side validation for all user inputs
-- **CORS**: Proper cross-origin resource sharing configuration
-- **Authentication**: Secure JWT token handling with proper expiration
+### اعتبارات الأمان
+- **تحديد المعدل**: مطبق لنقاط API والمصادقة
+- **التحقق من الإدخال**: التحقق من جانب الخادم لجميع مدخلات المستخدم
+- **CORS**: تكوين مناسب لمشاركة الموارد عبر الأصول
+- **المصادقة**: معالجة آمنة لرموز JWT مع انتهاء صلاحية مناسب
 
-### Scalability Features
-- **Database**: Designed for easy migration from JSON to PostgreSQL
-- **Caching**: Efficient caching strategies for frequently accessed content
-- **Media Optimization**: Image and video optimization for faster loading
-- **API Design**: RESTful architecture supporting future mobile apps
+### ميزات القابلية للتوسع
+- **قاعدة البيانات**: مصممة للترحيل السهل من JSON إلى PostgreSQL
+- **التخزين المؤقت**: استراتيجيات تخزين مؤقت فعالة للمحتوى الذي يتم الوصول إليه بكثرة
+- **تحسين الوسائط**: تحسين الصور والفيديو لتحميل أسرع
+- **تصميم API**: هيكل RESTful يدعم تطبيقات المحمول المستقبلية
 
-## Recent Changes
+## التغييرات الأخيرة
 
-- **Migration to Replit Environment (January 2025)**: Successfully migrated project from Replit Agent to standard Replit environment
-- **Modern Full-Stack Architecture**: Implemented proper client/server separation with React frontend and Express backend
-- **Storage System**: Created in-memory storage system following IStorage interface pattern for easy database migration
-- **Component Library**: Integrated shadcn/ui components with Tailwind CSS for modern design system
-- **API Routes**: Restructured backend routes to use proper storage interface with validation
-- **Security Improvements**: Added input validation, rate limiting, and proper error handling
-- **Modern UI Components**: Created reusable Header, Footer, and Layout components
-- **React Query Integration**: Set up proper data fetching with TanStack Query
-- **Updated design to modern 2025 style with blue/green gradient theme
-- **Replaced orange color scheme with contemporary blue (#007bff) and green (#28a745) gradients  
-- **Enhanced animations and hover effects with improved visual feedback
-- **Updated all logos and UI elements to match modern aesthetic
-- **Improved typography with gradient text effects for headings
-- **Added more sophisticated backdrop blur and shadow effects
+- **الترحيل إلى بيئة Replit (يناير 2025)**: تم ترحيل المشروع بنجاح من Replit Agent إلى بيئة Replit القياسية
+- **هيكل Full-Stack حديث**: تم تنفيذ فصل صحيح بين العميل/الخادم مع واجهة React أمامية وخادم Express خلفي
+- **نظام التخزين**: تم إنشاء نظام تخزين في الذاكرة يتبع نمط واجهة IStorage لسهولة ترحيل قاعدة البيانات
+- **مكتبة المكونات**: تم دمج مكونات shadcn/ui مع Tailwind CSS لنظام تصميم حديث
+- **مسارات API**: تم إعادة هيكلة مسارات الخادم الخلفي لاستخدام واجهة تخزين مناسبة مع التحقق
+- **تحسينات الأمان**: تم إضافة التحقق من الإدخال، تحديد المعدل، ومعالجة الأخطاء المناسبة
+- **مكونات واجهة مستخدم حديثة**: تم إنشاء مكونات Header وFooter وLayout قابلة لإعادة الاستخدام
+- **تكامل React Query**: تم إعداد جلب البيانات المناسب مع TanStack Query
+- **تحديث التصميم إلى طراز 2025 الحديث مع موضوع التدرج الأزرق/الأخضر
+- **استبدال نظام الألوان البرتقالي بتدرجات الأزرق المعاصر (#007bff) والأخضر (#28a745)  
+- **تحسين الرسوم المتحركة وتأثيرات التمرير مع تحسين التغذية الراجعة البصرية
+- **تحديث جميع الشعارات وعناصر واجهة المستخدم لتتناسب مع الجمالية الحديثة
+- **تحسين الطباعة مع تأثيرات النص المتدرج للعناوين
+- **إضافة تأثيرات ضبابية وظلال أكثر تطورًا للخلفية
 
-## Extracted Files Analysis
+## تحليل الملفات المستخرجة
 
-After examining `extracted_files/` and `ak_sv_site_extracted/` directories, key findings include:
+بعد فحص مجلدات `extracted_files/` و `ak_sv_site_extracted/`، تتضمن النتائج الرئيسية:
 
-### Original Site Structure
-- **Homepage**: Clean layout with hero section, search, and category cards
-- **Font System**: Uses STC fonts (Bold, Regular, Light) via @font-face
-- **Color Scheme**: Originally orange (#f3951e) - now updated to modern blue/green gradients
-- **Layout**: Bootstrap-based responsive design with custom CSS
-- **Navigation**: Fixed header with menu toggle and social links
+### هيكل الموقع الأصلي
+- **الصفحة الرئيسية**: تخطيط نظيف مع قسم البطل والبحث وبطاقات الفئات
+- **نظام الخطوط**: يستخدم خطوط STC (Bold، Regular، Light) عبر @font-face
+- **نظام الألوان**: كان برتقالي في الأصل (#f3951e) - الآن محدث إلى تدرجات زرقاء/خضراء حديثة
+- **التخطيط**: تصميم متجاوب قائم على Bootstrap مع CSS مخصص
+- **التنقل**: رأس ثابت مع تبديل القائمة وروابط اجتماعية
 
-### CSS Architecture
-- **style.css**: Core styles with extensive responsive utilities
-- **akwam.css**: Site-specific customizations and overrides
-- **plugins.css**: Third-party plugin styles
-- **home.css**: Homepage-specific styling
+### هيكل CSS
+- **style.css**: أنماط أساسية مع مرافق متجاوبة واسعة
+- **akwam.css**: تخصيصات وتجاوزات خاصة بالموقع
+- **plugins.css**: أنماط إضافات الطرف الثالث
+- **home.css**: تصميم خاص بالصفحة الرئيسية
 
-### Content Structure
-- **Movies**: Individual movie pages with metadata, ratings, download links
-- **Series**: Season/episode organization with streaming options
-- **Shows**: TV shows and programs
-- **Mix**: Various content types (games, apps, theater, sports)
+### هيكل المحتوى
+- **الأفلام**: صفحات أفلام فردية مع بيانات وصفية، تقييمات، روابط تحميل
+- **المسلسلات**: تنظيم الموسم/الحلقة مع خيارات البث
+- **البرامج**: برامج تلفزيونية وبرامج
+- **المنوعات**: أنواع محتوى متنوعة (ألعاب، تطبيقات، مسرح، رياضة)
 
-### Key Features Identified
-- Advanced search with filtering
-- User authentication system
-- Rating and review system
-- Download/streaming links management
-- Responsive image handling
-- Social media integration
-- SEO optimization with structured data
+### الميزات الرئيسية المحددة
+- بحث متقدم مع فلترة
+- نظام مصادقة المستخدم
+- نظام التقييم والمراجعة
+- إدارة روابط التحميل/البث
+- معالجة الصور المتجاوبة
+- تكامل وسائل التواصل الاجتماعي
+- تحسين SEO مع بيانات منظمة
 
-The application maintains the authentic AK.SV experience while providing a modern 2025 aesthetic and maintainable codebase that can scale with growing user demands and content requirements.
+يحافظ التطبيق على تجربة AK.SV الأصيلة مع توفير جمالية 2025 الحديثة وقاعدة كود قابلة للصيانة يمكن أن تتسع مع متطلبات المستخدمين المتزايدة ومتطلبات المحتوى.

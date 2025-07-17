@@ -1,4 +1,3 @@
-import { Link } from "wouter";
 import { Search } from "lucide-react";
 
 const Header = () => {
@@ -7,7 +6,7 @@ const Header = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="main-logo">
+          <a href="/" className="main-logo">
             <svg width="60" height="50" viewBox="0 0 87 80" fill="none" className="transition-all duration-300 hover:scale-110">
               <defs>
                 <linearGradient id="logoGradient" x1="0%" y1="0%" x2="100%" y2="100%">
@@ -19,15 +18,15 @@ const Header = () => {
               <path d="M43.5 0L87 20V60L43.5 80L0 60V20L43.5 0Z" fill="url(#logoGradient)"/>
               <text x="43.5" y="45" textAnchor="middle" fill="white" fontSize="12" fontFamily="STC-Bold">أكوام</text>
             </svg>
-          </Link>
+          </a>
 
           {/* Navigation */}
           <nav className="hidden md:flex items-center space-x-8 space-x-reverse">
-            <Link href="/" className="nav-link">الرئيسية</Link>
-            <Link href="/movies" className="nav-link">أفلام</Link>
-            <Link href="/series" className="nav-link">مسلسلات</Link>
-            <Link href="/shows" className="nav-link">برامج</Link>
-            <Link href="/mix" className="nav-link">منوعات</Link>
+            <a href="/" className="nav-link text-white hover:text-blue-400 transition-colors">الرئيسية</a>
+            <a href="/movies" className="nav-link text-white hover:text-blue-400 transition-colors">أفلام</a>
+            <a href="/series" className="nav-link text-white hover:text-blue-400 transition-colors">مسلسلات</a>
+            <a href="/shows" className="nav-link text-white hover:text-blue-400 transition-colors">برامج</a>
+            <a href="/mix" className="nav-link text-white hover:text-blue-400 transition-colors">منوعات</a>
           </nav>
 
           {/* Search */}

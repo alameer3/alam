@@ -1,4 +1,4 @@
-import { Link } from "wouter";
+// تم إزالة استيراد wouter لتجنب الأخطاء
 
 const Footer = () => {
   return (
@@ -30,10 +30,10 @@ const Footer = () => {
           <div>
             <h4 className="font-semibold mb-4">روابط سريعة</h4>
             <ul className="space-y-2 text-sm">
-              <li><Link href="/movies" className="text-gray-400 hover:text-white transition-colors">أفلام</Link></li>
-              <li><Link href="/series" className="text-gray-400 hover:text-white transition-colors">مسلسلات</Link></li>
-              <li><Link href="/shows" className="text-gray-400 hover:text-white transition-colors">برامج</Link></li>
-              <li><Link href="/mix" className="text-gray-400 hover:text-white transition-colors">منوعات</Link></li>
+              <li><a href="/movies" className="text-gray-400 hover:text-white transition-colors">أفلام</a></li>
+              <li><a href="/series" className="text-gray-400 hover:text-white transition-colors">مسلسلات</a></li>
+              <li><a href="/shows" className="text-gray-400 hover:text-white transition-colors">برامج</a></li>
+              <li><a href="/mix" className="text-gray-400 hover:text-white transition-colors">منوعات</a></li>
             </ul>
           </div>
 
@@ -41,10 +41,10 @@ const Footer = () => {
           <div>
             <h4 className="font-semibold mb-4">الفئات</h4>
             <ul className="space-y-2 text-sm">
-              <li><Link href="/category/arabic" className="text-gray-400 hover:text-white transition-colors">عربي</Link></li>
-              <li><Link href="/category/foreign" className="text-gray-400 hover:text-white transition-colors">أجنبي</Link></li>
-              <li><Link href="/category/turkish" className="text-gray-400 hover:text-white transition-colors">تركي</Link></li>
-              <li><Link href="/category/korean" className="text-gray-400 hover:text-white transition-colors">كوري</Link></li>
+              <li><a href="/category/arabic" className="text-gray-400 hover:text-white transition-colors">عربي</a></li>
+              <li><a href="/category/foreign" className="text-gray-400 hover:text-white transition-colors">أجنبي</a></li>
+              <li><a href="/category/turkish" className="text-gray-400 hover:text-white transition-colors">تركي</a></li>
+              <li><a href="/category/korean" className="text-gray-400 hover:text-white transition-colors">كوري</a></li>
             </ul>
           </div>
 
@@ -52,10 +52,10 @@ const Footer = () => {
           <div>
             <h4 className="font-semibold mb-4">الدعم</h4>
             <ul className="space-y-2 text-sm">
-              <li><Link href="/contact" className="text-gray-400 hover:text-white transition-colors">اتصل بنا</Link></li>
-              <li><Link href="/dmca" className="text-gray-400 hover:text-white transition-colors">سياسة DMCA</Link></li>
-              <li><Link href="/privacy" className="text-gray-400 hover:text-white transition-colors">سياسة الخصوصية</Link></li>
-              <li><Link href="/terms" className="text-gray-400 hover:text-white transition-colors">شروط الاستخدام</Link></li>
+              <li><a href="/contact" className="text-gray-400 hover:text-white transition-colors">اتصل بنا</a></li>
+              <li><a href="/dmca" className="text-gray-400 hover:text-white transition-colors">سياسة DMCA</a></li>
+              <li><a href="/privacy" className="text-gray-400 hover:text-white transition-colors">سياسة الخصوصية</a></li>
+              <li><a href="/terms" className="text-gray-400 hover:text-white transition-colors">شروط الاستخدام</a></li>
             </ul>
           </div>
         </div>
