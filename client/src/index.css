@@ -121,6 +121,201 @@ body {
   background-attachment: fixed;
 }
 
+/* تصميم زر الموقع الأصلي */
+.page-home .home-site-btn-container {
+  width: 258px;
+  height: 258px;
+  border-radius: 50%;
+  position: relative;
+  margin-right: auto;
+  margin-left: auto;
+  margin-bottom: 40px;
+}
+
+.page-home .home-site-btn-container::before, 
+.page-home .home-site-btn-container::after {
+  position: absolute;
+  top: 50%;
+  right: 50%;
+  z-index: 2;
+  content: "";
+  border-radius: 50%;
+  border: 2px solid #fff;
+  transform: translate(50%, -50%);
+  transition: all 500ms;
+}
+
+.page-home .home-site-btn-container::before {
+  width: 100%;
+  height: 100%;
+}
+
+.page-home .home-site-btn-container::after {
+  width: 0;
+  height: 0;
+  border-color: transparent;
+}
+
+.page-home .home-site-btn-container:hover::before {
+  width: 0;
+  height: 0;
+  border-color: transparent;
+}
+
+.page-home .home-site-btn-container:hover::after {
+  width: 100%;
+  height: 100%;
+  border-color: #26baee;
+}
+
+.page-home .home-site-btn-container:hover .home-site-btn {
+  border-color: #0d82ab;
+  background-position: center 100%;
+}
+
+.page-home .home-site-btn-container:hover .home-site-btn .logo, 
+.page-home .home-site-btn-container:hover .home-site-btn .text {
+  opacity: 0;
+}
+
+.page-home .home-site-btn-container:hover .home-site-btn .logo {
+  top: -100%;
+}
+
+.page-home .home-site-btn-container:hover .home-site-btn .text {
+  bottom: 100%;
+}
+
+.page-home .home-site-btn {
+  width: 230px;
+  height: 230px;
+  overflow: hidden;
+  border-radius: 50%;
+  position: absolute;
+  top: 50%;
+  right: 50%;
+  border: 5px solid #fff;
+  background-color: #161619;
+  transform: translate(50%, -50%);
+  background-position: center -43%;
+  background-repeat: no-repeat;
+  background-size: 120%;
+  transition: all 500ms;
+}
+
+.page-home .home-site-btn .logo {
+  position: absolute;
+  top: 50px;
+  right: 50%;
+  z-index: 2;
+  transform: translate(50%);
+  transition: all 500ms;
+}
+
+.page-home .home-site-btn .text {
+  width: 100%;
+  text-align: center;
+  position: absolute;
+  bottom: 55px;
+  right: 50%;
+  z-index: 2;
+  transform: translate(50%);
+  transition: all 500ms;
+}
+
+/* widget styling */
+.widget-3 {
+  margin-bottom: 2rem;
+}
+
+.widget-header {
+  margin-bottom: 1rem;
+}
+
+.header-title {
+  font-size: 1.125rem;
+  font-weight: bold;
+  margin-bottom: 0;
+  color: white;
+}
+
+.header-img {
+  width: 24px;
+  height: 24px;
+  margin-right: 0.5rem;
+}
+
+.entry-box {
+  background: #17171a;
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.entry-box:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.entry-image {
+  position: relative;
+  aspect-ratio: 270/400;
+}
+
+.entry-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.entry-body {
+  padding: 1rem;
+  text-align: center;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.icn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+  text-decoration: none;
+  font-size: 0.875rem;
+}
+
+.icn:hover {
+  color: #df820c;
+}
+
+.icn.play {
+  color: #df820c;
+}
+
+.line {
+  height: 1px;
+  background: #2a2a2d;
+  margin: 0.75rem 0;
+}
+
+.entry-title {
+  font-size: 0.875rem;
+  margin: 0;
+}
+
+.entry-title a {
+  color: white;
+  text-decoration: none;
+}
+
+.entry-title a:hover {
+  color: #df820c;
+}
+
 
 
 /* تخصيص الهيدر الأصلي */

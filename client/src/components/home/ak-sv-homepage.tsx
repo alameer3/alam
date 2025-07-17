@@ -12,10 +12,12 @@ export default function AkSvHomepage() {
   useEffect(() => {
     // إضافة class body-home للخلفية
     document.body.classList.add('body-home');
+    document.body.classList.add('page-home');
     
     // إزالة class عند مغادرة الصفحة
     return () => {
       document.body.classList.remove('body-home');
+      document.body.classList.remove('page-home');
     };
   }, []);
 
@@ -147,24 +149,17 @@ export default function AkSvHomepage() {
           <div className="home-site-btn-container">
             <button 
               onClick={() => setLocation('/ones')}
-              className="home-site-btn relative overflow-hidden rounded-lg shadow-2xl hover:scale-105 transition-transform duration-300"
+              className="home-site-btn link"
               style={{
-                backgroundImage: `url('/images/site-new.webp')`,
-                backgroundSize: 'cover',
-                backgroundPosition: 'center',
-                width: '300px',
-                height: '200px',
-                transition: 'background-position 5s'
+                backgroundImage: `url('/images/site-new.webp')`
               }}
             >
-              <div className="absolute inset-0 bg-black/40 flex flex-col items-center justify-center">
-                <div className="logo mb-4">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="87px" height="80px">
-                    <path fillRule="evenodd" fill="rgb(255, 255, 255)" d="M68.479,46.753 L55.101,55.064 L59.686,64.395 L26.302,64.395 L43.500,33.248 L48.558,41.524 L61.642,34.285 L43.500,-0.001 L0.000,80.001 L87.000,80.001 L68.479,46.753 Z"/>
-                  </svg>
-                </div>
-                <span className="text-white font-medium text-xl">الصفحة الرئيسية</span>
+              <div className="logo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="87px" height="80px">
+                  <path fillRule="evenodd" fill="rgb(255, 255, 255)" d="M68.479,46.753 L55.101,55.064 L59.686,64.395 L26.302,64.395 L43.500,33.248 L48.558,41.524 L61.642,34.285 L43.500,-0.001 L0.000,80.001 L87.000,80.001 L68.479,46.753 Z"/>
+                </svg>
               </div>
+              <span className="text text-white font-medium text-xl">الصفحة الرئيسية</span>
             </button>
           </div>
         </div>
