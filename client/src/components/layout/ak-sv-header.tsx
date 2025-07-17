@@ -1,17 +1,13 @@
 import { useState, useRef, useEffect } from "react";
 import { useLocation } from "wouter";
-import { Search, User, HelpCircle, Menu, Film, Tv, MonitorPlay, Sparkles, BookOpen, Gamepad2, Smartphone, Drama, Zap, Trophy, Clock, ChevronDown } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import logoWhite from "@/assets/images/logo-white.svg";
 
 export default function AkSvHeader() {
   const [, setLocation] = useLocation();
   const [searchQuery, setSearchQuery] = useState("");
   const [showSections, setShowSections] = useState(false);
   const [showMobileMenu, setShowMobileMenu] = useState(false);
+  const [showSearchBox, setShowSearchBox] = useState(false);
   const sectionsRef = useRef<HTMLDivElement>(null);
-  const mobileMenuRef = useRef<HTMLDivElement>(null);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,19 +22,16 @@ export default function AkSvHeader() {
       if (sectionsRef.current && !sectionsRef.current.contains(event.target as Node)) {
         setShowSections(false);
       }
-      if (mobileMenuRef.current && !mobileMenuRef.current.contains(event.target as Node)) {
-        setShowMobileMenu(false);
-      }
     };
 
-    if (showSections || showMobileMenu) {
+    if (showSections) {
       document.addEventListener('mousedown', handleClickOutside);
     }
 
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [showSections, showMobileMenu]);
+  }, [showSections]);
 
   const handleSectionClick = (path: string) => {
     setLocation(path);
@@ -47,174 +40,172 @@ export default function AkSvHeader() {
   };
 
   const categories = [
-    {
-      title: "أفلام",
-      icon: Film,
-      path: "/movies"
-    },
-    {
-      title: "مسلسلات",
-      icon: MonitorPlay,
-      path: "/series"
-    },
-    {
-      title: "الإعلانات",
-      icon: Film,
-      path: "/trailers"
-    },
-    {
-      title: "البرامج",
-      icon: BookOpen,
-      path: "/programs"
-    },
-    {
-      title: "الألعاب",
-      icon: Gamepad2,
-      path: "/games"
-    },
-    {
-      title: "التطبيقات",
-      icon: Smartphone,
-      path: "/applications"
-    },
-    {
-      title: "المسرحيات",
-      icon: Drama,
-      path: "/theater"
-    },
-    {
-      title: "المصارعة",
-      icon: Zap,
-      path: "/wrestling"
-    },
-    {
-      title: "الرياضة",
-      icon: Trophy,
-      path: "/sports"
-    }
+    { title: "أفلام", path: "/movies", icon: "icon-video-camera" },
+    { title: "مسلسلات", path: "/series", icon: "icon-monitor" },
+    { title: "البرامج", path: "/programs", icon: "icon-tv" },
+    { title: "الألعاب", path: "/games", icon: "icon-game" },
+    { title: "التطبيقات", path: "/applications", icon: "icon-mobile" },
+    { title: "المسرحيات", path: "/theater", icon: "icon-theater" },
+    { title: "المصارعة", path: "/wrestling", icon: "icon-wrestling" },
+    { title: "الرياضة", path: "/sports", icon: "icon-sports" }
   ];
 
   return (
-    <header className="akwam-dark-bg border-b border-gray-800 sticky top-0 z-50 akwam-transition" style={{ height: '70px' }}>
-      {/* الهيدر العلوي */}
-      <div className="container mx-auto px-4 h-full">
-        <div className="flex items-center justify-between h-full">
-          
-          {/* الجانب الأيمن - معلومات المستخدم وقائمة الجوال */}
-          <div className="flex items-center gap-4">
-            {/* قائمة الجوال */}
-            <div className="md:hidden relative" ref={mobileMenuRef}>
-              <button
-                onClick={() => setShowMobileMenu(!showMobileMenu)}
-                className="text-white akwam-hover akwam-transition"
-              >
-                <Menu className="w-5 h-5" />
+    <>
+      {/* صندوق البحث الجانبي */}
+      <div className={`search-box px-xl-5 ${showSearchBox ? 'active' : ''}`}>
+        <div className="container search-container">
+          <form onSubmit={handleSearch} className="search-form">
+            <label htmlFor="searchBoxInput" className="d-flex align-items-center h-100 w-100 m-0">
+              <button type="submit" className="px-3 ml-2 font-size-30">
+                <i className="icon-search"></i>
               </button>
-              
-              {/* القائمة الجانبية للجوال */}
-              {showMobileMenu && (
-                <div className="absolute top-full right-0 mt-1 w-64 akwam-menu-bg akwam-radius shadow-lg border border-gray-700 z-50">
-                  <div className="py-2">
-                    <div className="px-4 py-2 akwam-primary-color text-sm font-semibold border-b border-gray-700">
-                      الأقسام
-                    </div>
-                    {categories.map((category) => {
-                      const Icon = category.icon;
-                      return (
-                        <button
-                          key={category.path}
-                          onClick={() => handleSectionClick(category.path)}
-                          className="w-full px-4 py-2 text-right text-white akwam-hover akwam-transition flex items-center justify-end gap-2 text-sm"
-                        >
-                          {category.title}
-                          <Icon className="w-4 h-4" />
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
-            </div>
-            
-            <div className="flex items-center gap-2 text-white/80 text-sm">
-              <User className="w-4 h-4" />
-              <span>أهلاً بك، ضيف</span>
-              <HelpCircle className="w-4 h-4" />
-            </div>
-          </div>
-
-          {/* الوسط - شريط البحث */}
-          <div className="flex-1 max-w-md mx-8">
-            <form onSubmit={handleSearch} className="relative">
-              <Input
-                type="text"
-                placeholder="البحث في الأفلام والمسلسلات..."
+              <input 
+                type="search" 
+                name="q" 
+                id="searchBoxInput" 
+                placeholder="ابحث هنا"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="h-10 pr-4 pl-12 akwam-menu-bg border-gray-700 text-white placeholder:text-white/60 text-sm akwam-radius"
-                dir="rtl"
               />
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-white/60" />
-            </form>
-          </div>
-
-          {/* الجانب الأيسر - الشعار وأُضيف حديثاً وقائمة الأقسام */}
-          <div className="flex items-center gap-4">
-            {/* قائمة الأقسام - للجميع */}
-            <div className="relative" ref={sectionsRef}>
-              <button
-                onClick={() => setShowSections(!showSections)}
-                className="text-white akwam-hover akwam-transition flex items-center gap-2 text-sm"
-              >
-                الأقسام
-                <ChevronDown className={`w-4 h-4 akwam-transition ${showSections ? 'rotate-180' : ''}`} />
-              </button>
-              
-              {/* القائمة المنسدلة */}
-              {showSections && (
-                <div className="absolute top-full left-0 mt-1 w-48 akwam-menu-bg akwam-radius shadow-lg border border-gray-700 z-50">
-                  <div className="py-2">
-                    {categories.map((category) => {
-                      const Icon = category.icon;
-                      return (
-                        <button
-                          key={category.path}
-                          onClick={() => handleSectionClick(category.path)}
-                          className="w-full px-4 py-2 text-right text-white akwam-hover akwam-transition flex items-center justify-end gap-2 text-sm"
-                        >
-                          {category.title}
-                          <Icon className="w-4 h-4" />
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              )}
-            </div>
-
-            <button
-              onClick={() => setLocation("/recent")}
-              className="akwam-primary-color akwam-hover akwam-transition flex items-center gap-2 text-sm"
-            >
-              <Clock className="w-4 h-4" />
-              أُضيف حديثاً
-            </button>
-            <button
-              onClick={() => setLocation("/")}
-              className="akwam-primary-color akwam-hover akwam-transition flex items-center gap-2"
-            >
-              <img 
-                src={logoWhite} 
-                alt="اكوام" 
-                className="w-12 h-8 object-contain"
-              />
-              <span className="text-lg font-bold">اكوام</span>
-            </button>
+            </label>
+          </form>
+          <div className="search-toggle" onClick={() => setShowSearchBox(false)}>
+            <i className="icon-arrow-back"></i>
           </div>
         </div>
       </div>
-      
 
-    </header>
+      {/* القائمة الجانبية */}
+      <div className={`main-menu ${showMobileMenu ? 'active' : ''}`}>
+        <div className="container">
+          <div className="menu-header d-flex justify-content-between align-items-center">
+            <h3 className="text-white">الأقسام</h3>
+            <button 
+              className="close-menu text-white bg-transparent border-0"
+              onClick={() => setShowMobileMenu(false)}
+            >
+              <i className="icon-close"></i>
+            </button>
+          </div>
+          <nav className="menu-nav">
+            {categories.map((category) => (
+              <button
+                key={category.path}
+                onClick={() => handleSectionClick(category.path)}
+                className="menu-item d-flex align-items-center text-white py-3 px-4 w-100 border-0 bg-transparent text-right"
+              >
+                <div className="icn ml-3">
+                  <i className={category.icon}></i>
+                </div>
+                <div className="text">{category.title}</div>
+              </button>
+            ))}
+          </nav>
+        </div>
+      </div>
+
+      {/* الهيدر الرئيسي */}
+      <div className="site-container">
+        <div className="main-header-top"></div>
+        <header className="main-header">
+          <div className="container">
+            <div className="row align-items-center">
+              {/* الشعار */}
+              <div className="col-auto">
+                <h2 className="main-logo m-0">
+                  <button onClick={() => setLocation("/ones")} className="d-inline-flex bg-transparent border-0">
+                    <img src="/logo-white.svg" className="img-fluid" alt="اكوام" />
+                  </button>
+                </h2>
+              </div>
+              
+              {/* زر الأقسام */}
+              <div className="col-auto menu-toggle-container" ref={sectionsRef}>
+                <button 
+                  onClick={() => setShowSections(!showSections)}
+                  className="menu-toggle d-flex align-items-center text-white bg-transparent border-0"
+                >
+                  <span className="icn"></span>
+                  <div className="text font-size-18 mr-3">الأقسام</div>
+                </button>
+                
+                {/* قائمة الأقسام المنسدلة */}
+                {showSections && (
+                  <div className="sections-dropdown">
+                    <div className="dropdown-content">
+                      {categories.map((category) => (
+                        <button
+                          key={category.path}
+                          onClick={() => handleSectionClick(category.path)}
+                          className="dropdown-item d-flex align-items-center text-white py-2 px-3 w-100 border-0 bg-transparent text-right"
+                        >
+                          <div className="icn ml-3">
+                            <i className={category.icon}></i>
+                          </div>
+                          <div className="text">{category.title}</div>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </div>
+              
+              <div className="ml-auto"></div>
+              
+              {/* البحث */}
+              <div className="col-md-5 col-lg-6 search-container">
+                <div className="search-form">
+                  <form onSubmit={handleSearch}>
+                    <input 
+                      type="text" 
+                      id="headerSearchInput" 
+                      name="q"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                    />
+                    <label htmlFor="headerSearchInput">ابحث عن فيلم او مسلسل ...</label>
+                    <button type="submit"><i className="icon-search"></i></button>
+                  </form>
+                </div>
+              </div>
+              
+              {/* أضيف حديثاً */}
+              <div className="col-auto recently-container">
+                <button 
+                  onClick={() => setLocation("/recent")}
+                  className="btn-recently bg-transparent border-0"
+                >
+                  <i className="icon-plus2 ml-2"></i>
+                  <span>أضيف حديثا</span>
+                </button>
+              </div>
+              
+              {/* المستخدم */}
+              <div className="col-auto user-profile-container">
+                <div className="user-panel">
+                  <button 
+                    className="user-toggle d-block font-size-20 public bg-transparent border-0"
+                    onClick={() => setLocation("/login")}
+                  >
+                    <i className="icon-user"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </header>
+        <div className="main-header-height"></div>
+      </div>
+
+      {/* الخلفية الشفافة */}
+      <div 
+        className={`site-overlay ${showMobileMenu || showSearchBox ? 'active' : ''}`}
+        onClick={() => {
+          setShowMobileMenu(false);
+          setShowSearchBox(false);
+        }}
+      ></div>
+    </>
   );
 }
