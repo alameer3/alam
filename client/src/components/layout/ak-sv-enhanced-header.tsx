@@ -188,14 +188,14 @@ export default function AkSvEnhancedHeader() {
             {/* زر قائمة الأقسام مع Dropdown */}
             <div className="col-auto menu-toggle-container">
               <div className="dropdown position-relative">
-                <a 
-                  href="javascript:;" 
-                  className="menu-toggle d-flex align-items-center text-white"
+                <button 
+                  type="button"
+                  className="menu-toggle d-flex align-items-center text-white btn btn-link p-0 border-0"
                   onClick={toggleSectionsDropdown}
                 >
                   <span className="icn"></span>
                   <div className="text font-size-18 mr-3">الأقسام</div>
-                </a>
+                </button>
                 
                 {/* قائمة الأقسام المنسدلة - مطابقة للموقع الأصلي */}
                 {showSectionsDropdown && (

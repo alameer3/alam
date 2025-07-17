@@ -126,22 +126,23 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  // Trending content route
-  app.get("/api/content/trending", async (req, res) => {
+  // Recent content route
+  app.get("/api/content/recent", async (req, res) => {
     try {
       const page = parseInt(req.query.page as string) || 1;
       const limit = parseInt(req.query.limit as string) || 12;
       
       const filters = {
-        trending: true,
         page,
-        limit
+        limit,
+        sortBy: 'id',
+        sortOrder: 'desc' as const
       };
       
       const result = await dbManager.getContent(filters);
       res.json({ success: true, data: result.content });
     } catch (error) {
-      console.error('Trending content error:', error);
+      console.error('Recent content error:', error);
       res.status(500).json({ success: false, error: "خطأ في الخادم" });
     }
   });
@@ -188,34 +189,30 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/content/featured", async (req, res) => {
     try {
       const filters = {
-        featured: true,
-        sortBy: 'rating',
-        sortOrder: 'desc' as const,
         page: 1,
         limit: 10
       };
       
       const result = await dbManager.getContent(filters);
-      res.json({ success: true, data: result.content });
+      // استخدام المحتوى الموجود كـ featured content
+      res.json({ success: true, data: result.content.slice(0, 5) });
     } catch (error) {
       console.error('Featured content error:', error);
       res.status(500).json({ success: false, error: "خطأ في الخادم" });
     }
   });
 
-  // Trending content route
+  // Trending content route - Fixed duplicate route
   app.get("/api/content/trending", async (req, res) => {
     try {
       const filters = {
-        trending: true,
-        sortBy: 'view_count',
-        sortOrder: 'desc' as const,
         page: 1,
         limit: 10
       };
       
       const result = await dbManager.getContent(filters);
-      res.json({ success: true, data: result.content });
+      // استخدام المحتوى الموجود كـ trending content  
+      res.json({ success: true, data: result.content.slice(5, 10) });
     } catch (error) {
       console.error('Trending content error:', error);
       res.status(500).json({ success: false, error: "خطأ في الخادم" });
