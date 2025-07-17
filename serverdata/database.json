@@ -1120,6 +1120,260 @@
       "is_active": true,
       "created_at": "2025-07-16T20:00:00.000Z",
       "updated_at": "2025-07-16T20:00:00.000Z"
+    },
+    {
+      "id": 101,
+      "title": "Spiders on a Plane",
+      "titleAr": "العناكب على متن الطائرة",
+      "description": "A group of young travelers discover their dream vacation has turned into a nightmare when a secret invasion of deadly spiders escapes mid-flight.",
+      "descriptionAr": "تكتشف مجموعة من المسافرين الشباب أن عطلة أحلامهم تحولت إلى كابوس عندما يهرب غزو العناكب القاتلة السرية في منتصف الرحلة.",
+      "type": "movie",
+      "poster": "https://img.downet.net/uploads/Jx74g.webp",
+      "backdrop": "https://img.downet.net/uploads/Jx74g.webp",
+      "releaseDate": "2025-07-13",
+      "rating": 4,
+      "ratingCount": 368,
+      "duration": 90,
+      "language": "English",
+      "country": "أمريكا",
+      "quality": "HD",
+      "status": "completed",
+      "isActive": true,
+      "createdAt": "2025-01-15T01:00:00.000Z",
+      "updatedAt": "2025-01-15T01:00:00.000Z",
+      "viewCount": 1250,
+      "downloadCount": 450,
+      "categories": [
+        2
+      ],
+      "genres": [
+        1,
+        7
+      ],
+      "cast": [],
+      "crew": []
+    },
+    {
+      "id": 102,
+      "title": "حرب الجبالي",
+      "titleAr": "حرب الجبالي",
+      "description": "A bloody conflict between two families in the Gamaliyya neighborhood, ignited by forbidden love and betrayals that lead to a battle for power.",
+      "descriptionAr": "صراع دموي بين عائلتين في حي الجمالية، يشعل فتيلَه حب ممنوع وخيانات تقود لمعركة على السلطة",
+      "type": "series",
+      "poster": "https://img.downet.net/uploads/KrvOM.jpg",
+      "backdrop": "https://img.downet.net/uploads/KrvOM.jpg",
+      "releaseDate": "2024-01-01",
+      "rating": 5.3,
+      "ratingCount": 21556,
+      "duration": 45,
+      "language": "Arabic",
+      "country": "مصر",
+      "quality": "HD",
+      "status": "completed",
+      "isActive": true,
+      "createdAt": "2025-01-15T01:00:00.000Z",
+      "updatedAt": "2025-01-15T01:00:00.000Z",
+      "viewCount": 45000,
+      "downloadCount": 15000,
+      "categories": [
+        1
+      ],
+      "genres": [
+        2,
+        4
+      ],
+      "cast": [],
+      "crew": []
+    },
+    {
+      "id": 103,
+      "title": "WWE Saturday Nights Main Event",
+      "titleAr": "WWE Saturday Nights Main Event مترجم",
+      "description": "WWE's premier Saturday night wrestling event featuring the biggest stars and most exciting matches.",
+      "descriptionAr": "حدث المصارعة الأسبوعي الأول من WWE يضم أكبر النجوم وأكثر المباريات إثارة",
+      "type": "program",
+      "poster": "https://img.downet.net/uploads/4v9Hg.jpg",
+      "backdrop": "https://img.downet.net/uploads/4v9Hg.jpg",
+      "releaseDate": "2025-07-12",
+      "rating": 7,
+      "ratingCount": 56,
+      "duration": 120,
+      "language": "English",
+      "country": "أمريكا",
+      "quality": "HD",
+      "status": "completed",
+      "isActive": true,
+      "createdAt": "2025-01-15T01:00:00.000Z",
+      "updatedAt": "2025-01-15T01:00:00.000Z",
+      "viewCount": 2500,
+      "downloadCount": 800,
+      "categories": [
+        2
+      ],
+      "genres": [
+        14
+      ],
+      "cast": [],
+      "crew": []
+    },
+    {
+      "id": 104,
+      "title": "اغنية لِلّي محمد منير",
+      "titleAr": "اغنية لِلّي محمد منير",
+      "description": "A song by the famous Egyptian singer Mohamed Mounir, composed by Akram Hosny.",
+      "descriptionAr": "أغنية للنجم المصري محمد منير من ألحان أكرم حسني",
+      "type": "game",
+      "poster": "https://img.downet.net/uploads/default-music.jpg",
+      "backdrop": "https://img.downet.net/uploads/default-music.jpg",
+      "releaseDate": "2024-12-01",
+      "rating": 4.5,
+      "ratingCount": 125,
+      "duration": 4,
+      "language": "Arabic",
+      "country": "مصر",
+      "quality": "HD",
+      "status": "completed",
+      "isActive": true,
+      "createdAt": "2025-01-15T01:00:00.000Z",
+      "updatedAt": "2025-01-15T01:00:00.000Z",
+      "viewCount": 5000,
+      "downloadCount": 2000,
+      "categories": [
+        1
+      ],
+      "genres": [
+        12
+      ],
+      "cast": [],
+      "crew": []
+    },
+    {
+      "id": 105,
+      "title": "الرجل الحديدي",
+      "titleAr": "الرجل الحديدي",
+      "description": "Iron Man - The story of Tony Stark, a genius inventor and billionaire who builds a powered suit to fight crime.",
+      "descriptionAr": "قصة توني ستارك، المخترع العبقري والمليونير الذي يبني بذلة قوية لمحاربة الجريمة",
+      "type": "movie",
+      "poster": "https://img.downet.net/uploads/iron-man-poster.jpg",
+      "backdrop": "https://img.downet.net/uploads/iron-man-backdrop.jpg",
+      "releaseDate": "2008-05-02",
+      "rating": 4.8,
+      "ratingCount": 15000,
+      "duration": 126,
+      "language": "English",
+      "country": "أمريكا",
+      "quality": "4K",
+      "status": "completed",
+      "isActive": true,
+      "createdAt": "2025-01-15T01:00:00.000Z",
+      "updatedAt": "2025-01-15T01:00:00.000Z",
+      "viewCount": 35000,
+      "downloadCount": 12000,
+      "categories": [
+        2
+      ],
+      "genres": [
+        1,
+        8
+      ],
+      "cast": [],
+      "crew": []
+    },
+    {
+      "id": 106,
+      "title": "مسلسل الاختيار",
+      "titleAr": "مسلسل الاختيار",
+      "description": "Egyptian series about the choice between good and evil, starring Amir Karara.",
+      "descriptionAr": "مسلسل مصري عن الاختيار بين الخير والشر، بطولة أمير كرارة",
+      "type": "series",
+      "poster": "https://img.downet.net/uploads/ekhtyar-poster.jpg",
+      "backdrop": "https://img.downet.net/uploads/ekhtyar-backdrop.jpg",
+      "releaseDate": "2020-04-15",
+      "rating": 4.9,
+      "ratingCount": 28000,
+      "duration": 45,
+      "language": "Arabic",
+      "country": "مصر",
+      "quality": "HD",
+      "status": "completed",
+      "isActive": true,
+      "createdAt": "2025-01-15T01:00:00.000Z",
+      "updatedAt": "2025-01-15T01:00:00.000Z",
+      "viewCount": 65000,
+      "downloadCount": 22000,
+      "categories": [
+        1
+      ],
+      "genres": [
+        2,
+        5
+      ],
+      "cast": [],
+      "crew": []
+    },
+    {
+      "id": 107,
+      "title": "مسلسل جعفر العمدة",
+      "titleAr": "مسلسل جعفر العمدة",
+      "description": "Egyptian series about rural life and the mayor of a village, starring Mohamed Ragab.",
+      "descriptionAr": "مسلسل مصري عن الحياة الريفية وعمدة القرية، بطولة محمد رجب",
+      "type": "series",
+      "poster": "https://img.downet.net/uploads/jaafar-poster.jpg",
+      "backdrop": "https://img.downet.net/uploads/jaafar-backdrop.jpg",
+      "releaseDate": "2023-04-01",
+      "rating": 4.2,
+      "ratingCount": 18500,
+      "duration": 40,
+      "language": "Arabic",
+      "country": "مصر",
+      "quality": "HD",
+      "status": "completed",
+      "isActive": true,
+      "createdAt": "2025-01-15T01:00:00.000Z",
+      "updatedAt": "2025-01-15T01:00:00.000Z",
+      "viewCount": 42000,
+      "downloadCount": 15000,
+      "categories": [
+        1
+      ],
+      "genres": [
+        3,
+        13
+      ],
+      "cast": [],
+      "crew": []
+    },
+    {
+      "id": 108,
+      "title": "فيلم الكنز",
+      "titleAr": "فيلم الكنز",
+      "description": "Egyptian film about the search for a legendary treasure, starring Mohamed Saad.",
+      "descriptionAr": "فيلم مصري عن البحث عن كنز أسطوري، بطولة محمد سعد",
+      "type": "movie",
+      "poster": "https://img.downet.net/uploads/kanz-poster.jpg",
+      "backdrop": "https://img.downet.net/uploads/kanz-backdrop.jpg",
+      "releaseDate": "2017-01-25",
+      "rating": 3.8,
+      "ratingCount": 8500,
+      "duration": 110,
+      "language": "Arabic",
+      "country": "مصر",
+      "quality": "HD",
+      "status": "completed",
+      "isActive": true,
+      "createdAt": "2025-01-15T01:00:00.000Z",
+      "updatedAt": "2025-01-15T01:00:00.000Z",
+      "viewCount": 25000,
+      "downloadCount": 9000,
+      "categories": [
+        1
+      ],
+      "genres": [
+        1,
+        3
+      ],
+      "cast": [],
+      "crew": []
     }
   ],
   "content_categories": [
