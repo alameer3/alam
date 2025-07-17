@@ -1,46 +1,10 @@
-/* استيراد CSS الأصلي من الموقع الأصلي */
-@import url('/css/fonts.css');
-@import url('/css/plugins.css');
-@import url('/css/style.css');
-@import url('/css/akwam.css');
-@import url('/css/home.css');
-@import url('/css/fontawesome.css');
-@import url('/css/background.css');
+/* CSS الأصلي من الموقع الأصلي - تم تحميله في index.html */
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* خطوط اكوام الأصلية من الموقع الأصلي */
-@font-face {
-  font-family: 'akoam';
-  src: url('/fonts/font/STC-Bold.eot');
-  src: local('?'), url('/fonts/font/STC-Bold.woff') format('woff'), 
-       url('/fonts/font/STC-Bold.ttf') format('truetype'), 
-       url('/fonts/font/STC-Bold.svg') format('svg');
-  font-weight: 700;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'akoam';
-  src: url('/fonts/font/STC-Italic.eot');
-  src: local('?'), url('/fonts/font/STC-Light.woff') format('woff'), 
-       url('/fonts/font/STC-Light.ttf') format('truetype'), 
-       url('/fonts/font/STC-Light.svg') format('svg');
-  font-weight: 400;
-  font-style: normal;
-}
-
-@font-face {
-  font-family: 'akoam';
-  src: url('/fonts/font/STC-Regular.eot');
-  src: local('?'), url('/fonts/font/STC-Regular.woff') format('woff'), 
-       url('/fonts/font/STC-Regular.ttf') format('truetype'), 
-       url('/fonts/font/STC-Regular.svg') format('svg');
-  font-weight: 600;
-  font-style: normal;
-}
+/* خطوط اكوام الأصلية - تم تحميلها في index.html */
 
 @layer base {
   :root {
