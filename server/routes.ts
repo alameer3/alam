@@ -185,9 +185,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   // Featured content route
-  app.get("/api/featured", async (req, res) => {
+  app.get("/api/content/featured", async (req, res) => {
     try {
       const filters = {
+        featured: true,
         sortBy: 'rating',
         sortOrder: 'desc' as const,
         page: 1,
@@ -195,17 +196,18 @@ export async function registerRoutes(app: Express): Promise<Server> {
       };
       
       const result = await dbManager.getContent(filters);
-      res.json(result.content);
+      res.json({ success: true, data: result.content });
     } catch (error) {
       console.error('Featured content error:', error);
-      res.status(500).json({ error: "Failed to fetch featured content" });
+      res.status(500).json({ success: false, error: "خطأ في الخادم" });
     }
   });
 
   // Trending content route
-  app.get("/api/trending", async (req, res) => {
+  app.get("/api/content/trending", async (req, res) => {
     try {
       const filters = {
+        trending: true,
         sortBy: 'view_count',
         sortOrder: 'desc' as const,
         page: 1,
@@ -213,10 +215,10 @@ export async function registerRoutes(app: Express): Promise<Server> {
       };
       
       const result = await dbManager.getContent(filters);
-      res.json(result.content);
+      res.json({ success: true, data: result.content });
     } catch (error) {
       console.error('Trending content error:', error);
-      res.status(500).json({ error: "Failed to fetch trending content" });
+      res.status(500).json({ success: false, error: "خطأ في الخادم" });
     }
   });
 

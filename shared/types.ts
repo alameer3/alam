@@ -274,6 +274,8 @@ export interface SearchFilters {
   sortOrder?: 'asc' | 'desc';
   page?: number;
   limit?: number;
+  featured?: boolean;
+  trending?: boolean;
 }
 
 export interface DashboardStats {
