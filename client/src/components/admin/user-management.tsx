@@ -17,7 +17,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { useToast } from '@/hooks/use-toast';
 import { apiRequest } from '@/lib/queryClient';
 import { ConfirmationDialog } from '@/components/ui/confirmation-dialog';
-import type { User, InsertUser } from '@shared/schema';
+import type { User } from '../../shared/types.js';
 
 interface UserFormData {
   username: string;
@@ -57,7 +57,7 @@ export default function UserManagement() {
 
   // Create user mutation
   const createUserMutation = useMutation({
-    mutationFn: async (data: InsertUser) => {
+    mutationFn: async (data: UserFormData) => {
       return apiRequest('/api/admin/users', {
         method: 'POST',
         body: JSON.stringify(data)

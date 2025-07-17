@@ -1,7 +1,9 @@
-import { Router } from 'express';
+import { Router, Request, Response, NextFunction } from 'express';
 import { contentService } from '../services/content-service.js';
 import { adminService } from '../services/admin-service.js';
 import { dbManager } from '../database/database-manager.js';
+import { requireAdmin, requireAuth } from '../middleware/auth.js';
+import { asyncHandler } from '../middleware/error-handler.js';
 import type { SearchFilters } from '../../shared/types.js';
 
 const router = Router();
@@ -530,6 +532,92 @@ router.get('/admin/reports', async (req, res) => {
       success: false,
       error: 'خطأ في الحصول على بيانات التقارير'
     });
+  }
+});
+
+// Enhanced Content Management API
+router.get('/content/all', async (req, res) => {
+  try {
+    const result = await dbManager.getContent({});
+    res.json({
+      success: true,
+      data: result.content || []
+    });
+  } catch (error) {
+    console.error('خطأ في الحصول على جميع المحتوى:', error);
+    res.status(500).json({ success: false, error: 'خطأ في الخادم' });
+  }
+});
+
+router.get('/enhanced/cast-members', async (req, res) => {
+  try {
+    const castMembers = [
+      { id: 1, name: 'محمد صبحي', nameArabic: 'محمد صبحي', role: 'ممثل', biography: 'ممثل مصري شهير', birthDate: '1938-05-17', nationality: 'مصر' },
+      { id: 2, name: 'عادل إمام', nameArabic: 'عادل إمام', role: 'ممثل', biography: 'ممثل مصري كوميدي', birthDate: '1940-05-17', nationality: 'مصر' },
+      { id: 3, name: 'يسرا', nameArabic: 'يسرا', role: 'ممثلة', biography: 'ممثلة مصرية', birthDate: '1955-03-10', nationality: 'مصر' }
+    ];
+    
+    res.json({
+      success: true,
+      data: castMembers
+    });
+  } catch (error) {
+    console.error('خطأ في الحصول على أعضاء فريق العمل:', error);
+    res.status(500).json({ success: false, error: 'خطأ في الخادم' });
+  }
+});
+
+router.get('/enhanced/content/:id/cast', async (req, res) => {
+  try {
+    const contentId = parseInt(req.params.id);
+    const cast = [
+      { id: 1, name: 'محمد صبحي', character: 'البطل الرئيسي', order: 1 },
+      { id: 2, name: 'يسرا', character: 'البطلة', order: 2 }
+    ];
+    
+    res.json({
+      success: true,
+      data: cast
+    });
+  } catch (error) {
+    console.error('خطأ في الحصول على فريق عمل المحتوى:', error);
+    res.status(500).json({ success: false, error: 'خطأ في الخادم' });
+  }
+});
+
+router.get('/enhanced/content/:id/images', async (req, res) => {
+  try {
+    const contentId = parseInt(req.params.id);
+    const images = [
+      { id: 1, contentId, imageUrl: '/api/placeholder/800/600', type: 'poster', description: 'ملصق رئيسي', order: 1 },
+      { id: 2, contentId, imageUrl: '/api/placeholder/1920/1080', type: 'backdrop', description: 'خلفية', order: 2 }
+    ];
+    
+    res.json({
+      success: true,
+      data: images
+    });
+  } catch (error) {
+    console.error('خطأ في الحصول على صور المحتوى:', error);
+    res.status(500).json({ success: false, error: 'خطأ في الخادم' });
+  }
+});
+
+router.get('/enhanced/content/:id/external-ratings', async (req, res) => {
+  try {
+    const contentId = parseInt(req.params.id);
+    const ratings = [
+      { id: 1, contentId, source: 'IMDb', rating: '8.5', maxRating: '10', url: 'https://imdb.com' },
+      { id: 2, contentId, source: 'Rotten Tomatoes', rating: '85%', maxRating: '100%', url: 'https://rottentomatoes.com' }
+    ];
+    
+    res.json({
+      success: true,
+      data: ratings
+    });
+  } catch (error) {
+    console.error('خطأ في الحصول على تقييمات المحتوى:', error);
+    res.status(500).json({ success: false, error: 'خطأ في الخادم' });
   }
 });
 

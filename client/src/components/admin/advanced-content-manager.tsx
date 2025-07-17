@@ -80,32 +80,67 @@ export default function AdvancedContentManager() {
   const queryClient = useQueryClient();
 
   // جلب قائمة المحتوى
-  const { data: contentList, isLoading: contentLoading } = useQuery<Content[]>({
-    queryKey: ['/api/content/all']
+  const { data: contentResponse, isLoading: contentLoading } = useQuery({
+    queryKey: ['/api/content/all'],
+    queryFn: async () => {
+      const response = await fetch('/api/content/all');
+      if (!response.ok) throw new Error('Failed to fetch content');
+      return response.json();
+    }
   });
+  
+  const contentList = contentResponse?.data || [];
 
   // جلب أعضاء فريق العمل
-  const { data: castMembers, isLoading: castLoading } = useQuery<CastMember[]>({
-    queryKey: ['/api/enhanced/cast-members']
+  const { data: castResponse, isLoading: castLoading } = useQuery({
+    queryKey: ['/api/enhanced/cast-members'],
+    queryFn: async () => {
+      const response = await fetch('/api/enhanced/cast-members');
+      if (!response.ok) throw new Error('Failed to fetch cast members');
+      return response.json();
+    }
   });
+  
+  const castMembers = castResponse?.data || [];
 
   // جلب فريق عمل المحتوى المحدد
-  const { data: contentCast, isLoading: contentCastLoading } = useQuery({
+  const { data: contentCastResponse, isLoading: contentCastLoading } = useQuery({
     queryKey: ['/api/enhanced/content', selectedContentId, 'cast'],
+    queryFn: async () => {
+      const response = await fetch(`/api/enhanced/content/${selectedContentId}/cast`);
+      if (!response.ok) throw new Error('Failed to fetch content cast');
+      return response.json();
+    },
     enabled: !!selectedContentId
   });
+  
+  const contentCast = contentCastResponse?.data || [];
 
   // جلب صور المحتوى المحدد
-  const { data: contentImages, isLoading: contentImagesLoading } = useQuery<ContentImage[]>({
+  const { data: contentImagesResponse, isLoading: contentImagesLoading } = useQuery({
     queryKey: ['/api/enhanced/content', selectedContentId, 'images'],
+    queryFn: async () => {
+      const response = await fetch(`/api/enhanced/content/${selectedContentId}/images`);
+      if (!response.ok) throw new Error('Failed to fetch content images');
+      return response.json();
+    },
     enabled: !!selectedContentId
   });
+  
+  const contentImages = contentImagesResponse?.data || [];
 
   // جلب تقييمات المحتوى المحدد
-  const { data: contentRatings, isLoading: contentRatingsLoading } = useQuery<ExternalRating[]>({
+  const { data: contentRatingsResponse, isLoading: contentRatingsLoading } = useQuery({
     queryKey: ['/api/enhanced/content', selectedContentId, 'external-ratings'],
+    queryFn: async () => {
+      const response = await fetch(`/api/enhanced/content/${selectedContentId}/external-ratings`);
+      if (!response.ok) throw new Error('Failed to fetch content ratings');
+      return response.json();
+    },
     enabled: !!selectedContentId
   });
+  
+  const contentRatings = contentRatingsResponse?.data || [];
 
   // طفرات للتحديث
   const createCastMutation = useMutation({

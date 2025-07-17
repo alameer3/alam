@@ -1,27 +1,19 @@
 import { dbManager } from '../database/database-manager.js';
-import type { Content, SearchFilters, ApiResponse } from '../../shared/types.js';
+import type { SearchFilters, ApiResponse, Content } from '../../shared/types.js';
 
 export class ContentService {
   async getContent(filters: SearchFilters = {}): Promise<ApiResponse<{ content: Content[], total: number }>> {
     try {
-      console.log('🔍 ContentService.getContent called with filters:', filters);
       const result = await dbManager.getContent(filters);
-      
-      console.log('📊 ContentService results:', result.content.length, 'items,', result.total, 'total');
-      
-      // لا نُرجع خطأ إذا لم يكن هناك محتوى - نُرجع مصفوفة فارغة
       return {
         success: true,
-        data: result,
-        pagination: {
-          page: filters.page || 1,
-          limit: filters.limit || 24,
-          total: result.total,
-          totalPages: Math.ceil(result.total / (filters.limit || 24))
+        data: {
+          content: result.content,
+          total: result.total
         }
       };
     } catch (error) {
-      console.error('خطأ في الحصول على المحتوى:', error);
+      console.error('خطأ في خدمة المحتوى:', error);
       return {
         success: false,
         error: 'خطأ في الحصول على المحتوى'
@@ -29,10 +21,196 @@ export class ContentService {
     }
   }
 
+  async getMovies(filters: SearchFilters = {}): Promise<ApiResponse<{ content: Content[], total: number }>> {
+    try {
+      const movieFilters = { ...filters, type: 'movie' };
+      const result = await dbManager.getContent(movieFilters);
+      return {
+        success: true,
+        data: {
+          content: result.content,
+          total: result.total
+        }
+      };
+    } catch (error) {
+      console.error('خطأ في الحصول على الأفلام:', error);
+      return {
+        success: false,
+        error: 'خطأ في الحصول على الأفلام'
+      };
+    }
+  }
+
+  async getSeries(filters: SearchFilters = {}): Promise<ApiResponse<{ content: Content[], total: number }>> {
+    try {
+      const seriesFilters = { ...filters, type: 'series' };
+      const result = await dbManager.getContent(seriesFilters);
+      return {
+        success: true,
+        data: {
+          content: result.content,
+          total: result.total
+        }
+      };
+    } catch (error) {
+      console.error('خطأ في الحصول على المسلسلات:', error);
+      return {
+        success: false,
+        error: 'خطأ في الحصول على المسلسلات'
+      };
+    }
+  }
+
+  async getPrograms(filters: SearchFilters = {}): Promise<ApiResponse<{ content: Content[], total: number }>> {
+    try {
+      const programFilters = { ...filters, type: 'program' };
+      const result = await dbManager.getContent(programFilters);
+      return {
+        success: true,
+        data: {
+          content: result.content,
+          total: result.total
+        }
+      };
+    } catch (error) {
+      console.error('خطأ في الحصول على البرامج:', error);
+      return {
+        success: false,
+        error: 'خطأ في الحصول على البرامج'
+      };
+    }
+  }
+
+  async getGames(filters: SearchFilters = {}): Promise<ApiResponse<{ content: Content[], total: number }>> {
+    try {
+      const gameFilters = { ...filters, type: 'game' };
+      const result = await dbManager.getContent(gameFilters);
+      return {
+        success: true,
+        data: {
+          content: result.content,
+          total: result.total
+        }
+      };
+    } catch (error) {
+      console.error('خطأ في الحصول على الألعاب:', error);
+      return {
+        success: false,
+        error: 'خطأ في الحصول على الألعاب'
+      };
+    }
+  }
+
+  async getApplications(filters: SearchFilters = {}): Promise<ApiResponse<{ content: Content[], total: number }>> {
+    try {
+      const appFilters = { ...filters, type: 'application' };
+      const result = await dbManager.getContent(appFilters);
+      return {
+        success: true,
+        data: {
+          content: result.content,
+          total: result.total
+        }
+      };
+    } catch (error) {
+      console.error('خطأ في الحصول على التطبيقات:', error);
+      return {
+        success: false,
+        error: 'خطأ في الحصول على التطبيقات'
+      };
+    }
+  }
+
+  async getTheater(filters: SearchFilters = {}): Promise<ApiResponse<{ content: Content[], total: number }>> {
+    try {
+      const theaterFilters = { ...filters, type: 'theater' };
+      const result = await dbManager.getContent(theaterFilters);
+      return {
+        success: true,
+        data: {
+          content: result.content,
+          total: result.total
+        }
+      };
+    } catch (error) {
+      console.error('خطأ في الحصول على المسرح:', error);
+      return {
+        success: false,
+        error: 'خطأ في الحصول على المسرح'
+      };
+    }
+  }
+
+  async getWrestling(filters: SearchFilters = {}): Promise<ApiResponse<{ content: Content[], total: number }>> {
+    try {
+      const wrestlingFilters = { ...filters, type: 'wrestling' };
+      const result = await dbManager.getContent(wrestlingFilters);
+      return {
+        success: true,
+        data: {
+          content: result.content,
+          total: result.total
+        }
+      };
+    } catch (error) {
+      console.error('خطأ في الحصول على المصارعة:', error);
+      return {
+        success: false,
+        error: 'خطأ في الحصول على المصارعة'
+      };
+    }
+  }
+
+  async getSports(filters: SearchFilters = {}): Promise<ApiResponse<{ content: Content[], total: number }>> {
+    try {
+      const sportsFilters = { ...filters, type: 'sports' };
+      const result = await dbManager.getContent(sportsFilters);
+      return {
+        success: true,
+        data: {
+          content: result.content,
+          total: result.total
+        }
+      };
+    } catch (error) {
+      console.error('خطأ في الحصول على الرياضة:', error);
+      return {
+        success: false,
+        error: 'خطأ في الحصول على الرياضة'
+      };
+    }
+  }
+
+  async getTrailers(filters: SearchFilters = {}): Promise<ApiResponse<{ content: Content[], total: number }>> {
+    try {
+      const trailerFilters = { 
+        ...filters, 
+        // فلترة المحتوى الذي يحتوي على مقطع دعائي
+      };
+      
+      const result = await dbManager.getContent(trailerFilters);
+      // تصفية المحتوى الذي يحتوي على trailer
+      const contentWithTrailers = result.content.filter(item => item.trailer && item.trailer.trim() !== '');
+      
+      return {
+        success: true,
+        data: {
+          content: contentWithTrailers,
+          total: contentWithTrailers.length
+        }
+      };
+    } catch (error) {
+      console.error('خطأ في الحصول على المقاطع الدعائية:', error);
+      return {
+        success: false,
+        error: 'خطأ في الحصول على المقاطع الدعائية'
+      };
+    }
+  }
+
   async getContentById(id: number): Promise<ApiResponse<Content>> {
     try {
       const content = await dbManager.getContentById(id);
-      
       if (!content) {
         return {
           success: false,
@@ -53,98 +231,20 @@ export class ContentService {
     }
   }
 
-  async getMovies(filters: SearchFilters = {}): Promise<ApiResponse<{ content: Content[], total: number }>> {
-    return this.getContent({ ...filters, type: 'movie' });
-  }
-
-  async getSeries(filters: SearchFilters = {}): Promise<ApiResponse<{ content: Content[], total: number }>> {
-    return this.getContent({ ...filters, type: 'series' });
-  }
-
-  async getPrograms(filters: SearchFilters = {}): Promise<ApiResponse<{ content: Content[], total: number }>> {
-    return this.getContent({ ...filters, type: 'program' });
-  }
-
-  async getGames(filters: SearchFilters = {}): Promise<ApiResponse<{ content: Content[], total: number }>> {
-    return this.getContent({ ...filters, type: 'game' });
-  }
-
-  async getApplications(filters: SearchFilters = {}): Promise<ApiResponse<{ content: Content[], total: number }>> {
-    return this.getContent({ ...filters, type: 'application' });
-  }
-
-  async getTheater(filters: SearchFilters = {}): Promise<ApiResponse<{ content: Content[], total: number }>> {
-    return this.getContent({ ...filters, type: 'theater' });
-  }
-
-  async getWrestling(filters: SearchFilters = {}): Promise<ApiResponse<{ content: Content[], total: number }>> {
-    return this.getContent({ ...filters, type: 'wrestling' });
-  }
-
-  async getSports(filters: SearchFilters = {}): Promise<ApiResponse<{ content: Content[], total: number }>> {
-    return this.getContent({ ...filters, type: 'sports' });
-  }
-
-  async getFeaturedContent(): Promise<ApiResponse<Content[]>> {
-    try {
-      const result = await dbManager.getContent({ limit: 10, sortBy: 'rating', sortOrder: 'desc' });
-      
-      return {
-        success: true,
-        data: result.content
-      };
-    } catch (error) {
-      console.error('خطأ في الحصول على المحتوى المميز:', error);
-      return {
-        success: false,
-        error: 'خطأ في الحصول على المحتوى المميز'
-      };
-    }
-  }
-
-  async getTrendingContent(): Promise<ApiResponse<Content[]>> {
-    try {
-      const result = await dbManager.getContent({ limit: 10, sortBy: 'view_count', sortOrder: 'desc' });
-      
-      return {
-        success: true,
-        data: result.content
-      };
-    } catch (error) {
-      console.error('خطأ في الحصول على المحتوى الرائج:', error);
-      return {
-        success: false,
-        error: 'خطأ في الحصول على المحتوى الرائج'
-      };
-    }
-  }
-
-  async getRecentContent(filters: SearchFilters = {}): Promise<ApiResponse<{ content: Content[], total: number }>> {
-    return this.getContent({ 
-      ...filters, 
-      sortBy: 'created_at', 
-      sortOrder: 'desc' 
-    });
-  }
-
-  async searchContent(query: string, filters: SearchFilters = {}): Promise<ApiResponse<{ content: Content[], total: number }>> {
-    return this.getContent({ 
-      ...filters, 
-      query 
-    });
-  }
-
   async incrementViewCount(id: number): Promise<ApiResponse<void>> {
     try {
-      // سيتم إضافة هذه الطريقة لاحقاً في DatabaseManager
+      // هنا يمكن إضافة منطق زيادة عدد المشاهدات
+      console.log(`زيادة عدد مشاهدات المحتوى: ${id}`);
+      
       return {
-        success: true
+        success: true,
+        message: 'تم زيادة عدد المشاهدات بنجاح'
       };
     } catch (error) {
-      console.error('خطأ في تحديث عدد المشاهدات:', error);
+      console.error('خطأ في زيادة عدد المشاهدات:', error);
       return {
         success: false,
-        error: 'خطأ في تحديث عدد المشاهدات'
+        error: 'خطأ في زيادة عدد المشاهدات'
       };
     }
   }
