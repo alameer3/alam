@@ -179,7 +179,7 @@ const ShowsPage: React.FC = () => {
               <div className="loading">جاري التحميل...</div>
             ) : (
               <div className="row">
-                {shows?.map((show: Show) => (
+                {shows?.data?.map((show: Show) => (
                   <div key={show.id} className="col-lg-2 col-md-3 col-sm-4 col-6 mb-4">
                     <div className="show-card">
                       <a href={`/show/${show.id}`}>

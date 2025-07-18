@@ -67,6 +67,61 @@ body {
   -webkit-box-orient: vertical;
 }
 
+/* أنماط خاصة بالصفحة الرئيسية */
+.site-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  display: none;
+}
+
+.main-menu {
+  transform: translateX(-100%);
+  transition: transform 0.3s ease-in-out;
+}
+
+.main-menu.active {
+  transform: translateX(0);
+}
+
+.search-box {
+  display: none;
+}
+
+.search-box.active {
+  display: flex;
+}
+
+.main-header {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.home-site-btn {
+  background-size: cover;
+  background-position: center;
+  border-radius: 16px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+}
+
+.home-site-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+}
+
+.content-card {
+  transition: transform 0.3s ease;
+}
+
+.content-card:hover {
+  transform: translateY(-5px);
+}
+
 /* تحسينات للسكرولباءً */
 ::-webkit-scrollbar {
   width: 8px;
