@@ -67,7 +67,7 @@ const MainMenu = () => {
       <div 
         className="fixed inset-0 bg-cover bg-center bg-no-repeat z-0"
         style={{
-          background: 'linear-gradient(to bottom, rgba(0, 0, 0, .55), #000 100%), url(https://ak.sv/style/assets/images/home-bg.webp)'
+          background: 'linear-gradient(135deg, rgba(139, 69, 19, 0.6) 0%, rgba(0, 0, 0, 0.8) 30%, rgba(0, 0, 0, 0.9) 70%, rgba(0, 0, 0, 1) 100%), url(https://ak.sv/style/assets/images/home-bg.webp)'
         }}
       />
       
@@ -218,6 +218,21 @@ const MainMenu = () => {
 
           {/* المحتوى الرئيسي */}
           <div className="container mx-auto px-4 pt-24 pb-16">
+            
+            {/* الشعار الرئيسي الوسطي - تصميم متطابق مع الأصل */}
+            <div className="text-center mb-12">
+              <div className="logo-container mb-8">
+                <div className="logo-circle w-48 h-48 mx-auto rounded-full border-4 border-white/30 flex items-center justify-center relative overflow-hidden bg-black/30 backdrop-blur-sm">
+                  <div className="absolute inset-0 bg-gradient-to-br from-gray-700/20 to-black/40 rounded-full"></div>
+                  <div className="relative z-10 text-center">
+                    <svg width="87" height="80" viewBox="0 0 87 80" className="text-white mb-2">
+                      <path fillRule="evenodd" fill="currentColor" d="M68.479,46.753 L55.101,55.064 L59.686,64.395 L26.302,64.395 L43.500,33.248 L48.558,41.524 L61.642,34.285 L43.500,-0.001 L0.000,80.001 L87.000,80.001 L68.479,46.753 Z"/>
+                    </svg>
+                    <div className="text-white text-sm font-medium">الصفحة الرئيسية</div>
+                  </div>
+                </div>
+              </div>
+            </div>
             
             {/* زر الصفحة الرئيسية - بناءً على التصميم الأصلي */}
             <div className="home-site-btn-container mt-20 mb-16">
@@ -428,9 +443,10 @@ const MainMenu = () => {
           <a href="/ad-policy" className="text-white/60 hover:text-white transition-colors">AD-P</a>
         </nav>
 
-        <p className="copyright text-center text-white/60 text-sm">
-          جميع الحقوق محفوظة لـ شبكة أكوام © 2025
-        </p>
+        <div className="text-center text-white/40 text-sm">
+          <p>جميع الحقوق محفوظة © 2024 أكوام</p>
+          <p className="mt-1">الموقع الأصلي الوحيد akwam.to</p>
+        </div>
       </footer>
     </div>
   );
