@@ -35,99 +35,245 @@ const HomePage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-gray-900 via-gray-800 to-black">
-      {/* Hero Section - نسخة مطابقة للتصميم الأصلي */}
-      <section className="relative min-h-screen flex items-center justify-center">
-        {/* Background Image */}
-        <div 
-          className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-          style={{
-            backgroundImage: `linear-gradient(to bottom, rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.8)), url('https://ak.sv/style/assets/images/home-bg.webp')`
-          }}
-        />
-        
-        {/* Content */}
-        <div className="relative z-10 text-center text-white max-w-4xl mx-auto px-4">
-          {/* Logo */}
-          <div className="mb-8">
-            <div className="inline-block p-8 rounded-full border-4 border-white/20 bg-black/30 backdrop-blur-sm">
-              <svg width="120" height="120" viewBox="0 0 120 120" fill="none" className="text-white">
-                <circle cx="60" cy="60" r="50" stroke="currentColor" strokeWidth="2" fill="none" />
-                <circle cx="60" cy="60" r="35" stroke="currentColor" strokeWidth="1" fill="none" />
-                <polygon points="60,30 75,45 60,60 45,45" fill="currentColor" />
-                <text x="60" y="90" textAnchor="middle" fontSize="14" fill="currentColor" fontFamily="akoam">
-                  المكتبة الترفيهية
-                </text>
-              </svg>
-            </div>
-          </div>
-
-          {/* Search Bar */}
-          <div className="mb-12">
-            <form onSubmit={handleSearch} className="max-w-2xl mx-auto">
-              <div className="relative flex">
-                <input
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="ابحث عن فيلم أو مسلسل أو برنامج..."
-                  className="w-full px-6 py-4 text-lg bg-white/10 backdrop-blur-sm border border-white/20 rounded-r-xl text-white placeholder-white/60 focus:outline-none focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+    <div className="min-h-screen page-home" style={{
+      background: `linear-gradient(to bottom, rgba(0, 0, 0, .55), #000 100%), url('/images/home-bg.webp')`,
+      backgroundSize: 'cover',
+      backgroundPosition: 'center',
+      backgroundAttachment: 'fixed'
+    }}>
+      {/* استخدام التصميم الأصلي من extracted_files */}
+      <div className="container py-5 my-5">
+        {/* زر الصفحة الرئيسية الدائري - من الموقع الأصلي */}
+        <div className="home-site-btn-container mt-5">
+          <h1>
+            <a href="/" className="link" style={{
+              position: 'absolute',
+              top: 0,
+              right: 0,
+              width: '100%',
+              height: '100%',
+              zIndex: 10,
+              borderRadius: '50%'
+            }} />
+          </h1>
+          <div 
+            className="home-site-btn"
+            style={{
+              backgroundImage: "url('/images/site-new.webp')",
+              transition: "background-position 5s"
+            }}
+          >
+            <span className="logo">
+              <svg xmlns="http://www.w3.org/2000/svg" width="87px" height="80px">
+                <path 
+                  fillRule="evenodd" 
+                  fill="rgb(255, 255, 255)"
+                  d="M68.479,46.753 L55.101,55.064 L59.686,64.395 L26.302,64.395 L43.500,33.248 L48.558,41.524 L61.642,34.285 L43.500,-0.001 L0.000,80.001 L87.000,80.001 L68.479,46.753 Z"
                 />
-                <button
-                  type="submit"
-                  className="px-8 py-4 bg-orange-500 hover:bg-orange-600 text-white rounded-l-xl transition-colors duration-200 font-semibold"
-                >
-                  بحث
-                </button>
-              </div>
-            </form>
-          </div>
-
-          {/* Categories Grid */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 max-w-4xl mx-auto">
-            <a href="/movies" className="group">
-              <div className="bg-black/40 backdrop-blur-sm border border-white/20 rounded-xl p-6 hover:bg-black/60 transition-all duration-300 hover:scale-105">
-                <div className="text-4xl mb-4 text-orange-500 group-hover:text-orange-400">
-                  <Film className="w-12 h-12 mx-auto" />
-                </div>
-                <h3 className="text-xl font-bold mb-2">أفلام</h3>
-                <p className="text-sm text-white/70">مجموعة متنوعة من الأفلام</p>
-              </div>
-            </a>
-
-            <a href="/series" className="group">
-              <div className="bg-black/40 backdrop-blur-sm border border-white/20 rounded-xl p-6 hover:bg-black/60 transition-all duration-300 hover:scale-105">
-                <div className="text-4xl mb-4 text-orange-500 group-hover:text-orange-400">
-                  <Tv className="w-12 h-12 mx-auto" />
-                </div>
-                <h3 className="text-xl font-bold mb-2">مسلسلات</h3>
-                <p className="text-sm text-white/70">مسلسلات عربية وأجنبية</p>
-              </div>
-            </a>
-
-            <a href="/shows" className="group">
-              <div className="bg-black/40 backdrop-blur-sm border border-white/20 rounded-xl p-6 hover:bg-black/60 transition-all duration-300 hover:scale-105">
-                <div className="text-4xl mb-4 text-orange-500 group-hover:text-orange-400">
-                  <Monitor className="w-12 h-12 mx-auto" />
-                </div>
-                <h3 className="text-xl font-bold mb-2">تلفزيون</h3>
-                <p className="text-sm text-white/70">برامج تلفزيونية متنوعة</p>
-              </div>
-            </a>
-
-            <a href="/mix" className="group">
-              <div className="bg-black/40 backdrop-blur-sm border border-white/20 rounded-xl p-6 hover:bg-black/60 transition-all duration-300 hover:scale-105">
-                <div className="text-4xl mb-4 text-orange-500 group-hover:text-orange-400">
-                  <Gamepad2 className="w-12 h-12 mx-auto" />
-                </div>
-                <h3 className="text-xl font-bold mb-2">منوعات</h3>
-                <p className="text-sm text-white/70">ألعاب وتطبيقات</p>
-              </div>
-            </a>
+              </svg>
+            </span>
+            <span className="text font-size-20 font-weight-medium text-white">
+              الصفحة الرئيسية
+            </span>
           </div>
         </div>
 
-        {/* Scroll Indicator */}
+        {/* صندوق البحث والقوائم - من الموقع الأصلي */}
+        <div className="widget-2 widget mb-4">
+          <div className="widget-body row">
+            <div className="col-lg-8 mx-auto" style={{ maxWidth: '66.666667%', margin: '0 auto' }}>
+              {/* نموذج البحث المحسن */}
+              <form className="form d-flex no-gutters mb-20" style={{ display: 'flex', marginBottom: '20px' }} onSubmit={handleSearch}>
+                <div className="col pl-12" style={{ flex: 1, paddingLeft: '12px' }}>
+                  <input 
+                    type="text" 
+                    className="form-control"
+                    id="widget2SearchInput" 
+                    name="q"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    style={{
+                      width: '100%',
+                      padding: '12px 16px',
+                      backgroundColor: '#2a2a2d',
+                      border: '1px solid #404047',
+                      borderRadius: '4px 0 0 4px',
+                      color: '#fff',
+                      fontSize: '16px'
+                    }}
+                  />
+                  <label htmlFor="widget2SearchInput" className="m-0" style={{ margin: 0 }}>
+                    <span className="label"></span>
+                  </label>
+                  <div className="label-text d-none" style={{ display: 'none' }}>
+                    <p>ابحث عن فيلم او مسلسل او لعبة او برنامج ...</p>
+                    <p>^200 مثال: الجزيرة</p>
+                    <p>^400 مثال آخر: اسم مؤقت</p>
+                    <p>^600 مثال: FIFA</p>
+                    <p>^800 ابحث هنا في اكوام باسم الفيلم او المسلسل او اي لعبة او برنامج ترغب به</p>
+                  </div>
+                </div>
+                <div className="col-auto">
+                  <button 
+                    type="submit" 
+                    className="btn btn-orange"
+                    style={{
+                      padding: '12px 24px',
+                      backgroundColor: '#df820c',
+                      border: '1px solid #d37b0b',
+                      borderRadius: '0 4px 4px 0',
+                      color: '#fff',
+                      fontSize: '16px',
+                      fontWeight: 'bold',
+                      cursor: 'pointer',
+                      transition: 'all 0.3s ease'
+                    }}
+                  >
+                    بحث
+                  </button>
+                </div>
+              </form>
+
+              {/* القوائم الرئيسية - من الموقع الأصلي */}
+              <div className="main-categories-list">
+                <div className="row" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px' }}>
+                  <div className="col-lg col-4">
+                    <a href="/movies" className="item d-block text-center text-white py-3 h-100" style={{
+                      display: 'block',
+                      textAlign: 'center',
+                      color: '#fff',
+                      padding: '24px 12px',
+                      height: '100%',
+                      backgroundColor: '#2a2a2d',
+                      border: '1px solid #404047',
+                      borderRadius: '8px',
+                      textDecoration: 'none',
+                      transition: 'all 0.3s ease'
+                    }}>
+                      <div className="icn" style={{ marginBottom: '12px' }}>
+                        <i className="icon-video-camera" style={{ fontSize: '32px', color: '#df820c' }}></i>
+                      </div>
+                      <div className="font-size-16" style={{ fontSize: '16px', fontWeight: '600' }}>أفلام</div>
+                    </a>
+                  </div>
+                  <div className="col-lg col-4">
+                    <a href="/series" className="item d-block text-center text-white py-3 h-100" style={{
+                      display: 'block',
+                      textAlign: 'center',
+                      color: '#fff',
+                      padding: '24px 12px',
+                      height: '100%',
+                      backgroundColor: '#2a2a2d',
+                      border: '1px solid #404047',
+                      borderRadius: '8px',
+                      textDecoration: 'none',
+                      transition: 'all 0.3s ease'
+                    }}>
+                      <div className="icn" style={{ marginBottom: '12px' }}>
+                        <i className="icon-monitor" style={{ fontSize: '32px', color: '#df820c' }}></i>
+                      </div>
+                      <div className="font-size-16" style={{ fontSize: '16px', fontWeight: '600' }}>مسلسلات</div>
+                    </a>
+                  </div>
+                  <div className="col-lg col-4">
+                    <a href="/shows" className="item d-block text-center text-white py-3 h-100" style={{
+                      display: 'block',
+                      textAlign: 'center',
+                      color: '#fff',
+                      padding: '24px 12px',
+                      height: '100%',
+                      backgroundColor: '#2a2a2d',
+                      border: '1px solid #404047',
+                      borderRadius: '8px',
+                      textDecoration: 'none',
+                      transition: 'all 0.3s ease'
+                    }}>
+                      <div className="icn" style={{ marginBottom: '12px' }}>
+                        <i className="icon-tv" style={{ fontSize: '32px', color: '#df820c' }}></i>
+                      </div>
+                      <div className="font-size-16" style={{ fontSize: '16px', fontWeight: '600' }}>تلفزيون</div>
+                    </a>
+                  </div>
+                  <div className="col-lg col-4">
+                    <a href="/mix" className="item d-block text-center text-white py-3 h-100" style={{
+                      display: 'block',
+                      textAlign: 'center',
+                      color: '#fff',
+                      padding: '24px 12px',
+                      height: '100%',
+                      backgroundColor: '#2a2a2d',
+                      border: '1px solid #404047',
+                      borderRadius: '8px',
+                      textDecoration: 'none',
+                      transition: 'all 0.3s ease'
+                    }}>
+                      <div className="icn" style={{ marginBottom: '12px' }}>
+                        <i className="icon-mix" style={{ fontSize: '32px', color: '#df820c' }}></i>
+                      </div>
+                      <div className="font-size-16" style={{ fontSize: '16px', fontWeight: '600' }}>منوعات</div>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="main-categories-list-end"></div>
+
+        {/* محتوى إضافي مميز */}
+        {featuredContent && featuredContent.data && (
+          <div className="featured-content mt-5">
+            <h2 className="text-white text-2xl font-bold mb-4 text-center">المحتوى المميز</h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+              {featuredContent.data.slice(0, 6).map((item: ContentItem) => (
+                <div key={item.id} className="bg-gray-800 rounded-lg overflow-hidden hover:scale-105 transition-transform duration-300">
+                  <img 
+                    src={item.poster || '/serverdata/images/default-poster.svg'} 
+                    alt={item.titleAr}
+                    className="w-full h-48 object-cover"
+                  />
+                  <div className="p-3">
+                    <h3 className="text-white text-sm font-semibold truncate">{item.titleAr}</h3>
+                    <div className="flex items-center mt-1">
+                      <Star className="w-4 h-4 text-yellow-500 mr-1" />
+                      <span className="text-yellow-500 text-xs">{item.rating}</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* المحتوى الحديث */}
+        {recentContent && recentContent.data && (
+          <div className="recent-content mt-5 mb-10">
+            <h2 className="text-white text-2xl font-bold mb-4 text-center">أضيف حديثاً</h2>
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">
+              {recentContent.data.slice(0, 12).map((item: ContentItem) => (
+                <div key={item.id} className="bg-gray-800 rounded-lg overflow-hidden hover:scale-105 transition-transform duration-300">
+                  <img 
+                    src={item.poster || '/serverdata/images/default-poster.svg'} 
+                    alt={item.titleAr}
+                    className="w-full h-48 object-cover"
+                  />
+                  <div className="p-3">
+                    <h3 className="text-white text-sm font-semibold truncate">{item.titleAr}</h3>
+                    <div className="flex items-center justify-between mt-1">
+                      <div className="flex items-center">
+                        <Star className="w-4 h-4 text-yellow-500 mr-1" />
+                        <span className="text-yellow-500 text-xs">{item.rating}</span>
+                      </div>
+                      <span className="text-gray-400 text-xs">{item.quality}</span>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
         <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 text-white/50 animate-bounce">
           <div className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center">
             <div className="w-1 h-3 bg-white/30 rounded-full mt-2"></div>

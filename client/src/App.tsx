@@ -4,6 +4,7 @@ import './index.css';
 
 // الصفحات
 import HomeEnhanced from './pages/HomeEnhanced';
+import HomeOriginal from './pages/HomeOriginal';
 import MainMenu from './pages/MainMenu';
 import MainMenuSimple from './pages/MainMenuSimple';
 import OnesPage from './pages/ones';
@@ -17,10 +18,11 @@ function App() {
     <div className="App" dir="rtl">
       <Layout>
         <Switch>
-          <Route path="/" component={MainMenuSimple} />
+          <Route path="/" component={HomeOriginal} />
           <Route path="/main" component={MainMenu} />
           <Route path="/home" component={HomeEnhanced} />
           <Route path="/ones" component={OnesPage} />
+          <Route path="/original" component={MainMenuSimple} />
           <Route path="/movies" component={MoviesPage} />
           <Route path="/series" component={SeriesPage} />
           <Route path="/shows" component={ShowsPage} />
