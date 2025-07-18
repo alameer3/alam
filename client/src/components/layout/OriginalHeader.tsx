@@ -88,10 +88,10 @@ const OriginalHeader = ({ pageTitle = "اكوام" }: OriginalHeaderProps) => {
                 </h2>
               </div>
               <div className="col-auto menu-toggle-container">
-                <a href="javascript:;" className="menu-toggle d-flex align-items-center text-white">
+                <button className="menu-toggle d-flex align-items-center text-white" style={{background: 'none', border: 'none'}}>
                   <span className="icn"></span>
                   <div className="text font-size-18 mr-3">الأقسام</div>
-                </a>
+                </button>
               </div>
               <div className="ml-auto"></div>
               <div className="col-md-5 col-lg-6 search-container">
@@ -117,15 +117,15 @@ const OriginalHeader = ({ pageTitle = "اكوام" }: OriginalHeaderProps) => {
               </div>
               <div className="col-auto user-profile-container">
                 <div className="user-panel">
-                  <a className="user-toggle d-block font-size-20 private hide" href="javascript:;">
+                  <button className="user-toggle d-block font-size-20 private hide" style={{background: 'none', border: 'none'}}>
                     <i className="icon-user"></i>
-                  </a>
+                  </button>
                 </div>
               </div>
               <div className="col-auto search-toggle-container">
-                <a href="javascript:;" className="search-toggle d-block font-size-20 text-white">
+                <button className="search-toggle d-block font-size-20 text-white" style={{background: 'none', border: 'none'}}>
                   <i className="icon-search"></i>
-                </a>
+                </button>
               </div>
             </div>
           </div>
