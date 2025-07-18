@@ -47,9 +47,11 @@ const serverDbImagesPath = 'serverdb/images';
 
 if (fs.existsSync(serverDataImagesPath)) {
   app.use('/serverdb/images', express.static(serverDataImagesPath));
+  app.use('/serverdata/images', express.static(serverDataImagesPath));
   console.log('🔧 استخدام صور من serverdata');
 } else {
   app.use('/serverdb/images', express.static(serverDbImagesPath));
+  app.use('/serverdata/images', express.static(serverDbImagesPath));
   console.log('🔧 استخدام صور من serverdb');
 }
 
