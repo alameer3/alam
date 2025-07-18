@@ -36,7 +36,11 @@ const HomeOriginal = () => {
 
   return (
     <>
-      {/* إضافة CSS التحسينات */}
+      {/* إضافة CSS الأصلي */}
+      <link rel="stylesheet" href="/css/akwam_original/plugins.css" />
+      <link rel="stylesheet" href="/css/akwam_original/style.css" />
+      <link rel="stylesheet" href="/css/akwam_original/akwam.css" />
+      <link rel="stylesheet" href="/css/akwam_original/home.css" />
       <link rel="stylesheet" href="/css/original-enhancements.css" />
       
       <div 
