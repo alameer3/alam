@@ -1,394 +1,246 @@
-import { useState } from 'react';
-import { useQuery } from '@tanstack/react-query';
-import { Star } from 'lucide-react';
-
-interface ContentItem {
-  id: number;
-  title: string;
-  titleAr: string;
-  type: string;
-  poster: string;
-  rating: number;
-  releaseDate: string;
-  quality: string;
-  country: string;
-}
+import { useState, useEffect } from 'react';
+import { Link } from 'wouter';
+import AuthenticLayout from '../components/layout/AuthenticLayout';
+import { Film, Tv, Monitor, Grid3X3, Search, Plus, Star, Eye, Download } from 'lucide-react';
 
 const HomeOriginal = () => {
   const [searchQuery, setSearchQuery] = useState('');
 
-  const { data: featuredContent, isLoading: featuredLoading } = useQuery({
-    queryKey: ['/api/content/featured'],
-    enabled: true
-  });
+  // تأثير كتابة متحرك للبحث
+  const searchSuggestions = [
+    'ابحث عن فيلم او مسلسل ...',
+    'البحث عن أفلام جديدة ...',
+    'البحث عن مسلسلات ...',
+    'ابحث هنا ...'
+  ];
 
-  const { data: recentContent, isLoading: recentLoading } = useQuery({
-    queryKey: ['/api/content/recent'],
-    enabled: true
-  });
+  const [placeholderIndex, setPlaceholderIndex] = useState(0);
 
-  const handleSearch = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      window.location.href = `/search?q=${encodeURIComponent(searchQuery)}`;
-    }
-  };
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setPlaceholderIndex((prev) => (prev + 1) % searchSuggestions.length);
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
 
   return (
-    <>
-      {/* إضافة CSS الأصلي */}
-      <link rel="stylesheet" href="/css/akwam_original/plugins.css" />
-      <link rel="stylesheet" href="/css/akwam_original/style.css" />
-      <link rel="stylesheet" href="/css/akwam_original/akwam.css" />
-      <link rel="stylesheet" href="/css/akwam_original/home.css" />
-      <link rel="stylesheet" href="/css/original-enhancements.css" />
-      
-      <div 
-        className="min-h-screen page-home" 
-        style={{
-          background: `linear-gradient(to bottom, rgba(0, 0, 0, .55), #000 100%), url('/images/home-bg.webp')`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundAttachment: 'fixed'
-        }}
-      >
-      {/* استخدام التصميم الأصلي من extracted_files/home */}
-      <div className="container py-5 my-5" style={{ maxWidth: '1200px', margin: '0 auto', padding: '0 20px' }}>
+    <AuthenticLayout bodyClass="page-home">
+      <div className="min-h-screen" style={{ backgroundColor: 'var(--bg-primary)' }}>
         
-        {/* زر الصفحة الرئيسية الدائري - من الموقع الأصلي */}
-        <div className="home-site-btn-container mt-5" style={{
-          width: '258px',
-          height: '258px',
-          borderRadius: '50%',
-          position: 'relative',
-          marginRight: 'auto',
-          marginLeft: 'auto',
-          marginBottom: '40px',
-          cursor: 'pointer'
-        }}>
-          <h1>
-            <a href="/" className="link" style={{
-              position: 'absolute',
-              top: 0,
-              right: 0,
-              width: '100%',
-              height: '100%',
-              zIndex: 10,
-              borderRadius: '50%'
-            }} />
-          </h1>
-          <div 
-            className="home-site-btn"
-            style={{
-              width: '230px',
-              height: '230px',
-              overflow: 'hidden',
-              borderRadius: '50%',
-              position: 'absolute',
-              top: '50%',
-              right: '50%',
-              border: '5px solid #fff',
-              backgroundColor: '#161619',
-              transform: 'translate(50%, -50%)',
-              backgroundPosition: 'center -43%',
-              backgroundRepeat: 'no-repeat',
-              backgroundSize: '120%',
-              backgroundImage: "url('/images/site-new.webp')",
-              transition: "all 500ms"
-            }}
-          >
-            <span className="logo" style={{
-              position: 'absolute',
-              top: '50px',
-              right: '50%',
-              zIndex: 2,
-              transform: 'translate(50%)',
-              transition: 'all 500ms'
-            }}>
-              <svg xmlns="http://www.w3.org/2000/svg" width="87px" height="80px">
-                <path 
-                  fillRule="evenodd" 
-                  fill="rgb(255, 255, 255)"
-                  d="M68.479,46.753 L55.101,55.064 L59.686,64.395 L26.302,64.395 L43.500,33.248 L48.558,41.524 L61.642,34.285 L43.500,-0.001 L0.000,80.001 L87.000,80.001 L68.479,46.753 Z"
+        {/* Hero Section */}
+        <section className="text-center py-20 px-4">
+          <div className="container mx-auto max-w-4xl">
+            
+            {/* Main Logo */}
+            <div className="mb-12">
+              <Link href="/" className="inline-block">
+                <img 
+                  src="/extracted_files/home/ak.sv/style/assets/images/logo-white.svg" 
+                  alt="اكوام" 
+                  className="h-20 mx-auto"
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none';
+                    e.currentTarget.nextElementSibling!.style.display = 'block';
+                  }}
                 />
-              </svg>
-            </span>
-            <span className="text font-size-20 font-weight-medium text-white" style={{
-              width: '100%',
-              textAlign: 'center',
-              position: 'absolute',
-              bottom: '55px',
-              right: '50%',
-              zIndex: 2,
-              transform: 'translate(50%)',
-              fontSize: '20px',
-              fontWeight: '500',
-              color: '#fff',
-              transition: 'all 500ms'
-            }}>
-              الصفحة الرئيسية
-            </span>
+                <div className="text-6xl font-bold text-white hidden">اكوام</div>
+              </Link>
+            </div>
+
+            {/* Site Description */}
+            <h1 className="text-3xl md:text-4xl font-bold text-white mb-4">
+              شمس المواقع
+            </h1>
+            <p className="text-xl text-gray-300 mb-12 max-w-2xl mx-auto">
+              الموقع العربي الاول لتحميل و مشاهدة الافلام, المسلسلات, الالعاب, البرامج و التطبيقات, التلفزيون, المسرحيات, المصارعة, الرياضة
+            </p>
+
+            {/* Main Search */}
+            <div className="max-w-2xl mx-auto mb-16">
+              <div className="relative">
+                <input
+                  type="text"
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  placeholder={searchSuggestions[placeholderIndex]}
+                  className="w-full bg-gray-800 border border-gray-600 rounded-full px-6 py-4 text-lg text-white placeholder-gray-400 focus:outline-none focus:border-orange-400 transition-all duration-300"
+                  style={{ fontSize: '18px', minHeight: '60px' }}
+                />
+                <button 
+                  className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-orange-400 transition-colors"
+                  aria-label="بحث"
+                >
+                  <Search size={24} />
+                </button>
+              </div>
+            </div>
+
+            {/* Circular Button (Original Design) */}
+            <div className="home-site-btn-container mb-16">
+              <Link href="/movies" className="link">
+                <div 
+                  className="home-site-btn"
+                  style={{
+                    backgroundImage: `url('/extracted_files/home/ak.sv/style/assets/images/bg-home.jpg')`,
+                  }}
+                >
+                  <div className="logo transition-all duration-500">
+                    <img 
+                      src="/extracted_files/home/ak.sv/style/assets/images/logo-white.svg" 
+                      alt="اكوام" 
+                      className="h-16"
+                      onError={(e) => {
+                        e.currentTarget.style.display = 'none';
+                        e.currentTarget.nextElementSibling!.style.display = 'block';
+                      }}
+                    />
+                    <div className="text-4xl font-bold text-white hidden">أكوام</div>
+                  </div>
+                  <div className="text text-white font-bold text-lg transition-all duration-500">
+                    شمس المواقع
+                  </div>
+                </div>
+              </Link>
+            </div>
           </div>
-        </div>
+        </section>
 
-        {/* صندوق البحث والقوائم - من الموقع الأصلي */}
-        <div className="widget-2 widget mb-4">
-          <div className="widget-body row">
-            <div className="col-lg-8 mx-auto" style={{ maxWidth: '66.666667%', margin: '0 auto' }}>
+        {/* Main Categories */}
+        <section className="py-16">
+          <div className="container mx-auto px-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
               
-              {/* نموذج البحث المحسن */}
-              <form 
-                className="form d-flex no-gutters mb-20" 
-                style={{ display: 'flex', marginBottom: '20px' }} 
-                onSubmit={handleSearch}
-              >
-                <div className="col pl-12" style={{ flex: 1, paddingLeft: '12px' }}>
-                  <input 
-                    type="text" 
-                    className="form-control"
-                    id="widget2SearchInput" 
-                    name="q"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="ابحث عن فيلم او مسلسل او لعبة او برنامج ..."
-                    style={{
-                      width: '100%',
-                      padding: '12px 16px',
-                      backgroundColor: '#2a2a2d',
-                      border: '1px solid #404047',
-                      borderRadius: '4px 0 0 4px',
-                      color: '#fff',
-                      fontSize: '16px',
-                      outline: 'none'
-                    }}
-                  />
+              {/* Movies */}
+              <Link href="/movies" className="group">
+                <div className="bg-gray-800 hover:bg-orange-600 rounded-2xl p-8 text-center transition-all duration-300 transform hover:scale-105 hover:shadow-2xl">
+                  <div className="text-orange-400 group-hover:text-white mb-4 transition-colors">
+                    <Film size={48} className="mx-auto" />
+                  </div>
+                  <h3 className="text-xl font-bold text-white mb-2">أفلام</h3>
+                  <p className="text-gray-400 group-hover:text-gray-200 text-sm">
+                    أحدث الأفلام العربية والأجنبية
+                  </p>
                 </div>
-                <div className="col-auto">
-                  <button 
-                    type="submit" 
-                    className="btn btn-orange"
-                    style={{
-                      padding: '12px 24px',
-                      backgroundColor: '#df820c',
-                      border: '1px solid #d37b0b',
-                      borderRadius: '0 4px 4px 0',
-                      color: '#fff',
-                      fontSize: '16px',
-                      fontWeight: 'bold',
-                      cursor: 'pointer',
-                      transition: 'all 0.3s ease'
-                    }}
-                  >
-                    بحث
-                  </button>
-                </div>
-              </form>
+              </Link>
 
-              {/* القوائم الرئيسية - من الموقع الأصلي */}
-              <div className="main-categories-list">
-                <div className="row" style={{ 
-                  display: 'grid', 
-                  gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', 
-                  gap: '16px' 
-                }}>
-                  <div className="col-lg col-4">
-                    <a href="/movies" className="item d-block text-center text-white py-3 h-100" style={{
-                      display: 'block',
-                      textAlign: 'center',
-                      color: '#fff',
-                      padding: '24px 12px',
-                      height: '100%',
-                      backgroundColor: '#2a2a2d',
-                      border: '1px solid #404047',
-                      borderRadius: '8px',
-                      textDecoration: 'none',
-                      transition: 'all 0.3s ease'
-                    }}>
-                      <div className="icn" style={{ marginBottom: '12px' }}>
-                        <i className="icon-video-camera" style={{ fontSize: '32px', color: '#df820c' }}></i>
-                      </div>
-                      <div className="font-size-16" style={{ fontSize: '16px', fontWeight: '600' }}>أفلام</div>
-                    </a>
+              {/* Series */}
+              <Link href="/series" className="group">
+                <div className="bg-gray-800 hover:bg-orange-600 rounded-2xl p-8 text-center transition-all duration-300 transform hover:scale-105 hover:shadow-2xl">
+                  <div className="text-orange-400 group-hover:text-white mb-4 transition-colors">
+                    <Monitor size={48} className="mx-auto" />
                   </div>
-                  <div className="col-lg col-4">
-                    <a href="/series" className="item d-block text-center text-white py-3 h-100" style={{
-                      display: 'block',
-                      textAlign: 'center',
-                      color: '#fff',
-                      padding: '24px 12px',
-                      height: '100%',
-                      backgroundColor: '#2a2a2d',
-                      border: '1px solid #404047',
-                      borderRadius: '8px',
-                      textDecoration: 'none',
-                      transition: 'all 0.3s ease'
-                    }}>
-                      <div className="icn" style={{ marginBottom: '12px' }}>
-                        <i className="icon-monitor" style={{ fontSize: '32px', color: '#df820c' }}></i>
-                      </div>
-                      <div className="font-size-16" style={{ fontSize: '16px', fontWeight: '600' }}>مسلسلات</div>
-                    </a>
+                  <h3 className="text-xl font-bold text-white mb-2">مسلسلات</h3>
+                  <p className="text-gray-400 group-hover:text-gray-200 text-sm">
+                    المسلسلات العربية والتركية والأجنبية
+                  </p>
+                </div>
+              </Link>
+
+              {/* TV Shows */}
+              <Link href="/shows" className="group">
+                <div className="bg-gray-800 hover:bg-orange-600 rounded-2xl p-8 text-center transition-all duration-300 transform hover:scale-105 hover:shadow-2xl">
+                  <div className="text-orange-400 group-hover:text-white mb-4 transition-colors">
+                    <Tv size={48} className="mx-auto" />
                   </div>
-                  <div className="col-lg col-4">
-                    <a href="/shows" className="item d-block text-center text-white py-3 h-100" style={{
-                      display: 'block',
-                      textAlign: 'center',
-                      color: '#fff',
-                      padding: '24px 12px',
-                      height: '100%',
-                      backgroundColor: '#2a2a2d',
-                      border: '1px solid #404047',
-                      borderRadius: '8px',
-                      textDecoration: 'none',
-                      transition: 'all 0.3s ease'
-                    }}>
-                      <div className="icn" style={{ marginBottom: '12px' }}>
-                        <i className="icon-tv" style={{ fontSize: '32px', color: '#df820c' }}></i>
-                      </div>
-                      <div className="font-size-16" style={{ fontSize: '16px', fontWeight: '600' }}>تلفزيون</div>
-                    </a>
+                  <h3 className="text-xl font-bold text-white mb-2">تلفزيون</h3>
+                  <p className="text-gray-400 group-hover:text-gray-200 text-sm">
+                    البرامج التلفزيونية والرياضية
+                  </p>
+                </div>
+              </Link>
+
+              {/* Mix */}
+              <Link href="/mix" className="group">
+                <div className="bg-gray-800 hover:bg-orange-600 rounded-2xl p-8 text-center transition-all duration-300 transform hover:scale-105 hover:shadow-2xl">
+                  <div className="text-orange-400 group-hover:text-white mb-4 transition-colors">
+                    <Grid3X3 size={48} className="mx-auto" />
                   </div>
-                  <div className="col-lg col-4">
-                    <a href="/mix" className="item d-block text-center text-white py-3 h-100" style={{
-                      display: 'block',
-                      textAlign: 'center',
-                      color: '#fff',
-                      padding: '24px 12px',
-                      height: '100%',
-                      backgroundColor: '#2a2a2d',
-                      border: '1px solid #404047',
-                      borderRadius: '8px',
-                      textDecoration: 'none',
-                      transition: 'all 0.3s ease'
-                    }}>
-                      <div className="icn" style={{ marginBottom: '12px' }}>
-                        <i className="icon-mix" style={{ fontSize: '32px', color: '#df820c' }}></i>
-                      </div>
-                      <div className="font-size-16" style={{ fontSize: '16px', fontWeight: '600' }}>منوعات</div>
-                    </a>
-                  </div>
+                  <h3 className="text-xl font-bold text-white mb-2">منوعات</h3>
+                  <p className="text-gray-400 group-hover:text-gray-200 text-sm">
+                    ألعاب، تطبيقات، مسرحيات، مصارعة
+                  </p>
+                </div>
+              </Link>
+            </div>
+          </div>
+        </section>
+
+        {/* Categories Filter Box (Original Style) */}
+        <section className="py-12">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto">
+              <h2 className="text-2xl font-bold text-white mb-6 text-center">تصفح حسب النوع</h2>
+              <div className="categories-box bg-gray-800 border border-gray-700 rounded-lg p-6">
+                <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                  {[
+                    'اكشن', 'كوميدي', 'دراما', 'رعب', 'رومانسي', 'خيال علمي',
+                    'مغامرات', 'كرتون', 'وثائقي', 'حرب', 'جريمة', 'عائلي'
+                  ].map((category) => (
+                    <button 
+                      key={category}
+                      className="btn bg-gray-700 hover:bg-orange-600 text-white px-4 py-2 rounded transition-all duration-300 text-sm"
+                    >
+                      {category}
+                    </button>
+                  ))}
                 </div>
               </div>
             </div>
           </div>
-        </div>
-        <div className="main-categories-list-end"></div>
+        </section>
 
-        {/* محتوى إضافي مميز */}
-        {featuredContent && featuredContent.data && (
-          <div className="featured-content mt-5">
-            <h2 className="text-white text-2xl font-bold mb-4 text-center">المحتوى المميز</h2>
-            <div style={{ 
-              display: 'grid', 
-              gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))', 
-              gap: '16px' 
-            }}>
-              {featuredContent.data.slice(0, 6).map((item: ContentItem) => (
-                <div 
-                  key={item.id} 
-                  style={{
-                    backgroundColor: '#2a2a2d',
-                    borderRadius: '8px',
-                    overflow: 'hidden',
-                    transition: 'transform 0.3s ease'
-                  }}
-                  onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
-                  onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
-                >
-                  <img 
-                    src={item.poster || '/serverdata/images/default-poster.svg'} 
-                    alt={item.titleAr}
-                    style={{
-                      width: '100%',
-                      height: '240px',
-                      objectFit: 'cover'
-                    }}
-                  />
-                  <div style={{ padding: '12px' }}>
-                    <h3 style={{
-                      color: '#fff',
-                      fontSize: '14px',
-                      fontWeight: '600',
-                      marginBottom: '8px',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap'
-                    }}>
-                      {item.titleAr}
-                    </h3>
-                    <div style={{ display: 'flex', alignItems: 'center' }}>
-                      <Star style={{ width: '16px', height: '16px', color: '#fbbf24', marginLeft: '4px' }} />
-                      <span style={{ color: '#fbbf24', fontSize: '12px' }}>{item.rating}</span>
-                    </div>
-                  </div>
-                </div>
-              ))}
+        {/* Stats Section */}
+        <section className="py-16 bg-gray-900">
+          <div className="container mx-auto px-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto text-center">
+              <div className="bg-gray-800 rounded-xl p-6">
+                <div className="text-3xl font-bold text-orange-400 mb-2">15,000+</div>
+                <div className="text-gray-300">أفلام</div>
+              </div>
+              <div className="bg-gray-800 rounded-xl p-6">
+                <div className="text-3xl font-bold text-orange-400 mb-2">5,000+</div>
+                <div className="text-gray-300">مسلسلات</div>
+              </div>
+              <div className="bg-gray-800 rounded-xl p-6">
+                <div className="text-3xl font-bold text-orange-400 mb-2">2,000+</div>
+                <div className="text-gray-300">برامج</div>
+              </div>
+              <div className="bg-gray-800 rounded-xl p-6">
+                <div className="text-3xl font-bold text-orange-400 mb-2">1M+</div>
+                <div className="text-gray-300">زوار شهريا</div>
+              </div>
             </div>
           </div>
-        )}
+        </section>
 
-        {/* المحتوى الحديث */}
-        {recentContent && recentContent.data && (
-          <div className="recent-content mt-5 mb-10">
-            <h2 className="text-white text-2xl font-bold mb-4 text-center">أضيف حديثاً</h2>
-            <div style={{ 
-              display: 'grid', 
-              gridTemplateColumns: 'repeat(auto-fit, minmax(160px, 1fr))', 
-              gap: '12px' 
-            }}>
-              {recentContent.data.slice(0, 12).map((item: ContentItem) => (
-                <div 
-                  key={item.id} 
-                  style={{
-                    backgroundColor: '#2a2a2d',
-                    borderRadius: '8px',
-                    overflow: 'hidden',
-                    transition: 'transform 0.3s ease'
-                  }}
-                  onMouseEnter={(e) => e.currentTarget.style.transform = 'scale(1.05)'}
-                  onMouseLeave={(e) => e.currentTarget.style.transform = 'scale(1)'}
-                >
-                  <img 
-                    src={item.poster || '/serverdata/images/default-poster.svg'} 
-                    alt={item.titleAr}
-                    style={{
-                      width: '100%',
-                      height: '200px',
-                      objectFit: 'cover'
-                    }}
-                  />
-                  <div style={{ padding: '8px' }}>
-                    <h3 style={{
-                      color: '#fff',
-                      fontSize: '12px',
-                      fontWeight: '600',
-                      marginBottom: '4px',
-                      overflow: 'hidden',
-                      textOverflow: 'ellipsis',
-                      whiteSpace: 'nowrap'
-                    }}>
-                      {item.titleAr}
-                    </h3>
-                    <div style={{ 
-                      display: 'flex', 
-                      alignItems: 'center', 
-                      justifyContent: 'space-between' 
-                    }}>
-                      <div style={{ display: 'flex', alignItems: 'center' }}>
-                        <Star style={{ width: '14px', height: '14px', color: '#fbbf24', marginLeft: '2px' }} />
-                        <span style={{ color: '#fbbf24', fontSize: '11px' }}>{item.rating}</span>
-                      </div>
-                      <span style={{ color: '#9ca3af', fontSize: '10px' }}>{item.quality}</span>
-                    </div>
-                  </div>
-                </div>
-              ))}
+        {/* Quick Links */}
+        <section className="py-12">
+          <div className="container mx-auto px-4">
+            <div className="max-w-4xl mx-auto text-center">
+              <h2 className="text-2xl font-bold text-white mb-8">روابط سريعة</h2>
+              <div className="flex flex-wrap justify-center gap-4">
+                <Link href="/recent" className="btn bg-orange-600 hover:bg-orange-700 text-white px-6 py-3 rounded-lg transition-colors flex items-center">
+                  <Plus size={20} className="ml-2" />
+                  أضيف حديثا
+                </Link>
+                <Link href="/top-rated" className="btn bg-gray-700 hover:bg-gray-600 text-white px-6 py-3 rounded-lg transition-colors flex items-center">
+                  <Star size={20} className="ml-2" />
+                  الأعلى تقييما
+                </Link>
+                <Link href="/most-watched" className="btn bg-gray-700 hover:bg-gray-600 text-white px-6 py-3 rounded-lg transition-colors flex items-center">
+                  <Eye size={20} className="ml-2" />
+                  الأكثر مشاهدة
+                </Link>
+                <Link href="/download-center" className="btn bg-gray-700 hover:bg-gray-600 text-white px-6 py-3 rounded-lg transition-colors flex items-center">
+                  <Download size={20} className="ml-2" />
+                  مركز التحميل
+                </Link>
+              </div>
             </div>
           </div>
-        )}
+        </section>
       </div>
-    </div>
-    </>
+    </AuthenticLayout>
   );
 };
 
