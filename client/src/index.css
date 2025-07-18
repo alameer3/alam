@@ -101,6 +101,7 @@ body {
   -webkit-backdrop-filter: blur(10px);
 }
 
+/* زر الصفحة الرئيسية */
 .home-site-btn {
   background-size: cover;
   background-position: center;
@@ -112,14 +113,91 @@ body {
 .home-site-btn:hover {
   transform: scale(1.05);
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4);
+  background-position: center bottom;
 }
 
+/* بطاقات المحتوى */
 .content-card {
   transition: transform 0.3s ease;
 }
 
 .content-card:hover {
   transform: translateY(-5px);
+}
+
+/* تأثيرات للفئات الرئيسية */
+.main-categories-list .item {
+  position: relative;
+  overflow: hidden;
+}
+
+.main-categories-list .item::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+  transition: left 0.5s ease;
+}
+
+.main-categories-list .item:hover::before {
+  left: 100%;
+}
+
+/* تأثيرات للبحث */
+.widget-2 .form input:focus {
+  box-shadow: 0 0 0 2px rgba(255, 165, 0, 0.3);
+}
+
+.widget-2 .form input.not-empty + label span {
+  transform: translateY(-20px);
+  font-size: 0.75rem;
+  color: #ff6b35;
+}
+
+/* تأثيرات الرسوم المتحركة المتقدمة */
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.logo svg {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* تأثيرات الخلفية */
+.bg-animated {
+  background-size: 400% 400%;
+  animation: gradientShift 15s ease infinite;
+}
+
+@keyframes gradientShift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* تحسينات للموبايل */
+@media (max-width: 768px) {
+  .home-site-btn {
+    height: 200px !important;
+    padding: 2rem !important;
+  }
+  
+  .main-categories-list .item {
+    padding: 1.5rem !important;
+  }
+  
+  .main-categories-list .item .icn {
+    margin-bottom: 0.5rem !important;
+  }
+  
+  .main-categories-list .item .icn svg {
+    width: 2.5rem !important;
+    height: 2.5rem !important;
+  }
 }
 
 /* تحسينات للسكرولباءً */

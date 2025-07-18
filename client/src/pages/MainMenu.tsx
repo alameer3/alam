@@ -219,108 +219,138 @@ const MainMenu = () => {
           {/* المحتوى الرئيسي */}
           <div className="container mx-auto px-4 pt-24 pb-16">
             
-            {/* زر الصفحة الرئيسية */}
+            {/* زر الصفحة الرئيسية - بناءً على التصميم الأصلي */}
             <div className="home-site-btn-container mt-20 mb-16">
-              <a href="/ones" className="block relative">
+              <a href="/ones" className="block relative group">
                 <div 
-                  className="home-site-btn relative overflow-hidden rounded-2xl p-8 text-center transform hover:scale-105 transition-all duration-500"
+                  className="home-site-btn relative overflow-hidden rounded-2xl p-12 text-center transform hover:scale-105 transition-all duration-500 shadow-2xl"
                   style={{
                     backgroundImage: "url('https://ak.sv/style/assets/images/site-new.webp')",
                     backgroundSize: 'cover',
                     backgroundPosition: 'center',
-                    height: '200px'
+                    backgroundPositionY: '0%',
+                    height: '300px',
+                    transition: 'background-position 5s ease-in-out'
                   }}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-blue-600/80 to-green-600/80"></div>
-                  <div className="relative z-10">
-                    <span className="logo mb-4 block">
-                      <svg width="80" height="80" viewBox="0 0 87 80" className="mx-auto text-white">
+                  <div className="absolute inset-0 bg-gradient-to-br from-blue-600/70 via-purple-600/60 to-green-600/70 group-hover:from-blue-500/80 group-hover:to-green-500/80 transition-all duration-500"></div>
+                  <div className="relative z-10 h-full flex flex-col justify-center items-center">
+                    <span className="logo mb-6 block animate-pulse">
+                      <svg width="87" height="80" viewBox="0 0 87 80" className="mx-auto text-white drop-shadow-lg">
                         <path fillRule="evenodd" fill="currentColor" d="M68.479,46.753 L55.101,55.064 L59.686,64.395 L26.302,64.395 L43.500,33.248 L48.558,41.524 L61.642,34.285 L43.500,-0.001 L0.000,80.001 L87.000,80.001 L68.479,46.753 Z"/>
                       </svg>
                     </span>
-                    <span className="text text-2xl font-bold text-white">الصفحة الرئيسية</span>
+                    <span className="text text-3xl font-bold text-white drop-shadow-lg group-hover:text-yellow-200 transition-colors duration-300">
+                      الصفحة الرئيسية
+                    </span>
                   </div>
                 </div>
               </a>
             </div>
 
-            {/* محرك البحث الرئيسي */}
+            {/* محرك البحث الرئيسي - بناءً على التصميم الأصلي */}
             <div className="widget-2 widget mb-16">
               <div className="widget-body">
                 <div className="max-w-4xl mx-auto">
-                  <form onSubmit={handleSearch} className="form flex bg-white/10 rounded-full p-2 mb-8">
-                    <div className="flex-1">
+                  {/* نموذج البحث المتقدم */}
+                  <form onSubmit={handleSearch} className="form flex bg-white/10 backdrop-blur-sm rounded-2xl p-3 mb-8 shadow-lg border border-white/20">
+                    <div className="flex-1 relative">
                       <input 
                         type="text" 
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full bg-transparent text-white placeholder-white/60 px-6 py-3 outline-none"
+                        className="w-full bg-transparent text-white placeholder-white/60 px-6 py-4 outline-none text-lg"
                         placeholder="ابحث عن فيلم او مسلسل او لعبة او برنامج ..."
+                        id="widget2SearchInput"
                       />
+                      <label htmlFor="widget2SearchInput" className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/40 pointer-events-none">
+                        <span className="sr-only">بحث</span>
+                      </label>
+                      
+                      {/* أمثلة البحث */}
+                      <div className="label-text hidden absolute top-full left-0 right-0 mt-2 bg-black/80 rounded-lg p-3 text-sm text-white/70">
+                        <p className="mb-1">مثال: الجزيرة</p>
+                        <p className="mb-1">مثال آخر: اسم مؤقت</p>
+                        <p className="mb-1">مثال: FIFA</p>
+                        <p>ابحث هنا في اكوام باسم الفيلم او المسلسل او اي لعبة او برنامج ترغب به</p>
+                      </div>
                     </div>
-                    <button type="submit" className="bg-orange-500 hover:bg-orange-600 text-white px-8 py-3 rounded-full transition-colors">
+                    <button type="submit" className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-8 py-4 rounded-xl font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg">
                       بحث
                     </button>
                   </form>
                   
-                  {/* الفئات الرئيسية */}
+                  {/* الفئات الرئيسية - بناءً على التصميم الأصلي */}
                   <div className="main-categories-list">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                      <a href="/movies" className="item block text-center text-white py-6 bg-white/10 rounded-xl hover:bg-white/20 transition-all duration-300 transform hover:scale-105">
-                        <div className="icn mb-3">
-                          <Film className="w-12 h-12 mx-auto text-blue-400" />
+                      <a href="/movies" className="item group block text-center text-white py-8 bg-white/10 backdrop-blur-sm rounded-2xl hover:bg-white/20 transition-all duration-300 transform hover:scale-105 border border-white/10 hover:border-blue-500/50">
+                        <div className="icn mb-4 transform group-hover:scale-110 transition-transform duration-300">
+                          <Film className="w-14 h-14 mx-auto text-blue-400 group-hover:text-blue-300" />
                         </div>
-                        <div className="text-lg font-medium">أفلام</div>
+                        <div className="text-lg font-medium group-hover:text-blue-200 transition-colors">أفلام</div>
                       </a>
-                      <a href="/series" className="item block text-center text-white py-6 bg-white/10 rounded-xl hover:bg-white/20 transition-all duration-300 transform hover:scale-105">
-                        <div className="icn mb-3">
-                          <Tv className="w-12 h-12 mx-auto text-green-400" />
+                      <a href="/series" className="item group block text-center text-white py-8 bg-white/10 backdrop-blur-sm rounded-2xl hover:bg-white/20 transition-all duration-300 transform hover:scale-105 border border-white/10 hover:border-green-500/50">
+                        <div className="icn mb-4 transform group-hover:scale-110 transition-transform duration-300">
+                          <Tv className="w-14 h-14 mx-auto text-green-400 group-hover:text-green-300" />
                         </div>
-                        <div className="text-lg font-medium">مسلسلات</div>
+                        <div className="text-lg font-medium group-hover:text-green-200 transition-colors">مسلسلات</div>
                       </a>
-                      <a href="/shows" className="item block text-center text-white py-6 bg-white/10 rounded-xl hover:bg-white/20 transition-all duration-300 transform hover:scale-105">
-                        <div className="icn mb-3">
-                          <Monitor className="w-12 h-12 mx-auto text-red-400" />
+                      <a href="/shows" className="item group block text-center text-white py-8 bg-white/10 backdrop-blur-sm rounded-2xl hover:bg-white/20 transition-all duration-300 transform hover:scale-105 border border-white/10 hover:border-red-500/50">
+                        <div className="icn mb-4 transform group-hover:scale-110 transition-transform duration-300">
+                          <Monitor className="w-14 h-14 mx-auto text-red-400 group-hover:text-red-300" />
                         </div>
-                        <div className="text-lg font-medium">تلفزيون</div>
+                        <div className="text-lg font-medium group-hover:text-red-200 transition-colors">تلفزيون</div>
                       </a>
-                      <a href="/mix" className="item block text-center text-white py-6 bg-white/10 rounded-xl hover:bg-white/20 transition-all duration-300 transform hover:scale-105">
-                        <div className="icn mb-3">
-                          <Gamepad2 className="w-12 h-12 mx-auto text-orange-400" />
+                      <a href="/mix" className="item group block text-center text-white py-8 bg-white/10 backdrop-blur-sm rounded-2xl hover:bg-white/20 transition-all duration-300 transform hover:scale-105 border border-white/10 hover:border-orange-500/50">
+                        <div className="icn mb-4 transform group-hover:scale-110 transition-transform duration-300">
+                          <Gamepad2 className="w-14 h-14 mx-auto text-orange-400 group-hover:text-orange-300" />
                         </div>
-                        <div className="text-lg font-medium">منوعات</div>
+                        <div className="text-lg font-medium group-hover:text-orange-200 transition-colors">منوعات</div>
                       </a>
                     </div>
                   </div>
                 </div>
               </div>
             </div>
+            
+            {/* نهاية قائمة الفئات الرئيسية */}
+            <div className="main-categories-list-end mb-8"></div>
 
             {/* المحتوى المميز */}
             {featuredContent?.data?.length > 0 && (
               <div className="featured-content mb-16">
-                <h2 className="text-3xl font-bold text-white mb-8 text-center">المحتوى المميز</h2>
+                <div className="text-center mb-12">
+                  <h2 className="text-4xl font-bold text-white mb-4 bg-gradient-to-r from-blue-400 to-purple-600 bg-clip-text text-transparent">
+                    المحتوى المميز
+                  </h2>
+                  <div className="w-24 h-1 bg-gradient-to-r from-orange-500 to-red-600 mx-auto rounded-full"></div>
+                </div>
                 <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-6">
                   {featuredContent.data.map((item: ContentItem) => (
                     <div key={item.id} className="content-card group">
                       <a href={`/content/${item.id}`} className="block">
-                        <div className="relative overflow-hidden rounded-lg">
+                        <div className="relative overflow-hidden rounded-xl shadow-lg group-hover:shadow-2xl transition-shadow duration-300">
                           <img 
                             src={item.poster || '/serverdata/images/default-poster.svg'} 
                             alt={item.titleAr}
                             className="w-full h-80 object-cover group-hover:scale-110 transition-transform duration-300"
                           />
                           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+                          <div className="absolute top-2 right-2 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                            <Play className="w-8 h-8 text-white bg-orange-500 rounded-full p-2" />
+                          </div>
                           <div className="absolute bottom-0 left-0 right-0 p-4 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                            <div className="flex items-center space-x-2 space-x-reverse text-sm">
-                              <Star className="w-4 h-4 text-yellow-400" />
-                              <span>{item.rating}</span>
+                            <div className="flex items-center justify-between text-sm">
+                              <div className="flex items-center space-x-2 space-x-reverse">
+                                <Star className="w-4 h-4 text-yellow-400" />
+                                <span>{item.rating}</span>
+                              </div>
                               <span className="bg-orange-500 px-2 py-1 rounded text-xs">{item.quality}</span>
                             </div>
                           </div>
                         </div>
                         <div className="pt-3">
-                          <h3 className="text-white font-medium text-sm truncate">{item.titleAr}</h3>
+                          <h3 className="text-white font-medium text-sm truncate group-hover:text-orange-400 transition-colors">{item.titleAr}</h3>
                           <p className="text-white/60 text-xs mt-1">{new Date(item.releaseDate).getFullYear()}</p>
                         </div>
                       </a>
