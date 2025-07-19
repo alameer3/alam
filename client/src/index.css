@@ -185,6 +185,69 @@
 @tailwind components;
 @tailwind utilities;
 
+/* أساليب مخصصة للشعار الدائري */
+.home-site-btn-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  margin-bottom: 2rem;
+}
+
+.home-site-btn {
+  position: relative;
+  width: 280px;
+  height: 280px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(circle at center, rgba(22, 22, 25, 0.9) 0%, rgba(40, 40, 45, 0.8) 100%);
+  backdrop-filter: blur(10px);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.home-site-btn:hover {
+  border-color: #f3951e;
+  transform: scale(1.05);
+  box-shadow: 0 0 30px rgba(243, 149, 30, 0.3);
+}
+
+.home-site-btn .logo {
+  margin-bottom: 10px;
+}
+
+.home-site-btn .text {
+  font-size: 18px;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* أساليب الأقسام */
+.category-item:hover .bg-gray-800 {
+  background-color: rgba(31, 41, 55, 1);
+  border-color: #f3951e;
+}
+
+/* تحسينات عامة */
+.container {
+  max-width: 1200px;
+}
+
+/* responsive */
+@media (max-width: 768px) {
+  .grid-cols-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  
+  .home-site-btn {
+    width: 220px;
+    height: 220px;
+  }
+}
+
 /* الألوان الأساسية للموقع الأصلي */
 :root {
   --akwam-orange: #f3951e;
