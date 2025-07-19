@@ -3,6 +3,7 @@ import './index.css';
 
 // الصفحات الأصلية
 import HomeAuthentic from './pages/HomeAuthentic';
+import HomeOriginalExtracted from './pages/HomeOriginalExtracted';
 import MoviesAuthentic from './pages/MoviesAuthentic';
 import SeriesAuthentic from './pages/SeriesAuthentic';
 import ShowsAuthentic from './pages/ShowsAuthentic';
@@ -31,7 +32,8 @@ function App() {
     <div className="App" dir="rtl">
       <Switch>
         {/* الصفحات الأصلية الجديدة */}
-        <Route path="/" component={HomeAuthentic} />
+        <Route path="/" component={HomeOriginalExtracted} />
+        <Route path="/home-original" component={HomeAuthentic} />
         <Route path="/movies" component={MoviesAuthentic} />
         <Route path="/series" component={SeriesAuthentic} />
         <Route path="/shows" component={ShowsAuthentic} />
