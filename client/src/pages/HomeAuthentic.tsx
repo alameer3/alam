@@ -93,40 +93,55 @@ export default function HomeAuthentic() {
         }}
       />
 
-      {/* Main Menu - مطابق للأصل */}
+      {/* القائمة الجانبية مطابقة 100% للأصل */}
       <div className={`main-menu fixed right-0 left-0 bottom-0 top-[70px] z-45 overflow-y-auto bg-[#27272c] border-t border-[#111114] transition-all duration-500 ${isMenuActive ? 'opacity-100 visible' : 'opacity-0 invisible'}`}>
-        <div className="h-full flex flex-col">
-          <div className="my-auto w-full">
-            <div className="flex flex-wrap justify-center">
+        <div className="h-full flex flex-col justify-between">
+          {/* قائمة الأقسام الرئيسية */}
+          <div className="flex-1 flex items-center justify-center">
+            <div className="grid grid-cols-2 gap-8 w-full max-w-lg px-8">
               {[
-                { href: '/movies', icon: 'icon-video-camera', text: 'أفلام' },
-                { href: '/series', icon: 'icon-monitor', text: 'مسلسلات' },
-                { href: '/shows', icon: 'icon-tv', text: 'تلفزيون' },
-                { href: '/mix', icon: 'icon-mix', text: 'منوعات' }
+                { href: '/movies', icon: '🎬', text: 'أفلام', delay: '0.25s' },
+                { href: '/series', icon: '📺', text: 'مسلسلات', delay: '0.5s' },
+                { href: '/shows', icon: '📻', text: 'تلفزيون', delay: '0.75s' },
+                { href: '/mix', icon: '🎮', text: 'منوعات', delay: '1s' }
               ].map((item, index) => (
-                <a key={index} href={item.href} className="item text-white flex items-center justify-center mx-5 my-8 hover:text-[#f3951e] transition-colors duration-300">
-                  <div className={`icn ml-3 text-5xl transform transition-all duration-500 ${isMenuActive ? 'translate-y-0 opacity-100' : 'translate-y-[70%] opacity-0'}`}>
-                    {item.icon === 'icon-video-camera' ? '🎬' : item.icon === 'icon-monitor' ? '📺' : item.icon === 'icon-tv' ? '📻' : '🎮'}
+                <a 
+                  key={index} 
+                  href={item.href} 
+                  className="item text-white flex flex-col items-center justify-center py-8 hover:text-[#f3951e] transition-colors duration-300"
+                  onClick={() => setIsMenuActive(false)}
+                >
+                  <div 
+                    className={`icn text-5xl mb-4 transform transition-all duration-500 ${isMenuActive ? 'translate-y-0 opacity-100' : 'translate-y-[70%] opacity-0'}`}
+                    style={{ transitionDelay: isMenuActive ? item.delay : '0s' }}
+                  >
+                    {item.icon}
                   </div>
-                  <div className={`text min-w-[70px] text-xl text-right transform transition-all duration-500 ${isMenuActive ? 'translate-x-0 opacity-100' : 'translate-x-[-10%] opacity-0'}`}>
+                  <div 
+                    className={`text text-xl font-medium text-center transform transition-all duration-500 ${isMenuActive ? 'translate-x-0 opacity-100' : 'translate-x-[-10%] opacity-0'}`}
+                    style={{ transitionDelay: isMenuActive ? item.delay : '0s' }}
+                  >
                     {item.text}
                   </div>
                 </a>
               ))}
             </div>
           </div>
+
+          {/* أيقونات التواصل الاجتماعي في الأسفل */}
           <nav className="social flex justify-center pb-8">
             {[
-              { href: 'https://akw.to', icon: '🏠', class: 'home' },
-              { href: 'https://www.facebook.com/akwamnet', icon: '📘', class: 'facebook' },
-              { href: 'https://www.youtube.com/c/AKWAMnetwork', icon: '📹', class: 'youtube' },
-              { href: '/contactus', icon: '✉️', class: 'email' }
+              { href: 'https://akw.to', icon: '🏠', name: 'الموقع الرئيسي', delay: '0.1s' },
+              { href: 'https://www.facebook.com/akwamnet', icon: '📘', name: 'فيسبوك', delay: '0.2s' },
+              { href: 'https://www.youtube.com/c/AKWAMnetwork', icon: '📹', name: 'يوتيوب', delay: '0.3s' },
+              { href: '/contactus', icon: '✉️', name: 'اتصل بنا', delay: '0.4s' }
             ].map((social, index) => (
               <a 
                 key={index} 
                 href={social.href} 
-                className={`w-10 h-10 text-[#777] text-xs cursor-pointer relative rounded-full border border-[#777] mx-2 flex items-center justify-center transition-all duration-500 hover:text-white hover:border-white ${isMenuActive ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-[50%]'}`}
-                style={{ transitionDelay: `${index * 0.1}s` }}
+                className={`w-10 h-10 text-[#777] text-sm cursor-pointer relative rounded-full border border-[#777] mx-2 flex items-center justify-center transition-all duration-500 hover:text-white hover:border-white ${isMenuActive ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-[50%]'}`}
+                style={{ transitionDelay: isMenuActive ? social.delay : '0s' }}
+                title={social.name}
               >
                 {social.icon}
               </a>
@@ -168,69 +183,80 @@ export default function HomeAuthentic() {
         }}
       >
         <div className="page-home">
-          {/* Header - مطابق للأصل */}
+          {/* Header مطابق 100% للموقع الأصلي */}
           <header className="main-header h-[70px] fixed top-0 left-0 right-0 z-40 bg-[#161619] border-b border-[#333]">
-            <div className="container mx-auto px-4">
-              <div className="flex items-center h-[70px]">
-                <div className="flex items-center">
-                  <h2 className="main-logo m-0">
-                    <a href="/ones" className="inline-flex">
-                      <svg 
-                        className="w-12 h-12 text-white" 
-                        viewBox="0 0 87 80" 
-                        fill="currentColor"
-                      >
-                        <path fillRule="evenodd" d="M68.479,46.753 L55.101,55.064 L59.686,64.395 L26.302,64.395 L43.500,33.248 L48.558,41.524 L61.642,34.285 L43.500,-0.001 L0.000,80.001 L87.000,80.001 L68.479,46.753 Z"/>
-                      </svg>
-                    </a>
-                  </h2>
-                </div>
-                <div className="mr-4">
-                  <button 
-                    onClick={() => setIsMenuActive(!isMenuActive)}
-                    className={`menu-toggle flex items-center text-white transition-colors duration-500 ${isMenuActive ? 'text-[#f3951e]' : ''}`}
-                  >
-                    <span className="icn relative w-6 h-5 flex flex-col justify-between ml-3">
-                      <span className="w-full h-0.5 bg-current transition-all duration-500"></span>
-                      <span className="w-full h-0.5 bg-current transition-all duration-500"></span>
-                      <span className="w-full h-0.5 bg-current transition-all duration-500"></span>
+            <div className="h-full flex items-center px-4 max-w-7xl mx-auto">
+              {/* الشعار - يسار الشاشة */}
+              <div className="flex items-center">
+                <h2 className="main-logo m-0">
+                  <a href="/ones" className="inline-flex items-center">
+                    <svg 
+                      className="w-8 h-7 text-white mr-2" 
+                      viewBox="0 0 87 80" 
+                      fill="currentColor"
+                    >
+                      <path fillRule="evenodd" d="M68.479,46.753 L55.101,55.064 L59.686,64.395 L26.302,64.395 L43.500,33.248 L48.558,41.524 L61.642,34.285 L43.500,-0.001 L0.000,80.001 L87.000,80.001 L68.479,46.753 Z"/>
+                    </svg>
+                    <span className="text-white text-lg font-bold" style={{ fontFamily: 'akoam, Arial, sans-serif' }}>
+                      اكوام
                     </span>
-                    <div className="text text-lg">الأقسام</div>
-                  </button>
-                </div>
-                <div className="mr-auto"></div>
-                <div className="flex-1 max-w-md mx-4 hidden md:block">
+                  </a>
+                </h2>
+              </div>
+
+              {/* زر القائمة - بجانب الشعار */}
+              <div className="mr-6">
+                <button 
+                  onClick={() => setIsMenuActive(!isMenuActive)}
+                  className={`menu-toggle flex items-center text-white transition-colors duration-300 hover:text-[#f3951e] ${isMenuActive ? 'text-[#f3951e]' : ''}`}
+                >
+                  <span className="icn relative w-5 h-4 flex flex-col justify-between mr-2">
+                    <span className="w-full h-0.5 bg-current"></span>
+                    <span className="w-full h-0.5 bg-current"></span>
+                    <span className="w-full h-0.5 bg-current"></span>
+                  </span>
+                  <span className="text text-sm">القائمة</span>
+                </button>
+              </div>
+
+              {/* مساحة فارغة للوسط */}
+              <div className="flex-1"></div>
+
+              {/* أزرار يمين الهيدر */}
+              <div className="flex items-center gap-4">
+                {/* زر البحث للشاشات الصغيرة */}
+                <button 
+                  onClick={() => setIsSearchActive(true)}
+                  className="search-toggle text-white hover:text-[#f3951e] text-lg transition-colors md:hidden"
+                  title="بحث"
+                >
+                  🔍
+                </button>
+
+                {/* شريط البحث للشاشات الكبيرة */}
+                <div className="hidden md:block max-w-sm">
                   <div className="search-form relative">
                     <form onSubmit={handleSearch}>
                       <input 
                         type="text" 
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        className="w-full h-12 px-4 bg-white/10 text-white placeholder-white/70 rounded-lg border border-white/20 outline-none focus:border-[#f3951e]"
-                        placeholder="ابحث عن فيلم او مسلسل ..."
+                        className="w-full h-9 px-3 bg-white/10 text-white placeholder-white/60 rounded border border-white/20 outline-none focus:border-[#f3951e] text-sm transition-colors"
+                        placeholder="بحث سريع..."
                         dir="rtl"
+                        style={{ fontSize: '14px' }}
                       />
-                      <button type="submit" className="absolute left-3 top-1/2 transform -translate-y-1/2 text-white/70 hover:text-[#f3951e]">
+                      <button type="submit" className="absolute left-2 top-1/2 transform -translate-y-1/2 text-white/60 hover:text-[#f3951e] text-sm">
                         🔍
                       </button>
                     </form>
                   </div>
                 </div>
-                <div className="flex items-center">
-                  <button 
-                    onClick={() => setIsSearchActive(true)}
-                    className="search-toggle text-white hover:text-[#f3951e] text-xl mr-4 md:hidden"
-                  >
-                    🔍
-                  </button>
-                  <a href="/recent" className="btn-recently text-white hover:text-[#f3951e] flex items-center mr-4">
-                    <span className="ml-2">➕</span>
-                    <span>أضيف حديثا</span>
-                  </a>
-                  <a href="/login" className="user-toggle text-white hover:text-[#f3951e] text-xl">
-                    👤
-                  </a>
-                </div>
+
+                {/* أيقونة المستخدم */}
+                <a href="/login" className="user-toggle text-white hover:text-[#f3951e] text-lg transition-colors" title="تسجيل دخول">
+                  👤
+                </a>
               </div>
             </div>
           </header>
