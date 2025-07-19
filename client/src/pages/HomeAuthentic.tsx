@@ -65,199 +65,142 @@ export default function HomeAuthentic() {
         </div>
       </header>
 
-      {/* المحتوى الرئيسي */}
-      <main className="relative z-10 flex flex-col items-center justify-center min-h-[calc(100vh-100px)] px-4">
+      {/* Container الأصلي مطابق للتصميم */}
+      <div className="container py-5 my-5">
         
-        {/* الشعار الدائري الأصلي مطابق للتصميم الحقيقي */}
-        <div className={`mb-12 transition-all duration-1000 ${isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}`}>
-          <div className="home-site-btn-container">
-            <Link href="/ones" className="link" style={{ position: 'absolute', top: 0, right: 0, width: '100%', height: '100%', zIndex: 10 }}>
-              <h1 className="sr-only">اكوام - الصفحة الرئيسية</h1>
-            </Link>
-            <div 
-              className="home-site-btn"
-              style={{
-                width: '230px',
-                height: '230px',
-                overflow: 'hidden',
-                borderRadius: '50%',
-                position: 'absolute',
-                top: '50%',
-                right: '50%',
-                border: '5px solid #fff',
-                backgroundColor: '#161619',
-                transform: 'translate(50%, -50%)',
-                backgroundImage: 'url(https://ak.sv/style/assets/images/site-new.webp)',
-                backgroundPosition: 'center -43%',
-                backgroundRepeat: 'no-repeat',
-                backgroundSize: '120%',
-                transition: 'all 500ms'
-              }}
-            >
-              {/* الشعار الأصلي من SVG */}
-              <span 
-                className="logo"
-                style={{
-                  position: 'absolute',
-                  top: '50px',
-                  right: '50%',
-                  zIndex: 2,
-                  transform: 'translate(50%)',
-                  transition: 'all 500ms'
-                }}
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" width="87px" height="80px">
-                  <path fillRule="evenodd" fill="rgb(255, 255, 255)"
-                    d="M68.479,46.753 L55.101,55.064 L59.686,64.395 L26.302,64.395 L43.500,33.248 L48.558,41.524 L61.642,34.285 L43.500,-0.001 L0.000,80.001 L87.000,80.001 L68.479,46.753 Z"/>
-                </svg>
-              </span>
-              
-              {/* النص الأصلي */}
-              <span 
-                className="text"
-                style={{
-                  width: '100%',
-                  textAlign: 'center',
-                  position: 'absolute',
-                  bottom: '55px',
-                  right: '50%',
-                  zIndex: 2,
-                  transform: 'translate(50%)',
-                  fontSize: '20px',
-                  fontWeight: 'medium',
-                  color: 'white',
-                  transition: 'all 500ms'
-                }}
-              >
-                الصفحة الرئيسية
-              </span>
-            </div>
+        {/* الشعار الدائري الأصلي بالضبط */}
+        <div className="home-site-btn-container mt-5">
+          <h1>
+            <Link href="/ones" className="link" style={{ position: 'absolute', top: 0, right: 0, width: '100%', height: '100%', zIndex: 10 }}></Link>
+          </h1>
+          <div 
+            className="home-site-btn"
+            style={{
+              backgroundImage: "url('https://ak.sv/style/assets/images/site-new.webp')",
+              transition: 'background-position 5s'
+            }}
+          >
+            <span className="logo">
+              <svg xmlns="http://www.w3.org/2000/svg" width="87px" height="80px">
+                <path fillRule="evenodd" fill="rgb(255, 255, 255)"
+                  d="M68.479,46.753 L55.101,55.064 L59.686,64.395 L26.302,64.395 L43.500,33.248 L48.558,41.524 L61.642,34.285 L43.500,-0.001 L0.000,80.001 L87.000,80.001 L68.479,46.753 Z"/>
+              </svg>
+            </span>
+            <span className="text font-size-20 font-weight-medium text-white">الصفحة الرئيسية</span>
           </div>
         </div>
 
-        {/* شريط البحث الأصلي مطابق للتصميم */}
-        <div className={`w-full max-w-2xl mb-6 transition-all duration-1000 delay-300 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-          <form className="flex bg-transparent" action="/search" method="get">
-            <div className="flex-1 relative">
-              <input 
-                type="text" 
-                name="q"
-                value={searchValue}
-                onChange={(e) => setSearchValue(e.target.value)}
-                className="w-full px-4 py-3 text-white text-sm bg-gray-800 bg-opacity-90 border-0 rounded-r-md focus:outline-none focus:bg-opacity-100"
-                style={{ 
-                  direction: 'rtl',
-                  backgroundColor: 'rgba(35, 35, 40, 0.9)'
-                }}
-              />
-              <label 
-                htmlFor="searchInput" 
-                className="absolute right-4 top-3 text-gray-400 text-sm pointer-events-none transition-all"
-                style={{
-                  opacity: searchValue ? 0 : 1,
-                  transform: searchValue ? 'translateY(-20px) scale(0.8)' : 'translateY(0) scale(1)'
-                }}
-              >
-                ابحث عن فيلم او مسلسل او لعبة او برنامج ...
-              </label>
-            </div>
-            <button 
-              type="submit"
-              className="px-6 py-3 text-black text-sm font-medium rounded-l-md transition-all hover:brightness-110 btn-orange"
-              style={{ backgroundColor: '#f3951e' }}
-            >
-              بحث
-            </button>
-          </form>
-        </div>
-
-        {/* الأقسام الأربعة الأصلية مطابقة للتصميم الحقيقي */}
-        <div className={`w-full max-w-2xl mb-8 transition-all duration-1000 delay-500 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-          <div className="main-categories-list">
-            <div className="grid grid-cols-4 gap-0">
+        {/* Widget البحث الأصلي */}
+        <div className="widget-2 widget mb-4">
+          <div className="widget-body row">
+            <div className="col-lg-8 mx-auto">
               
-              {/* أفلام - الأول من اليمين */}
-              <div style={{ backgroundColor: 'rgba(39, 39, 44, 0.6)' }}>
-                <Link href="/movies" className="item block text-center text-white py-4 h-full transition-all hover:bg-orange-500 border border-gray-700 hover:border-orange-500">
-                  <div className="icn mb-2">
-                    <span className="text-2xl">🎬</span>
+              <form className="form d-flex no-gutters mb-20" action="/search" method="get">
+                <div className="col pl-12">
+                  <input 
+                    type="text" 
+                    className="form-control" 
+                    id="widget2SearchInput" 
+                    name="q"
+                    value={searchValue}
+                    onChange={(e) => setSearchValue(e.target.value)}
+                  />
+                  <label htmlFor="widget2SearchInput" className="m-0">
+                    <span className="label"></span>
+                  </label>
+                  <div className="label-text d-none">
+                    <p>ابحث عن فيلم او مسلسل او لعبة او برنامج ...</p>
+                    <p>^200 مثال: الجزيرة</p>
+                    <p>^400 مثال آخر: اسم مؤقت</p>
+                    <p>^600 مثال: FIFA</p>
+                    <p>^800 ابحث هنا في اكوام باسم الفيلم او المسلسل او اي لعبة او برنامج ترغب به</p>
                   </div>
-                  <div className="text-sm font-medium">أفلام</div>
-                </Link>
-              </div>
+                </div>
+                <div className="col-auto">
+                  <button type="submit" className="btn btn-orange">بحث</button>
+                </div>
+              </form>
               
-              {/* مسلسلات - الثاني */}
-              <div style={{ backgroundColor: 'rgba(39, 39, 44, 0.6)' }}>
-                <Link href="/series" className="item block text-center text-white py-4 h-full transition-all hover:bg-orange-500 border border-gray-700 hover:border-orange-500">
-                  <div className="icn mb-2">
-                    <span className="text-2xl">📺</span>
+              {/* الأقسام الأصلية */}
+              <div className="main-categories-list">
+                <div className="row">
+                  
+                  <div className="col-lg col-4">
+                    <Link href="/movies" className="item d-block text-center text-white py-3 h-100">
+                      <div className="icn"><i className="icon-video-camera"></i></div>
+                      <div className="font-size-16">أفلام</div>
+                    </Link>
                   </div>
-                  <div className="text-sm font-medium">مسلسلات</div>
-                </Link>
-              </div>
-              
-              {/* تلفزيون - الثالث */}
-              <div style={{ backgroundColor: 'rgba(39, 39, 44, 0.6)' }}>
-                <Link href="/shows" className="item block text-center text-white py-4 h-full transition-all hover:bg-orange-500 border border-gray-700 hover:border-orange-500">
-                  <div className="icn mb-2">
-                    <span className="text-2xl">📻</span>
+                  
+                  <div className="col-lg col-4">
+                    <Link href="/series" className="item d-block text-center text-white py-3 h-100">
+                      <div className="icn"><i className="icon-monitor"></i></div>
+                      <div className="font-size-16">مسلسلات</div>
+                    </Link>
                   </div>
-                  <div className="text-sm font-medium">تلفزيون</div>
-                </Link>
-              </div>
-              
-              {/* منوعات - الرابع (الأخير في اليسار) */}
-              <div style={{ backgroundColor: 'rgba(39, 39, 44, 0.6)' }}>
-                <Link href="/mix" className="item block text-center text-white py-4 h-full transition-all hover:bg-orange-500 border border-gray-700 hover:border-orange-500">
-                  <div className="icn mb-2">
-                    <span className="text-2xl">🎮</span>
+                  
+                  <div className="col-lg col-4">
+                    <Link href="/shows" className="item d-block text-center text-white py-3 h-100">
+                      <div className="icn"><i className="icon-tv"></i></div>
+                      <div className="font-size-16">تلفزيون</div>
+                    </Link>
                   </div>
-                  <div className="text-sm font-medium">منوعات</div>
-                </Link>
+                  
+                  <div className="col-lg col-4">
+                    <Link href="/mix" className="item d-block text-center text-white py-3 h-100">
+                      <div className="icn"><i className="icon-mix"></i></div>
+                      <div className="font-size-16">منوعات</div>
+                    </Link>
+                  </div>
+                  
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </main>
+        
+        <div className="main-categories-list-end"></div>
+        
+      </div>
 
-      {/* التذييل مطابق للصورة الأصلية */}
-      <footer className="relative z-10 mt-auto py-12">
-        {/* أيقونات التواصل الاجتماعي الأصلية */}
-        <div className={`flex justify-center space-x-4 space-x-reverse mb-6 transition-all duration-1000 delay-700 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
-          <Link href="https://akw.to" target="_blank" className="w-10 h-10 bg-gray-700 hover:bg-orange-500 rounded-full flex items-center justify-center transition-colors">
-            <span className="text-white text-lg">🏠</span>
+      {/* التذييل الأصلي */}
+      <footer className="main-footer py-5">
+        <nav className="social d-flex justify-content-center">
+          <Link href="https://akw.to" target="_blank" className="home mx-2">
+            <i className="icon-home"></i>
           </Link>
-          <Link href="https://www.facebook.com/akwamnet" target="_blank" className="w-10 h-10 bg-gray-700 hover:bg-blue-600 rounded-full flex items-center justify-center transition-colors">
-            <span className="text-white text-lg">f</span>
+          <Link href="https://www.facebook.com/akwamnet" target="_blank" className="facebook mx-2">
+            <i className="icon-facebook"></i>
           </Link>
-          <Link href="https://www.facebook.com/groups/AKOAMweb" target="_blank" className="w-10 h-10 bg-gray-700 hover:bg-blue-600 rounded-full flex items-center justify-center transition-colors">
-            <span className="text-white text-lg">f</span>
+          <Link href="https://www.facebook.com/groups/AKOAMweb" target="_blank" className="facebook mx-2">
+            <i className="icon-facebook"></i>
           </Link>
-          <Link href="https://akw.net.in/" target="_blank" className="w-10 h-10 bg-gray-700 hover:bg-purple-600 rounded-full flex items-center justify-center transition-colors">
-            <span className="text-white text-lg">📱</span>
+          <Link href="https://akw.net.in/" target="_blank" className="app-store mx-2">
+            <i className="icon-app-store"></i>
           </Link>
-          <Link href="https://www.youtube.com/c/AKWAMnetwork" target="_blank" className="w-10 h-10 bg-gray-700 hover:bg-red-600 rounded-full flex items-center justify-center transition-colors">
-            <span className="text-white text-lg">📹</span>
+          <Link href="https://www.youtube.com/c/AKWAMnetwork" target="_blank" className="youtube mx-2">
+            <i className="icon-youtube"></i>
           </Link>
-          <Link href="/contactus" className="w-10 h-10 bg-gray-700 hover:bg-green-600 rounded-full flex items-center justify-center transition-colors">
-            <span className="text-white text-lg">✉️</span>
+          <Link href="/AKWAM-Notifications" target="_blank" className="app-store mx-2">
+            <i className="icon-app-store"></i>
           </Link>
-        </div>
+          <Link href="/contactus" className="email mx-2">
+            <i className="icon-email"></i>
+          </Link>
+        </nav>
         
-        {/* روابط التذييل الأصلية */}
-        <div className="flex justify-center space-x-4 space-x-reverse text-xs text-gray-400 mb-4 flex-wrap">
-          <Link href="/" className="hover:text-white transition-colors">اكوام</Link>
-          <Link href="/old" className="hover:text-white transition-colors">الموقع القديم</Link>
-          <Link href="/dmca" className="hover:text-white transition-colors">DMCA</Link>
-          <Link href="/ad-policy" className="hover:text-white transition-colors">AD-P</Link>
-          <Link href="https://ak-news.com" target="_blank" className="hover:text-white transition-colors">اكوام نيوز</Link>
-          <Link href="https://akw.net.co" target="_blank" className="hover:text-white transition-colors">شبكة اكوام</Link>
-        </div>
+        <nav className="links d-flex justify-content-center mt-3">
+          <Link href="/" className="mx-2">اكوام</Link>
+          <Link href="/old" target="_blank" className="mx-2">الموقع القديم</Link>
+          <Link href="/dmca" className="mx-2">DMCA</Link>
+          <Link href="/ad-policy" className="mx-2">AD-P</Link>
+          <Link href="https://ak-news.com" target="_blank" className="mx-2">اكوام نيوز</Link>
+          <Link href="https://akw.net.co" target="_blank" className="mx-2">شبكة اكوام</Link>
+        </nav>
         
-        {/* حقوق الطبع والنشر */}
-        <div className="text-center text-gray-500 text-xs">
-          جميع الحقوق محفوظة © شبكة اكوام 2025
-        </div>
+        <p className="copyright mb-0 font-size-12 text-center mt-3">
+          جميع الحقوق محفوظة لـ شبكة اكوام © 2025
+        </p>
       </footer>
 
 
