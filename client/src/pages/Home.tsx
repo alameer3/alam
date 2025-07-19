@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Link } from 'wouter';
 import '../styles/home-authentic.css';
+import '../styles/animations.css';
 
 export default function Home() {
   const [searchValue, setSearchValue] = useState('');
@@ -87,27 +88,39 @@ export default function Home() {
                 </svg>
               </span>
               <span className="text font-size-20 font-weight-medium text-white">
-                المكتبة الترفيهية
+                الصفحة الرئيسية
               </span>
             </div>
           </div>
 
-          {/* شريط البحث الأصلي المحسن */}
+          {/* شريط البحث الأصلي المتقدم مطابق تماماً */}
           <div className="widget-2 widget mb-4">
-            <div className="widget-body">
-              <div className="max-w-4xl mx-auto">
+            <div className="widget-body row">
+              <div className="col-lg-8 mx-auto">
                 <form className="form d-flex no-gutters mb-20" method="get">
-                  <div className="flex-1">
+                  <div className="col pl-12">
                     <input 
                       type="text" 
                       className="form-control" 
+                      id="widget2SearchInput"
+                      name="q"
                       placeholder="ابحث عن فيلم او مسلسل او لعبة او برنامج ..."
                       value={searchValue}
                       onChange={(e) => setSearchValue(e.target.value)}
                     />
+                    <label htmlFor="widget2SearchInput" className="m-0">
+                      <span className="label"></span>
+                    </label>
+                    <div className="label-text d-none">
+                      <p>ابحث عن فيلم او مسلسل او لعبة او برنامج ...</p>
+                      <p>^200 مثال: الجزيرة</p>
+                      <p>^400 مثال آخر: اسم مؤقت</p>
+                      <p>^600 مثال: FIFA</p>
+                      <p>^800 ابحث هنا في اكوام باسم الفيلم او المسلسل او اي لعبة او برنامج ترغب به</p>
+                    </div>
                   </div>
-                  <div className="flex-shrink-0">
-                    <button type="submit" className="btn-orange">بحث</button>
+                  <div className="col-auto">
+                    <button type="submit" className="btn btn-orange">بحث</button>
                   </div>
                 </form>
               </div>
@@ -116,34 +129,49 @@ export default function Home() {
 
           {/* الأقسام الأربعة الأصلية مطابقة تماماً للموقع الأصلي */}
           <div className="main-categories-list">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
-              
+            <div className="row">
               {/* أفلام */}
-              <Link href="/movies" className="item transition">
-                <div className="icn">🎬</div>
-                <div className="font-size-16">أفلام</div>
-              </Link>
+              <div className="col-lg col-4">
+                <Link href="/movies" className="item d-block text-center text-white py-3 h-100">
+                  <div className="icn">
+                    <i className="icon-video-camera">🎬</i>
+                  </div>
+                  <div className="font-size-16">أفلام</div>
+                </Link>
+              </div>
 
               {/* مسلسلات */}
-              <Link href="/series" className="item transition">
-                <div className="icn">📺</div>
-                <div className="font-size-16">مسلسلات</div>
-              </Link>
+              <div className="col-lg col-4">
+                <Link href="/series" className="item d-block text-center text-white py-3 h-100">
+                  <div className="icn">
+                    <i className="icon-monitor">📺</i>
+                  </div>
+                  <div className="font-size-16">مسلسلات</div>
+                </Link>
+              </div>
 
               {/* تلفزيون */}
-              <Link href="/shows" className="item transition">
-                <div className="icn">📡</div>
-                <div className="font-size-16">تلفزيون</div>
-              </Link>
+              <div className="col-lg col-4">
+                <Link href="/shows" className="item d-block text-center text-white py-3 h-100">
+                  <div className="icn">
+                    <i className="icon-tv">📡</i>
+                  </div>
+                  <div className="font-size-16">تلفزيون</div>
+                </Link>
+              </div>
 
               {/* منوعات */}
-              <Link href="/mix" className="item transition">
-                <div className="icn">🎮</div>
-                <div className="font-size-16">منوعات</div>
-              </Link>
-
+              <div className="col-lg col-4">
+                <Link href="/mix" className="item d-block text-center text-white py-3 h-100">
+                  <div className="icn">
+                    <i className="icon-mix">🎮</i>
+                  </div>
+                  <div className="font-size-16">منوعات</div>
+                </Link>
+              </div>
             </div>
           </div>
+          <div className="main-categories-list-end"></div>
         </div>
         
         {/* التذييل الأصلي */}
