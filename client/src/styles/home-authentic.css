@@ -1,847 +1,529 @@
-/* CSS الأصلي المستخرج بدقة من الملفات الأصلية - تطبيق متقدم وذكي */
+/* تصميم الصفحة الرئيسية مطابق تماماً للموقع الأصلي ak.sv */
 
-/* متغيرات الألوان الأصلية مطابقة تماماً */
-:root {
-  --blue: #1e1e21;
-  --indigo: #6610f2;
-  --purple: #6f42c1;
-  --pink: #e83e8c;
-  --red: #c84848;
-  --orange: #f3951e;
-  --yellow: #ffc107;
-  --green: #3db366;
-  --teal: #20c997;
-  --cyan: #26baee;
-  --white: #fff;
-  --gray: #6c757d;
-  --gray-dark: #343a40;
-  --primary: #1e1e21;
-  --primary2: #1f1f24;
-  --secondary: #6c757d;
-  --success: #3db366;
-  --info: #26baee;
-  --warning: #ffc107;
-  --danger: #c84848;
-  --light: #f7f7f7;
-  --orange: #f3951e;
-  --dark: #343a40;
+/* إعدادات الخط الأساسي */
+@font-face {
+  font-family: 'akoam';
+  src: url('/style/assets/css/fonts/font/STC-Bold.eot');
+  src: local('?'), url('/style/assets/css/fonts/font/STC-Bold.woff') format('woff'), 
+       url('/style/assets/css/fonts/font/STC-Bold.ttf') format('truetype'), 
+       url('/style/assets/css/fonts/font/STC-Bold.svg') format('svg');
+  font-weight: 700;
+  font-style: normal;
 }
 
-/* تصميم الشعار الدائري الأصلي مطابق 100% للموقع الأصلي */
-.home-site-btn-container {
-  width: 258px;
-  height: 258px;
-  border-radius: 50%;
-  position: relative;
-  margin: 0 auto 40px auto;
-  cursor: pointer;
+@font-face {
+  font-family: 'akoam';
+  src: url('/style/assets/css/fonts/font/STC-Light.eot');
+  src: local('?'), url('/style/assets/css/fonts/font/STC-Light.woff') format('woff'), 
+       url('/style/assets/css/fonts/font/STC-Light.ttf') format('truetype'), 
+       url('/style/assets/css/fonts/font/STC-Light.svg') format('svg');
+  font-weight: 400;
+  font-style: normal;
 }
 
-.home-site-btn-container::before, 
-.home-site-btn-container::after {
-  position: absolute;
-  top: 50%;
-  right: 50%;
-  z-index: 2;
-  content: "";
-  border-radius: 50%;
-  border: 2px solid #fff;
-  transform: translate(50%, -50%);
-  transition: all 500ms ease;
+@font-face {
+  font-family: 'akoam';
+  src: url('/style/assets/css/fonts/font/STC-Regular.eot');
+  src: local('?'), url('/style/assets/css/fonts/font/STC-Regular.woff') format('woff'), 
+       url('/style/assets/css/fonts/font/STC-Regular.ttf') format('truetype'), 
+       url('/style/assets/css/fonts/font/STC-Regular.svg') format('svg');
+  font-weight: 600;
+  font-style: normal;
 }
 
-.home-site-btn-container::before {
-  width: 100%;
-  height: 100%;
-}
-
-.home-site-btn-container::after {
-  width: 0;
-  height: 0;
-  border-color: transparent;
-}
-
-.home-site-btn-container:hover::before {
-  width: 0;
-  height: 0;
-  border-color: transparent;
-}
-
-.home-site-btn-container:hover::after {
-  width: 100%;
-  height: 100%;
-  border-color: #26baee;
-}
-
-.home-site-btn-container:hover .home-site-btn {
-  border-color: #0d82ab;
-  background-position: center 100%;
-}
-
-.home-site-btn-container:hover .home-site-btn .logo {
-  opacity: 0;
-  top: -100%;
-}
-
-.home-site-btn-container:hover .home-site-btn .text {
-  opacity: 0;
-  bottom: 100%;
-}
-
-.home-site-btn {
-  width: 230px;
-  height: 230px;
-  overflow: hidden;
-  border-radius: 50%;
-  position: absolute;
-  top: 50%;
-  right: 50%;
-  border: 5px solid #fff;
+/* إعدادات الجسم الأساسي */
+body.home-authentic {
+  font-family: akoam, Arial, Helvetica, sans-serif;
+  line-height: 1.5;
   background-color: #161619;
-  transform: translate(50%, -50%);
-  background-position: center -43%;
+  direction: rtl;
+  text-align: right;
+  color: #161619;
+}
+
+/* الخلفية الأصلية */
+.home-authentic-bg {
+  background: linear-gradient(to bottom, rgba(0, 0, 0, .55), #000 100%), 
+              url('/serverdata/images/home-bg.webp');
+  background-size: cover;
+  background-position: center;
   background-repeat: no-repeat;
-  background-size: 120%;
-  transition: all 500ms ease;
+  background-attachment: fixed;
 }
 
-.home-site-btn .logo {
-  position: absolute;
-  top: 50px;
-  right: 50%;
-  z-index: 2;
-  transform: translate(50%);
-  transition: all 500ms ease;
+/* الهيدر الأصلي */
+.main-header-authentic {
+  height: 70px;
+  background-color: #161619;
+  border-bottom: 1px solid #333;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 40;
 }
 
-.home-site-btn .text {
-  width: 100%;
-  text-align: center;
-  position: absolute;
-  bottom: 55px;
-  right: 50%;
-  z-index: 2;
-  transform: translate(50%);
-  transition: all 500ms ease;
-}
-
-/* أقسام التصفح الأصلية مطابقة تماماً للموقع الأصلي */
-.main-categories-list {
-  margin-bottom: 20px;
-}
-
-.main-categories-list .item {
-  background-color: rgba(39, 39, 44, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+/* شريط البحث في الهيدر */
+.header-search-authentic {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
   border-radius: 8px;
-  padding: 20px 15px;
-  color: #fff;
-  text-decoration: none;
-  display: block;
-  text-align: center;
-  height: 100%;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
+  color: white;
+  transition: border-color 0.3s ease;
 }
 
-.main-categories-list .item:hover {
-  color: #f3951e;
+.header-search-authentic:focus {
   border-color: #f3951e;
-  background-color: rgba(39, 39, 44, 0.95);
-  transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(243, 149, 30, 0.3);
+  outline: none;
 }
 
-.main-categories-list .item .icn {
-  font-size: 48px;
-  margin-bottom: 15px;
-  display: block;
-  transition: all 0.3s ease;
+.header-search-authentic::placeholder {
+  color: rgba(255, 255, 255, 0.7);
 }
 
-.main-categories-list .item:hover .icn {
-  transform: scale(1.1);
+/* الشعار الدائري الأصلي */
+.home-site-btn-authentic {
+  width: 320px;
+  height: 320px;
+  border-radius: 50%;
+  background-image: url('/serverdata/images/site-new.webp');
+  background-size: cover;
+  background-position: center;
+  border: 8px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 0 50px rgba(0, 0, 0, 0.5);
+  transition: all 0.5s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.home-site-btn-authentic:hover {
+  transform: scale(1.05);
+  background-position: 5s;
+}
+
+.home-site-btn-authentic .logo svg {
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+/* القائمة الجانبية الأصلية */
+.main-menu-authentic {
+  position: fixed;
+  right: 0;
+  left: 0;
+  bottom: 0;
+  top: 70px;
+  z-index: 45;
+  overflow-y: auto;
+  overflow-x: hidden;
+  background-color: #27272c;
+  border-top: 1px solid #111114;
+  transition: all 0.5s ease;
+}
+
+.main-menu-authentic.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.main-menu-authentic.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* عناصر القائمة */
+.menu-item-authentic {
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 20px;
+  padding: 20px 0;
+  transition: color 0.3s ease;
+}
+
+.menu-item-authentic:hover {
   color: #f3951e;
 }
 
-.main-categories-list .item .font-size-16 {
-  font-size: 16px !important;
-  font-weight: 500;
-  transition: all 0.3s ease;
-}
-
-/* تأثيرات إضافية للأقسام */
-.main-categories-list .item::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(45deg, transparent, rgba(243, 149, 30, 0.1), transparent);
+.menu-item-authentic .icn {
+  font-size: 48px;
+  margin-left: 12px;
+  transform: translateY(70%);
+  transition: transform 0.5s ease, opacity 0.5s ease;
   opacity: 0;
-  transition: opacity 0.3s ease;
 }
 
-.main-categories-list .item:hover::before {
+.menu-item-authentic .text {
+  min-width: 70px;
+  font-size: 22px;
+  text-align: right;
+  transform: translateX(-10%);
+  transition: transform 0.5s ease, opacity 0.5s ease;
+  opacity: 0;
+}
+
+.main-menu-authentic.visible .menu-item-authentic .icn {
+  transform: translateY(0);
   opacity: 1;
 }
 
-/* شريط البحث الأصلي المتقدم مطابق تماماً */
-.widget-2 {
-  margin-bottom: 30px;
+.main-menu-authentic.visible .menu-item-authentic .text {
+  transform: translateX(0);
+  opacity: 1;
 }
 
-.widget-2 .widget-body {
-  padding: 0;
+/* أيقونات التواصل الاجتماعي */
+.social-authentic {
+  display: flex;
+  justify-content: center;
+  padding-bottom: 32px;
 }
 
-.widget-2 .form {
-  background-color: rgba(39, 39, 44, 0.9);
-  border-radius: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  overflow: hidden;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+.social-authentic a {
+  width: 40px;
+  height: 40px;
+  color: #777;
+  font-size: 12px;
+  cursor: pointer;
   position: relative;
-  backdrop-filter: blur(10px);
-}
-
-.widget-2 .form::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: linear-gradient(135deg, 
-    rgba(243, 149, 30, 0.1) 0%, 
-    transparent 50%, 
-    rgba(38, 186, 238, 0.1) 100%);
+  border-radius: 50%;
+  border: 1px solid #777;
+  margin: 0 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.5s ease;
   opacity: 0;
-  transition: opacity 0.3s ease;
-  pointer-events: none;
+  transform: translateX(50%);
 }
 
-.widget-2 .form:hover::before {
+.main-menu-authentic.visible .social-authentic a {
   opacity: 1;
+  transform: translateX(0);
 }
 
-.widget-2 .form .form-control {
-  background-color: transparent;
+.social-authentic a:hover {
+  color: white;
+  border-color: white;
+}
+
+/* شريط البحث المنفصل */
+.search-box-authentic {
+  width: 100%;
+  height: 70px;
+  position: fixed;
+  top: 0;
+  right: 0;
+  z-index: 52;
+  background-color: white;
+  box-shadow: 0 2px 10px rgba(22, 22, 25, 0.2);
+  transition: all 0.5s ease;
+}
+
+.search-box-authentic.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.search-box-authentic.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.search-box-authentic input {
+  width: 100%;
+  height: 70px;
   border: none;
-  color: #fff;
-  padding: 20px 25px;
-  font-size: 16px;
-  height: auto;
-  min-height: 60px;
-  transition: all 0.3s ease;
+  font-size: 24px;
+  background-color: transparent;
+  color: #161619;
+  padding: 0 20px;
   direction: rtl;
   text-align: right;
 }
 
-.widget-2 .form .form-control:focus {
-  background-color: rgba(255, 255, 255, 0.05);
-  border: none;
-  outline: none;
-  box-shadow: none;
-  color: #fff;
+.search-box-authentic input::placeholder {
+  color: #999;
 }
 
-.widget-2 .form .form-control::placeholder {
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 16px;
-  transition: all 0.3s ease;
-}
-
-.widget-2 .form .form-control:focus::placeholder {
-  color: rgba(255, 255, 255, 0.8);
-  transform: translateX(5px);
-}
-
-.widget-2 .form .btn-orange {
-  background: linear-gradient(135deg, #f3951e 0%, #e8841a 100%);
-  border: none;
-  color: #fff;
-  padding: 20px 30px;
-  font-weight: 600;
-  font-size: 16px;
-  border-radius: 0;
-  transition: all 0.3s ease;
-  position: relative;
-  overflow: hidden;
-  min-height: 60px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.widget-2 .form .btn-orange::before {
-  content: "";
+.search-toggle-authentic {
+  font-size: 24px;
   position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.5s ease;
+  top: 50%;
+  left: 20px;
+  z-index: 5;
+  cursor: pointer;
+  transform: translateY(-50%);
+  color: #161619;
 }
 
-.widget-2 .form .btn-orange:hover {
-  background: linear-gradient(135deg, #e8841a 0%, #d37b0b 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(243, 149, 30, 0.4);
-}
-
-.widget-2 .form .btn-orange:hover::before {
-  left: 100%;
-}
-
-.widget-2 .form .btn-orange:active {
-  transform: translateY(0);
-}
-
-/* تأثير متقدم للبحث النشط */
-.widget-2 .form:focus-within {
-  border-color: #f3951e;
-  box-shadow: 0 0 0 3px rgba(243, 149, 30, 0.2);
-  transform: translateY(-2px);
-}
-
-/* أيقونات التواصل الاجتماعي الأصلية */
-.social a {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  border: 1px solid #777;
-  color: #777;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+/* شريط البحث الرئيسي */
+.main-search-authentic {
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 12px;
+  overflow: hidden;
   transition: all 0.3s ease;
-  margin: 0 8px;
-  text-decoration: none;
 }
 
-.social a:hover {
-  color: #fff;
+.main-search-authentic:focus-within {
   border-color: #f3951e;
+}
+
+.main-search-authentic input {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 18px;
+  padding: 16px 24px;
+  direction: rtl;
+  text-align: right;
+  outline: none;
+  flex: 1;
+}
+
+.main-search-authentic input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.main-search-authentic button {
   background-color: #f3951e;
-  transform: translateY(-2px);
+  border: none;
+  color: white;
+  padding: 16px 32px;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.social a.facebook:hover {
-  background-color: #3b5998;
-  border-color: #324c82;
+.main-search-authentic button:hover {
+  background-color: #e8851a;
 }
 
-.social a.youtube:hover {
-  background-color: #ff0000;
-  border-color: #e00000;
+/* الأقسام الأربعة الرئيسية */
+.main-categories-authentic {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
 }
 
-.social a.telegram:hover {
-  background-color: #0088cc;
-  border-color: #0074ad;
+@media (max-width: 1024px) {
+  .main-categories-authentic {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
-.social a.whatsapp:hover {
-  background-color: #075e54;
-  border-color: #05423b;
+@media (max-width: 640px) {
+  .main-categories-authentic {
+    grid-template-columns: 1fr;
+  }
 }
 
-/* تأثيرات إضافية للتفاعل */
-.transition {
-  transition: all 0.5s ease, color 0.2s ease;
-}
-
-/* هيدر أصلي محسن ومتقدم */
-.main-header {
-  background: linear-gradient(135deg, 
-    rgba(22, 22, 25, 0.95) 0%, 
-    rgba(30, 30, 33, 0.95) 100%);
-  backdrop-filter: blur(15px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 15px 0;
-  position: sticky;
-  top: 0;
-  z-index: 100;
-  transition: all 0.3s ease;
-  box-shadow: 0 2px 20px rgba(0, 0, 0, 0.3);
-}
-
-.main-header.scrolled {
-  background: linear-gradient(135deg, 
-    rgba(22, 22, 25, 0.98) 0%, 
-    rgba(30, 30, 33, 0.98) 100%);
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.5);
-}
-
-.main-header .container {
-  position: relative;
-}
-
-.main-header .main-logo {
-  position: relative;
-  z-index: 10;
-}
-
-.main-header .main-logo img {
-  max-height: 40px;
-  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5));
-  transition: all 0.3s ease;
-}
-
-.main-header .main-logo:hover img {
-  filter: drop-shadow(0 2px 12px rgba(243, 149, 30, 0.6));
-  transform: scale(1.05);
-}
-
-.main-header .menu-toggle {
-  color: #fff;
+.category-item-authentic {
+  background-color: rgba(39, 39, 44, 0.8);
+  border: 1px solid rgba(128, 128, 128, 0.6);
+  border-radius: 12px;
+  padding: 32px 24px;
+  text-align: center;
+  color: white;
   text-decoration: none;
-  transition: all 0.3s ease;
-  padding: 8px 15px;
-  border-radius: 20px;
-  border: 1px solid transparent;
-  position: relative;
-  overflow: hidden;
-}
-
-.main-header .menu-toggle::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
+  display: block;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(243, 149, 30, 0.3), transparent);
-  transition: left 0.5s ease;
-}
-
-.main-header .menu-toggle:hover {
-  color: #f3951e;
-  border-color: rgba(243, 149, 30, 0.3);
-  background-color: rgba(243, 149, 30, 0.1);
-  transform: translateY(-2px);
-}
-
-.main-header .menu-toggle:hover::before {
-  left: 100%;
-}
-
-.main-header .search-form {
-  position: relative;
-}
-
-.main-header .search-form input {
-  background: linear-gradient(135deg, 
-    rgba(39, 39, 44, 0.9) 0%, 
-    rgba(45, 45, 50, 0.9) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  color: #fff;
-  border-radius: 25px;
-  padding: 12px 20px;
   transition: all 0.3s ease;
-  backdrop-filter: blur(10px);
-  width: 100%;
-  min-width: 300px;
-}
-
-.main-header .search-form input:focus {
-  border-color: #f3951e;
-  outline: none;
-  box-shadow: 0 0 0 3px rgba(243, 149, 30, 0.2);
-  background: linear-gradient(135deg, 
-    rgba(39, 39, 44, 1) 0%, 
-    rgba(45, 45, 50, 1) 100%);
-  transform: translateY(-2px);
-}
-
-.main-header .search-form input::placeholder {
-  color: rgba(255, 255, 255, 0.6);
-  transition: all 0.3s ease;
-}
-
-.main-header .search-form input:focus::placeholder {
-  color: rgba(255, 255, 255, 0.8);
-}
-
-.main-header .btn-recently {
-  background: linear-gradient(135deg, #f3951e 0%, #e8841a 100%);
-  color: #fff;
-  padding: 10px 20px;
-  border-radius: 25px;
-  text-decoration: none;
-  font-size: 14px;
-  font-weight: 600;
-  transition: all 0.3s ease;
-  border: 1px solid transparent;
-  position: relative;
-  overflow: hidden;
-  display: inline-flex;
+  min-height: 160px;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 8px;
+  justify-content: center;
 }
 
-.main-header .btn-recently::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 100%;
-  height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
-  transition: left 0.5s ease;
-}
-
-.main-header .btn-recently:hover {
-  background: linear-gradient(135deg, #e8841a 0%, #d37b0b 100%);
-  color: #fff;
+.category-item-authentic:hover {
+  background-color: rgba(39, 39, 44, 0.9);
+  border-color: #f3951e;
   transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(243, 149, 30, 0.4);
-  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
-.main-header .btn-recently:hover::before {
-  left: 100%;
+.category-item-authentic .icn {
+  font-size: 48px;
+  margin-bottom: 16px;
+  transition: transform 0.3s ease;
 }
 
-/* تأثيرات التفاعل المتقدمة */
-.main-header .user-toggle {
-  color: #fff;
-  font-size: 20px;
-  transition: all 0.3s ease;
-  padding: 8px;
-  border-radius: 50%;
-  border: 1px solid transparent;
-}
-
-.main-header .user-toggle:hover {
-  color: #f3951e;
-  background-color: rgba(243, 149, 30, 0.1);
-  border-color: rgba(243, 149, 30, 0.3);
+.category-item-authentic:hover .icn {
   transform: scale(1.1);
 }
 
-/* تذييل أصلي */
-.main-footer {
-  background-color: rgba(22, 22, 25, 0.95);
-  padding: 40px 0;
-  text-align: center;
+.category-item-authentic .text {
+  font-size: 18px;
+  font-weight: 500;
+  transition: color 0.3s ease;
 }
 
-.main-footer .links a {
-  color: #999;
-  text-decoration: none;
-  margin: 0 15px;
+.category-item-authentic:hover .text {
+  color: #f3951e;
+}
+
+/* التذييل الأصلي */
+.main-footer-authentic {
+  padding: 48px 0;
+  background-color: #1a1a1d;
+  border-top: 1px solid #333;
+}
+
+.footer-social-authentic {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 32px;
+}
+
+.footer-social-authentic a {
+  width: 48px;
+  height: 48px;
+  color: #777;
+  cursor: pointer;
+  position: relative;
+  border-radius: 50%;
+  border: 1px solid #777;
+  margin: 0 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
   font-size: 14px;
+}
+
+.footer-social-authentic a:hover {
+  color: white;
+  border-color: white;
+  transform: translateY(-2px);
+}
+
+.footer-copyright-authentic {
+  text-align: center;
+  color: #777;
+  font-size: 14px;
+}
+
+/* الطبقة المراكبة */
+.site-overlay-authentic {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 30;
+  background-color: rgba(22, 22, 25, 0.85);
+  transition: all 0.5s ease;
+}
+
+.site-overlay-authentic.hidden {
+  visibility: hidden;
+  opacity: 0;
+}
+
+.site-overlay-authentic.visible {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* إعدادات متجاوبة */
+@media (max-width: 768px) {
+  .home-site-btn-authentic {
+    width: 240px;
+    height: 240px;
+  }
+  
+  .main-categories-authentic {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
+  
+  .category-item-authentic {
+    padding: 24px 16px;
+    min-height: 120px;
+  }
+  
+  .category-item-authentic .icn {
+    font-size: 36px;
+    margin-bottom: 12px;
+  }
+  
+  .category-item-authentic .text {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .home-site-btn-authentic {
+    width: 200px;
+    height: 200px;
+  }
+  
+  .main-search-authentic input {
+    font-size: 16px;
+    padding: 12px 16px;
+  }
+  
+  .main-search-authentic button {
+    padding: 12px 20px;
+    font-size: 14px;
+  }
+}
+
+/* انتقالات متقدمة */
+.transition-all {
   transition: all 0.3s ease;
 }
 
-.main-footer .links a:hover {
-  color: #fff;
+.transition-colors {
+  transition: color 0.3s ease, background-color 0.3s ease, border-color 0.3s ease;
 }
 
-
-
-/* تأثيرات فئات Bootstrap الأصلية مطابقة تماماً */
-.row {
-  display: flex;
-  flex-wrap: wrap;
-  margin-right: -6px;
-  margin-left: -6px;
+.transition-transform {
+  transition: transform 0.3s ease;
 }
 
-.col-lg, .col-4, .col-auto {
-  position: relative;
-  width: 100%;
-  padding-right: 6px;
-  padding-left: 6px;
-}
-
-.col-4 {
-  flex: 0 0 25%;
-  max-width: 25%;
-}
-
-.col-lg {
-  flex-basis: 0;
-  flex-grow: 1;
-  max-width: 100%;
-}
-
-.col-auto {
-  flex: 0 0 auto;
-  width: auto;
-  max-width: 100%;
-}
-
-.d-flex {
-  display: flex !important;
-}
-
-.no-gutters {
-  margin-right: 0;
-  margin-left: 0;
-}
-
-.no-gutters > .col,
-.no-gutters > [class*="col-"] {
-  padding-right: 0;
-  padding-left: 0;
-}
-
-.text-center {
-  text-align: center !important;
-}
-
-.text-white {
-  color: #fff !important;
-}
-
-.py-3 {
-  padding-top: 1rem !important;
-  padding-bottom: 1rem !important;
-}
-
-.h-100 {
-  height: 100% !important;
-}
-
-.d-block {
-  display: block !important;
-}
-
-.mx-auto {
-  margin-right: auto !important;
-  margin-left: auto !important;
-}
-
-.mb-20 {
-  margin-bottom: 5rem !important;
-}
-
-.pl-12 {
-  padding-left: 3rem !important;
-}
-
-/* فئات الخطوط الأصلية */
-.font-size-16 {
-  font-size: 16px !important;
-}
-
-.font-size-18 {
-  font-size: 18px !important;
-}
-
-.font-size-20 {
-  font-size: 20px !important;
-}
-
-.font-weight-medium {
-  font-weight: 500 !important;
-}
-
-.font-weight-normal {
-  font-weight: 400 !important;
-}
-
-/* تأثيرات الخلفية المتقدمة للصفحة الرئيسية */
-.page-home {
-  background: linear-gradient(135deg, 
-    #161619 0%, 
-    #1a1a1d 25%, 
-    #1e1e21 50%, 
-    #161619 75%, 
-    #131316 100%);
-  position: relative;
-  overflow-x: hidden;
-}
-
-.page-home::before {
-  content: "";
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  background: radial-gradient(circle at 30% 40%, 
-    rgba(243, 149, 30, 0.05) 0%, 
-    transparent 50%),
-    radial-gradient(circle at 70% 80%, 
-    rgba(38, 186, 238, 0.05) 0%, 
-    transparent 50%);
-  pointer-events: none;
-  z-index: 1;
-}
-
-/* رسوم متحركة متقدمة للشعار */
-@keyframes pulseGlow {
-  0%, 100% {
-    box-shadow: 0 0 20px rgba(243, 149, 30, 0.3);
+/* تأثيرات الحركة */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
-  50% {
-    box-shadow: 0 0 40px rgba(243, 149, 30, 0.6), 
-                0 0 60px rgba(38, 186, 238, 0.3);
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
-.home-site-btn-container:hover {
-  animation: pulseGlow 2s ease-in-out infinite;
+.fade-in {
+  animation: fadeIn 0.6s ease-out;
 }
 
-/* تأثيرات الأزرار المتقدمة */
-@keyframes shimmer {
-  0% {
-    background-position: -200% center;
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
   }
-  100% {
-    background-position: 200% center;
-  }
-}
-
-.btn-orange,
-.main-header .btn-recently {
-  background-size: 200% 100%;
-  background-image: linear-gradient(
-    90deg,
-    #f3951e 0%,
-    #ff6b35 25%,
-    #f3951e 50%,
-    #e8841a 75%,
-    #f3951e 100%
-  );
-  animation: shimmer 3s ease-in-out infinite;
-  position: relative;
-  z-index: 1;
-}
-
-.btn-orange:hover,
-.main-header .btn-recently:hover {
-  animation-duration: 1s;
-}
-
-/* تأثيرات الجسيمات للخلفية */
-@keyframes float {
-  0%, 100% {
-    transform: translateY(0) rotate(0deg);
-    opacity: 0.1;
-  }
-  25% {
-    transform: translateY(-20px) rotate(90deg);
-    opacity: 0.3;
-  }
-  50% {
-    transform: translateY(-40px) rotate(180deg);
-    opacity: 0.5;
-  }
-  75% {
-    transform: translateY(-20px) rotate(270deg);
-    opacity: 0.3;
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }
 
-.page-home::after {
-  content: "✦ ⚫ ◆ ◇ ✧ ⬟ ▲ ▼";
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  font-size: 20px;
-  color: rgba(243, 149, 30, 0.1);
-  pointer-events: none;
-  z-index: 1;
-  letter-spacing: 100px;
-  line-height: 100px;
-  animation: float 20s ease-in-out infinite;
-  white-space: pre-wrap;
-  overflow: hidden;
+.slide-in-right {
+  animation: slideInRight 0.5s ease-out;
 }
 
-/* تحسينات الاستجابة المتقدمة */
-@media (max-width: 1200px) {
-  .col-lg {
-    flex: 0 0 50%;
-    max-width: 50%;
-  }
+/* تأثيرات تخصصية للشعار */
+.logo-glow {
+  filter: drop-shadow(0 0 10px rgba(243, 149, 30, 0.3));
 }
 
-@media (max-width: 768px) {
-  .home-site-btn-container {
-    width: 200px;
-    height: 200px;
-    margin-bottom: 30px;
-  }
-  
-  .home-site-btn {
-    width: 180px;
-    height: 180px;
-  }
-  
-  .main-categories-list .item {
-    min-height: 100px;
-    padding: 15px;
-    margin-bottom: 15px;
-  }
-  
-  .main-categories-list .item .icn {
-    font-size: 36px;
-  }
-  
-  .col-lg, .col-4 {
-    flex: 0 0 50%;
-    max-width: 50%;
-  }
-  
-  .widget-2 .form .form-control {
-    padding: 15px 20px;
-    min-height: 50px;
-  }
-  
-  .widget-2 .form .btn-orange {
-    padding: 15px 20px;
-    min-height: 50px;
-  }
-  
-  .main-header .search-form input {
-    min-width: 200px;
-    padding: 8px 15px;
-  }
-}
-
-@media (max-width: 576px) {
-  .col-lg, .col-4 {
-    flex: 0 0 100%;
-    max-width: 100%;
-  }
-  
-  .home-site-btn-container {
-    width: 180px;
-    height: 180px;
-  }
-  
-  .home-site-btn {
-    width: 160px;
-    height: 160px;
-  }
-  
-  .home-site-btn .logo {
-    top: 40px;
-  }
-  
-  .home-site-btn .text {
-    bottom: 45px;
-    font-size: 18px !important;
-  }
-  
-  .main-header .search-form {
-    display: none;
-  }
-  
-  .widget-2 .col-lg-8 {
-    flex: 0 0 100%;
-    max-width: 100%;
-  }
+.logo-glow:hover {
+  filter: drop-shadow(0 0 20px rgba(243, 149, 30, 0.5));
 }

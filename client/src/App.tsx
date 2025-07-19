@@ -1,8 +1,10 @@
 import { Route, Switch } from 'wouter';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import './index.css';
 
 // الصفحات الأصلية المطابقة للموقع الأصلي
 import Home from './pages/Home';
+import HomeAuthentic from './pages/HomeAuthentic';
 import Movies from './pages/Movies';
 import Series from './pages/Series';
 import Shows from './pages/Shows';
@@ -12,14 +14,25 @@ import ContentView from './pages/ContentView';
 // ملفات الخطوط والأيقونات
 import IconFont from './components/IconFont';
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000 * 60 * 5, // 5 minutes
+      refetchOnWindowFocus: false,
+    },
+  },
+});
+
 function App() {
   return (
-    <div className="App" dir="rtl">
-      <IconFont />
-      <Switch>
-        {/* الصفحة الرئيسية - التصميم الأصلي المطابق */}
-        <Route path="/" component={Home} />
-        <Route path="/ones" component={Home} />
+    <QueryClientProvider client={queryClient}>
+      <div className="App" dir="rtl">
+        <IconFont />
+        <Switch>
+          {/* الصفحة الرئيسية - التصميم الأصلي المطابق */}
+          <Route path="/" component={HomeAuthentic} />
+          <Route path="/ones" component={HomeAuthentic} />
+          <Route path="/home-simple" component={Home} />
         
         {/* صفحات الأقسام الأصلية */}
         <Route path="/movies" component={Movies} />
@@ -46,7 +59,8 @@ function App() {
           </div>
         )} />
       </Switch>
-    </div>
+      </div>
+    </QueryClientProvider>
   );
 }
 
