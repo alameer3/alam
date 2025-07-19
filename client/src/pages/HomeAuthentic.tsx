@@ -12,167 +12,190 @@ export default function HomeAuthentic() {
   }, []);
 
   return (
-    <div className="min-h-screen relative overflow-hidden flex flex-col" style={{ backgroundColor: '#161619' }}>
+    <div className="header-fixed body-home" style={{ backgroundColor: '#161619' }}>
       
-      {/* خلفية سينمائية ملونة مطابقة للصورة الأصلية */}
+      {/* الخلفية الأصلية مطابقة للموقع */}
       <div 
         className="absolute inset-0"
         style={{
-          background: `
-            radial-gradient(ellipse at 30% 40%, rgba(255, 140, 0, 0.3) 0%, rgba(255, 69, 0, 0.2) 25%, transparent 60%),
-            radial-gradient(ellipse at 70% 60%, rgba(0, 191, 255, 0.25) 0%, rgba(30, 144, 255, 0.15) 30%, transparent 65%),
-            radial-gradient(ellipse at 20% 80%, rgba(255, 20, 147, 0.2) 0%, rgba(138, 43, 226, 0.1) 35%, transparent 70%),
-            linear-gradient(135deg, rgba(22, 22, 25, 0.95) 0%, rgba(22, 22, 25, 0.98) 100%)
-          `
+          background: `linear-gradient(to bottom, rgba(0, 0, 0, .55), #000 100%), url('https://ak.sv/style/assets/images/home-bg.webp')`,
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat'
         }}
       />
-      
-      {/* طبقة الجزيئات والتأثيرات البصرية */}
-      <div className="absolute inset-0 opacity-30" style={{
-        backgroundImage: `
-          radial-gradient(2px 2px at 20px 30px, rgba(255,255,255,0.3), transparent),
-          radial-gradient(2px 2px at 40px 70px, rgba(255,140,0,0.4), transparent),
-          radial-gradient(1px 1px at 90px 40px, rgba(0,191,255,0.3), transparent),
-          radial-gradient(1px 1px at 130px 80px, rgba(255,255,255,0.2), transparent)
-        `,
-        backgroundRepeat: 'repeat',
-        backgroundSize: '150px 100px'
-      }} />
 
-      {/* الهيدر الأصلي مطابق للصورة المرجعية */}
-      <header className="relative z-20 py-4">
-        <div className="container mx-auto px-6">
-          <div className="flex items-center justify-between">
-            {/* أيقونة المستخدم الأيسر */}
-            <div className="flex items-center">
-              <div className="w-8 h-8 bg-gray-700 rounded-full flex items-center justify-center">
-                <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                  <path fillRule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clipRule="evenodd" />
-                </svg>
-              </div>
-              <span className="text-white text-sm mr-2">أهلاً بك ضيفاً</span>
+      {/* القائمة الجانبية الأصلية */}
+      <div className="main-menu">
+        <div className="d-flex flex-column">
+          <div className="my-auto w-100">
+            <div className="menu d-flex flex-wrap justify-content-center">
+              <Link href="/movies" className="item">
+                <div className="icn ml-3"><i className="icon-video-camera"></i></div>
+                <div className="text">أفلام</div>
+              </Link>
+              <Link href="/series" className="item">
+                <div className="icn ml-3"><i className="icon-monitor"></i></div>
+                <div className="text">مسلسلات</div>
+              </Link>
+              <Link href="/shows" className="item">
+                <div className="icn ml-3"><i className="icon-tv"></i></div>
+                <div className="text">تلفزيون</div>
+              </Link>
+              <Link href="/mix" className="item">
+                <div className="icn ml-3"><i className="icon-mix"></i></div>
+                <div className="text">منوعات</div>
+              </Link>
             </div>
-            
-            {/* شعار اكوام الأيمن */}
-            <div className="flex items-center">
-              <svg className="w-8 h-8 text-white mr-2" fill="currentColor" viewBox="0 0 87 80">
-                <path fillRule="evenodd" d="M68.479,46.753 L55.101,55.064 L59.686,64.395 L26.302,64.395 L43.500,33.248 L48.558,41.524 L61.642,34.285 L43.500,-0.001 L0.000,80.001 L87.000,80.001 L68.479,46.753 Z"/>
-              </svg>
-              <span className="text-white text-xl font-bold">اكوام</span>
+          </div>
+          <nav className="social d-flex justify-content-center">
+            <a href="https://akw.to" target="" className="home mx-2"><i className="icon-home"></i></a>
+            <a href="https://www.facebook.com/akwamnet" target="_blank" className="facebook mx-2"><i className="icon-facebook"></i></a>
+            <a href="https://www.facebook.com/groups/AKOAMweb" target="_blank" className="facebook mx-2"><i className="icon-facebook"></i></a>
+            <a href="https://akw.net.in/" target="_blank" className="app-store mx-2"><i className="icon-app-store"></i></a>
+            <a href="https://www.youtube.com/c/AKWAMnetwork" target="_blank" className="youtube mx-2"><i className="icon-youtube"></i></a>
+            <a href="/AKWAM-Notifications" target="_blank" className="app-store mx-2"><i className="icon-app-store"></i></a>
+            <a href="/contactus" target="" className="email mx-2"><i className="icon-email"></i></a>
+          </nav>
+        </div>
+      </div>
+
+      {/* الهيدر الأصلي */}
+      <div className="main-header-top"></div>
+      <header className="main-header">
+        <div className="container">
+          <div className="row align-items-center">
+            <div className="col-auto">
+              <h2 className="main-logo m-0">
+                <Link href="/ones" className="d-inline-flex">
+                  <img src="/style/assets/images/logo-white.svg" className="img-fluid" alt="اكوام" />
+                </Link>
+              </h2>
+            </div>
+            <div className="col-auto menu-toggle-container">
+              <button className="menu-toggle d-flex align-items-center text-white">
+                <span className="icn"></span>
+                <div className="text font-size-18 mr-3">الأقسام</div>
+              </button>
+            </div>
+            <div className="ml-auto"></div>
+            <div className="col-md-5 col-lg-6 search-container">
+              <div className="search-form">
+                <form action="/search" method="get">
+                  <input type="text" id="headerSearchInput" name="q" />
+                  <label htmlFor="headerSearchInput">ابحث عن فيلم او مسلسل ...</label>
+                  <button><i className="icon-search"></i></button>
+                </form>
+              </div>
+            </div>
+            <div className="col-auto recently-container">
+              <Link href="/recent" className="btn-recently"><i className="icon-plus2 ml-2"></i><span>أضيف حديثا</span></Link>
+            </div>
+            <div className="col-auto user-profile-container">
+              <div className="user-panel">
+                <Link className="user-toggle d-block font-size-20 public" href="/login"><i className="icon-user"></i></Link>
+              </div>
             </div>
           </div>
         </div>
       </header>
+      <div className="main-header-height"></div>
 
-      {/* Container الأصلي مطابق للتصميم */}
-      <div className="container mx-auto px-6 py-8 flex-1 flex flex-col justify-center items-center">
-        
-        {/* الشعار الدائري الأصلي بالضبط */}
-        <div className="home-site-btn-container mt-5">
-          <h1>
-            <Link href="/ones" className="link" style={{ position: 'absolute', top: 0, right: 0, width: '100%', height: '100%', zIndex: 10 }}></Link>
-          </h1>
-          <div 
-            className="home-site-btn"
-            style={{
-              backgroundImage: "url('https://ak.sv/style/assets/images/site-new.webp')",
-              transition: 'background-position 5s'
-            }}
-          >
-            <span className="logo">
-              <svg xmlns="http://www.w3.org/2000/svg" width="87px" height="80px">
-                <path fillRule="evenodd" fill="rgb(255, 255, 255)"
-                  d="M68.479,46.753 L55.101,55.064 L59.686,64.395 L26.302,64.395 L43.500,33.248 L48.558,41.524 L61.642,34.285 L43.500,-0.001 L0.000,80.001 L87.000,80.001 L68.479,46.753 Z"/>
-              </svg>
-            </span>
-            <span className="text font-size-20 font-weight-medium text-white">المكتبة الترفيهية</span>
-          </div>
-        </div>
+      {/* الحاوي الأصلي مطابق للموقع */}
+      <div className="site-container">
+        <div className="page-home">
+          <div className="container py-5 my-5">
+            
+            {/* الشعار الدائري الأصلي بالضبط */}
+            <div className="home-site-btn-container mt-5">
+              <h1>
+                <Link href="/ones" className="link" style={{ position: 'absolute', top: 0, right: 0, width: '100%', height: '100%', zIndex: 10 }}></Link>
+              </h1>
+              <div 
+                className="home-site-btn"
+                style={{
+                  backgroundImage: "url('https://ak.sv/style/assets/images/site-new.webp')",
+                  transition: 'background-position 5s'
+                }}
+              >
+                <span className="logo">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="87px" height="80px">
+                    <path fillRule="evenodd" fill="rgb(255, 255, 255)"
+                      d="M68.479,46.753 L55.101,55.064 L59.686,64.395 L26.302,64.395 L43.500,33.248 L48.558,41.524 L61.642,34.285 L43.500,-0.001 L0.000,80.001 L87.000,80.001 L68.479,46.753 Z"/>
+                  </svg>
+                </span>
+                <span className="text font-size-20 font-weight-medium text-white">الصفحة الرئيسية</span>
+              </div>
+            </div>
 
-        {/* Widget البحث الأصلي */}
-        <div className="widget-2 widget mb-4">
-          <div className="widget-body row">
-            <div className="col-lg-8 mx-auto">
-              
-              <form className="form d-flex no-gutters mb-20" action="/search" method="get">
-                <div className="flex w-full bg-gray-800 rounded-lg overflow-hidden">
-                  <input 
-                    type="text" 
-                    className="flex-1 px-4 py-3 bg-transparent text-white placeholder-gray-400 border-none outline-none" 
-                    placeholder="ابحث عن فيلم او مسلسل او لعبة او برنامج ..."
-                    value={searchValue}
-                    onChange={(e) => setSearchValue(e.target.value)}
-                  />
-                  <button 
-                    type="submit" 
-                    className="px-6 py-3 text-white font-medium"
-                    style={{ backgroundColor: '#f3951e' }}
-                  >
-                    بحث
-                  </button>
-                </div>
-              </form>
-              
-              {/* الأقسام الأصلية مطابقة للصورة المرجعية */}
-              <div className="main-categories-list mt-6">
-                <div className="grid grid-cols-4 gap-4">
+            {/* Widget البحث الأصلي */}
+            <div className="widget-2 widget mb-4">
+              <div className="widget-body row">
+                <div className="col-lg-8 mx-auto">
                   
-                  <Link href="/movies" className="category-item group">
-                    <div className="bg-gray-800 bg-opacity-80 rounded-lg p-6 text-center text-white hover:border-orange-500 border-2 border-gray-600 transition-all duration-300">
-                      <div className="mb-3">
-                        <svg className="w-12 h-12 mx-auto text-gray-300 group-hover:text-orange-500 transition-colors" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M18 3v2h-2V3H8v2H6V3H4v18h2v-2h2v2h8v-2h2v2h2V3h-2zM8 17H6v-2h2v2zm0-4H6v-2h2v2zm0-4H6V7h2v2zm10 8h-2v-2h2v2zm0-4h-2v-2h2v2zm0-4h-2V7h2v2z"/>
-                        </svg>
+                  <form className="form d-flex no-gutters mb-20" action="/search" method="get">
+                    <div className="col pl-12">
+                      <input 
+                        type="text" 
+                        className="form-control" 
+                        id="widget2SearchInput" 
+                        name="q"
+                        value={searchValue}
+                        onChange={(e) => setSearchValue(e.target.value)}
+                      />
+                      <label htmlFor="widget2SearchInput" className="m-0"><span className="label"></span></label>
+                      <div className="label-text d-none">
+                        <p>ابحث عن فيلم او مسلسل او لعبة او برنامج ...</p>
+                        <p>^200 مثال: الجزيرة</p>
+                        <p>^400 مثال آخر: اسم مؤقت</p>
+                        <p>^600 مثال: FIFA</p>
+                        <p>^800 ابحث هنا في اكوام باسم الفيلم او المسلسل او اي لعبة او برنامج ترغب به</p>
                       </div>
-                      <div className="font-size-16 font-medium">أفلام</div>
                     </div>
-                  </Link>
+                    <div className="col-auto">
+                      <button type="submit" className="btn btn-orange">بحث</button>
+                    </div>
+                  </form>
                   
-                  <Link href="/series" className="category-item group">
-                    <div className="bg-gray-800 bg-opacity-80 rounded-lg p-6 text-center text-white hover:border-orange-500 border-2 border-gray-600 transition-all duration-300">
-                      <div className="mb-3">
-                        <svg className="w-12 h-12 mx-auto text-gray-300 group-hover:text-orange-500 transition-colors" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M21 3H3c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H3V5h18v14zM8 15c0-.55-.45-1-1-1s-1 .45-1 1 .45 1 1 1 1-.45 1-1zm0-4c0-.55-.45-1-1-1s-1 .45-1 1 .45 1 1 1 1-.45 1-1zm0-4c0-.55-.45-1-1-1s-1 .45-1 1 .45 1 1 1 1-.45 1-1zm6 8c0-.55-.45-1-1-1s-1 .45-1 1 .45 1 1 1 1-.45 1-1zm0-4c0-.55-.45-1-1-1s-1 .45-1 1 .45 1 1 1 1-.45 1-1zm0-4c0-.55-.45-1-1-1s-1 .45-1 1 .45 1 1 1 1-.45 1-1zm6 8c0-.55-.45-1-1-1s-1 .45-1 1 .45 1 1 1 1-.45 1-1zm0-4c0-.55-.45-1-1-1s-1 .45-1 1 .45 1 1 1 1-.45 1-1zm0-4c0-.55-.45-1-1-1s-1 .45-1 1 .45 1 1 1 1-.45 1-1z"/>
-                        </svg>
+                  {/* الأقسام الأصلية مطابقة للموقع */}
+                  <div className="main-categories-list">
+                    <div className="row">
+                      <div className="col-lg col-4">
+                        <Link href="/movies" className="item d-block text-center text-white py-3 h-100">
+                          <div className="icn"><i className="icon-video-camera"></i></div>
+                          <div className="font-size-16">أفلام</div>
+                        </Link>
                       </div>
-                      <div className="font-size-16 font-medium">مسلسلات</div>
-                    </div>
-                  </Link>
-                  
-                  <Link href="/shows" className="category-item group">
-                    <div className="bg-gray-800 bg-opacity-80 rounded-lg p-6 text-center text-white hover:border-orange-500 border-2 border-gray-600 transition-all duration-300">
-                      <div className="mb-3">
-                        <svg className="w-12 h-12 mx-auto text-gray-300 group-hover:text-orange-500 transition-colors" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M21 6h-7.59l3.3-3.3c.39-.39.39-1.02 0-1.41-.39-.39-1.02-.39-1.41 0L12 4.59 8.7 1.3C8.31.9 7.68.9 7.29 1.3c-.39.39-.39 1.02 0 1.41L10.59 6H3c-.55 0-1 .45-1 1v14c0 .55.45 1 1 1h18c.55 0 1-.45 1-1V7c0-.55-.45-1-1-1zM8 18H4v-7h4v7zm6 0h-4v-7h4v7zm6 0h-4v-7h4v7z"/>
-                        </svg>
+                      <div className="col-lg col-4">
+                        <Link href="/series" className="item d-block text-center text-white py-3 h-100">
+                          <div className="icn"><i className="icon-monitor"></i></div>
+                          <div className="font-size-16">مسلسلات</div>
+                        </Link>
                       </div>
-                      <div className="font-size-16 font-medium">تلفزيون</div>
-                    </div>
-                  </Link>
-                  
-                  <Link href="/mix" className="category-item group">
-                    <div className="bg-gray-800 bg-opacity-80 rounded-lg p-6 text-center text-white hover:border-orange-500 border-2 border-gray-600 transition-all duration-300">
-                      <div className="mb-3">
-                        <svg className="w-12 h-12 mx-auto text-gray-300 group-hover:text-orange-500 transition-colors" fill="currentColor" viewBox="0 0 24 24">
-                          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                        </svg>
+                      <div className="col-lg col-4">
+                        <Link href="/shows" className="item d-block text-center text-white py-3 h-100">
+                          <div className="icn"><i className="icon-tv"></i></div>
+                          <div className="font-size-16">تلفزيون</div>
+                        </Link>
                       </div>
-                      <div className="font-size-16 font-medium">منوعات</div>
+                      <div className="col-lg col-4">
+                        <Link href="/mix" className="item d-block text-center text-white py-3 h-100">
+                          <div className="icn"><i className="icon-mix"></i></div>
+                          <div className="font-size-16">منوعات</div>
+                        </Link>
+                      </div>
                     </div>
-                  </Link>
-                  
+                  </div>
                 </div>
               </div>
             </div>
+            <div className="main-categories-list-end"></div>
           </div>
         </div>
-        
-        <div className="main-categories-list-end"></div>
-        
       </div>
 
-      {/* التذييل الأصلي مطابق للصورة المرجعية */}
-      <footer className="relative z-20 mt-auto py-8">
+      {/* التذييل الأصلي */}
+      <footer className="main-footer py-5">
         {/* الروابط الاجتماعية */}
         <nav className="flex justify-center space-x-6 space-x-reverse mb-4">
           <a href="https://akw.to" target="_blank" className="text-white hover:text-orange-500 transition-colors">
