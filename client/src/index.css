@@ -1,6 +1,236 @@
+/* الخطوط العربية */
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700;800;900&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* الألوان الأساسية للموقع الأصلي */
+:root {
+  --akwam-orange: #f3951e;
+  --akwam-bg: #161619;
+  --akwam-secondary-bg: #27272c;
+  --akwam-card-bg: #2a2a2f;
+  --akwam-text: #ffffff;
+  --akwam-text-secondary: #b3b3b3;
+  --akwam-border: #404040;
+}
+
+/* إعادة تعيين الأساسيات */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: var(--akwam-bg);
+  color: var(--akwam-text);
+  direction: rtl;
+  text-align: right;
+  overflow-x: hidden;
+}
+
+/* تخصيص شريط التمرير */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--akwam-secondary-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--akwam-orange);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #e6841a;
+}
+
+/* تأثيرات الحركة الأصلية */
+.fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.scale-hover {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.scale-hover:hover {
+  transform: scale(1.05);
+  box-shadow: 0 10px 30px rgba(243, 149, 30, 0.3);
+}
+
+/* بطاقات المحتوى */
+.content-card {
+  background: var(--akwam-card-bg);
+  border: 1px solid var(--akwam-border);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.content-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+  border-color: var(--akwam-orange);
+}
+
+.content-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, var(--akwam-orange), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.content-card:hover::before {
+  opacity: 1;
+}
+
+/* أزرار مخصصة */
+.btn-akwam {
+  background: linear-gradient(135deg, var(--akwam-orange), #e6841a);
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 15px rgba(243, 149, 30, 0.4);
+}
+
+.btn-akwam:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(243, 149, 30, 0.6);
+  background: linear-gradient(135deg, #e6841a, var(--akwam-orange));
+}
+
+/* تأثيرات الخلفية */
+.hero-bg {
+  background: linear-gradient(135deg, 
+    rgba(22, 22, 25, 0.95) 0%, 
+    rgba(39, 39, 44, 0.9) 50%, 
+    rgba(22, 22, 25, 0.95) 100%
+  );
+  backdrop-filter: blur(10px);
+}
+
+/* تصميم النصوص */
+.text-gradient {
+  background: linear-gradient(135deg, var(--akwam-orange), #ffb347);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* الشعار المخصص */
+.logo-glow {
+  filter: drop-shadow(0 0 10px rgba(243, 149, 30, 0.5));
+}
+
+/* تأثيرات الانتقال الناعم */
+.smooth-transition {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* تخصيص الحقول */
+.akwam-input {
+  background: rgba(39, 39, 44, 0.8);
+  border: 1px solid var(--akwam-border);
+  color: var(--akwam-text);
+  border-radius: 8px;
+  padding: 12px 16px;
+  transition: all 0.3s ease;
+  backdrop-filter: blur(10px);
+}
+
+.akwam-input:focus {
+  outline: none;
+  border-color: var(--akwam-orange);
+  box-shadow: 0 0 0 3px rgba(243, 149, 30, 0.1);
+  background: rgba(39, 39, 44, 0.95);
+}
+
+.akwam-input::placeholder {
+  color: var(--akwam-text-secondary);
+}
+
+/* تأثيرات التحميل */
+.loading-shimmer {
+  background: linear-gradient(90deg, 
+    var(--akwam-secondary-bg) 25%, 
+    var(--akwam-card-bg) 50%, 
+    var(--akwam-secondary-bg) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+}
+
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+
+/* تصميم القوائم المنسدلة */
+.akwam-select {
+  background: var(--akwam-card-bg);
+  border: 1px solid var(--akwam-border);
+  color: var(--akwam-text);
+  border-radius: 6px;
+  padding: 8px 12px;
+  transition: all 0.3s ease;
+}
+
+.akwam-select:focus {
+  outline: none;
+  border-color: var(--akwam-orange);
+  box-shadow: 0 0 0 2px rgba(243, 149, 30, 0.2);
+}
+
+/* تأثيرات الضوء على البطاقات */
+.card-light-effect {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-light-effect::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: linear-gradient(45deg, 
+    transparent, 
+    rgba(243, 149, 30, 0.05), 
+    transparent
+  );
+  transform: rotate(45deg);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.card-light-effect:hover::after {
+  opacity: 1;
+  animation: light-sweep 1s ease-in-out;
+}
+
+@keyframes light-sweep {
+  0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+  100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+}
 
 /* إعادة تعيين الأنماط الأساسية */
 * {
