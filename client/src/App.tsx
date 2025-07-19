@@ -4,11 +4,13 @@ import './index.css';
 // الصفحات الأصلية
 import HomeAuthentic from './pages/HomeAuthentic';
 import HomeOriginalExtracted from './pages/HomeOriginalExtracted';
+import HomeOriginalExact from './pages/HomeOriginalExact';
 import MoviesAuthentic from './pages/MoviesAuthentic';
 import SeriesAuthentic from './pages/SeriesAuthentic';
 import ShowsAuthentic from './pages/ShowsAuthentic';
 import MixAuthentic from './pages/MixAuthentic';
 import ContentViewAuthentic from './pages/ContentViewAuthentic';
+import IconFont from './components/IconFont';
 
 // الصفحات القديمة (للمراجع)
 import Layout from './components/layout/Layout';
@@ -30,9 +32,11 @@ import ContentViewOriginal from './pages/ContentViewOriginal';
 function App() {
   return (
     <div className="App" dir="rtl">
+      <IconFont />
       <Switch>
         {/* الصفحات الأصلية الجديدة */}
-        <Route path="/" component={HomeOriginalExtracted} />
+        <Route path="/" component={HomeOriginalExact} />
+        <Route path="/extracted" component={HomeOriginalExtracted} />
         <Route path="/home-original" component={HomeAuthentic} />
         <Route path="/movies" component={MoviesAuthentic} />
         <Route path="/series" component={SeriesAuthentic} />
