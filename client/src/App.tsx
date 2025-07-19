@@ -35,7 +35,8 @@ function App() {
       <IconFont />
       <Switch>
         {/* الصفحات الأصلية الجديدة */}
-        <Route path="/" component={HomeOriginalExact} />
+        <Route path="/" component={HomeAuthentic} />
+        <Route path="/original" component={HomeOriginalExact} />
         <Route path="/extracted" component={HomeOriginalExtracted} />
         <Route path="/home-original" component={HomeAuthentic} />
         <Route path="/movies" component={MoviesAuthentic} />

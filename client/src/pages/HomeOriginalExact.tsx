@@ -12,18 +12,23 @@ export default function HomeOriginalExact() {
   }, []);
 
   return (
-    <div className="min-h-screen relative overflow-hidden bg-gray-900">
-      {/* الخلفية السينمائية */}
+    <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: '#161619' }}>
+      {/* خلفية الموقع الأصلية مطابقة للصورة */}
       <div 
         className="absolute inset-0"
         style={{
-          background: `radial-gradient(ellipse at center, rgba(139, 69, 19, 0.2) 0%, rgba(0, 0, 0, 0.7) 50%, #000 100%), 
-                      linear-gradient(45deg, rgba(139, 69, 19, 0.1) 0%, rgba(22, 22, 25, 0.9) 100%)`,
+          background: `
+            radial-gradient(ellipse at center, rgba(139, 69, 19, 0.15) 0%, rgba(22, 22, 25, 0.8) 50%, rgba(0, 0, 0, 0.95) 100%),
+            linear-gradient(135deg, rgba(139, 69, 19, 0.1) 0%, rgba(22, 22, 25, 0.9) 40%, rgba(0, 0, 0, 0.95) 100%)
+          `,
+          backgroundAttachment: 'fixed'
         }}
       />
       
-      {/* الغطاء الأسود الشفاف */}
-      <div className="absolute inset-0 bg-black bg-opacity-50" />
+      {/* طبقة تأثير إضافية */}
+      <div className="absolute inset-0" style={{
+        background: 'radial-gradient(ellipse at 50% 20%, rgba(255, 165, 0, 0.05) 0%, transparent 50%)'
+      }} />
       
       {/* الشريط العلوي */}
       <header className="relative z-20 h-[70px] flex items-center justify-between px-4 md:px-8">
