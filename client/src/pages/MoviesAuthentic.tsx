@@ -1,6 +1,6 @@
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { Star, Calendar, Clock, Filter, Grid, List } from 'lucide-react';
+import { Star, Calendar, Clock, Filter, Grid, List, Search, User } from 'lucide-react';
 import AuthenticHeader from '../components/layout/AuthenticHeader';
 import AuthenticFooter from '../components/layout/AuthenticFooter';
 import type { Content } from '@shared/types';
@@ -95,23 +95,38 @@ const MoviesAuthentic = () => {
   );
 
   return (
-    <div className="min-h-screen bg-gray-900">
-      <AuthenticHeader />
-      
-      {/* الخلفية مع التأثير */}
-      <div 
-        className="h-64 bg-cover bg-center relative"
-        style={{
-          backgroundImage: "url('https://images.unsplash.com/photo-1489599904472-2d96b1de8bf8?q=80&w=2070')",
-        }}
-      >
-        <div className="absolute inset-0 bg-black/70"></div>
-        <div className="relative z-10 flex items-center justify-center h-full">
-          <div className="text-center">
-            <h1 className="text-4xl font-bold text-white mb-4">أفلام</h1>
-            <p className="text-gray-300 text-lg">اكتشف أحدث الأفلام العربية والأجنبية</p>
+    <div className="min-h-screen" style={{ backgroundColor: '#0a0a0a' }}>
+      {/* الشريط العلوي */}
+      <div className="border-b border-gray-800 p-4" style={{ backgroundColor: '#161619' }}>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-2 space-x-reverse text-white">
+            <div className="w-6 h-6 border border-white rounded-full flex items-center justify-center">
+              <User className="w-3 h-3" />
+            </div>
+            <span className="text-sm">أعضاء جديد</span>
+          </div>
+          
+          <div className="text-white text-lg font-bold">
+            أكوام△
+          </div>
+          
+          <div className="flex items-center space-x-4 space-x-reverse">
+            <button className="text-gray-400 hover:text-white">
+              <Search className="w-5 h-5" />
+            </button>
+            <div className="text-white text-sm">أفلام</div>
           </div>
         </div>
+      </div>
+
+      {/* زر البحث */}
+      <div className="p-4">
+        <button 
+          className="text-white px-4 py-2 rounded font-medium"
+          style={{ backgroundColor: '#f3951e' }}
+        >
+          بحث
+        </button>
       </div>
 
       <div className="container mx-auto px-4 py-8">

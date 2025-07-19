@@ -1,4 +1,4 @@
-import { Search, Film, Tv, Monitor, Gamepad2 } from 'lucide-react';
+import { Search, Film, Tv, Monitor, Gamepad2, User } from 'lucide-react';
 import { useState } from 'react';
 import { Link } from 'wouter';
 import AuthenticLogo from '../components/ui/AuthenticLogo';
@@ -8,28 +8,28 @@ const HomeAuthentic = () => {
 
   const categories = [
     {
-      title: 'أفلام',
-      icon: Film,
-      path: '/movies',
-      description: 'أحدث الأفلام العربية والأجنبية'
+      title: 'منوعات',
+      icon: Gamepad2,
+      path: '/mix',
+      description: ''
+    },
+    {
+      title: 'تلفزيون',
+      icon: Monitor,
+      path: '/shows',
+      description: ''
     },
     {
       title: 'مسلسلات',
       icon: Tv,
       path: '/series',
-      description: 'المسلسلات العربية والتركية والأجنبية'
+      description: ''
     },
     {
-      title: 'برامج',
-      icon: Monitor,
-      path: '/shows',
-      description: 'البرامج التلفزيونية والوثائقية'
-    },
-    {
-      title: 'منوعات',
-      icon: Gamepad2,
-      path: '/mix',
-      description: 'ألعاب وتطبيقات ومحتوى متنوع'
+      title: 'أفلام',
+      icon: Film,
+      path: '/movies',
+      description: ''
     }
   ];
 
@@ -40,20 +40,35 @@ const HomeAuthentic = () => {
   };
 
   return (
-    <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: '#161619' }}>
+    <div className="min-h-screen relative overflow-hidden" style={{ backgroundColor: '#0a0a0a' }}>
+      {/* الشريط العلوي */}
+      <div className="absolute top-0 left-0 right-0 z-50 p-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-2 space-x-reverse text-white">
+            <div className="w-6 h-6 border border-white rounded-full flex items-center justify-center">
+              <User className="w-3 h-3" />
+            </div>
+            <span className="text-sm">أعضاء جديد</span>
+          </div>
+          
+          <div className="text-white text-lg font-bold">
+            أكوام△
+          </div>
+        </div>
+      </div>
+
       {/* الخلفية */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: "url('https://images.unsplash.com/photo-1489599904472-2d96b1de8bf8?q=80&w=2070')",
+          backgroundImage: "url('https://images.unsplash.com/photo-1578662996442-48f60103fc96?q=80&w=2070')",
         }}
       >
-        <div className="absolute inset-0" style={{ backgroundColor: 'rgba(22, 22, 25, 0.7)' }}></div>
-        <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/50 to-black/80"></div>
+        <div className="absolute inset-0" style={{ backgroundColor: 'rgba(10, 10, 10, 0.85)' }}></div>
       </div>
 
       {/* المحتوى الرئيسي */}
-      <div className="relative z-10 min-h-screen flex flex-col items-center justify-center px-4">
+      <div className="relative z-10 min-h-screen flex flex-col items-center justify-center px-4 pt-20">
         {/* الشعار الدائري */}
         <div className="mb-12">
           <AuthenticLogo size={160} />
@@ -68,17 +83,16 @@ const HomeAuthentic = () => {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               onKeyPress={(e) => e.key === 'Enter' && handleSearch()}
-              className="w-full backdrop-blur-sm text-white placeholder-gray-400 border rounded-lg px-6 py-4 pr-14 text-lg focus:outline-none transition-all duration-300"
+              className="w-full text-white placeholder-gray-400 border-0 rounded-lg px-4 py-3 pr-20 text-base focus:outline-none"
               style={{ 
-                backgroundColor: 'rgba(39, 39, 44, 0.8)', 
-                borderColor: '#404040',
-                focusBorderColor: '#f3951e'
+                backgroundColor: 'rgba(60, 60, 60, 0.9)',
+                color: '#ffffff'
               }}
               dir="rtl"
             />
             <button
               onClick={handleSearch}
-              className="absolute right-2 top-1/2 transform -translate-y-1/2 text-white px-6 py-2 rounded-md transition-colors duration-300 font-medium"
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 text-white px-4 py-1 rounded transition-colors duration-300 font-medium text-sm"
               style={{ backgroundColor: '#f3951e' }}
               onMouseEnter={(e) => e.currentTarget.style.backgroundColor = '#e6841a'}
               onMouseLeave={(e) => e.currentTarget.style.backgroundColor = '#f3951e'}
@@ -89,7 +103,7 @@ const HomeAuthentic = () => {
         </div>
 
         {/* الأقسام الرئيسية */}
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 w-full max-w-4xl">
+        <div className="grid grid-cols-4 gap-4 w-full max-w-2xl">
           {categories.map((category, index) => {
             const IconComponent = category.icon;
             return (
@@ -99,53 +113,46 @@ const HomeAuthentic = () => {
                 className="group"
               >
                 <div 
-                  className="backdrop-blur-sm border rounded-xl p-6 text-center transition-all duration-300 transform hover:scale-105"
+                  className="rounded-lg p-4 text-center transition-all duration-300 hover:bg-gray-700"
                   style={{ 
-                    backgroundColor: 'rgba(39, 39, 44, 0.8)', 
-                    borderColor: '#404040'
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.backgroundColor = 'rgba(39, 39, 44, 0.9)';
-                    e.currentTarget.style.borderColor = '#f3951e';
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.backgroundColor = 'rgba(39, 39, 44, 0.8)';
-                    e.currentTarget.style.borderColor = '#404040';
+                    backgroundColor: 'rgba(40, 40, 40, 0.9)',
+                    border: '1px solid rgba(60, 60, 60, 0.5)'
                   }}
                 >
-                  <div className="mb-4 flex justify-center">
-                    <div 
-                      className="w-16 h-16 rounded-full flex items-center justify-center transition-colors duration-300"
-                      style={{ backgroundColor: 'rgba(243, 149, 30, 0.2)' }}
-                    >
-                      <IconComponent className="h-8 w-8" style={{ color: '#f3951e' }} />
-                    </div>
+                  <div className="mb-3 flex justify-center">
+                    <IconComponent className="w-8 h-8 text-gray-300" />
                   </div>
-                  <h3 className="text-white text-lg font-semibold mb-2">{category.title}</h3>
-                  <p className="text-gray-400 text-sm leading-relaxed">{category.description}</p>
+                  <h3 className="text-white text-sm font-medium">{category.title}</h3>
                 </div>
               </Link>
             );
           })}
         </div>
 
+        {/* أيقونات التواصل الاجتماعي */}
+        <div className="mt-16 flex justify-center space-x-6 space-x-reverse">
+          <a href="#" className="text-gray-400 hover:text-white transition-colors">F</a>
+          <a href="#" className="text-gray-400 hover:text-white transition-colors">T</a>
+          <a href="#" className="text-gray-400 hover:text-white transition-colors">Y</a>
+          <a href="#" className="text-gray-400 hover:text-white transition-colors">I</a>
+          <a href="#" className="text-gray-400 hover:text-white transition-colors">@</a>
+          <a href="#" className="text-gray-400 hover:text-white transition-colors">P</a>
+        </div>
+
         {/* الروابط السفلية */}
-        <div className="mt-16 flex flex-wrap justify-center space-x-8 space-x-reverse text-sm">
-          <a href="/contactus" className="text-gray-400 transition-colors" style={{ color: '#b3b3b3' }} 
-             onMouseEnter={(e) => e.currentTarget.style.color = '#f3951e'}
-             onMouseLeave={(e) => e.currentTarget.style.color = '#b3b3b3'}>اتصل بنا</a>
-          <a href="/dmca" className="text-gray-400 transition-colors" style={{ color: '#b3b3b3' }} 
-             onMouseEnter={(e) => e.currentTarget.style.color = '#f3951e'}
-             onMouseLeave={(e) => e.currentTarget.style.color = '#b3b3b3'}>DMCA</a>
-          <a href="/ad-policy" className="text-gray-400 transition-colors" style={{ color: '#b3b3b3' }} 
-             onMouseEnter={(e) => e.currentTarget.style.color = '#f3951e'}
-             onMouseLeave={(e) => e.currentTarget.style.color = '#b3b3b3'}>سياسة الإعلانات</a>
+        <div className="mt-8 flex flex-wrap justify-center space-x-6 space-x-reverse text-xs text-gray-400">
+          <a href="/contactus" className="hover:text-white transition-colors">سياسة الخصوصية</a>
+          <a href="/dmca" className="hover:text-white transition-colors">سياسة أفضل</a>
+          <a href="/ad-policy" className="hover:text-white transition-colors">DMCA</a>
+          <a href="/contactus" className="hover:text-white transition-colors">اتصل بنا</a>
+          <a href="/about" className="hover:text-white transition-colors">معلومات المساح</a>
+          <a href="/help" className="hover:text-white transition-colors">أسئلة</a>
         </div>
 
         {/* حقوق النشر */}
-        <div className="mt-8 text-center">
-          <p className="text-gray-500 text-sm">
-            جميع الحقوق محفوظة © 2025 أكوام. تم التطوير بواسطة فريق أكوام
+        <div className="mt-6 text-center">
+          <p className="text-gray-500 text-xs">
+            جميع الحقوق محفوظة © موقع اكوام ، برمجة موقع اكوام
           </p>
         </div>
       </div>
