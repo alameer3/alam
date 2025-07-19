@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
+import React from 'react';
 import '../styles/home-authentic.css';
 
 interface ContentItem {
@@ -30,6 +31,22 @@ export default function HomeAuthentic() {
   const [isMenuActive, setIsMenuActive] = useState(false);
   const [isSearchActive, setIsSearchActive] = useState(false);
   
+  // تطبيق CSS الأصلي على الجسم عند تحميل الصفحة
+  React.useEffect(() => {
+    document.body.style.backgroundColor = '#161619';
+    document.body.style.fontFamily = 'akoam, Arial, Helvetica, sans-serif';
+    document.body.style.direction = 'rtl';
+    document.body.style.textAlign = 'right';
+    
+    return () => {
+      // تنظيف التأثيرات عند إلغاء تحميل الصفحة
+      document.body.style.backgroundColor = '';
+      document.body.style.fontFamily = '';
+      document.body.style.direction = '';
+      document.body.style.textAlign = '';
+    };
+  }, []);
+  
   // جلب إحصائيات الموقع
   const { data: stats } = useQuery<DashboardStats>({
     queryKey: ['/api/stats'],
@@ -53,7 +70,20 @@ export default function HomeAuthentic() {
   };
 
   return (
-    <div className="min-h-screen" dir="rtl" style={{ fontFamily: 'akoam, Arial, sans-serif', backgroundColor: '#161619' }}>
+    <div 
+      className="min-h-screen" 
+      dir="rtl" 
+      style={{ 
+        fontFamily: 'akoam, Arial, sans-serif', 
+        backgroundColor: '#161619', 
+        lineHeight: 1.5,
+        background: 'linear-gradient(to bottom, rgba(0, 0, 0, .55), #000 100%), url(/serverdata/images/home-bg.webp)',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center',
+        backgroundRepeat: 'no-repeat',
+        backgroundAttachment: 'fixed'
+      }}
+    >
       {/* Site Overlay */}
       <span 
         className={`site-overlay ${isMenuActive || isSearchActive ? 'visible opacity-100' : 'invisible opacity-0'} fixed inset-0 bg-black bg-opacity-85 z-30 transition-all duration-500`}
@@ -209,26 +239,53 @@ export default function HomeAuthentic() {
           <div className="pt-[70px]">
             <div className="container mx-auto px-4 py-20">
               
-              {/* Central Site Button - الشعار الدائري الأصلي */}
-              <div className="home-site-btn-container mt-20 mb-16 text-center">
-                <h1 className="relative">
-                  <a href="/ones" className="absolute inset-0 z-10"></a>
+              {/* Central Site Button - مطابق تماماً للكود الأصلي */}
+              <div className="home-site-btn-container mt-5" style={{ position: 'relative', textAlign: 'center', marginTop: '40px', marginBottom: '60px' }}>
+                <h1 style={{ position: 'relative', margin: 0 }}>
+                  <a href="/ones" className="link" style={{ position: 'absolute', top: '-40px', right: '50%', transform: 'translateX(50%)', width: '320px', height: '320px', zIndex: 10, borderRadius: '50%' }}></a>
                 </h1>
                 <div 
-                  className="home-site-btn w-[320px] h-[320px] mx-auto relative bg-center bg-cover rounded-full flex items-center justify-center border-8 border-white/20 shadow-2xl hover:scale-105 transition-all duration-500 cursor-pointer"
+                  className="home-site-btn"
                   style={{
-                    backgroundImage: `url('/serverdata/images/site-new.webp')`,
+                    backgroundImage: "linear-gradient(135deg, #f3951e 0%, #ff6b35 50%, #f39c12 100%)",
+                    transition: 'background-position 5s, transform 0.5s ease',
+                    width: '320px',
+                    height: '320px',
+                    margin: '0 auto',
+                    borderRadius: '50%',
+                    display: 'flex',
+                    flexDirection: 'column',
+                    alignItems: 'center',
+                    justifyContent: 'center',
                     backgroundSize: 'cover',
-                    transition: 'background-position 5s'
+                    backgroundPosition: 'center',
+                    cursor: 'pointer',
+                    position: 'relative',
+                    border: '8px solid rgba(255, 255, 255, 0.2)',
+                    boxShadow: '0 0 50px rgba(0, 0, 0, 0.5), 0 0 100px rgba(243, 149, 30, 0.3)',
+                    overflow: 'hidden'
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'scale(1.05)';
+                    e.currentTarget.style.boxShadow = '0 0 60px rgba(0, 0, 0, 0.7), 0 0 120px rgba(243, 149, 30, 0.5)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = 'scale(1)';
+                    e.currentTarget.style.boxShadow = '0 0 50px rgba(0, 0, 0, 0.5), 0 0 100px rgba(243, 149, 30, 0.3)';
                   }}
                 >
-                  <div className="text-center">
-                    <span className="logo block mb-4">
+                  <div style={{ textAlign: 'center' }}>
+                    <span className="logo" style={{ display: 'block', marginBottom: '16px' }}>
                       <svg 
                         xmlns="http://www.w3.org/2000/svg" 
+                        xmlnsXlink="http://www.w3.org/1999/xlink"
                         width="87px" 
-                        height="80px" 
-                        className="mx-auto"
+                        height="80px"
+                        style={{ 
+                          filter: 'drop-shadow(0 2px 8px rgba(0, 0, 0, 0.5))',
+                          margin: '0 auto',
+                          display: 'block'
+                        }}
                       >
                         <path 
                           fillRule="evenodd" 
@@ -237,56 +294,134 @@ export default function HomeAuthentic() {
                         />
                       </svg>
                     </span>
-                    <span className="text text-xl font-medium text-white">
-                      الصفحة الرئيسية
+                    <span 
+                      className="text" 
+                      style={{ 
+                        fontSize: '22px', 
+                        fontWeight: 600, 
+                        color: 'white',
+                        textShadow: '0 2px 4px rgba(0, 0, 0, 0.7)',
+                        fontFamily: 'akoam, Arial, sans-serif'
+                      }}
+                    >
+                      المكتبة الترفيهية
                     </span>
                   </div>
                 </div>
               </div>
 
-              {/* Search Widget - مطابق للأصل */}
-              <div className="widget-2 widget mb-4">
-                <div className="widget-body">
-                  <div className="max-w-4xl mx-auto">
-                    <form className="form flex mb-8" onSubmit={handleSearch}>
-                      <div className="flex-1 pl-3">
+              {/* Widget-2 مطابق تماماً للكود الأصلي */}
+              <div className="widget-2 widget mb-4" style={{ marginBottom: '40px' }}>
+                <div className="widget-body row">
+                  <div className="col-lg-8 mx-auto" style={{ maxWidth: '800px', margin: '0 auto', padding: '0 20px' }}>
+                    <form className="form d-flex no-gutters mb-20" onSubmit={handleSearch} style={{ display: 'flex', marginBottom: '20px' }}>
+                      <div className="col pl-12" style={{ flex: 1, paddingLeft: '12px' }}>
                         <input 
                           type="text" 
+                          className="form-control"
+                          id="widget2SearchInput"
+                          name="q"
                           value={searchQuery}
                           onChange={(e) => setSearchQuery(e.target.value)}
-                          className="form-control w-full h-16 px-6 bg-white/10 text-white placeholder-white/70 rounded-r-xl border border-white/20 outline-none focus:border-[#f3951e] text-lg"
+                          style={{
+                            width: '100%',
+                            height: '50px',
+                            backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                            border: '1px solid rgba(255, 255, 255, 0.2)',
+                            borderRadius: '8px 0 0 8px',
+                            color: 'white',
+                            padding: '15px 20px',
+                            fontSize: '16px',
+                            outline: 'none',
+                            direction: 'rtl'
+                          }}
                           placeholder="ابحث عن فيلم او مسلسل او لعبة او برنامج ..."
-                          dir="rtl"
                         />
+                        <label htmlFor="widget2SearchInput" className="m-0"><span className="label"></span></label>
+                        <div className="label-text d-none">
+                          <p>ابحث عن فيلم او مسلسل او لعبة او برنامج ...</p>
+                          <p>^200 مثال: الجزيرة</p>
+                          <p>^400 مثال آخر: اسم مؤقت</p>
+                          <p>^600 مثال: FIFA</p>
+                          <p>^800 ابحث هنا في اكوام باسم الفيلم او المسلسل او اي لعبة او برنامج ترغب به</p>
+                        </div>
                       </div>
-                      <div>
+                      <div className="col-auto">
                         <button 
                           type="submit" 
-                          className="btn btn-orange h-16 px-8 bg-[#f3951e] text-white font-bold rounded-l-xl hover:bg-[#e8851a] transition-colors duration-300"
+                          className="btn btn-orange"
+                          style={{
+                            backgroundColor: '#f3951e',
+                            border: 'none',
+                            color: 'white',
+                            padding: '15px 30px',
+                            fontSize: '16px',
+                            fontWeight: 'bold',
+                            borderRadius: '0 8px 8px 0',
+                            cursor: 'pointer',
+                            height: '50px'
+                          }}
                         >
                           بحث
                         </button>
                       </div>
                     </form>
 
-                    {/* Main Categories - الأقسام الأربعة مطابقة للأصل */}
-                    <div className="main-categories-list">
-                      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                    {/* Main Categories List - مطابق تماماً للأصل */}
+                    <div className="main-categories-list" style={{ marginTop: '40px' }}>
+                      <div className="row" style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '16px', margin: '0' }}>
                         {[
-                          { href: '/movies', icon: '🎬', text: 'أفلام' },
-                          { href: '/series', icon: '📺', text: 'مسلسلات' },
-                          { href: '/shows', icon: '📻', text: 'تلفزيون' },
-                          { href: '/mix', icon: '🎮', text: 'منوعات' }
+                          { href: '/movies', iconClass: 'icon-video-camera', text: 'أفلام', icon: '🎬' },
+                          { href: '/series', iconClass: 'icon-monitor', text: 'مسلسلات', icon: '📺' },
+                          { href: '/shows', iconClass: 'icon-tv', text: 'تلفزيون', icon: '📻' },
+                          { href: '/mix', iconClass: 'icon-mix', text: 'منوعات', icon: '🎮' }
                         ].map((item, index) => (
-                          <div key={index} className="lg:col-span-1 col-span-1">
+                          <div key={index} className="col-lg col-4" style={{ flex: '1 1 25%', padding: '0 8px', minWidth: '200px' }}>
                             <a 
                               href={item.href} 
-                              className="item block text-center text-white py-8 h-full bg-[rgba(39,39,44,0.8)] rounded-xl hover:bg-[rgba(39,39,44,0.9)] transition-all duration-300 border border-gray-600 hover:border-[#f3951e] group"
+                              className="item d-block text-center text-white py-3 h-100"
+                              style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                textAlign: 'center',
+                                color: 'white',
+                                padding: '32px 24px',
+                                height: '100%',
+                                backgroundColor: 'rgba(39, 39, 44, 0.8)',
+                                border: '1px solid rgba(128, 128, 128, 0.6)',
+                                borderRadius: '12px',
+                                textDecoration: 'none',
+                                transition: 'all 0.3s ease',
+                                minHeight: '160px',
+                                boxShadow: '0 2px 8px rgba(0, 0, 0, 0.3)'
+                              }}
+                              onMouseEnter={(e) => {
+                                e.currentTarget.style.backgroundColor = 'rgba(39, 39, 44, 0.9)';
+                                e.currentTarget.style.borderColor = '#f3951e';
+                                e.currentTarget.style.transform = 'translateY(-4px)';
+                                e.currentTarget.style.boxShadow = '0 8px 25px rgba(0, 0, 0, 0.4), 0 0 20px rgba(243, 149, 30, 0.3)';
+                                const icon = e.currentTarget.querySelector('.icn');
+                                if (icon) icon.style.transform = 'scale(1.15)';
+                                const text = e.currentTarget.querySelector('.text');
+                                if (text) text.style.color = '#f3951e';
+                              }}
+                              onMouseLeave={(e) => {
+                                e.currentTarget.style.backgroundColor = 'rgba(39, 39, 44, 0.8)';
+                                e.currentTarget.style.borderColor = 'rgba(128, 128, 128, 0.6)';
+                                e.currentTarget.style.transform = 'translateY(0)';
+                                e.currentTarget.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.3)';
+                                const icon = e.currentTarget.querySelector('.icn');
+                                if (icon) icon.style.transform = 'scale(1)';
+                                const text = e.currentTarget.querySelector('.text');
+                                if (text) text.style.color = 'white';
+                              }}
                             >
-                              <div className="icn text-5xl mb-4 group-hover:scale-110 transition-transform duration-300">
+                              <div className="icn" style={{ fontSize: '48px', marginBottom: '16px', transition: 'transform 0.3s ease' }}>
                                 {item.icon}
                               </div>
-                              <div className="text-lg font-medium group-hover:text-[#f3951e] transition-colors">
+                              <div className="text font-size-16" style={{ fontSize: '18px', fontWeight: '500', transition: 'color 0.3s ease' }}>
                                 {item.text}
                               </div>
                             </a>
@@ -297,6 +432,9 @@ export default function HomeAuthentic() {
                   </div>
                 </div>
               </div>
+              
+              {/* Main Categories List End */}
+              <div className="main-categories-list-end"></div>
 
               {/* إحصائيات الموقع - إذا كانت متوفرة */}
               {stats && (
