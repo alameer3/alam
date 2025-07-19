@@ -22,24 +22,45 @@ app.use(validateInput);
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: false, limit: '10mb' }));
 
-// Serve static files from client/public (CSS, JS, fonts, images)
-app.use(express.static('client/public', {
+// Serve static assets with correct MIME types
+app.use('/style', express.static('client/public/style', {
   setHeaders: (res, path) => {
     if (path.endsWith('.css')) {
       res.setHeader('Content-Type', 'text/css');
-    } else if (path.endsWith('.js')) {
+    }
+  }
+}));
+
+app.use('/css', express.static('client/public/css', {
+  setHeaders: (res, path) => {
+    if (path.endsWith('.css')) {
+      res.setHeader('Content-Type', 'text/css');
+    }
+  }
+}));
+
+app.use('/js', express.static('client/public/js', {
+  setHeaders: (res, path) => {
+    if (path.endsWith('.js')) {
       res.setHeader('Content-Type', 'application/javascript');
-    } else if (path.endsWith('.woff') || path.endsWith('.woff2')) {
-      res.setHeader('Content-Type', 'font/woff');
+    }
+  }
+}));
+
+app.use('/fonts', express.static('client/public/fonts', {
+  setHeaders: (res, path) => {
+    if (path.endsWith('.woff') || path.endsWith('.woff2')) {
+      res.setHeader('Content-Type', 'font/woff2');
     } else if (path.endsWith('.ttf')) {
       res.setHeader('Content-Type', 'font/ttf');
-    } else if (path.endsWith('.svg')) {
-      res.setHeader('Content-Type', 'image/svg+xml');
     } else if (path.endsWith('.eot')) {
       res.setHeader('Content-Type', 'application/vnd.ms-fontobject');
     }
   }
 }));
+
+app.use('/images', express.static('client/public/images'));
+app.use(express.static('client/public'));
 
 // Serve static files from serverdata/images or serverdb/images
 const serverDataImagesPath = 'serverdata/images';
@@ -86,48 +107,24 @@ app.use((req, res, next) => {
 });
 
 (async () => {
-  // تشغيل إعداد ملفات العميل أولاً
+  // تشغيل إعداد ملفات العميل فقط إذا كانت موجودة
   if (process.env.NODE_ENV === 'development') {
     console.log("🔧 إعداد ملفات العميل...");
     
     // التأكد من وجود الملفات الأساسية
-    try {
-      if (fs.existsSync("ensure-client-assets.cjs")) {
+    if (fs.existsSync("ensure-client-assets.cjs")) {
+      try {
         execSync("node ensure-client-assets.cjs", { stdio: "inherit" });
+      } catch (error) {
+        console.log("تحذير: خطأ في تشغيل ensure-client-assets.cjs");
       }
-    } catch (error) {
-      console.log("تحذير: لم يتم العثور على ensure-client-assets.cjs");
-    }
-    
-    // نسخ الملفات من المصادر الأصلية (إذا كانت متاحة)
-    try {
-      if (fs.existsSync("copy-all-assets.cjs")) {
-        execSync("node copy-all-assets.cjs", { stdio: "inherit" });
-      }
-    } catch (error) {
-      console.log("تحذير: لم يتم العثور على copy-all-assets.cjs");
-    }
-    
-    // إنشاء مكتبات JavaScript مكتملة
-    try {
-      if (fs.existsSync("create-complete-js-libs.cjs")) {
-        execSync("node create-complete-js-libs.cjs", { stdio: "inherit" });
-      }
-    } catch (error) {
-      console.log("تحذير: لم يتم العثور على create-complete-js-libs.cjs");
-    }
-    
-    // تجهيز الملفات النهائية
-    try {
-      if (fs.existsSync("finalize-assets.cjs")) {
-        execSync("node finalize-assets.cjs", { stdio: "inherit" });
-      }
-    } catch (error) {
-      console.log("تحذير: لم يتم العثور على finalize-assets.cjs");
+    } else {
+      console.log("✅ تم تخطي ensure-client-assets.cjs (غير موجود)");
     }
     
     console.log("🔧 تشغيل النظام التلقائي لـ ServerData...");
   }
+  
   try {
     if (fs.existsSync("serverdata/setup.cjs")) {
       execSync("node serverdata/setup.cjs", { stdio: "inherit" });
