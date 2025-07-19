@@ -68,144 +68,190 @@ export default function HomeAuthentic() {
       {/* المحتوى الرئيسي */}
       <main className="relative z-10 flex flex-col items-center justify-center min-h-[calc(100vh-100px)] px-4">
         
-        {/* الشعار الدائري المركزي الأصلي مطابق للصورة */}
+        {/* الشعار الدائري الأصلي مطابق للتصميم الحقيقي */}
         <div className={`mb-12 transition-all duration-1000 ${isLoaded ? 'opacity-100 scale-100' : 'opacity-0 scale-90'}`}>
-          <Link href="/ones" className="block">
-            <div className="relative w-40 h-40 mx-auto">
-              {/* الدوائر الخارجية */}
-              <div className="absolute inset-0 border-4 border-white rounded-full"></div>
-              <div className="absolute inset-2 border-2 border-white rounded-full"></div>
+          <div className="home-site-btn-container">
+            <Link href="/ones" className="link" style={{ position: 'absolute', top: 0, right: 0, width: '100%', height: '100%', zIndex: 10 }}>
+              <h1 className="sr-only">اكوام - الصفحة الرئيسية</h1>
+            </Link>
+            <div 
+              className="home-site-btn"
+              style={{
+                width: '230px',
+                height: '230px',
+                overflow: 'hidden',
+                borderRadius: '50%',
+                position: 'absolute',
+                top: '50%',
+                right: '50%',
+                border: '5px solid #fff',
+                backgroundColor: '#161619',
+                transform: 'translate(50%, -50%)',
+                backgroundImage: 'url(https://ak.sv/style/assets/images/site-new.webp)',
+                backgroundPosition: 'center -43%',
+                backgroundRepeat: 'no-repeat',
+                backgroundSize: '120%',
+                transition: 'all 500ms'
+              }}
+            >
+              {/* الشعار الأصلي من SVG */}
+              <span 
+                className="logo"
+                style={{
+                  position: 'absolute',
+                  top: '50px',
+                  right: '50%',
+                  zIndex: 2,
+                  transform: 'translate(50%)',
+                  transition: 'all 500ms'
+                }}
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" width="87px" height="80px">
+                  <path fillRule="evenodd" fill="rgb(255, 255, 255)"
+                    d="M68.479,46.753 L55.101,55.064 L59.686,64.395 L26.302,64.395 L43.500,33.248 L48.558,41.524 L61.642,34.285 L43.500,-0.001 L0.000,80.001 L87.000,80.001 L68.479,46.753 Z"/>
+                </svg>
+              </span>
               
-              {/* الخلفية الداخلية */}
-              <div className="absolute inset-4 bg-gray-800 rounded-full flex flex-col items-center justify-center">
-                {/* الشعار المثلثي */}
-                <div className="mb-1">
-                  <svg width="32" height="28" viewBox="0 0 32 28" fill="none">
-                    <path d="M16 0L32 28H0L16 0Z" fill="white"/>
-                  </svg>
-                </div>
-                
-                {/* النص */}
-                <div className="text-white text-xs font-medium text-center leading-tight">
-                  المكتبة الترفيهية
-                </div>
-              </div>
+              {/* النص الأصلي */}
+              <span 
+                className="text"
+                style={{
+                  width: '100%',
+                  textAlign: 'center',
+                  position: 'absolute',
+                  bottom: '55px',
+                  right: '50%',
+                  zIndex: 2,
+                  transform: 'translate(50%)',
+                  fontSize: '20px',
+                  fontWeight: 'medium',
+                  color: 'white',
+                  transition: 'all 500ms'
+                }}
+              >
+                الصفحة الرئيسية
+              </span>
             </div>
-          </Link>
+          </div>
         </div>
 
-        {/* شريط البحث البرتقالي مطابق للصورة الأصلية */}
-        <div className={`w-full max-w-xl mb-6 transition-all duration-1000 delay-300 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-          <div className="flex bg-transparent">
-            <input 
-              type="text" 
-              value={searchValue}
-              onChange={(e) => setSearchValue(e.target.value)}
-              placeholder="ابحث عن فيلم او مسلسل او لعبة او برنامج او اغنية والمزيد ..."
-              className="flex-1 px-4 py-2.5 text-white text-sm bg-gray-800 bg-opacity-80 border-0 rounded-r-md focus:outline-none focus:bg-opacity-100"
-              style={{ 
-                direction: 'rtl',
-                backgroundColor: 'rgba(60, 60, 60, 0.9)'
-              }}
-            />
+        {/* شريط البحث الأصلي مطابق للتصميم */}
+        <div className={`w-full max-w-2xl mb-6 transition-all duration-1000 delay-300 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+          <form className="flex bg-transparent" action="/search" method="get">
+            <div className="flex-1 relative">
+              <input 
+                type="text" 
+                name="q"
+                value={searchValue}
+                onChange={(e) => setSearchValue(e.target.value)}
+                className="w-full px-4 py-3 text-white text-sm bg-gray-800 bg-opacity-90 border-0 rounded-r-md focus:outline-none focus:bg-opacity-100"
+                style={{ 
+                  direction: 'rtl',
+                  backgroundColor: 'rgba(35, 35, 40, 0.9)'
+                }}
+              />
+              <label 
+                htmlFor="searchInput" 
+                className="absolute right-4 top-3 text-gray-400 text-sm pointer-events-none transition-all"
+                style={{
+                  opacity: searchValue ? 0 : 1,
+                  transform: searchValue ? 'translateY(-20px) scale(0.8)' : 'translateY(0) scale(1)'
+                }}
+              >
+                ابحث عن فيلم او مسلسل او لعبة او برنامج ...
+              </label>
+            </div>
             <button 
               type="submit"
-              className="px-6 py-2.5 text-black text-sm font-medium rounded-l-md transition-all hover:brightness-110"
+              className="px-6 py-3 text-black text-sm font-medium rounded-l-md transition-all hover:brightness-110 btn-orange"
               style={{ backgroundColor: '#f3951e' }}
             >
               بحث
             </button>
-          </div>
+          </form>
         </div>
 
-        {/* الأقسام الأربعة مطابقة تماماً للصورة الأصلية - بالترتيب الصحيح */}
-        <div className={`grid grid-cols-4 gap-3 w-full max-w-xl mb-8 transition-all duration-1000 delay-500 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-          
-          {/* منوعات - الأول من اليمين كما في الصورة */}
-          <Link href="/mix" className="block">
-            <div className="border border-gray-600 rounded-md p-4 text-center hover:border-orange-500 transition-all group cursor-pointer" 
-                 style={{ backgroundColor: 'rgba(39, 39, 44, 0.8)', borderColor: 'rgba(100, 100, 100, 0.5)' }}>
-              <div className="w-8 h-8 mx-auto mb-2 flex items-center justify-center">
-                {/* أيقونة منوعات مطابقة للصورة */}
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 6.878V6a2.25 2.25 0 012.25-2.25h7.5A2.25 2.25 0 0118 6v.878m-12 0c.235-.083.487-.128.75-.128h10.5c.263 0 .515.045.75.128m-12 0A2.25 2.25 0 004.5 9v.878m13.5-3A2.25 2.25 0 0119.5 9v.878m-15 0A2.25 2.25 0 002.25 12v6.621a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18.621V12a2.25 2.25 0 00-2.25-2.25H4.5a2.25 2.25 0 00-2.25 2.25zm0 0v.5a2.25 2.25 0 002.25 2.25h2.25a2.25 2.25 0 002.25-2.25v-.5m0 0a2.25 2.25 0 012.25-2.25h.75a2.25 2.25 0 012.25 2.25v.5"/>
-                </svg>
+        {/* الأقسام الأربعة الأصلية مطابقة للتصميم الحقيقي */}
+        <div className={`w-full max-w-2xl mb-8 transition-all duration-1000 delay-500 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+          <div className="main-categories-list">
+            <div className="grid grid-cols-4 gap-0">
+              
+              {/* أفلام - الأول من اليمين */}
+              <div style={{ backgroundColor: 'rgba(39, 39, 44, 0.6)' }}>
+                <Link href="/movies" className="item block text-center text-white py-4 h-full transition-all hover:bg-orange-500 border border-gray-700 hover:border-orange-500">
+                  <div className="icn mb-2">
+                    <span className="text-2xl">🎬</span>
+                  </div>
+                  <div className="text-sm font-medium">أفلام</div>
+                </Link>
               </div>
-              <div className="text-white text-xs font-medium">منوعات</div>
-            </div>
-          </Link>
-
-          {/* تلفزيون - الثاني من اليمين */}
-          <Link href="/shows" className="block">
-            <div className="border border-gray-600 rounded-md p-4 text-center hover:border-orange-500 transition-all group cursor-pointer"
-                 style={{ backgroundColor: 'rgba(39, 39, 44, 0.8)', borderColor: 'rgba(100, 100, 100, 0.5)' }}>
-              <div className="w-8 h-8 mx-auto mb-2 flex items-center justify-center">
-                {/* أيقونة تلفزيون مطابقة للصورة */}
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 20.25h12m-7.5-3v3m3-3v3m-10.125-3h16.5c.621 0 1.125-.504 1.125-1.125V4.875c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125z"/>
-                </svg>
+              
+              {/* مسلسلات - الثاني */}
+              <div style={{ backgroundColor: 'rgba(39, 39, 44, 0.6)' }}>
+                <Link href="/series" className="item block text-center text-white py-4 h-full transition-all hover:bg-orange-500 border border-gray-700 hover:border-orange-500">
+                  <div className="icn mb-2">
+                    <span className="text-2xl">📺</span>
+                  </div>
+                  <div className="text-sm font-medium">مسلسلات</div>
+                </Link>
               </div>
-              <div className="text-white text-xs font-medium">تلفزيون</div>
-            </div>
-          </Link>
-
-          {/* مسلسلات - الثالث من اليمين */}
-          <Link href="/series" className="block">
-            <div className="border border-gray-600 rounded-md p-4 text-center hover:border-orange-500 transition-all group cursor-pointer"
-                 style={{ backgroundColor: 'rgba(39, 39, 44, 0.8)', borderColor: 'rgba(100, 100, 100, 0.5)' }}>
-              <div className="w-8 h-8 mx-auto mb-2 flex items-center justify-center">
-                {/* أيقونة مسلسلات مطابقة للصورة */}
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 4.5v15m6-15v15m-13.5-7.5h21M7.5 10.5H6A1.5 1.5 0 004.5 9V6A1.5 1.5 0 016 4.5h1.5M16.5 4.5H18A1.5 1.5 0 0119.5 6v3A1.5 1.5 0 0118 10.5h-1.5m0 9H18a1.5 1.5 0 001.5-1.5v-3A1.5 1.5 0 0018 13.5h-1.5m-9 0H6A1.5 1.5 0 004.5 15v3A1.5 1.5 0 006 19.5h1.5"/>
-                </svg>
+              
+              {/* تلفزيون - الثالث */}
+              <div style={{ backgroundColor: 'rgba(39, 39, 44, 0.6)' }}>
+                <Link href="/shows" className="item block text-center text-white py-4 h-full transition-all hover:bg-orange-500 border border-gray-700 hover:border-orange-500">
+                  <div className="icn mb-2">
+                    <span className="text-2xl">📻</span>
+                  </div>
+                  <div className="text-sm font-medium">تلفزيون</div>
+                </Link>
               </div>
-              <div className="text-white text-xs font-medium">مسلسلات</div>
-            </div>
-          </Link>
-
-          {/* أفلام - الرابع من اليمين (الأخير في اليسار) */}
-          <Link href="/movies" className="block">
-            <div className="border border-gray-600 rounded-md p-4 text-center hover:border-orange-500 transition-all group cursor-pointer"
-                 style={{ backgroundColor: 'rgba(39, 39, 44, 0.8)', borderColor: 'rgba(100, 100, 100, 0.5)' }}>
-              <div className="w-8 h-8 mx-auto mb-2 flex items-center justify-center">
-                {/* أيقونة أفلام مطابقة للصورة */}
-                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z"/>
-                </svg>
+              
+              {/* منوعات - الرابع (الأخير في اليسار) */}
+              <div style={{ backgroundColor: 'rgba(39, 39, 44, 0.6)' }}>
+                <Link href="/mix" className="item block text-center text-white py-4 h-full transition-all hover:bg-orange-500 border border-gray-700 hover:border-orange-500">
+                  <div className="icn mb-2">
+                    <span className="text-2xl">🎮</span>
+                  </div>
+                  <div className="text-sm font-medium">منوعات</div>
+                </Link>
               </div>
-              <div className="text-white text-xs font-medium">أفلام</div>
             </div>
-          </Link>
-
+          </div>
         </div>
       </main>
 
       {/* التذييل مطابق للصورة الأصلية */}
       <footer className="relative z-10 mt-auto py-12">
-        {/* أيقونات التواصل الاجتماعي */}
-        <div className={`flex justify-center space-x-6 space-x-reverse mb-6 transition-all duration-1000 delay-700 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
-          <Link href="#" className="w-8 h-8 bg-gray-700 hover:bg-orange-500 rounded-full flex items-center justify-center transition-colors">
-            <span className="text-white text-sm">🏠</span>
+        {/* أيقونات التواصل الاجتماعي الأصلية */}
+        <div className={`flex justify-center space-x-4 space-x-reverse mb-6 transition-all duration-1000 delay-700 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}>
+          <Link href="https://akw.to" target="_blank" className="w-10 h-10 bg-gray-700 hover:bg-orange-500 rounded-full flex items-center justify-center transition-colors">
+            <span className="text-white text-lg">🏠</span>
           </Link>
-          <Link href="#" className="w-8 h-8 bg-gray-700 hover:bg-blue-600 rounded-full flex items-center justify-center transition-colors">
-            <span className="text-white text-sm">f</span>
+          <Link href="https://www.facebook.com/akwamnet" target="_blank" className="w-10 h-10 bg-gray-700 hover:bg-blue-600 rounded-full flex items-center justify-center transition-colors">
+            <span className="text-white text-lg">f</span>
           </Link>
-          <Link href="#" className="w-8 h-8 bg-gray-700 hover:bg-red-600 rounded-full flex items-center justify-center transition-colors">
-            <span className="text-white text-sm">📺</span>
+          <Link href="https://www.facebook.com/groups/AKOAMweb" target="_blank" className="w-10 h-10 bg-gray-700 hover:bg-blue-600 rounded-full flex items-center justify-center transition-colors">
+            <span className="text-white text-lg">f</span>
           </Link>
-          <Link href="#" className="w-8 h-8 bg-gray-700 hover:bg-purple-600 rounded-full flex items-center justify-center transition-colors">
-            <span className="text-white text-sm">@</span>
+          <Link href="https://akw.net.in/" target="_blank" className="w-10 h-10 bg-gray-700 hover:bg-purple-600 rounded-full flex items-center justify-center transition-colors">
+            <span className="text-white text-lg">📱</span>
+          </Link>
+          <Link href="https://www.youtube.com/c/AKWAMnetwork" target="_blank" className="w-10 h-10 bg-gray-700 hover:bg-red-600 rounded-full flex items-center justify-center transition-colors">
+            <span className="text-white text-lg">📹</span>
+          </Link>
+          <Link href="/contactus" className="w-10 h-10 bg-gray-700 hover:bg-green-600 rounded-full flex items-center justify-center transition-colors">
+            <span className="text-white text-lg">✉️</span>
           </Link>
         </div>
         
-        {/* روابط التذييل */}
-        <div className="flex justify-center space-x-6 space-x-reverse text-xs text-gray-400 mb-4">
+        {/* روابط التذييل الأصلية */}
+        <div className="flex justify-center space-x-4 space-x-reverse text-xs text-gray-400 mb-4 flex-wrap">
+          <Link href="/" className="hover:text-white transition-colors">اكوام</Link>
+          <Link href="/old" className="hover:text-white transition-colors">الموقع القديم</Link>
           <Link href="/dmca" className="hover:text-white transition-colors">DMCA</Link>
-          <Link href="#" className="hover:text-white transition-colors">سياسة الخصوصية</Link>
-          <Link href="#" className="hover:text-white transition-colors">شروط الاستخدام</Link>
-          <Link href="#" className="hover:text-white transition-colors">اتصل بنا</Link>
-          <Link href="#" className="hover:text-white transition-colors">الإعلانات</Link>
-          <Link href="#" className="hover:text-white transition-colors">اتفاقية الاستخدام</Link>
+          <Link href="/ad-policy" className="hover:text-white transition-colors">AD-P</Link>
+          <Link href="https://ak-news.com" target="_blank" className="hover:text-white transition-colors">اكوام نيوز</Link>
+          <Link href="https://akw.net.co" target="_blank" className="hover:text-white transition-colors">شبكة اكوام</Link>
         </div>
         
         {/* حقوق الطبع والنشر */}
