@@ -69,7 +69,7 @@ export default function HomeAuthentic() {
                 </svg>
               </div>
               <div className="text text-white font-medium">
-                الصفحة الرئيسية
+                المكتبة الترفيهية
               </div>
             </div>
           </Link>
@@ -97,35 +97,35 @@ export default function HomeAuthentic() {
           </form>
         </div>
 
-        {/* الأقسام الأربعة الرئيسية مطابقة للصورة */}
+        {/* الأقسام الأربعة الرئيسية مطابقة للصورة - بالترتيب الصحيح من اليمين لليسار */}
         <div className={`grid grid-cols-2 md:grid-cols-4 gap-6 w-full max-w-4xl transition-all duration-1000 delay-500 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
           
-          {/* أفلام */}
-          <Link href="/movies" className="block">
+          {/* أفلام - الأول من اليمين */}
+          <Link href="/movies" className="block order-1">
             <div className="bg-black bg-opacity-40 border border-gray-600 rounded-lg p-6 text-center hover:bg-opacity-60 transition-all group">
               <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">🎬</div>
               <div className="text-white text-lg font-medium">أفلام</div>
             </div>
           </Link>
 
-          {/* مسلسلات */}
-          <Link href="/series" className="block">
+          {/* مسلسلات - الثاني من اليمين */}
+          <Link href="/series" className="block order-2">
             <div className="bg-black bg-opacity-40 border border-gray-600 rounded-lg p-6 text-center hover:bg-opacity-60 transition-all group">
               <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">📺</div>
               <div className="text-white text-lg font-medium">مسلسلات</div>
             </div>
           </Link>
 
-          {/* تلفزيون */}
-          <Link href="/shows" className="block">
+          {/* تلفزيون - الثالث من اليمين */}
+          <Link href="/shows" className="block order-3">
             <div className="bg-black bg-opacity-40 border border-gray-600 rounded-lg p-6 text-center hover:bg-opacity-60 transition-all group">
               <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">📻</div>
               <div className="text-white text-lg font-medium">تلفزيون</div>
             </div>
           </Link>
 
-          {/* منوعات */}
-          <Link href="/mix" className="block">
+          {/* منوعات - الأخير من اليسار */}
+          <Link href="/mix" className="block order-4">
             <div className="bg-black bg-opacity-40 border border-gray-600 rounded-lg p-6 text-center hover:bg-opacity-60 transition-all group">
               <div className="text-4xl mb-3 group-hover:scale-110 transition-transform">🎯</div>
               <div className="text-white text-lg font-medium">منوعات</div>
