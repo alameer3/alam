@@ -378,31 +378,61 @@ const HeaderExact = () => {
               </button>
             </div>
             
-            {/* أضيف حديثاً */}
+            {/* زر "أضيف حديثاً" الأصلي */}
             <div className="col-auto recently-container d-none d-lg-block">
               <Link href="/recent" className="btn-recently" style={{
+                backgroundColor: 'transparent',
                 color: '#fff',
+                padding: '8px 15px',
+                borderRadius: '20px',
                 textDecoration: 'none',
-                fontSize: '16px',
-                transition: 'color 0.3s'
-              }} onMouseEnter={(e) => e.target.style.color = '#f3951e'} 
-                 onMouseLeave={(e) => e.target.style.color = '#fff'}>
-                <span style={{ marginLeft: '8px' }}>➕</span>
+                fontSize: '14px',
+                fontWeight: '600',
+                border: '1px solid rgba(255,255,255,0.3)',
+                transition: 'all 0.3s',
+                display: 'flex',
+                alignItems: 'center'
+              }}
+              onMouseEnter={(e) => {
+                e.target.style.backgroundColor = '#f3951e';
+                e.target.style.borderColor = '#f3951e';
+              }}
+              onMouseLeave={(e) => {
+                e.target.style.backgroundColor = 'transparent';
+                e.target.style.borderColor = 'rgba(255,255,255,0.3)';
+              }}>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" style={{ marginLeft: '8px' }}>
+                  <path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/>
+                </svg>
                 <span>أضيف حديثا</span>
               </Link>
             </div>
             
-            {/* ملف المستخدم */}
+            {/* ملف المستخدم الأصلي */}
             <div className="col-auto user-profile-container">
               <div className="user-panel">
                 <Link href="/login" className="user-toggle d-block" style={{
                   fontSize: '20px',
                   color: '#fff',
                   textDecoration: 'none',
-                  transition: 'color 0.3s'
-                }} onMouseEnter={(e) => e.target.style.color = '#f3951e'} 
-                   onMouseLeave={(e) => e.target.style.color = '#fff'}>
-                  👤
+                  transition: 'color 0.3s',
+                  width: '40px',
+                  height: '40px',
+                  borderRadius: '50%',
+                  border: '1px solid rgba(255,255,255,0.3)',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
+                }} onMouseEnter={(e) => {
+                  e.target.style.color = '#f3951e';
+                  e.target.style.borderColor = '#f3951e';
+                }} onMouseLeave={(e) => {
+                  e.target.style.color = '#fff';
+                  e.target.style.borderColor = 'rgba(255,255,255,0.3)';
+                }}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z"/>
+                  </svg>
                 </Link>
               </div>
             </div>

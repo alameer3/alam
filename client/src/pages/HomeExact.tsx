@@ -226,46 +226,47 @@ const HomeExact = () => {
               </form>
 
               {/* قائمة الأقسام الرئيسية */}
+              {/* قائمة الأقسام الرئيسية - مطابقة للصورة المرجعية */}
               <div className="main-categories-list">
-                <div className="row">
-                  <div className="col-lg col-4">
-                    <Link href="/movies" className="item d-block text-center text-white py-3 h-100">
-                      <div className="icn">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                <div className="row no-gutters">
+                  <div className="col-lg col-6">
+                    <Link href="/movies" className="item d-flex flex-column align-items-center justify-content-center text-white py-4 h-100" style={{ minHeight: '120px' }}>
+                      <div className="icn mb-2">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor">
                           <path d="M18,4L20,8H17L15,4H13L15,8H12L10,4H8L10,8H7L5,4H4A2,2 0 0,0 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.1,4 20,4H18Z"/>
                         </svg>
                       </div>
-                      <div className="font-size-16">أفلام</div>
+                      <div className="font-size-16 font-weight-medium">أفلام</div>
                     </Link>
                   </div>
-                  <div className="col-lg col-4">
-                    <Link href="/series" className="item d-block text-center text-white py-3 h-100">
-                      <div className="icn">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                  <div className="col-lg col-6">
+                    <Link href="/series" className="item d-flex flex-column align-items-center justify-content-center text-white py-4 h-100" style={{ minHeight: '120px' }}>
+                      <div className="icn mb-2">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor">
                           <path d="M21,16H3V4H21M21,2H3C1.89,2 1,2.89 1,4V16A2,2 0 0,0 3,18H10V20H8V22H16V20H14V18H21A2,2 0 0,0 23,16V4C23,2.89 22.1,2 21,2Z"/>
                         </svg>
                       </div>
-                      <div className="font-size-16">مسلسلات</div>
+                      <div className="font-size-16 font-weight-medium">مسلسلات</div>
                     </Link>
                   </div>
-                  <div className="col-lg col-4">
-                    <Link href="/shows" className="item d-block text-center text-white py-3 h-100">
-                      <div className="icn">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                  <div className="col-lg col-6">
+                    <Link href="/shows" className="item d-flex flex-column align-items-center justify-content-center text-white py-4 h-100" style={{ minHeight: '120px' }}>
+                      <div className="icn mb-2">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor">
                           <path d="M20,6H22V8H20V6M20,10H22V12H20V10M20,14H22V16H20V14M8,6H18V8H8V6M8,10H18V12H8V10M8,14H18V16H8V14M4,8H6V6H4V8M4,12H6V10H4V12M4,16H6V14H4V16Z"/>
                         </svg>
                       </div>
-                      <div className="font-size-16">تلفزيون</div>
+                      <div className="font-size-16 font-weight-medium">تلفزيون</div>
                     </Link>
                   </div>
-                  <div className="col-lg col-4">
-                    <Link href="/mix" className="item d-block text-center text-white py-3 h-100">
-                      <div className="icn">
-                        <svg width="32" height="32" viewBox="0 0 24 24" fill="currentColor">
+                  <div className="col-lg col-6">
+                    <Link href="/mix" className="item d-flex flex-column align-items-center justify-content-center text-white py-4 h-100" style={{ minHeight: '120px' }}>
+                      <div className="icn mb-2">
+                        <svg width="40" height="40" viewBox="0 0 24 24" fill="currentColor">
                           <path d="M7.5,4A5.5,5.5 0 0,0 2,9.5C2,10.82 2.39,12.04 3.07,13.06L7.5,8.64L11.93,13.07C12.61,12.05 13,10.83 13,9.5A5.5,5.5 0 0,0 7.5,4M18.5,9C17.18,9 15.96,9.39 14.94,10.07L19.36,14.5L14.93,18.93C15.95,19.61 17.17,20 18.5,20A5.5,5.5 0 0,0 24,14.5A5.5,5.5 0 0,0 18.5,9Z"/>
                         </svg>
                       </div>
-                      <div className="font-size-16">منوعات</div>
+                      <div className="font-size-16 font-weight-medium">منوعات</div>
                     </Link>
                   </div>
                 </div>
