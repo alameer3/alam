@@ -94,76 +94,86 @@ export default function HomeAuthentic() {
           </Link>
         </div>
 
-        {/* شريط البحث البرتقالي الأصلي */}
-        <div className={`w-full max-w-2xl mb-8 transition-all duration-1000 delay-300 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
-          <form className="flex gap-0 bg-transparent" action="/search" method="get">
+        {/* شريط البحث البرتقالي مطابق للصورة الأصلية */}
+        <div className={`w-full max-w-xl mb-6 transition-all duration-1000 delay-300 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+          <div className="flex bg-transparent">
             <input 
               type="text" 
-              name="q"
               value={searchValue}
               onChange={(e) => setSearchValue(e.target.value)}
-              placeholder="ابحث عن فيلم او مسلسل او لعبة او برنامج ..."
-              className="flex-1 px-4 py-3 text-white bg-black bg-opacity-50 border border-gray-600 rounded-r-lg focus:outline-none focus:border-orange-500"
-              style={{ direction: 'rtl' }}
+              placeholder="ابحث عن فيلم او مسلسل او لعبة او برنامج او اغنية والمزيد ..."
+              className="flex-1 px-4 py-2.5 text-white text-sm bg-gray-800 bg-opacity-80 border-0 rounded-r-md focus:outline-none focus:bg-opacity-100"
+              style={{ 
+                direction: 'rtl',
+                backgroundColor: 'rgba(60, 60, 60, 0.9)'
+              }}
             />
             <button 
               type="submit"
-              className="px-8 py-3 text-white font-medium rounded-l-lg transition-colors"
+              className="px-6 py-2.5 text-black text-sm font-medium rounded-l-md transition-all hover:brightness-110"
               style={{ backgroundColor: '#f3951e' }}
             >
               بحث
             </button>
-          </form>
+          </div>
         </div>
 
-        {/* الأقسام الأربعة الرئيسية مطابقة للصورة الأصلية */}
-        <div className={`grid grid-cols-2 md:grid-cols-4 gap-4 w-full max-w-3xl mb-8 transition-all duration-1000 delay-500 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
+        {/* الأقسام الأربعة مطابقة تماماً للصورة الأصلية - بالترتيب الصحيح */}
+        <div className={`grid grid-cols-4 gap-3 w-full max-w-xl mb-8 transition-all duration-1000 delay-500 ${isLoaded ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-4'}`}>
           
-          {/* منوعات - الأول من اليمين */}
+          {/* منوعات - الأول من اليمين كما في الصورة */}
           <Link href="/mix" className="block">
-            <div className="bg-black bg-opacity-50 border border-gray-600 rounded-lg p-4 text-center hover:bg-opacity-70 transition-all group">
-              <div className="w-12 h-12 mx-auto mb-2 flex items-center justify-center">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 11H5m14-7l-14 14m14 0L5 4" />
+            <div className="border border-gray-600 rounded-md p-4 text-center hover:border-orange-500 transition-all group cursor-pointer" 
+                 style={{ backgroundColor: 'rgba(39, 39, 44, 0.8)', borderColor: 'rgba(100, 100, 100, 0.5)' }}>
+              <div className="w-8 h-8 mx-auto mb-2 flex items-center justify-center">
+                {/* أيقونة منوعات مطابقة للصورة */}
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 6.878V6a2.25 2.25 0 012.25-2.25h7.5A2.25 2.25 0 0118 6v.878m-12 0c.235-.083.487-.128.75-.128h10.5c.263 0 .515.045.75.128m-12 0A2.25 2.25 0 004.5 9v.878m13.5-3A2.25 2.25 0 0119.5 9v.878m-15 0A2.25 2.25 0 002.25 12v6.621a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18.621V12a2.25 2.25 0 00-2.25-2.25H4.5a2.25 2.25 0 00-2.25 2.25zm0 0v.5a2.25 2.25 0 002.25 2.25h2.25a2.25 2.25 0 002.25-2.25v-.5m0 0a2.25 2.25 0 012.25-2.25h.75a2.25 2.25 0 012.25 2.25v.5"/>
                 </svg>
               </div>
-              <div className="text-white text-sm font-medium">منوعات</div>
+              <div className="text-white text-xs font-medium">منوعات</div>
             </div>
           </Link>
 
           {/* تلفزيون - الثاني من اليمين */}
           <Link href="/shows" className="block">
-            <div className="bg-black bg-opacity-50 border border-gray-600 rounded-lg p-4 text-center hover:bg-opacity-70 transition-all group">
-              <div className="w-12 h-12 mx-auto mb-2 flex items-center justify-center">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+            <div className="border border-gray-600 rounded-md p-4 text-center hover:border-orange-500 transition-all group cursor-pointer"
+                 style={{ backgroundColor: 'rgba(39, 39, 44, 0.8)', borderColor: 'rgba(100, 100, 100, 0.5)' }}>
+              <div className="w-8 h-8 mx-auto mb-2 flex items-center justify-center">
+                {/* أيقونة تلفزيون مطابقة للصورة */}
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 20.25h12m-7.5-3v3m3-3v3m-10.125-3h16.5c.621 0 1.125-.504 1.125-1.125V4.875c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125v11.25c0 .621.504 1.125 1.125 1.125z"/>
                 </svg>
               </div>
-              <div className="text-white text-sm font-medium">تلفزيون</div>
+              <div className="text-white text-xs font-medium">تلفزيون</div>
             </div>
           </Link>
 
           {/* مسلسلات - الثالث من اليمين */}
           <Link href="/series" className="block">
-            <div className="bg-black bg-opacity-50 border border-gray-600 rounded-lg p-4 text-center hover:bg-opacity-70 transition-all group">
-              <div className="w-12 h-12 mx-auto mb-2 flex items-center justify-center">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 4V2a1 1 0 011-1h8a1 1 0 011 1v2m0 0V3a1 1 0 011 1v1H6V4a1 1 0 011-1V2m8 0H8m0 0v2m8-2v2m-8-2H6m2 0v2m8-2H16M6 6h12v12a2 2 0 01-2 2H8a2 2 0 01-2-2V6z" />
+            <div className="border border-gray-600 rounded-md p-4 text-center hover:border-orange-500 transition-all group cursor-pointer"
+                 style={{ backgroundColor: 'rgba(39, 39, 44, 0.8)', borderColor: 'rgba(100, 100, 100, 0.5)' }}>
+              <div className="w-8 h-8 mx-auto mb-2 flex items-center justify-center">
+                {/* أيقونة مسلسلات مطابقة للصورة */}
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 4.5v15m6-15v15m-13.5-7.5h21M7.5 10.5H6A1.5 1.5 0 004.5 9V6A1.5 1.5 0 016 4.5h1.5M16.5 4.5H18A1.5 1.5 0 0119.5 6v3A1.5 1.5 0 0118 10.5h-1.5m0 9H18a1.5 1.5 0 001.5-1.5v-3A1.5 1.5 0 0018 13.5h-1.5m-9 0H6A1.5 1.5 0 004.5 15v3A1.5 1.5 0 006 19.5h1.5"/>
                 </svg>
               </div>
-              <div className="text-white text-sm font-medium">مسلسلات</div>
+              <div className="text-white text-xs font-medium">مسلسلات</div>
             </div>
           </Link>
 
-          {/* أفلام - الرابع من اليمين */}
+          {/* أفلام - الرابع من اليمين (الأخير في اليسار) */}
           <Link href="/movies" className="block">
-            <div className="bg-black bg-opacity-50 border border-gray-600 rounded-lg p-4 text-center hover:bg-opacity-70 transition-all group">
-              <div className="w-12 h-12 mx-auto mb-2 flex items-center justify-center">
-                <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 4V2a1 1 0 011-1h8a1 1 0 011 1v2h4a1 1 0 011 1v14a1 1 0 01-1 1H3a1 1 0 01-1-1V5a1 1 0 011-1h4zM9 2v2m6-2v2M5 8h14M9 12h6" />
+            <div className="border border-gray-600 rounded-md p-4 text-center hover:border-orange-500 transition-all group cursor-pointer"
+                 style={{ backgroundColor: 'rgba(39, 39, 44, 0.8)', borderColor: 'rgba(100, 100, 100, 0.5)' }}>
+              <div className="w-8 h-8 mx-auto mb-2 flex items-center justify-center">
+                {/* أيقونة أفلام مطابقة للصورة */}
+                <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="m15.75 10.5 4.72-4.72a.75.75 0 011.28.53v11.38a.75.75 0 01-1.28.53l-4.72-4.72M4.5 18.75h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25h-9A2.25 2.25 0 002.25 7.5v9a2.25 2.25 0 002.25 2.25z"/>
                 </svg>
               </div>
-              <div className="text-white text-sm font-medium">أفلام</div>
+              <div className="text-white text-xs font-medium">أفلام</div>
             </div>
           </Link>
 
