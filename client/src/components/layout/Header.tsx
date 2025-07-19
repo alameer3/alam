@@ -1,6 +1,6 @@
 import { Search, User, Bell } from 'lucide-react';
 
-const AuthenticHeader = () => {
+const Header = () => {
   return (
     <header className="fixed top-0 left-0 right-0 z-50 bg-transparent">
       <div className="container mx-auto px-4 py-4">
@@ -43,4 +43,4 @@ const AuthenticHeader = () => {
   );
 };
 
-export default AuthenticHeader;
+export default Header;

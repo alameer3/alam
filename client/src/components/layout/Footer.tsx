@@ -1,6 +1,6 @@
 import { Facebook, Twitter, Youtube, Instagram, Mail, Phone } from 'lucide-react';
 
-const AuthenticFooter = () => {
+const Footer = () => {
   return (
     <footer className="bg-gray-900 text-white pt-12 pb-8">
       <div className="container mx-auto px-4">
@@ -86,4 +86,4 @@ const AuthenticFooter = () => {
   );
 };
 
-export default AuthenticFooter;
+export default Footer;

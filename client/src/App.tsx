@@ -2,12 +2,12 @@ import { Route, Switch } from 'wouter';
 import './index.css';
 
 // الصفحات الأصلية المطابقة للموقع الأصلي
-import HomeAuthentic from './pages/HomeAuthentic';
-import MoviesAuthentic from './pages/MoviesAuthentic';
-import SeriesAuthentic from './pages/SeriesAuthentic';
-import ShowsAuthentic from './pages/ShowsAuthentic';
-import MixAuthentic from './pages/MixAuthentic';
-import ContentViewAuthentic from './pages/ContentViewAuthentic';
+import Home from './pages/Home';
+import Movies from './pages/Movies';
+import Series from './pages/Series';
+import Shows from './pages/Shows';
+import Mix from './pages/Mix';
+import ContentView from './pages/ContentView';
 
 // ملفات الخطوط والأيقونات
 import IconFont from './components/IconFont';
@@ -18,20 +18,20 @@ function App() {
       <IconFont />
       <Switch>
         {/* الصفحة الرئيسية - التصميم الأصلي المطابق */}
-        <Route path="/" component={HomeAuthentic} />
-        <Route path="/ones" component={HomeAuthentic} />
+        <Route path="/" component={Home} />
+        <Route path="/ones" component={Home} />
         
         {/* صفحات الأقسام الأصلية */}
-        <Route path="/movies" component={MoviesAuthentic} />
-        <Route path="/series" component={SeriesAuthentic} />
-        <Route path="/shows" component={ShowsAuthentic} />
-        <Route path="/mix" component={MixAuthentic} />
+        <Route path="/movies" component={Movies} />
+        <Route path="/series" component={Series} />
+        <Route path="/shows" component={Shows} />
+        <Route path="/mix" component={Mix} />
         
         {/* صفحات عرض المحتوى */}
-        <Route path="/movie/:id" component={ContentViewAuthentic} />
-        <Route path="/series/:id" component={ContentViewAuthentic} />
-        <Route path="/show/:id" component={ContentViewAuthentic} />
-        <Route path="/mix/:id" component={ContentViewAuthentic} />
+        <Route path="/movie/:id" component={ContentView} />
+        <Route path="/series/:id" component={ContentView} />
+        <Route path="/show/:id" component={ContentView} />
+        <Route path="/mix/:id" component={ContentView} />
         
 
         

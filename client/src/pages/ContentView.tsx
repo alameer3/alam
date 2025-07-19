@@ -2,8 +2,8 @@ import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'wouter';
 import { useState } from 'react';
 import { Star, Calendar, Clock, Play, Download, Share2, Tv, Globe, User, Eye, Heart, MessageCircle } from 'lucide-react';
-import AuthenticHeader from '../components/layout/AuthenticHeader';
-import AuthenticFooter from '../components/layout/AuthenticFooter';
+import Header from '../components/layout/Header';
+import Footer from '../components/layout/Footer';
 import type { Content } from '@shared/types';
 
 const ContentViewAuthentic = () => {
@@ -31,7 +31,7 @@ const ContentViewAuthentic = () => {
   if (isLoading) {
     return (
       <div className="min-h-screen" style={{ backgroundColor: '#161619' }}>
-        <AuthenticHeader />
+        <Header />
         <div className="pt-20 pb-8">
           <div className="container mx-auto px-4">
             <div className="animate-pulse">
@@ -59,7 +59,7 @@ const ContentViewAuthentic = () => {
   if (!content) {
     return (
       <div className="min-h-screen" style={{ backgroundColor: '#161619' }}>
-        <AuthenticHeader />
+        <Header />
         <div className="pt-20 pb-8 flex items-center justify-center">
           <div className="text-center">
             <h1 className="text-4xl font-bold text-white mb-4">المحتوى غير موجود</h1>
@@ -105,7 +105,7 @@ const ContentViewAuthentic = () => {
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: '#161619' }}>
-      <AuthenticHeader />
+      <Header />
       
       {/* خلفية مع تأثير blur */}
       <div 
@@ -290,7 +290,7 @@ const ContentViewAuthentic = () => {
         </div>
       </div>
 
-      <AuthenticFooter />
+      <Footer />
     </div>
   );
 };

@@ -1,8 +1,8 @@
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
 import { Star, Calendar, Clock, Filter, Grid, List, Gamepad2, Download, Music, Book } from 'lucide-react';
-import AuthenticHeader from '../components/layout/AuthenticHeader';
-import AuthenticFooter from '../components/layout/AuthenticFooter';
+import Header from '../components/layout/Header';
+import Footer from '../components/layout/Footer';
 import type { Content } from '@shared/types';
 
 const MixAuthentic = () => {
@@ -129,7 +129,7 @@ const MixAuthentic = () => {
 
   return (
     <div className="min-h-screen bg-gray-900">
-      <AuthenticHeader />
+      <Header />
       
       {/* الخلفية مع التأثير */}
       <div 
@@ -251,7 +251,7 @@ const MixAuthentic = () => {
         )}
       </div>
 
-      <AuthenticFooter />
+      <Footer />
     </div>
   );
 };
