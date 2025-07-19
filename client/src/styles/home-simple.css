@@ -1,0 +1,49 @@
+/* التصميم المبسط مطابق للصورة المرجعية */
+
+body {
+  font-family: 'Cairo', 'STC-Bold', Arial, sans-serif;
+  direction: rtl;
+  text-align: right;
+  margin: 0;
+  padding: 0;
+}
+
+/* تأثيرات الهوفر للأقسام */
+a[href="/movies"]:hover,
+a[href="/series"]:hover,
+a[href="/shows"]:hover,
+a[href="/mix"]:hover {
+  border-color: #f3951e !important;
+  background-color: rgba(39, 39, 44, 0.95) !important;
+  transform: translateY(-2px) !important;
+  color: #f3951e !important;
+}
+
+/* تأثير هوفر البحث */
+button[type="submit"]:hover {
+  background-color: #e8841a !important;
+}
+
+/* تأثير هوفر الشعار الدائري */
+.circular-logo:hover {
+  box-shadow: 0 0 30px rgba(243, 149, 30, 0.5) !important;
+  transform: scale(1.05) !important;
+}
+
+/* للتأكد من الاستجابة */
+@media (max-width: 768px) {
+  .grid-4 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .grid-4 {
+    grid-template-columns: 1fr !important;
+  }
+  
+  .circular-logo {
+    width: 200px !important;
+    height: 200px !important;
+  }
+}
